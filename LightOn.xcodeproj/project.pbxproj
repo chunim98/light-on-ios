@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		51FA4FA02DBF88BA0092706E /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4F9F2DBF88BA0092706E /* KakaoSDK */; };
+		51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4FB22DBF986B0092706E /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		51FA4F772DBF68BE0092706E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -37,6 +42,20 @@
 			);
 			target = 51FA4F5C2DBF68BD0092706E /* LightOn */;
 		};
+		51FA4FA92DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/APIConfig.xcconfig,
+			);
+			target = 51FA4F752DBF68BE0092706E /* LightOnTests */;
+		};
+		51FA4FAA2DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/APIConfig.xcconfig,
+			);
+			target = 51FA4F7F2DBF68BE0092706E /* LightOnUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,6 +63,8 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				51FA4F882DBF68BE0092706E /* Exceptions for "LightOn" folder in "LightOn" target */,
+				51FA4FA92DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnTests" target */,
+				51FA4FAA2DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnUITests" target */,
 			);
 			path = LightOn;
 			sourceTree = "<group>";
@@ -65,6 +86,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51FA4FA02DBF88BA0092706E /* KakaoSDK in Frameworks */,
+				51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +148,8 @@
 			);
 			name = LightOn;
 			packageProductDependencies = (
+				51FA4F9F2DBF88BA0092706E /* KakaoSDK */,
+				51FA4FB22DBF986B0092706E /* SnapKit */,
 			);
 			productName = LightOn;
 			productReference = 51FA4F5D2DBF68BD0092706E /* LightOn.app */;
@@ -200,14 +225,18 @@
 				};
 			};
 			buildConfigurationList = 51FA4F582DBF68BD0092706E /* Build configuration list for PBXProject "LightOn" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				ko,
 			);
 			mainGroup = 51FA4F542DBF68BD0092706E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				51FA4FB12DBF986B0092706E /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 51FA4F5E2DBF68BD0092706E /* Products */;
 			projectDirPath = "";
@@ -284,6 +313,8 @@
 /* Begin XCBuildConfiguration section */
 		51FA4F8A2DBF68BE0092706E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 51FA4F5F2DBF68BD0092706E /* LightOn */;
+			baseConfigurationReferenceRelativePath = Resources/APIConfig.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -317,6 +348,8 @@
 		};
 		51FA4F8B2DBF68BE0092706E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 51FA4F5F2DBF68BD0092706E /* LightOn */;
+			baseConfigurationReferenceRelativePath = Resources/APIConfig.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -353,6 +386,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -416,6 +450,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -597,6 +632,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.24.1;
+			};
+		};
+		51FA4FB12DBF986B0092706E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		51FA4F9F2DBF88BA0092706E /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		51FA4FB22DBF986B0092706E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51FA4FB12DBF986B0092706E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 51FA4F552DBF68BD0092706E /* Project object */;
 }
