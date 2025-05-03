@@ -17,7 +17,7 @@ extension UIButton.Configuration {
         case borderedTinted
     }
     
-    // MARK: Methods
+    // MARK: Static Methods
     
     static func lightOn(_ style: LightOnStyle) -> UIButton.Configuration {
         var config = UIButton.Configuration.filled()

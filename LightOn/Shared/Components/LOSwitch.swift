@@ -35,7 +35,7 @@ final class LOSwitch: UISwitch {
         // onTintColor 설정
         self.onTintColor = .brand
         // offTintColor 설정
-        self.subviews.first?.subviews.first?.backgroundColor = UIColor(hex: 0xC4C4C4) // temp
+        self.subviews.first?.subviews.first?.backgroundColor = .assistive
         // 내부에 있는 thumbView 인스턴스 가져오기
         self.thumbView = self.subviews.first?.subviews.last?.subviews.last as? UIImageView
     }
