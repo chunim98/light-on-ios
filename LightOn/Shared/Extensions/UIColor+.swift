@@ -15,18 +15,14 @@ extension UIColor {
         let blue = CGFloat((hex & 0xff) >> 0) / 255.0
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
-    
-    static let brand = UIColor(hex: 0x6137DD)
-    
-    // 아직 사용 예정 없음. (gpt가 추출한 색상이라 부정확함)
-    static let brand50  = UIColor(hex: 0xEBE4FA) // 가장 연한 톤
-    static let brand100 = UIColor(hex: 0xCDBEF1)
-    static let brand200 = UIColor(hex: 0xAD95EA)
-    static let brand300 = UIColor(hex: 0x8C6DE3)
-    static let brand400 = UIColor(hex: 0x7250DD)
-    static let brand500 = UIColor(hex: 0x5937D6) // 중심(기본) 톤
-    static let brand600 = UIColor(hex: 0x4E33CF)
-    static let brand700 = UIColor(hex: 0x3E2DC5)
-    static let brand800 = UIColor(hex: 0x2F29BE)
-    static let brand900 = UIColor(hex: 0x1420B3) // 가장 진한 톤
+
+    static let brand = UIColor(hex: 0x6137DD)       // 브랜드 메인 컬러
+    static let pressed = UIColor(hex: 0x432ACE)     // 버튼이 눌렸을 때 컬러
+    static let loBlack = UIColor(hex: 0x262626)     // 기본 블랙 (0x000000은 사용 안 함)
+    static let loWhite = UIColor(hex: 0xFFFFFF)     // 기본 화이트
+    static let disable = UIColor(hex: 0xE9E9E9)     // 비활성화 상태(Disabled) 컬러
+    static let caption = UIColor(hex: 0x555555)     // 캡션(보조 설명) 텍스트 컬러
+    static let assistive = UIColor(hex: 0xC4C4C4)   // 접근성·보조 요소용 컬러
+    static let destructive = UIColor(hex: 0xE63736) // 파괴적 액션(삭제 등) 컬러
+    static let background = UIColor(hex: 0xF5F5F5)  // 기본 배경 컬러
 }
