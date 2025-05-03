@@ -6,16 +6,22 @@
 //
 
 import UIKit
+import Combine
 
 import SnapKit
 
 final class LOAlertVC: UIViewController {
     
+    // MARK: Properties
+    
+    private var cancellables = Set<AnyCancellable>()
+    private weak var base: UIViewController?
+    private let isCancelButtonHidden: Bool
+    
     // MARK: Components
     
     private let contentView = {
-        let sv = UIStackView(.vertical)
-        sv.spacing = 28
+        let sv = UIStackView(.vertical, spacing: 28)
         sv.clipsToBounds = true
         sv.layer.cornerRadius = 8
         sv.backgroundColor = .loWhite
@@ -27,32 +33,42 @@ final class LOAlertVC: UIViewController {
     
     private let headerLabel = {
         let label = UILabel()
-        label.text = "제목" // temp
         label.textColor = .loBlack
         label.font = .pretendard.bold(22)
         return label
     }()
     
     private let bodyView: UIView
-    
     private let buttonContainer = UIStackView(spacing: 8)
-    
-    private let cancelButton = {
-        let button = LOButton(style: .bordered)
-        button.attributedTitle = .init("취소", .pretendard.regular(16)) // temp
-        return button
-    }()
-    
-    private let acceptButton = {
-        let button = LOButton(style: .filled)
-        button.attributedTitle = .init("확인", .pretendard.semiBold(16)) // temp
-        return button
-    }()
+    private let cancelButton = LOButton(style: .bordered)
+    private let acceptButton = LOButton(style: .filled)
     
     // MARK: Life Cycle
-    
-    init(content: UIView) {
+
+    init(
+        base: UIViewController?,
+        content: UIView,
+        headerTitle: String,
+        acceptTitle: String,
+        cancelTitle: String? = nil
+    ) {
+        // 이 얼럿을 띄워 줄 뷰컨 인스턴스 받아오기
+        self.base = base
+        // 얼럿 내용
         self.bodyView = content
+        // 헤더 제목
+        self.headerLabel.text = headerTitle
+        // 확인 버튼 제목
+        self.acceptButton.attributedTitle =
+        AttributedString(acceptTitle, .pretendard.semiBold(16))
+        // 취소 버튼 제목(사용 시)
+        if let cancelTitle {
+            self.cancelButton.attributedTitle =
+            AttributedString(cancelTitle, .pretendard.regular(16))
+        }
+        // 취소 버튼 표시 여부
+        self.isCancelButtonHidden = (cancelTitle == nil)
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -60,6 +76,7 @@ final class LOAlertVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .loBlack.withAlphaComponent(0.6)
         setAutoLayout()
+        setBinding()
     }
     
     required init?(coder: NSCoder) {
@@ -74,7 +91,8 @@ final class LOAlertVC: UIViewController {
         contentView.addArrangedSubview(buttonContainer)
         detailContainer.addArrangedSubview(headerLabel)
         detailContainer.addArrangedSubview(bodyView)
-        buttonContainer.addArrangedSubview(cancelButton)
+        // 취소 버튼 제목을 지정하지 않으면, 사용하지 않는 것으로 간주하고 숨김
+        if !isCancelButtonHidden { buttonContainer.addArrangedSubview(cancelButton) }
         buttonContainer.addArrangedSubview(acceptButton)
         
         contentView.snp.makeConstraints {
@@ -83,14 +101,58 @@ final class LOAlertVC: UIViewController {
             $0.width.equalTo(345)
         }
     }
+    
+    // MARK: Binding
+    
+    private func setBinding() {
+        acceptButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in self?.dismiss(animated: true) }
+            .store(in: &cancellables)
+        
+        cancelButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in self?.dismiss(animated: true) }
+            .store(in: &cancellables)
+    }
+    
+    // MARK: Methods
+    
+    func show() {
+        self.modalPresentationStyle = .overFullScreen
+        self.modalTransitionStyle = .crossDissolve
+        base?.present(self, animated: true)
+    }
 }
+
+// MARK: Publishers
+
+extension LOAlertVC {
+    var acceptEventPublisher: AnyPublisher<Void, Never> {
+        self.acceptButton.publisher(for: .touchUpInside)
+            .map { _ in }
+            .eraseToAnyPublisher()
+    }
+    
+    var cancelEventPublisher: AnyPublisher<Void, Never> {
+        self.cancelButton.publisher(for: .touchUpInside)
+            .map { _ in }
+            .eraseToAnyPublisher()
+    }
+}
+
+// MARK: Preview
 
 #Preview {
     let label = UILabel()
-    label.font = .pretendard.regular(18)
     label.textColor = .caption
-    label.textAlignment = .center
-    label.text = "이건 일단 내용입니다.\n딱히 뭐 적을 게 없네여.." // temp
     label.numberOfLines = .max
-    return LOAlertVC(content: label)
+    label.textAlignment = .center
+    label.font = .pretendard.regular(18)
+    label.text = "이건 일단 내용입니다.\n딱히 뭐 적을 게 없네여.."
+
+    return LOAlertVC(
+        base: nil,
+        content: label,
+        headerTitle: "호고곡..",
+        acceptTitle: "확인"
+    )
 }

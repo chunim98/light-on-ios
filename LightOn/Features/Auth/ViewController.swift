@@ -17,6 +17,14 @@ final class ViewController: UIViewController {
     
     // MARK: Components
     
+    private lazy var alert = LOAlertVC(
+        base: self,
+        content: LOSwitch(),
+        headerTitle: "알림",
+        acceptTitle: "확인",
+        cancelTitle: "취소"
+    )
+    
     private let mainVStack = {
         let sv = UIStackView()
         sv.axis = .vertical
@@ -27,6 +35,12 @@ final class ViewController: UIViewController {
     private let kakaoSignInButton = {
         let button = UIButton(configuration: .filled())
         button.setTitle("카카오 로그인", for: .normal)
+        return button
+    }()
+    
+    private let alertButton = {
+        let button = UIButton(configuration: .filled())
+        button.setTitle("얼럿 열기", for: .normal)
         return button
     }()
     
@@ -44,12 +58,14 @@ final class ViewController: UIViewController {
     private func setAutoLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(kakaoSignInButton)
+        mainVStack.addArrangedSubview(alertButton)
 
         mainVStack.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(15)
         }
         kakaoSignInButton.snp.makeConstraints { $0.height.equalTo(50) }
+        alertButton.snp.makeConstraints { $0.height.equalTo(50) }
     }
 
     // MARK: Binding
@@ -62,6 +78,10 @@ final class ViewController: UIViewController {
         kakaoAuthHelper.resultTextPublisher
             .sink { [weak self] in self?.pushResultVCBinder($0) }
             .store(in: &cancellables)
+        
+        alertButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in self?.alert.show() }
+            .store(in: &cancellables)
     }
 }
 
@@ -73,3 +93,5 @@ extension ViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
+
+#Preview { ViewController() }
