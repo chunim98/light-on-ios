@@ -14,9 +14,8 @@ final class LOAlertVC: UIViewController {
     // MARK: Components
     
     private let contentView = {
-        let sv = UIStackView()
+        let sv = UIStackView(.vertical)
         sv.spacing = 28
-        sv.axis = .vertical
         sv.clipsToBounds = true
         sv.layer.cornerRadius = 8
         sv.backgroundColor = .loWhite
@@ -28,9 +27,9 @@ final class LOAlertVC: UIViewController {
     
     private let headerLabel = {
         let label = UILabel()
-        label.font = .pretendard.bold(22)
-        label.textColor = .loBlack
         label.text = "제목" // temp
+        label.textColor = .loBlack
+        label.font = .pretendard.bold(22)
         return label
     }()
     
@@ -39,15 +38,15 @@ final class LOAlertVC: UIViewController {
     private let buttonContainer = UIStackView(spacing: 8)
     
     private let cancelButton = {
-        var config = UIButton.Configuration.lightOn(.bordered)
-        config.attributedTitle = AttributedString("취소", .pretendard.regular(16)) // temp
-        return UIButton(configuration: config)
+        let button = LOButton(style: .bordered)
+        button.attributedTitle = .init("취소", .pretendard.regular(16)) // temp
+        return button
     }()
     
     private let acceptButton = {
-        var config = UIButton.Configuration.lightOn(.filled)
-        config.attributedTitle = AttributedString("확인", .pretendard.semiBold(16)) // temp
-        return UIButton(configuration: config)
+        let button = LOButton(style: .filled)
+        button.attributedTitle = .init("확인", .pretendard.semiBold(16)) // temp
+        return button
     }()
     
     // MARK: Life Cycle
@@ -83,7 +82,6 @@ final class LOAlertVC: UIViewController {
             $0.height.lessThanOrEqualTo(520)
             $0.width.equalTo(345)
         }
-        buttonContainer.snp.makeConstraints { $0.height.equalTo(47) }
     }
 }
 
