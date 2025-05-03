@@ -9,12 +9,14 @@ import UIKit
 
 extension UIStackView {
     convenience init(
-        axis: NSLayoutConstraint.Axis = .horizontal,
+        _ axis: NSLayoutConstraint.Axis = .horizontal,
+        alignment: UIStackView.Alignment = .fill,
         spacing: CGFloat = 0,
         inset: NSDirectionalEdgeInsets? = nil
     ) {
         self.init()
         self.axis = axis
+        self.alignment = alignment
         self.spacing = spacing
         
         if let inset {

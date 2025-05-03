@@ -24,28 +24,19 @@ final class LOAlertVC: UIViewController {
         return sv
     }()
     
-    private let detailContainer = UIStackView(axis: .vertical, spacing: 8)
+    private let detailContainer = UIStackView(.vertical, alignment: .center, spacing: 8)
     
-    private let titleLabel = {
+    private let headerLabel = {
         let label = UILabel()
         label.font = .pretendard.bold(22)
         label.textColor = .loBlack
-        label.textAlignment = .center
         label.text = "제목" // temp
         return label
     }()
     
-    private let bodyLabel = {
-        let label = UILabel()
-        label.font = .pretendard.regular(18)
-        label.textColor = .caption
-        label.textAlignment = .center
-        label.text = "이건 일단 내용입니다.\n딱히 뭐 적을 게 없네여.." // temp
-        label.numberOfLines = .max
-        return label
-    }()
+    private let bodyView: UIView
     
-    private let buttonContainer = UIStackView(axis: .horizontal, spacing: 8)
+    private let buttonContainer = UIStackView(spacing: 8)
     
     private let cancelButton = {
         var config = UIButton.Configuration.lightOn(.bordered)
@@ -61,10 +52,19 @@ final class LOAlertVC: UIViewController {
     
     // MARK: Life Cycle
     
+    init(content: UIView) {
+        self.bodyView = content
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black.withAlphaComponent(0.6)
+        view.backgroundColor = .loBlack.withAlphaComponent(0.6)
         setAutoLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Layout
@@ -73,8 +73,8 @@ final class LOAlertVC: UIViewController {
         view.addSubview(contentView)
         contentView.addArrangedSubview(detailContainer)
         contentView.addArrangedSubview(buttonContainer)
-        detailContainer.addArrangedSubview(titleLabel)
-        detailContainer.addArrangedSubview(bodyLabel)
+        detailContainer.addArrangedSubview(headerLabel)
+        detailContainer.addArrangedSubview(bodyView)
         buttonContainer.addArrangedSubview(cancelButton)
         buttonContainer.addArrangedSubview(acceptButton)
         
@@ -83,8 +83,16 @@ final class LOAlertVC: UIViewController {
             $0.height.lessThanOrEqualTo(520)
             $0.width.equalTo(345)
         }
-        buttonContainer.snp.makeConstraints { $0.height.equalTo(45) }
+        buttonContainer.snp.makeConstraints { $0.height.equalTo(47) }
     }
 }
 
-#Preview { LOAlertVC() }
+#Preview {
+    let label = UILabel()
+    label.font = .pretendard.regular(18)
+    label.textColor = .caption
+    label.textAlignment = .center
+    label.text = "이건 일단 내용입니다.\n딱히 뭐 적을 게 없네여.." // temp
+    label.numberOfLines = .max
+    return LOAlertVC(content: label)
+}
