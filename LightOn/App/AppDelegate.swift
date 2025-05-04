@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         // 카카오톡 소셜 로그인 모듈 초기화
         let kakaoAppKey = Bundle.main.infoDictionary?["KakaoNativeAppKey"] as! String
-        KakaoSDK.initSDK(appKey: kakaoAppKey)
+//        KakaoSDK.initSDK(appKey: kakaoAppKey)
 
         return true
     }

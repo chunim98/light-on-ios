@@ -42,20 +42,6 @@
 			);
 			target = 51FA4F5C2DBF68BD0092706E /* LightOn */;
 		};
-		51FA4FA92DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/APIConfig.xcconfig,
-			);
-			target = 51FA4F752DBF68BE0092706E /* LightOnTests */;
-		};
-		51FA4FAA2DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnUITests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/APIConfig.xcconfig,
-			);
-			target = 51FA4F7F2DBF68BE0092706E /* LightOnUITests */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -63,8 +49,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				51FA4F882DBF68BE0092706E /* Exceptions for "LightOn" folder in "LightOn" target */,
-				51FA4FA92DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnTests" target */,
-				51FA4FAA2DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnUITests" target */,
 			);
 			path = LightOn;
 			sourceTree = "<group>";
