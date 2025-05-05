@@ -21,12 +21,17 @@ final class LODivider: UIView {
     private let axis: Axis
     private let width: CGFloat
     
-    // MARK: Life Cycle
+    // MARK: Initalizer
     
-    init(axis: Axis, width: CGFloat) {
+    init(axis: Axis = .horizontal, width: CGFloat) {
         self.axis = axis
         self.width = width
         super.init(frame: .zero)
+    }
+    
+    convenience init(axis: Axis = .horizontal, width: CGFloat, color: UIColor) {
+        self.init(axis: axis, width: width)
+        self.backgroundColor = color
     }
     
     required init?(coder: NSCoder) {

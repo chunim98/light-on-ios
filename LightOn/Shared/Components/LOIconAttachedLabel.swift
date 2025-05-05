@@ -58,12 +58,12 @@ final class LOIconAttachedLabel: UIView {
         if iconPlacement == .front {
             mainHStack.addArrangedSubview(iconView)
             mainHStack.addArrangedSubview(label)
-            mainHStack.addArrangedSubview(UIView())
         } else {
             mainHStack.addArrangedSubview(label)
             mainHStack.addArrangedSubview(iconView)
-            mainHStack.addArrangedSubview(UIView())
         }
+        
+        iconView.setContentHuggingPriority(.init(999), for: .horizontal)
         
         mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
