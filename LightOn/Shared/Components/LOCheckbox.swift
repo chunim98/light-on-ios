@@ -12,7 +12,7 @@ final class LOCheckbox: UIButton {
     
     // MARK: Outputs
     
-    private let isCheckedSubject = CurrentValueSubject<Bool, Never>(false)
+    private lazy var isCheckedSubject = CurrentValueSubject<Bool, Never>(self.isSelected)
     
     // MARK: Life Cycle
     
@@ -28,8 +28,8 @@ final class LOCheckbox: UIButton {
     // MARK: Configure
     
     private func configure() {
-        self.setBackgroundImage(UIImage(named: "checkbox_checked"), for: .selected)
         self.setBackgroundImage(UIImage(named: "checkbox_unchecked"), for: .normal)
+        self.setBackgroundImage(UIImage(named: "checkbox_checked"), for: .selected)
         self.addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)
     }
     
