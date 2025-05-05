@@ -52,6 +52,8 @@ final class RegularEventCardView: UIView {
         return label
     }()
     
+    private let genreTagView = LOGenreTagView()
+    
     private let dateIconLabel = {
         let iconLabel = LOIconAttachedLabel()
         iconLabel.icon = UIImage(resource: .eventCardCellClock)
@@ -87,6 +89,7 @@ final class RegularEventCardView: UIView {
         thumbnailView.image = UIImage(resource: .debugBusking)
         artistLabel.text = "라이트온"
         titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
+        genreTagView.text = "어쿠스틱"
         dateIconLabel.text = "2025.05.01"
         timeLabel.text = "17:00"
         placeIconLabel.text = "서울 영등포구 여의도동 81-8"
@@ -117,10 +120,14 @@ final class RegularEventCardView: UIView {
         dateTimePlaceVStack.addArrangedSubview(placeIconLabel)
         // depth 4
         titleGenreHStack.addArrangedSubview(titleLabel)
+        titleGenreHStack.addArrangedSubview(genreTagView)
+        titleGenreHStack.addArrangedSubview(UIView())
         dateTimeHStack.addArrangedSubview(dateIconLabel)
         dateTimeHStack.addArrangedSubview(dateTimeDivider)
         dateTimeHStack.addArrangedSubview(timeLabel)
         dateTimeHStack.addArrangedSubview(UIView())
+        
+        genreTagView.setContentCompressionResistancePriority(.init(999), for: .horizontal)
         
         mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints { $0.size.equalTo(80) }

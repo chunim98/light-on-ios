@@ -84,10 +84,10 @@ final class LOGenreTagView: UIView {
     // MARK: Override
     
     override var intrinsicContentSize: CGSize {
-        CGSize(
-            width: UIView.noIntrinsicMetric,
-            height: (tagType == .small) ? 14 : 25
-        )
+        let widthOffset: CGFloat = (tagType == .small) ? 4*2 : 8*2
+        let width: CGFloat = label.intrinsicContentSize.width+widthOffset
+        let height: CGFloat = (tagType == .small) ? 14 : 25
+        return CGSize(width: width, height: height)
     }
 }
 
