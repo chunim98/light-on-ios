@@ -6,13 +6,8 @@
 //
 
 import UIKit
-import Combine
 
 final class LOCheckbox: UIButton {
-    
-    // MARK: Outputs
-    
-    private lazy var isCheckedSubject = CurrentValueSubject<Bool, Never>(self.isSelected)
     
     // MARK: Life Cycle
     
@@ -43,15 +38,6 @@ final class LOCheckbox: UIButton {
     
     @objc private func handleTapEvent() {
         self.isSelected.toggle()
-        self.isCheckedSubject.send(self.isSelected)
-    }
-}
-
-// MARK: Publisher
-
-extension LOCheckbox {
-    var isCheckedPublisher: AnyPublisher<Bool, Never> {
-        self.isCheckedSubject.eraseToAnyPublisher()
     }
 }
 
