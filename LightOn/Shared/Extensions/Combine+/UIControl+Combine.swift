@@ -15,7 +15,7 @@ extension UIControl {
         UIControlPublisher(control: self, event: event)
     }
     
-    // MARK: - UIControlSubscription
+    // MARK: - Subscription
     
     final class UIControlSubscription<S: Subscriber>: Subscription
     where S.Input == UIControl, S.Failure == Never {
@@ -48,7 +48,7 @@ extension UIControl {
         }
     }
     
-    // MARK: - UIControlPublisher
+    // MARK: - Publisher
     
     struct UIControlPublisher: Publisher {
         
