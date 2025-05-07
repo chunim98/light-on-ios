@@ -1,0 +1,42 @@
+//
+//  MediumEventCardTableCell.swift
+//  LightOn
+//
+//  Created by 신정욱 on 5/7/25.
+//
+
+import UIKit
+
+import SnapKit
+
+final class MediumEventCardTableCell: UITableViewCell {
+    
+    // MARK: Properties
+    
+    static let id = "MediumEventCardTableCell"
+    
+    // MARK: Components
+    
+    private let mediumEventCardView = MediumEventCardView()
+    
+    // MARK: Life Cycle
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setAutoLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Layout
+    
+    private func setAutoLayout() {
+        contentView.addSubview(mediumEventCardView)
+        contentView.snp.makeConstraints { $0.center.equalToSuperview() }
+        mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+}
+
+#Preview { MediumEventCardTableCell() }
