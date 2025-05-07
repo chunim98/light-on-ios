@@ -1,5 +1,5 @@
 //
-//  LOIconAttachedLabel.swift
+//  LOIconLabel.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class LOIconAttachedLabel: UIView {
+final class LOIconLabel: UIView {
     
     // MARK: Enum
     
@@ -98,7 +98,7 @@ final class LOIconAttachedLabel: UIView {
 }
 
 #Preview {
-    let iconLabel = LOIconAttachedLabel(iconIn: .front)
+    let iconLabel = LOIconLabel(iconIn: .front)
     iconLabel.icon = UIImage(named: "event_card_cell_clock")
     iconLabel.font = .pretendard.regular(12)
     iconLabel.text = "2025.05.01"
