@@ -1,5 +1,5 @@
 //
-//  ThumbnailTitleCell.swift
+//  SmallEventCardCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,11 +9,11 @@ import UIKit
 
 import SnapKit
 
-final class ThumbnailTitleCell: UICollectionViewCell {
+final class SmallEventCardCell: UICollectionViewCell {
     
     // MARK: Propreties
     
-    static let id = "ThumbnailTitleCell"
+    static let id = "SmallEventCardCell"
     
     // MARK: Components
     
@@ -61,10 +61,10 @@ final class ThumbnailTitleCell: UICollectionViewCell {
     
     // MARK: Configure
     
-    func configure(item: any ThumbnailTitleCellItem) {
+    func configure(item: any SmallEventCardCelllItem) {
         thumbnailView.image = item.thumbnail
         titleLabel.text = item.title
     }
 }
 
-#Preview(traits: .fixedLayout(width: 130, height: 186)) { ThumbnailTitleCell() }
+#Preview(traits: .fixedLayout(width: 130, height: 186)) { SmallEventCardCell() }
