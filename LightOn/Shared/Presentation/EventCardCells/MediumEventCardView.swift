@@ -1,5 +1,5 @@
 //
-//  RegularEventCardView.swift
+//  MediumEventCardView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class RegularEventCardView: UIView {
+final class MediumEventCardView: UIView {
     
     // MARK: Components
     
@@ -27,7 +27,7 @@ final class RegularEventCardView: UIView {
     private let artistTitleGenreVStack = UIStackView(.vertical, spacing: 5)
     private let dateTimePlaceVStack = UIStackView(.vertical, spacing: 5)
     private let titleGenreHStack = UIStackView(spacing: 4)
-    private let dateTimeHStack = UIStackView(spacing: 5)
+    private let dateTimeHStack = LODividerStackView(spacing: 5)
     
     // Components
     private let thumbnailView = {
@@ -55,16 +55,14 @@ final class RegularEventCardView: UIView {
     private let genreTagView = LOGenreTagView()
     
     private let dateIconLabel = {
-        let iconLabel = LOIconAttachedLabel()
+        let iconLabel = LOIconLabel()
         iconLabel.icon = UIImage(resource: .eventCardCellClock)
         iconLabel.font = .pretendard.regular(12)
         iconLabel.setColor(.caption)
         iconLabel.spacing = 5
         return iconLabel
     }()
-    
-    private let dateTimeDivider = LODivider(axis: .vertical, width: 1, color: .disable)
-    
+        
     private let timeLabel = {
         let label = UILabel()
         label.font = .pretendard.regular(12)
@@ -73,7 +71,7 @@ final class RegularEventCardView: UIView {
     }()
     
     private let placeIconLabel = {
-        let iconLabel = LOIconAttachedLabel()
+        let iconLabel = LOIconLabel()
         iconLabel.icon = UIImage(resource: .eventCardCellPin)
         iconLabel.font = .pretendard.regular(12)
         iconLabel.setColor(.caption)
@@ -123,9 +121,8 @@ final class RegularEventCardView: UIView {
         titleGenreHStack.addArrangedSubview(genreTagView)
         titleGenreHStack.addArrangedSubview(UIView())
         dateTimeHStack.addArrangedSubview(dateIconLabel)
-        dateTimeHStack.addArrangedSubview(dateTimeDivider)
         dateTimeHStack.addArrangedSubview(timeLabel)
-        dateTimeHStack.addArrangedSubview(UIView())
+        dateTimeHStack.addArrangedSubviewWithoutDivider(UIView())
         
         genreTagView.setContentCompressionResistancePriority(.init(999), for: .horizontal)
         
@@ -136,4 +133,4 @@ final class RegularEventCardView: UIView {
     }
 }
 
-#Preview { RegularEventCardView() }
+#Preview { MediumEventCardView() }
