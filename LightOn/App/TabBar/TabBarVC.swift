@@ -39,10 +39,9 @@ final class TabBarVC: UITabBarController {
     private func configure() {
         #if DEBUG
         let vc = ViewController()
-        let vc2 = UIViewController()
+        let vc2 = UINavigationController(rootViewController: HomeVC())
         let vc3 = UIViewController()
         let vc4 = UIViewController()
-        vc2.view.backgroundColor = .systemPink
         vc3.view.backgroundColor = .orange
         vc4.view.backgroundColor = .magenta
         self.viewControllers = [vc, vc2, vc3, vc4]
