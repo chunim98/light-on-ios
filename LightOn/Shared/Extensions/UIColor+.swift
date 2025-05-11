@@ -25,4 +25,6 @@ extension UIColor {
     static let assistive   = UIColor(hex: 0xC4C4C4) // 접근성·보조 요소용 컬러
     static let destructive = UIColor(hex: 0xE63736) // 파괴적 액션(삭제 등) 컬러
     static let background  = UIColor(hex: 0xF5F5F5) // 기본 배경 컬러
+    static let thumbLine   = UIColor(hex: 0xE5E5E5)
+    static let infoText    = UIColor(hex: 0xBFBFBF)
 }
