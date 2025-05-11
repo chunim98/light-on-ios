@@ -38,7 +38,7 @@ final class LOButton: UIButton {
         CGSize(width: super.intrinsicContentSize.width, height: height)
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     private func configure(_ style: LOButton.Style) {
         var config = UIButton.Configuration.filled()

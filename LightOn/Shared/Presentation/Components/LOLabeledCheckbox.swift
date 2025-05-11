@@ -51,7 +51,7 @@ final class LOLabeledCheckbox: UIView {
         }
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     var title: String? {
         get { titleLabel.text }

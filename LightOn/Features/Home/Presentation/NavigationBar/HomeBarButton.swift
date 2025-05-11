@@ -29,7 +29,7 @@ final class HomeBarButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     func setImage(_ image: UIImage) {
         config.image = image.withTintColor(.loBlack)

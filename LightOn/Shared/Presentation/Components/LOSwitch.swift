@@ -29,7 +29,7 @@ final class LOSwitch: UISwitch {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     private func configure() {
         // onTintColor 설정

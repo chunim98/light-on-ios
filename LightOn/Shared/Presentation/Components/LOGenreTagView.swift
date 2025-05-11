@@ -62,7 +62,7 @@ final class LOGenreTagView: UIView {
         contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     private func configure() {
         if tagType == .small {

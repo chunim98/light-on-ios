@@ -59,7 +59,7 @@ final class SmallEventCardCell: UICollectionViewCell {
         thumbnailView.snp.makeConstraints { $0.size.equalTo(130) }
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     func configure(item: any SmallEventCardCelllItem) {
         thumbnailView.image = item.thumbnail

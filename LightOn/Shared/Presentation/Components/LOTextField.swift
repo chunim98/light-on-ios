@@ -39,7 +39,7 @@ final class LOTextField: UITextField {
         bounds.inset(by: inset)
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     private func configure() {
         layer.borderColor = UIColor.thumbLine.cgColor

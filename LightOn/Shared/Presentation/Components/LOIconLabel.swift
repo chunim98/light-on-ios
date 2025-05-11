@@ -68,7 +68,7 @@ final class LOIconLabel: UIView {
         mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     /// 아이콘 설정 후에 사용해야 유효함.
     func setColor(_ color: UIColor) {

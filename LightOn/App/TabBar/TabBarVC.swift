@@ -34,7 +34,7 @@ final class TabBarVC: UITabBarController {
         setBinding()
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     private func configure() {
         #if DEBUG

@@ -103,7 +103,7 @@ final class LOFormField: UIStackView {
             .store(in: &cancellables)
     }
     
-    // MARK: Configure
+    // MARK: Configuration
     
     func setTitle       (_ text: String) { titleLabel.text = text }
     func setPlaceHolder (_ text: String) { textField.setPlaceHolder(text) }
