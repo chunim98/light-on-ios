@@ -109,6 +109,16 @@ final class LargeEventCardCell: UICollectionViewCell {
         dateTimeHStack.snp.makeConstraints { $0.height.equalTo(14) }
         locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
+    
+    // MARK: Configuration
+    
+    func configure(item: any LargeEventCardItem) {
+        thumbnailView.image    = item.thumbnail
+        titleLabel.text        = item.title
+        dateIconLabel.text     = item.date
+        timeLabel.text         = item.time
+        locationIconLabel.text = item.location
+    }
 }
 
 #Preview { LargeEventCardCell() }

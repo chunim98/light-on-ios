@@ -1,5 +1,5 @@
 //
-//  RecommendedEventSectionView.swift
+//  SpotlightedEventSectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -9,16 +9,16 @@ import UIKit
 
 import SnapKit
 
-final class RecommendedEventSectionView: UIStackView {
+final class SpotlightedEventSectionView: UIStackView {
     
     // MARK: Typealias
     
-    typealias Item = TestSmallEventCardItem // temp
+    typealias Item = TestMediumEventCardItem // temp
     
     // MARK: Components
 
     private let headerView = HomeSectionHeaderView()
-    private let collectionView = RecommendedEventCollectionView<Item>()
+    private let collectionView = SpotlightedEventCollectionView<Item>()
     
     // MARK: Life Cycle
 
@@ -32,8 +32,8 @@ final class RecommendedEventSectionView: UIStackView {
         setAutoLayout()
         
         #if DEBUG
-        collectionView.applySnapshot(items: TestSmallEventCardItem.mockItems)
-        #endif
+        collectionView.applySnapshot(items: TestMediumEventCardItem.mockItems)
+        #endif          
     }
     
     convenience init(title: String) {
@@ -51,7 +51,7 @@ final class RecommendedEventSectionView: UIStackView {
         addArrangedSubview(headerView)
         addArrangedSubview(collectionView)
         headerView.snp.makeConstraints { $0.height.equalTo(63) }
-        collectionView.snp.makeConstraints { $0.height.equalTo(206) }
+        collectionView.snp.makeConstraints { $0.height.equalTo(120) }
     }
     
     // MARK: Configuration
@@ -63,10 +63,10 @@ final class RecommendedEventSectionView: UIStackView {
 
 // MARK: Binder
 
-extension RecommendedEventSectionView {
+extension SpotlightedEventSectionView {
     func itemsBinder(_ items: [Item]) {
         collectionView.applySnapshot(items: items)
     }
 }
 
-#Preview { RecommendedEventSectionView() }
+#Preview { SpotlightedEventSectionView() }

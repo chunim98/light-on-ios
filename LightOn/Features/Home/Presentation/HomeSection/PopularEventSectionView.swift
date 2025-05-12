@@ -1,5 +1,5 @@
 //
-//  RecommendedEventSectionView.swift
+//  PopularEventSectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -9,16 +9,16 @@ import UIKit
 
 import SnapKit
 
-final class RecommendedEventSectionView: UIStackView {
+final class PopularEventSectionView: UIStackView {
     
     // MARK: Typealias
     
-    typealias Item = TestSmallEventCardItem // temp
+    typealias Item = TestLargeEventCardItem // temp
     
     // MARK: Components
 
     private let headerView = HomeSectionHeaderView()
-    private let collectionView = RecommendedEventCollectionView<Item>()
+    private let collectionView = PopularEventCollectionView<Item>()
     
     // MARK: Life Cycle
 
@@ -32,7 +32,7 @@ final class RecommendedEventSectionView: UIStackView {
         setAutoLayout()
         
         #if DEBUG
-        collectionView.applySnapshot(items: TestSmallEventCardItem.mockItems)
+        collectionView.applySnapshot(items: TestLargeEventCardItem.mockItems)
         #endif
     }
     
@@ -51,7 +51,7 @@ final class RecommendedEventSectionView: UIStackView {
         addArrangedSubview(headerView)
         addArrangedSubview(collectionView)
         headerView.snp.makeConstraints { $0.height.equalTo(63) }
-        collectionView.snp.makeConstraints { $0.height.equalTo(206) }
+        collectionView.snp.makeConstraints { $0.height.equalTo(246.17) }
     }
     
     // MARK: Configuration
@@ -63,10 +63,10 @@ final class RecommendedEventSectionView: UIStackView {
 
 // MARK: Binder
 
-extension RecommendedEventSectionView {
+extension PopularEventSectionView {
     func itemsBinder(_ items: [Item]) {
         collectionView.applySnapshot(items: items)
     }
 }
 
-#Preview { RecommendedEventSectionView() }
+#Preview { PopularEventSectionView() }

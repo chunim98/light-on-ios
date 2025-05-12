@@ -14,6 +14,8 @@ final class TabBarVC: UITabBarController {
     
     // MARK: Properties
     
+    /// 커스텀 탭바가 초과한 높이만큼 SafeArea를 보정하기 위한, 전역 변수입니다.
+    static let additionalInset = UIEdgeInsets(bottom: 23)
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
@@ -38,8 +40,8 @@ final class TabBarVC: UITabBarController {
     
     private func configure() {
         #if DEBUG
-        let vc = ViewController()
-        let vc2 = UINavigationController(rootViewController: HomeVC())
+        let vc = UINavigationController(rootViewController: HomeVC())
+        let vc2 = ViewController()
         let vc3 = UIViewController()
         let vc4 = UIViewController()
         vc3.view.backgroundColor = .orange

@@ -1,5 +1,5 @@
 //
-//  SpotlightedEventCollectionView.swift
+//  PopularEventCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SpotlightedEventCollectionView<Item: MediumEventCardItem>: UICollectionView {
+final class PopularEventCollectionView<Item: LargeEventCardItem>: UICollectionView {
     
     // MARK: Enum
     
@@ -38,13 +38,13 @@ final class SpotlightedEventCollectionView<Item: MediumEventCardItem>: UICollect
     
     private func configureSelf() {
         register(
-            MediumEventCardCollectionCell.self,
-            forCellWithReuseIdentifier: MediumEventCardCollectionCell.id
+            LargeEventCardCell.self,
+            forCellWithReuseIdentifier: LargeEventCardCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
         setFixedLayout(
-            fixedSize: CGSize(width: 330, height: 104),
+            fixedSize: CGSize(width: 278, height: 230.17),
             spacing: 12,
             sectionInset: .init(horizontal: 18, vertical: 8)
         )
@@ -55,9 +55,9 @@ final class SpotlightedEventCollectionView<Item: MediumEventCardItem>: UICollect
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MediumEventCardCollectionCell.id,
+                withReuseIdentifier: LargeEventCardCell.id,
                 for: indexPath
-            ) as? MediumEventCardCollectionCell else { return .init() }
+            ) as? LargeEventCardCell else { return .init() }
             
             cell.configure(item: item)
             return cell

@@ -37,6 +37,12 @@ final class MediumEventCardCollectionCell: UICollectionViewCell {
         contentView.snp.makeConstraints { $0.center.equalToSuperview() }
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
+    
+    // MARK: Configuration
+    
+    func configure(item: any MediumEventCardItem) {
+        mediumEventCardView.configure(item: item)
+    }
 }
 
 #Preview { MediumEventCardCollectionCell() }

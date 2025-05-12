@@ -134,7 +134,7 @@ final class MediumEventCardView: UIView {
     
     // MARK: Configuration
     
-    private func configure(item: any MediumEventCardItem) {
+    func configure(item: any MediumEventCardItem) {
         thumbnailView.image = item.thumbnail
         artistLabel.text = item.artist
         titleLabel.text = item.title
