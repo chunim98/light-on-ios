@@ -18,7 +18,7 @@ struct TestMediumEventCardItem: MediumEventCardItem {
     
     static let mockItems: [TestMediumEventCardItem] = [
         .init(
-            thumbnail: .debugBusking,
+            thumbnail: .debugBusking2,
             artist: "라이트온",
             title: "[여의도] Light ON 홀리데이 버스킹",
             genre: "어쿠스틱",
@@ -36,7 +36,7 @@ struct TestMediumEventCardItem: MediumEventCardItem {
             location: "서울 마포구 와우산로21길 19"
         ),
         .init(
-            thumbnail: .debugBusking,
+            thumbnail: .debugBusking2,
             artist: "오렌지스푼",
             title: "[강남] Orange Spoon 밤하늘 콘서트",
             genre: "재즈",

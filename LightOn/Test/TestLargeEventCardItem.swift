@@ -23,7 +23,7 @@ struct TestLargeEventCardItem: LargeEventCardItem {
             location: "서울 광진구 능동로 209 (어린이대공원 야외무대)"
         ),
         .init(
-            thumbnail: .debugBusking,
+            thumbnail: .debugBusking2,
             title: "한강 뮤직 나잇",
             date: "2025.05.12",
             time: "19:00",
@@ -37,7 +37,7 @@ struct TestLargeEventCardItem: LargeEventCardItem {
             location: "서울 성동구 서울숲 2길 8-1"
         ),
         .init(
-            thumbnail: .debugBusking,
+            thumbnail: .debugBusking2,
             title: "강남 스트리트 퍼포먼스",
             date: "2025.05.18",
             time: "18:30",
