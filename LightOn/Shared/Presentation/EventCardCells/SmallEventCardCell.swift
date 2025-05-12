@@ -61,9 +61,9 @@ final class SmallEventCardCell: UICollectionViewCell {
     
     // MARK: Configuration
     
-    func configure(item: any SmallEventCardItem) {
-        thumbnailView.image = item.thumbnail
-        titleLabel.text = item.title
+    func configure(item: (any SmallEventCardItem)?) {
+        thumbnailView.image = item?.thumbnail
+        titleLabel.text = item?.title
     }
 }
 

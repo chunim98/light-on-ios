@@ -78,6 +78,11 @@ final class LargeEventCardCell: UICollectionViewCell {
         setAutoLayout()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(item: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -112,12 +117,12 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     // MARK: Configuration
     
-    func configure(item: any LargeEventCardItem) {
-        thumbnailView.image    = item.thumbnail
-        titleLabel.text        = item.title
-        dateIconLabel.text     = item.date
-        timeLabel.text         = item.time
-        locationIconLabel.text = item.location
+    func configure(item: (any LargeEventCardItem)?) {
+        thumbnailView.image    = item?.thumbnail
+        titleLabel.text        = item?.title
+        dateIconLabel.text     = item?.date
+        timeLabel.text         = item?.time
+        locationIconLabel.text = item?.location
     }
 }
 

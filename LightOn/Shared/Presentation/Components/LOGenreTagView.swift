@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class LOGenreTagView: UIView {
+final class LOGenreTagView: UIStackView {
     
     // MARK: Enum
     
@@ -24,12 +24,6 @@ final class LOGenreTagView: UIView {
     
     // MARK: Components
     
-    private let contentView = {
-        let sv = UIStackView(alignment: .center)
-        sv.clipsToBounds = true
-        sv.backgroundColor = UIColor(hex: 0xEEE7FB)
-        return sv
-    }()
     private let label = {
         let label = UILabel()
         label.textColor = .brand
@@ -50,28 +44,27 @@ final class LOGenreTagView: UIView {
         self.label.text = text
     }
     
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Layout
     
-    private func setAutoLayout() {
-        self.addSubview(contentView)
-        contentView.addArrangedSubview(label)
-        contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
-    }
+    private func setAutoLayout() { addArrangedSubview(label) }
     
     // MARK: Configuration
     
     private func configure() {
+        clipsToBounds = true
+        backgroundColor = UIColor(hex: 0xEEE7FB)
+        
         if tagType == .small {
-            contentView.layer.cornerRadius = 2
-            contentView.inset = .init(horizontal: 4, vertical: 2)
+            layer.cornerRadius = 2
+            inset = .init(horizontal: 4, vertical: 2)
             label.font = .pretendard.bold(8)
         } else {
-            contentView.layer.cornerRadius = 4
-            contentView.inset = .init(horizontal: 8, vertical: 4)
+            layer.cornerRadius = 4
+            inset = .init(horizontal: 8, vertical: 4)
             label.font = .pretendard.bold(14)
         }
     }
@@ -79,15 +72,6 @@ final class LOGenreTagView: UIView {
     var text: String? {
         get { label.text }
         set { label.text = newValue }
-    }
-    
-    // MARK: Override
-    
-    override var intrinsicContentSize: CGSize {
-        let widthOffset: CGFloat = (tagType == .small) ? 4*2 : 8*2
-        let width: CGFloat = label.intrinsicContentSize.width+widthOffset
-        let height: CGFloat = (tagType == .small) ? 14 : 25
-        return CGSize(width: width, height: height)
     }
 }
 

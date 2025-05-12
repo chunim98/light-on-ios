@@ -26,6 +26,11 @@ final class MediumEventCardTableCell: UITableViewCell {
         setAutoLayout()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(item: nil)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -34,13 +39,13 @@ final class MediumEventCardTableCell: UITableViewCell {
     
     private func setAutoLayout() {
         contentView.addSubview(mediumEventCardView)
-        contentView.snp.makeConstraints { $0.center.equalToSuperview() }
+        contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     // MARK: Configuration
     
-    func configure(item: any MediumEventCardItem) {
+    func configure(item: (any MediumEventCardItem)?) {
         mediumEventCardView.configure(item: item)
     }
 }

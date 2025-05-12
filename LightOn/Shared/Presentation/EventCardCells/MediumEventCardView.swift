@@ -134,14 +134,14 @@ final class MediumEventCardView: UIView {
     
     // MARK: Configuration
     
-    func configure(item: any MediumEventCardItem) {
-        thumbnailView.image = item.thumbnail
-        artistLabel.text = item.artist
-        titleLabel.text = item.title
-        genreTagView.text = item.genre
-        dateIconLabel.text = item.date
-        timeLabel.text = item.time
-        locationIconLabel.text = item.location
+    func configure(item: (any MediumEventCardItem)?) {
+        thumbnailView.image = item?.thumbnail
+        artistLabel.text = item?.artist
+        titleLabel.text = item?.title
+        genreTagView.text = item?.genre
+        dateIconLabel.text = item?.date
+        timeLabel.text = item?.time
+        locationIconLabel.text = item?.location
     }
 }
 
