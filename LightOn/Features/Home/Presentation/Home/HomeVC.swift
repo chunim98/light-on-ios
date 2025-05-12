@@ -19,22 +19,14 @@ final class HomeVC: UIViewController {
 
     // MARK: Components
     
-    private let contentVStack = UIStackView(.vertical, spacing: 18)
+    private let contentVStack = UIStackView(.vertical, spacing: 18, inset: .init(bottom: 30))
     
     private let notificationBarButton = HomeBarButton(image: .homeNavBarBell)
     private let searchBarButton       = HomeBarButton(image: .homeNavBarMagnifier)
-    
-    private let scrollView = {
-        let contentInset    = UIEdgeInsets(bottom: 30) // 사전에 정의된 인셋
-        let additionalInset = TabBarVC.additionalInset // 커스텀 탭바 높이만큼 SafeArea 보정
-        let sv = UIScrollView()
-        sv.contentInset = contentInset + additionalInset
-        return sv
-    }()
-    
-    private let recommendedEventView = RecommendedEventSectionView(title: "추천 공연")
-    private let spotlightedEventView = SpotlightedEventSectionView(title: "주목할 만한 아티스트 공연")
-    private let popularEventView     = PopularEventSectionView(title: "현재 인기 있는 공연")
+    private let scrollView            = UIScrollView()
+    private let recommendedEventView  = RecommendedEventSectionView(title: "추천 공연")
+    private let spotlightedEventView  = SpotlightedEventSectionView(title: "주목할 만한 아티스트 공연")
+    private let popularEventView      = PopularEventSectionView(title: "현재 인기 있는 공연")
     
     // MARK: Life Cycle
     
@@ -66,7 +58,7 @@ final class HomeVC: UIViewController {
         contentVStack.addArrangedSubview(popularEventView)
         
         scrollView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalTo(view.safeAreaLayoutGuide).inset(TabBarVC.additionalInset)
         }
         contentVStack.snp.makeConstraints {
             $0.edges.equalToSuperview()
