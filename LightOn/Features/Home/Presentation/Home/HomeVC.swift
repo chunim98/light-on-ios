@@ -24,6 +24,7 @@ final class HomeVC: UIViewController {
     private let notificationBarButton = HomeBarButton(image: UIImage(resource: .homeNavBarBell))
     private let searchBarButton = HomeBarButton(image: UIImage(resource: .homeNavBarMagnifier))
     private let scrollView = UIScrollView()
+    private let recommendedEventView = RecommendedEventSectionView(title: "추천 공연")
     
     // MARK: Life Cycle
     
@@ -47,6 +48,7 @@ final class HomeVC: UIViewController {
     private func setAutoLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
+        contentVStack.addArrangedSubview(recommendedEventView)
         
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)

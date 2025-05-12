@@ -54,7 +54,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         return label
     }()
     
-    private let placeIconLabel = {
+    private let locationIconLabel = {
         let il = LOIconLabel()
         il.icon = UIImage(resource: .eventCardCellPin)
         il.font = .pretendard.regular(12)
@@ -70,7 +70,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         #if DEBUG
         thumbnailView.image = UIImage(resource: .debugBusking)
         titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
-        placeIconLabel.text = "서울 영등포구 여의도동 81-8"
+        locationIconLabel.text = "서울 영등포구 여의도동 81-8"
         dateIconLabel.text = "2025.05.01"
         timeLabel.text = "17:00"
         #endif
@@ -94,7 +94,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         detailsVStack.addArrangedSubview(scheduleVStack)
         // depth 3
         scheduleVStack.addArrangedSubview(dateTimeHStack)
-        scheduleVStack.addArrangedSubview(placeIconLabel)
+        scheduleVStack.addArrangedSubview(locationIconLabel)
         // depth 4
         dateTimeHStack.addArrangedSubview(dateIconLabel)
         dateTimeHStack.addArrangedSubview(timeLabel)
@@ -107,7 +107,7 @@ final class LargeEventCardCell: UICollectionViewCell {
             $0.height.equalTo(158)
         }
         dateTimeHStack.snp.makeConstraints { $0.height.equalTo(14) }
-        placeIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
+        locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
 }
 

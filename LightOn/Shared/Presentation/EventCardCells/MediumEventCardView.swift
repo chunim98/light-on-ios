@@ -70,7 +70,7 @@ final class MediumEventCardView: UIView {
         return label
     }()
     
-    private let placeIconLabel = {
+    private let locationIconLabel = {
         let iconLabel = LOIconLabel()
         iconLabel.icon = UIImage(resource: .eventCardCellPin)
         iconLabel.font = .pretendard.regular(12)
@@ -90,7 +90,7 @@ final class MediumEventCardView: UIView {
         genreTagView.text = "어쿠스틱"
         dateIconLabel.text = "2025.05.01"
         timeLabel.text = "17:00"
-        placeIconLabel.text = "서울 영등포구 여의도동 81-8"
+        locationIconLabel.text = "서울 영등포구 여의도동 81-8"
         #endif
         
         setAutoLayout()
@@ -115,7 +115,7 @@ final class MediumEventCardView: UIView {
         artistTitleGenreVStack.addArrangedSubview(artistLabel)
         artistTitleGenreVStack.addArrangedSubview(titleGenreHStack)
         dateTimePlaceVStack.addArrangedSubview(dateTimeHStack)
-        dateTimePlaceVStack.addArrangedSubview(placeIconLabel)
+        dateTimePlaceVStack.addArrangedSubview(locationIconLabel)
         // depth 4
         titleGenreHStack.addArrangedSubview(titleLabel)
         titleGenreHStack.addArrangedSubview(genreTagView)
@@ -129,7 +129,19 @@ final class MediumEventCardView: UIView {
         mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints { $0.size.equalTo(80) }
         dateTimeHStack.snp.makeConstraints { $0.height.equalTo(14) }
-        placeIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
+        locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
+    }
+    
+    // MARK: Configuration
+    
+    private func configure(item: any MediumEventCardItem) {
+        thumbnailView.image = item.thumbnail
+        artistLabel.text = item.artist
+        titleLabel.text = item.title
+        genreTagView.text = item.genre
+        dateIconLabel.text = item.date
+        timeLabel.text = item.time
+        locationIconLabel.text = item.location
     }
 }
 
