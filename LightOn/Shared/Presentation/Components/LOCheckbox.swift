@@ -28,7 +28,7 @@ final class LOCheckbox: UIButton {
         self.addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)
     }
     
-    // MARK: Override Methods
+    // MARK: Overrides
     
     override var intrinsicContentSize: CGSize {
         CGSize(width: 16, height: 16)

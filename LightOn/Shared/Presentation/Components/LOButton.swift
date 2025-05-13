@@ -32,7 +32,7 @@ final class LOButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Override Methods
+    // MARK: Overrides
     
     override var intrinsicContentSize: CGSize {
         CGSize(width: super.intrinsicContentSize.width, height: height)

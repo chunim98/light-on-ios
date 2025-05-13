@@ -24,6 +24,7 @@ final class HomeVC: UIViewController {
     private let notificationBarButton = HomeBarButton(image: .homeNavBarBell)
     private let searchBarButton       = HomeBarButton(image: .homeNavBarMagnifier)
     private let scrollView            = UIScrollView()
+    private let bannerPageVC          = BannerPageVC()
     private let recommendedEventView  = RecommendedEventSectionView(title: "추천 공연")
     private let spotlightedEventView  = SpotlightedEventSectionView(title: "주목할 만한 아티스트 공연")
     private let popularEventView      = PopularEventSectionView(title: "현재 인기 있는 공연")
@@ -53,6 +54,7 @@ final class HomeVC: UIViewController {
     private func setAutoLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
+        contentVStack.addArrangedSubview(bannerPageVC.view)
         contentVStack.addArrangedSubview(recommendedEventView)
         contentVStack.addArrangedSubview(spotlightedEventView)
         contentVStack.addArrangedSubview(popularEventView)
@@ -64,6 +66,7 @@ final class HomeVC: UIViewController {
             $0.edges.equalToSuperview()
             $0.width.equalToSuperview()
         }
+        bannerPageVC.view.snp.makeConstraints { $0.size.equalTo(view.snp.width) }
     }
     
     // MARK: Binding

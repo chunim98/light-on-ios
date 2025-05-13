@@ -38,7 +38,7 @@ final class LODivider: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Override Methods
+    // MARK: Overrides
     
     override var intrinsicContentSize: CGSize {
         axis == .horizontal ?

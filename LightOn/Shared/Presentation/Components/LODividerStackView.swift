@@ -21,7 +21,7 @@ final class LODividerStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Override
+    // MARK: Overrides
     
     override func addArrangedSubview(_ view: UIView) {
         let axis: LODivider.Axis = (self.axis == .horizontal) ? .vertical : .horizontal

@@ -36,7 +36,7 @@ final class HomeBarButton: UIButton {
         self.configuration = config
     }
     
-    // MARK: Override
+    // MARK: Overrides
     
     override var intrinsicContentSize: CGSize {
         CGSize(width: 27, height: 27)

@@ -25,7 +25,7 @@ final class LOTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Override
+    // MARK: Overrides
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         bounds.inset(by: inset)
