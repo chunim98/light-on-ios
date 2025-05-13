@@ -15,7 +15,7 @@ final class HomeVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private lazy var navigationBarBuilder = HomeNavigationBarBuilder(base: self)
+    private lazy var navigationBarBuilder = ComposableNavigationBarBuilder(base: self)
 
     // MARK: Components
     
@@ -52,8 +52,17 @@ final class HomeVC: UIViewController {
     // MARK: Navigation Bar
     
     private func setNavigationBar() {
-        navigationBarBuilder.addRightBarButtonItem(notificationBarButton)
-        navigationBarBuilder.addRightBarButtonItem(searchBarButton)
+        let logoImageView = UIImageView()
+        logoImageView.contentMode = .scaleAspectFit
+        logoImageView.image = .homeNavBarLogo.withTintColor(.loBlack)
+        
+        navigationBarBuilder.addLeftBarItem(logoImageView)
+        navigationBarBuilder.addRightBarItem(notificationBarButton)
+        navigationBarBuilder.addRightBarItem(searchBarButton)
+        
+        navigationBarBuilder.setLeftBarLayout(leadingInset: 18)
+        navigationBarBuilder.setRightBarLayout(spacing: 9, trailingInset: 18)
+        
         navigationBarBuilder.build()
     }
     
