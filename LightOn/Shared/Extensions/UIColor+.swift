@@ -27,4 +27,5 @@ extension UIColor {
     static let background  = UIColor(hex: 0xF5F5F5) // 기본 배경 컬러
     static let thumbLine   = UIColor(hex: 0xE5E5E5)
     static let infoText    = UIColor(hex: 0xBFBFBF)
+    static let clickable   = UIColor(hex: 0xABABAB)
 }

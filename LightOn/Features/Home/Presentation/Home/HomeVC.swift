@@ -38,7 +38,15 @@ final class HomeVC: UIViewController {
         view.backgroundColor = .loWhite
         
         setNavigationBar()
+        setBinding()
         setAutoLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        
     }
     
     // MARK: Navigation Bar
@@ -71,7 +79,14 @@ final class HomeVC: UIViewController {
     
     // MARK: Binding
     
-    private func setBinding() { }
+    private func setBinding() {
+        notificationBarButton.publisher(for: .touchUpInside)
+            .sink { [weak self] _ in
+                let vc = NotificationVC()
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .store(in: &cancellables)
+    }
 }
 
 #Preview { UINavigationController(rootViewController: HomeVC()) }

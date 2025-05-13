@@ -18,10 +18,10 @@ final class LOTabBarView: UIStackView {
     // MARK: Components
 
     private let tabBarButtons: [TabBarButton] = [
-        .init(icon: UIImage(resource: .tabBarHome), title: "홈", index: 0),
-        .init(icon: UIImage(resource: .tabBarNote), title: "공연", index: 1),
-        .init(icon: UIImage(resource: .tabBarPin), title: "지도", index: 2),
-        .init(icon: UIImage(resource: .tabBarUser), title: "마이페이지", index: 3)
+        .init(icon: .tabBarHome, title: "홈", index: 0),
+        .init(icon: .tabBarNote, title: "공연", index: 1),
+        .init(icon: .tabBarPin, title: "지도", index: 2),
+        .init(icon: .tabBarUser, title: "마이페이지", index: 3)
     ]
     
     // MARK: Life Cycle
