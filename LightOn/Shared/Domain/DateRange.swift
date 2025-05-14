@@ -8,6 +8,6 @@
 import Foundation
 
 struct DateRange {
-    let start: Date
-    let end: Date
+    let start: Date?
+    let end: Date?
 }

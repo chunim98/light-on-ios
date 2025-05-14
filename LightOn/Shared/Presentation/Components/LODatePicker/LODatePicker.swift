@@ -51,10 +51,7 @@ final class LODatePicker: UIStackView {
             .store(in: &cancaellables)
         
         pickerBodyView.dateRangePublisher
-            .sink { dateRange in
-                guard let dateRange else { print("닐이네요"); return }
-                print(dateRange.start.toSimpleString(), dateRange.end.toSimpleString())
-            }
+            .sink { print($0.start?.toSimpleString(), $0.end?.toSimpleString()) }
             .store(in: &cancaellables)
     }
     

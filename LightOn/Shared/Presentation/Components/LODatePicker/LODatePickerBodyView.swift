@@ -15,20 +15,15 @@ class LODatePickerBodyView: FSCalendar {
     // MARK: Properties
 
     override var selectedDates: [Date] { super.selectedDates.sorted() }
-    private var dateRange: DateRange? {
-        guard
-            let first = selectedDates.first,
-            let last = selectedDates.last
-        else { return nil }
-        
-        return DateRange(start: first, end: last)
+    private var dateRange: DateRange {
+        DateRange(start: selectedDates[safe: 0], end: selectedDates[safe: 1])
     }
     private let maxSelection = 2 // 선택 가능 갯수
     
     // MARK: Output Subjects
     
     private lazy var currentPageSubject = CurrentValueSubject<Date, Never>(currentPage)
-    private let dateRangeSubject = PassthroughSubject<DateRange?, Never>()
+    private let dateRangeSubject = PassthroughSubject<DateRange, Never>()
     
     // MARK: Life Cycle
     
@@ -50,7 +45,7 @@ extension LODatePickerBodyView {
         currentPageSubject.eraseToAnyPublisher()
     }
     
-    var dateRangePublisher: AnyPublisher<DateRange?, Never> {
+    var dateRangePublisher: AnyPublisher<DateRange, Never> {
         dateRangeSubject.eraseToAnyPublisher()
     }
 }
