@@ -28,8 +28,8 @@ final class LODatePicker: UIStackView {
         label.text = "날짜 선택" // temp
         return label
     }()
-    private let datePickerHeader = DatePickerHeader()
-    private let datePickerBody = DatePickerBody()
+    private let pickerHeaderView = LODatePickerHeaderView()
+    private let pickerBodyView = LOStyledDatePickerBodyView()
     
     // MARK: Life Cycle
     
@@ -39,14 +39,21 @@ final class LODatePicker: UIStackView {
         spacing = 14
         setAutoLayout()
         
-        datePickerBody.currentPagePublisher
+        pickerBodyView.currentPagePublisher
             .sink {
                 let formatter = DateFormatter()
                 formatter.locale = Locale(identifier: "ko_KR") // 한국어 설정
                 formatter.dateFormat = "yyyy년 M월"
 
                 let formattedDate = formatter.string(from: $0)
-                self.datePickerHeader.dateHeaderTextBinder(formattedDate)
+                self.pickerHeaderView.dateHeaderTextBinder(formattedDate)
+            }
+            .store(in: &cancaellables)
+        
+        pickerBodyView.dateRangePublisher
+            .sink { dateRange in
+                guard let dateRange else { print("닐이네요"); return }
+                print(dateRange.start.toSimpleString(), dateRange.end.toSimpleString())
             }
             .store(in: &cancaellables)
     }
@@ -59,9 +66,9 @@ final class LODatePicker: UIStackView {
 
     private func setAutoLayout() {
         addArrangedSubview(titleLabel)
-        addArrangedSubview(datePickerHeader)
+        addArrangedSubview(pickerHeaderView)
         addArrangedSubview(datePickerBodyContainer)
-        datePickerBodyContainer.addArrangedSubview(datePickerBody)
+        datePickerBodyContainer.addArrangedSubview(pickerBodyView)
         
         self.snp.makeConstraints { $0.width.equalTo(366); $0.height.equalTo(400)}
     }

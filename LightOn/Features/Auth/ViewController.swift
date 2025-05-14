@@ -44,7 +44,7 @@ final class ViewController: UIViewController {
         return button
     }()
     
-    private let datePicker = DatePickerBody()
+    private let datePicker = LOStyledDatePickerBodyView()
     
     // MARK: Life Cycle
 

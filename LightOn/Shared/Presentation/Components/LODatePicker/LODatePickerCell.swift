@@ -1,5 +1,5 @@
 //
-//  DatePickerCell.swift
+//  LODatePickerCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/14/25.
@@ -10,7 +10,7 @@ import UIKit
 import FSCalendar
 import SnapKit
 
-final class DatePickerCell: FSCalendarCell {
+final class LODatePickerCell: FSCalendarCell {
     
     // MARK: Enum
     
@@ -24,7 +24,7 @@ final class DatePickerCell: FSCalendarCell {
     
     // MARK: Properties
     
-    static let id = "DatePickerCell"
+    static let id = "LODatePickerCell"
     private var radius: CGFloat { 35/2 }
     
     // MARK: Components
@@ -225,4 +225,4 @@ final class DatePickerCell: FSCalendarCell {
     }
 }
 
-#Preview { DatePickerBody() }
+#Preview { LOStyledDatePickerBodyView() }

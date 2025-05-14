@@ -1,5 +1,5 @@
 //
-//  DatePickerBody.swift
+//  LOStyledDatePickerBodyView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/14/25.
@@ -10,15 +10,7 @@ import Combine
 
 import FSCalendar
 
-final class DatePickerBody: FSCalendar {
-    
-    // MARK: Properties
-
-    override var selectedDates: [Date] { super.selectedDates.sorted() }
-    
-    // MARK: Output Subjects
-    
-    private lazy var currentPageSubject = CurrentValueSubject<Date, Never>(currentPage)
+final class LOStyledDatePickerBodyView: LODatePickerBodyView {
     
     // MARK: Life Cycle
     
@@ -35,9 +27,8 @@ final class DatePickerBody: FSCalendar {
     
     private func configure() {
         dataSource = self
-        delegate = self
         
-        register(DatePickerCell.self, forCellReuseIdentifier: DatePickerCell.id)
+        register(LODatePickerCell.self, forCellReuseIdentifier: LODatePickerCell.id)
         allowsMultipleSelection = true
         placeholderType = .none // 전후달의 날짜 비활성화
         today = nil // 오늘 날짜 비활성화
@@ -50,53 +41,11 @@ final class DatePickerBody: FSCalendar {
     }
 }
 
-// MARK: Publishers
-
-extension DatePickerBody {
-    var currentPagePublisher: AnyPublisher<Date, Never> {
-        currentPageSubject.eraseToAnyPublisher()
-    }
-}
-
-// MARK: - FSCalendarDelegate
-
-extension DatePickerBody: FSCalendarDelegate {
-    // 셀이 선택되었을 때 호출됨
-    func calendar(
-        _ calendar: FSCalendar,
-        didSelect date: Date,
-        at monthPosition: FSCalendarMonthPosition
-    ) {
-        reloadData()
-    }
-    
-    // 셀이 선택 해제되었을 때 호출됨
-    func calendar(
-        _ calendar: FSCalendar,
-        didDeselect date: Date,
-        at monthPosition: FSCalendarMonthPosition
-    ) {
-        reloadData()
-    }
-    
-    func calendar(
-        _ calendar: FSCalendar,
-        shouldSelect date: Date,
-        at monthPosition: FSCalendarMonthPosition
-    ) -> Bool {
-        calendar.selectedDates.count < 2 // 최대 2개 날짜까지 선택 가능
-    }
-    
-    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        currentPageSubject.send(calendar.currentPage)
-    }
-}
-
 // MARK: - FSCalendarDataSource
 
-extension DatePickerBody: FSCalendarDataSource {
+extension LOStyledDatePickerBodyView: FSCalendarDataSource {
     
-    // 커스텀 셀을 구성하기 위한 메서드
+    /// 커스텀 셀을 구성하기 위한 메서드
     func calendar(
         _ calendar: FSCalendar,
         cellFor date: Date,
@@ -105,13 +54,13 @@ extension DatePickerBody: FSCalendarDataSource {
         
         // 셀 생성
         guard let cell = dequeueReusableCell(
-            withIdentifier: DatePickerCell.id,
+            withIdentifier: LODatePickerCell.id,
             for: date,
             at: position
-        ) as? DatePickerCell else { return .init() }
+        ) as? LODatePickerCell else { return .init() }
         
         // 셀 스타일 구성
-        let selection: DatePickerCell.SelectionType = {
+        let selection: LODatePickerCell.SelectionType = {
             switch selectedDates.count {
             // 2개 선택된 경우
             case 2:
@@ -144,4 +93,4 @@ extension DatePickerBody: FSCalendarDataSource {
     }
 }
 
-#Preview { DatePickerBody() }
+#Preview { LOStyledDatePickerBodyView() }

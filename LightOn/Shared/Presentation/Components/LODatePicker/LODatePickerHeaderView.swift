@@ -1,5 +1,5 @@
 //
-//  DatePickerHeader.swift
+//  LODatePickerHeaderView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/14/25.
@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class DatePickerHeader: UIStackView {
+final class LODatePickerHeaderView: UIStackView {
     
     // MARK: Components
     
@@ -71,7 +71,7 @@ final class DatePickerHeader: UIStackView {
 
 // MARK: Binders & Publishers
 
-extension DatePickerHeader {
+extension LODatePickerHeaderView {
     func dateHeaderTextBinder(_ text: String) {
         dateHeaderIconLabel.text = text
     }
@@ -85,4 +85,4 @@ extension DatePickerHeader {
     }
 }
 
-#Preview { DatePickerHeader() }
+#Preview { LODatePickerHeaderView() }
