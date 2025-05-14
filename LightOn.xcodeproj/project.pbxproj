@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51381F302DD471520073EE9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 51381F2F2DD471520073EE9F /* FSCalendar */; };
 		51FA4FA02DBF88BA0092706E /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4F9F2DBF88BA0092706E /* KakaoSDK */; };
 		51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4FB22DBF986B0092706E /* SnapKit */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51FA4FA02DBF88BA0092706E /* KakaoSDK in Frameworks */,
+				51381F302DD471520073EE9F /* FSCalendar in Frameworks */,
 				51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -150,6 +152,7 @@
 			packageProductDependencies = (
 				51FA4F9F2DBF88BA0092706E /* KakaoSDK */,
 				51FA4FB22DBF986B0092706E /* SnapKit */,
+				51381F2F2DD471520073EE9F /* FSCalendar */,
 			);
 			productName = LightOn;
 			productReference = 51FA4F5D2DBF68BD0092706E /* LightOn.app */;
@@ -236,6 +239,7 @@
 			packageReferences = (
 				51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				51FA4FB12DBF986B0092706E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				51381F2E2DD471520073EE9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 51FA4F5E2DBF68BD0092706E /* Products */;
@@ -634,6 +638,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		51381F2E2DD471520073EE9F /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -653,6 +665,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		51381F2F2DD471520073EE9F /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 51381F2E2DD471520073EE9F /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
 		51FA4F9F2DBF88BA0092706E /* KakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 51FA4F9E2DBF88BA0092706E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;

@@ -86,6 +86,11 @@ final class LOIconLabel: UIView {
         set { label.text = newValue}
     }
     
+    var textColor: UIColor? {
+        get { label.textColor }
+        set { label.textColor = newValue}
+    }
+    
     var font: UIFont {
         get { label.font }
         set { label.font = newValue }

@@ -1,0 +1,88 @@
+//
+//  DatePickerHeader.swift
+//  LightOn
+//
+//  Created by 신정욱 on 5/14/25.
+//
+
+import UIKit
+import Combine
+
+import SnapKit
+
+final class DatePickerHeader: UIStackView {
+    
+    // MARK: Components
+    
+    private let dateHeaderButton = UIButton(configuration: .plain())
+    
+    private let previousButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = .loDatePickerLeftArrow
+        config.contentInsets = .zero
+        config.imagePadding = .zero
+        return UIButton(configuration: config)
+    }()
+    
+    private let nextButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = .loDatePickerRightArrow
+        config.contentInsets = .zero
+        config.imagePadding = .zero
+        return UIButton(configuration: config)
+    }()
+    
+    private let dateHeaderIconLabel = {
+        let il = LOIconLabel(iconIn: .rear)
+        il.isUserInteractionEnabled = false
+        il.icon = .loDatePickerBottomArrow
+        il.font = .pretendard.semiBold(20)
+        il.textColor = .loBlack
+        il.spacing = 4
+        return il
+    }()
+    
+    // MARK: Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        // Self Configuration
+        inset = .init(horizontal: 18, vertical: 4)
+        distribution = .equalSpacing
+        
+        setAutoLayout()
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Layout
+    
+    private func setAutoLayout() {
+        addArrangedSubview(previousButton)
+        addArrangedSubview(dateHeaderButton)
+        addArrangedSubview(nextButton)
+        dateHeaderButton.addSubview(dateHeaderIconLabel)
+        dateHeaderIconLabel.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension DatePickerHeader {
+    func dateHeaderTextBinder(_ text: String) {
+        dateHeaderIconLabel.text = text
+    }
+    
+    var previousButtonTapEventPublisher: AnyPublisher<Void, Never> {
+        previousButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    }
+    
+    var nextButtonTapEventPublisher: AnyPublisher<Void, Never> {
+        nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+    }
+}
+
+#Preview { DatePickerHeader() }

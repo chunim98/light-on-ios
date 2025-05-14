@@ -44,11 +44,13 @@ final class ViewController: UIViewController {
         return button
     }()
     
+    private let datePicker = DatePickerBody()
+    
     // MARK: Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .background
+        view.backgroundColor = .white
         setAutoLayout()
         setBinding()
     }
@@ -59,6 +61,7 @@ final class ViewController: UIViewController {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(kakaoSignInButton)
         mainVStack.addArrangedSubview(alertButton)
+        mainVStack.addArrangedSubview(datePicker)
 
         mainVStack.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -66,6 +69,7 @@ final class ViewController: UIViewController {
         }
         kakaoSignInButton.snp.makeConstraints { $0.height.equalTo(50) }
         alertButton.snp.makeConstraints { $0.height.equalTo(50) }
+        datePicker.snp.makeConstraints { $0.height.equalTo(276) }
     }
 
     // MARK: Binding
