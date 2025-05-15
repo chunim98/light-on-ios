@@ -29,44 +29,34 @@ final class LODatePickerVM {
     
     private var cancellables = Set<AnyCancellable>()
     
+    private let currentPageRepository: CurrentPageRepository
+    private let formatDateHeaderUC: FormatDateHeaderUC
+    private let changeMonthUC: ChangeMonthUC
+    
+    // MARK: Initializer
+    
+    init() {
+        self.currentPageRepository = .init()
+        self.formatDateHeaderUC = .init(currentPageRepository: self.currentPageRepository)
+        self.changeMonthUC = .init(currentPageRepository: self.currentPageRepository)
+    }
+    
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
         
-        // States
-        
-        let currentPageSubject = CurrentValueSubject<Date?, Never>(nil)
-        
         // Preprocessing
         
-        // 외부의 상태를 내부로 복사
-        input.currentPage
-            .sink { currentPageSubject.send($0) }
-            .store(in: &cancellables)
+        currentPageRepository.update(from: input.currentPage)
         
-        // 이전, 다음 달 계산을 위한 오프셋
-        let monthOffset = Publishers.Merge(
-            input.previousButtonTapEvent.map { _ in -1 },
-            input.nextButtonTapEvent.map { _ in 1 }
+        // Publishers
+        
+        let currentPage = changeMonthUC.publisher(
+            previous: input.previousButtonTapEvent,
+            next: input.nextButtonTapEvent
         )
         
-        // Output Publishers
-        
-        let currentPage = monthOffset
-            .compactMap { offset -> Date? in
-                guard let date = currentPageSubject.value else { return nil }
-                return Calendar.current.date(byAdding: .month, value: offset, to: date)
-            }
-            .eraseToAnyPublisher()
-        
-        let dateHeaderText = input.currentPage
-            .map {
-                let formatter = DateFormatter()
-                formatter.locale = Locale(identifier: "ko_KR") // 한국어 설정
-                formatter.dateFormat = "yyyy년 M월"
-                return formatter.string(from: $0)
-            }
-            .eraseToAnyPublisher()
+        let dateHeaderText = formatDateHeaderUC.publisher()
         
         return Output(
             currentPage: currentPage,
