@@ -38,9 +38,13 @@ class LODatePickerBodyView: FSCalendar {
 
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension LODatePickerBodyView {
+    func currentPageBinder(_ currentPage: Date) {
+        setCurrentPage(currentPage, animated: true)
+    }
+    
     var currentPagePublisher: AnyPublisher<Date, Never> {
         currentPageSubject.eraseToAnyPublisher()
     }

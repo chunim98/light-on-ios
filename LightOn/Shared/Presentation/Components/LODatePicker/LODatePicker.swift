@@ -14,6 +14,7 @@ final class LODatePicker: UIStackView {
     
     // MARK: Properties
     
+    private let vm = LODatePickerVM()
     private var cancaellables = Set<AnyCancellable>()
     
     // MARK: Components
@@ -29,7 +30,7 @@ final class LODatePicker: UIStackView {
         return label
     }()
     private let pickerHeaderView = LODatePickerHeaderView()
-    private let pickerBodyView = LOStyledDatePickerBodyView()
+    private let pickerBodyView = LODatePickerStyledBodyView()
     
     // MARK: Life Cycle
     
@@ -38,21 +39,7 @@ final class LODatePicker: UIStackView {
         axis = .vertical
         spacing = 14
         setAutoLayout()
-        
-        pickerBodyView.currentPagePublisher
-            .sink {
-                let formatter = DateFormatter()
-                formatter.locale = Locale(identifier: "ko_KR") // 한국어 설정
-                formatter.dateFormat = "yyyy년 M월"
-
-                let formattedDate = formatter.string(from: $0)
-                self.pickerHeaderView.dateHeaderTextBinder(formattedDate)
-            }
-            .store(in: &cancaellables)
-        
-        pickerBodyView.dateRangePublisher
-            .sink { print($0.start?.toSimpleString(), $0.end?.toSimpleString()) }
-            .store(in: &cancaellables)
+        setBinding()
     }
     
     required init(coder: NSCoder) {
@@ -68,6 +55,30 @@ final class LODatePicker: UIStackView {
         datePickerBodyContainer.addArrangedSubview(pickerBodyView)
         
         self.snp.makeConstraints { $0.width.equalTo(366); $0.height.equalTo(400)}
+    }
+    
+    // MARK: Bindig
+    
+    private func setBinding() {
+        let input = LODatePickerVM.Input(
+            previousButtonTapEvent: pickerHeaderView.previousButtonTapEventPublisher,
+            nextButtonTapEvent: pickerHeaderView.nextButtonTapEventPublisher,
+            currentPage: pickerBodyView.currentPagePublisher,
+            dateRange: pickerBodyView.dateRangePublisher
+        )
+        let output = vm.transform(input)
+        
+        output.currentPage
+            .sink { [weak self] in self?.pickerBodyView.currentPageBinder($0) }
+            .store(in: &cancaellables)
+        
+        output.dateHeaderText
+            .sink { [weak self] in self?.pickerHeaderView.dateHeaderTextBinder($0) }
+            .store(in: &cancaellables)
+
+        output.dateRange
+            .sink { print($0.start?.toSimpleString(), $0.end?.toSimpleString()) }
+            .store(in: &cancaellables)
     }
 }
 

@@ -44,7 +44,7 @@ final class ViewController: UIViewController {
         return button
     }()
     
-    private let datePicker = LOStyledDatePickerBodyView()
+    private let datePicker = LODatePicker()
     
     // MARK: Life Cycle
 
@@ -62,14 +62,14 @@ final class ViewController: UIViewController {
         mainVStack.addArrangedSubview(kakaoSignInButton)
         mainVStack.addArrangedSubview(alertButton)
         mainVStack.addArrangedSubview(datePicker)
-
+        
         mainVStack.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.horizontalEdges.equalToSuperview().inset(15)
         }
         kakaoSignInButton.snp.makeConstraints { $0.height.equalTo(50) }
         alertButton.snp.makeConstraints { $0.height.equalTo(50) }
-        datePicker.snp.makeConstraints { $0.height.equalTo(276) }
+        datePicker.snp.makeConstraints { $0.height.equalTo(400) }
     }
 
     // MARK: Binding

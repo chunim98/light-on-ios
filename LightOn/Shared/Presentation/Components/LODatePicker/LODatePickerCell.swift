@@ -225,4 +225,4 @@ final class LODatePickerCell: FSCalendarCell {
     }
 }
 
-#Preview { LOStyledDatePickerBodyView() }
+#Preview { LODatePickerStyledBodyView() }

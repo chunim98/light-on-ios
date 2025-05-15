@@ -1,5 +1,5 @@
 //
-//  LOStyledDatePickerBodyView.swift
+//  LODatePickerStyledBodyView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/14/25.
@@ -10,7 +10,7 @@ import Combine
 
 import FSCalendar
 
-final class LOStyledDatePickerBodyView: LODatePickerBodyView {
+final class LODatePickerStyledBodyView: LODatePickerBodyView {
     
     // MARK: Life Cycle
     
@@ -43,7 +43,7 @@ final class LOStyledDatePickerBodyView: LODatePickerBodyView {
 
 // MARK: - FSCalendarDataSource
 
-extension LOStyledDatePickerBodyView: FSCalendarDataSource {
+extension LODatePickerStyledBodyView: FSCalendarDataSource {
     
     /// 커스텀 셀을 구성하기 위한 메서드
     func calendar(
@@ -93,4 +93,4 @@ extension LOStyledDatePickerBodyView: FSCalendarDataSource {
     }
 }
 
-#Preview { LOStyledDatePickerBodyView() }
+#Preview { LODatePickerStyledBodyView() }
