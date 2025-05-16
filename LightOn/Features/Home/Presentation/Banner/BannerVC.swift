@@ -86,7 +86,7 @@ final class BannerVC: UIViewController {
         mainVStack.snp.makeConstraints { $0.horizontalEdges.bottom.equalToSuperview() }
     }
     
-    // MARK: Configuration
+    // MARK: Public Configuration
     
     func configure(item: any BannerItem) {
         imageView.image    = item.image
@@ -102,6 +102,8 @@ extension BannerVC {
         tapGesture.publisher().map { _ in }.eraseToAnyPublisher()
     }
 }
+
+// MARK: - Preview
 
 #Preview(traits: .fixedLayout(width: 402, height: 402)) { BannerVC() }
 

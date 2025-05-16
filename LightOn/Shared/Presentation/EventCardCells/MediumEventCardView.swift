@@ -132,8 +132,8 @@ final class MediumEventCardView: UIView {
         locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func configure(item: (any MediumEventCardItem)?) {
         thumbnailView.image = item?.thumbnail
         artistLabel.text = item?.artist
@@ -144,5 +144,7 @@ final class MediumEventCardView: UIView {
         locationIconLabel.text = item?.location
     }
 }
+
+// MARK: - Preview
 
 #Preview { MediumEventCardView() }

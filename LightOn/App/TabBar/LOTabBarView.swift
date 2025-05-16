@@ -29,7 +29,7 @@ final class LOTabBarView: UIStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupDefaults()
-        tabBarButtons.forEach { addArrangedSubview($0) } // Layout
+        setupLayout()
         setupBindings()
     }
 
@@ -43,17 +43,24 @@ final class LOTabBarView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         backgroundColor = .loWhite
         distribution = .fillEqually
         inset = .init(horizontal: 16, vertical: 14)
+        
         // 그림자 설정
         layer.shadowRadius = 15
         layer.shadowOpacity = 0.15
         layer.shadowOffset = .zero
         layer.shadowColor = UIColor.black.cgColor
+    }
+    
+    // MARK: Layout
+    
+    private func setupLayout() {
+        tabBarButtons.forEach { addArrangedSubview($0) }
     }
     
     // MARK: Bindings
@@ -86,6 +93,8 @@ extension LOTabBarView {
             .eraseToAnyPublisher()
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     LOTabBarView()

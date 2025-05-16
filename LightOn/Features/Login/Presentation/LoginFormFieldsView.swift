@@ -47,4 +47,6 @@ final class LoginFormFieldsView: UIStackView {
     }
 }
 
+// MARK: - Preview
+
 #Preview { LoginFormFieldsView() }

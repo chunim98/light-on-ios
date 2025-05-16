@@ -28,14 +28,14 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
         super.init(frame: .zero, style: .plain)
         contentInset = .init(bottom: 30)
         setupDefaults()
-        configureDiffableDataSource()
+        setupDiffableDataSource()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.id)
@@ -43,7 +43,9 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
         separatorStyle = .none
     }
     
-    private func configureDiffableDataSource() {
+    // MARK: DiffableDataSource
+    
+    private func setupDiffableDataSource() {
         diffableDataSource = DataSource(tableView: self) {
             tableView, indexPath, item in
             
@@ -57,12 +59,16 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
         }
     }
     
-    func applySnapshot(items: [Item]) {
+    // MARK: Public Configuration
+    
+    func setSnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
         diffableDataSource?.apply(snapshot)
     }
 }
+
+// MARK: - Preview
 
 #Preview { UINavigationController(rootViewController: NotificationVC()) }

@@ -139,7 +139,7 @@ extension LOAlertVC {
     }
 }
 
-// MARK: Preview
+// MARK: - Preview
 
 #Preview {
     let label = UILabel()

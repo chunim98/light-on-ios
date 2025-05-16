@@ -24,4 +24,6 @@ final class LoginOptionButton: UIButton {
     }
 }
 
+// MARK: - Preview
+
 #Preview { LoginOptionButton(title: "회원가입") }

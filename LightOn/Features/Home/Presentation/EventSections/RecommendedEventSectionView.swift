@@ -32,7 +32,7 @@ final class RecommendedEventSectionView: UIStackView {
         setupLayout()
         
         #if DEBUG
-        collectionView.applySnapshot(items: TestSmallEventCardItem.mockItems)
+        collectionView.setSnapshot(items: TestSmallEventCardItem.mockItems)
         #endif
     }
     
@@ -54,8 +54,8 @@ final class RecommendedEventSectionView: UIStackView {
         collectionView.snp.makeConstraints { $0.height.equalTo(206) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func setHeaderText(_ text: String) {
         headerView.titleLabel.text = text
     }
@@ -65,8 +65,10 @@ final class RecommendedEventSectionView: UIStackView {
 
 extension RecommendedEventSectionView {
     func itemsBinder(_ items: [Item]) {
-        collectionView.applySnapshot(items: items)
+        collectionView.setSnapshot(items: items)
     }
 }
+
+// MARK: - Preview
 
 #Preview { RecommendedEventSectionView() }

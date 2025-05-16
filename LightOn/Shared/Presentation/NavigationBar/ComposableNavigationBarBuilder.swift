@@ -42,8 +42,8 @@ final class ComposableNavigationBarBuilder: NavigationBarBuilder {
         rightBarItemsHStack.snp.makeConstraints { $0.height.lessThanOrEqualTo(27) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func setLeftBarLayout(
         spacing: CGFloat? = nil,
         leadingInset inset: CGFloat? = nil

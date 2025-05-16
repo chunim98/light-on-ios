@@ -82,4 +82,6 @@ extension LoginVC: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }
 
+// MARK: - Preview
+
 #Preview { UINavigationController(rootViewController: LoginVC()) }

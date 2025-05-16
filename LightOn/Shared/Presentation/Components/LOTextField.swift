@@ -25,6 +25,17 @@ final class LOTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        layer.borderColor = UIColor.thumbLine.cgColor
+        font = .pretendard.regular(16)
+        layer.cornerRadius = 6
+        layer.borderWidth = 1
+        clipsToBounds = true
+        textColor = .loBlack
+    }
+    
     // MARK: Overrides
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
@@ -38,17 +49,8 @@ final class LOTextField: UITextField {
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         bounds.inset(by: inset)
     }
-    
-    // MARK: Configuration
-    
-    private func setupDefaults() {
-        layer.borderColor = UIColor.thumbLine.cgColor
-        font = .pretendard.regular(16)
-        layer.cornerRadius = 6
-        layer.borderWidth = 1
-        clipsToBounds = true
-        textColor = .loBlack
-    }
+
+    // MARK: Public Configuration
     
     func setPlaceHolder(_ text: String) {
         attributedPlaceholder = NSAttributedString(
@@ -57,5 +59,7 @@ final class LOTextField: UITextField {
         )
     }
 }
+
+// MARK: - Preview
 
 #Preview { LOTextField() }

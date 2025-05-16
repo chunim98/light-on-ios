@@ -43,11 +43,13 @@ final class MediumEventCardTableCell: UITableViewCell {
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func configure(item: (any MediumEventCardItem)?) {
         mediumEventCardView.configure(item: item)
     }
 }
+
+// MARK: - Preview
 
 #Preview { MediumEventCardTableCell() }

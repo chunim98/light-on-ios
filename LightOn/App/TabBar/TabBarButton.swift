@@ -41,7 +41,6 @@ final class TabBarButton: UIStackView {
         self.icon = icon
         self.title = title
         super.init(frame: .zero)
-
         setupDefaults()
         setupLayout()
     }
@@ -50,7 +49,7 @@ final class TabBarButton: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         addGestureRecognizer(tapGesture)
@@ -73,21 +72,23 @@ final class TabBarButton: UIStackView {
 // MARK: Binders & Publishers
 
 extension TabBarButton {
+    func selectedIndexBinder(_ selectedIndex: Int) {
+        let isSelected     = (index == selectedIndex)
+        let color: UIColor = isSelected ? .brand : .assistive
+        let font:  UIFont  = isSelected ? .pretendard.bold(13) : .pretendard.medium(13)
+        
+        titleLabel.font = font
+        titleLabel.textColor = color
+        iconView.image = icon.withTintColor(color)
+    }
+    
     var indexPublisher: AnyPublisher<Int, Never> {
         tapGesture.publisher()
             .compactMap { [weak self] _ in self?.index }
             .eraseToAnyPublisher()
     }
-    
-    func selectedIndexBinder(_ selectedIndex: Int) {
-        let isSelected     = (index == selectedIndex)
-        let color: UIColor = isSelected ? .brand : .assistive
-        let font:  UIFont  = isSelected ? .pretendard.bold(13) : .pretendard.medium(13)
-
-        titleLabel.font = font
-        titleLabel.textColor = color
-        iconView.image = icon.withTintColor(color)
-    }
 }
+
+// MARK: - Preview
 
 #Preview { TabBarButton(icon: .tabBarPin, title: "공연지도", index: 0) }

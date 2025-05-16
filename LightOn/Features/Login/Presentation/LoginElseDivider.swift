@@ -48,4 +48,6 @@ final class LoginElseDivider: UIStackView {
     }
 }
 
+// MARK: - Preview
+
 #Preview { LoginElseDivider() }

@@ -113,8 +113,8 @@ final class NotificationCell: UITableViewCell {
         iconView.snp.makeConstraints { $0.size.equalTo(20) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func configure(item: (any NotificationItem)?) {
         iconView.image        = item?.notificationType.icon
         titleLabel.text       = item?.notificationType.title
@@ -122,5 +122,7 @@ final class NotificationCell: UITableViewCell {
         descriptionLabel.text = item?.descriptionText
     }
 }
+
+// MARK: - Preview
 
 #Preview { NotificationCell() }

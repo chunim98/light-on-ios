@@ -115,8 +115,8 @@ final class LargeEventCardCell: UICollectionViewCell {
         locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func configure(item: (any LargeEventCardItem)?) {
         thumbnailView.image    = item?.thumbnail
         titleLabel.text        = item?.title
@@ -125,5 +125,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         locationIconLabel.text = item?.location
     }
 }
+
+// MARK: - Preview
 
 #Preview { LargeEventCardCell() }

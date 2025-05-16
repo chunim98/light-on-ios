@@ -53,4 +53,6 @@ extension SocialLoginButtonsView {
     }
 }
 
+// MARK: - Preview
+
 #Preview { SocialLoginButtonsView() }

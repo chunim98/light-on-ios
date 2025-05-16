@@ -9,6 +9,12 @@ import UIKit
 
 final class LOCheckbox: UIButton {
     
+    // MARK: Properties
+    
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: 16, height: 16)
+    }
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -20,25 +26,19 @@ final class LOCheckbox: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         self.setBackgroundImage(UIImage(named: "checkbox_unchecked"), for: .normal)
         self.setBackgroundImage(UIImage(named: "checkbox_checked"), for: .selected)
         self.addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)
     }
-    
-    // MARK: Overrides
-    
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: 16, height: 16)
-    }
-    
+
     // MARK: Event Handling
     
-    @objc private func handleTapEvent() {
-        self.isSelected.toggle()
-    }
+    @objc private func handleTapEvent() { self.isSelected.toggle() }
 }
+
+// MARK: - Preview
 
 #Preview(traits: .fixedLayout(width: 64, height: 64)) { LOCheckbox() }

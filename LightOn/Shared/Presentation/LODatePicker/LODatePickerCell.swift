@@ -75,7 +75,7 @@ final class LODatePickerCell: FSCalendarCell {
         }
     }
     
-    // MARK: CAShapeLayer
+    // MARK: Left Rounded Mask
     
     private func getLeftRoundedMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
@@ -96,6 +96,8 @@ final class LODatePickerCell: FSCalendarCell {
         return mask
     }
     
+    // MARK: Right Rounded Mask
+    
     private func getRightRoundedMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
         let rect = CGRect(
@@ -115,6 +117,8 @@ final class LODatePickerCell: FSCalendarCell {
         return mask
     }
     
+    // MARK: Rounded Mask
+    
     private func getRoundMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
         let path = UIBezierPath(
@@ -126,7 +130,7 @@ final class LODatePickerCell: FSCalendarCell {
         return mask
     }
     
-    // MARK: Configuration
+    // MARK: Reset Components
     
     private func resetComponents() {
         // backView 초기화
@@ -145,7 +149,8 @@ final class LODatePickerCell: FSCalendarCell {
         dateLabel.text = nil
     }
 
-    // Back View 구성
+    // MARK: BackView Configuration
+    
     private func configureBackView(for selection: SelectionType, weakDay: Int) {
         switch selection {
         case .start:
@@ -168,8 +173,9 @@ final class LODatePickerCell: FSCalendarCell {
             backView.backgroundColor = .clear
         }
     }
+
+    // MARK: SelectionView Configuration
     
-    // Selection View 구성
     private func configureSelectionView(for selection: SelectionType) {
         switch selection {
         case .single:
@@ -191,7 +197,8 @@ final class LODatePickerCell: FSCalendarCell {
         }
     }
 
-    // Date Label 구성
+    // MARK: DateLabel Configuration
+    
     private func configureDateLabel(day: String, for selection: SelectionType) {
         dateLabel.text = day
         
@@ -214,7 +221,8 @@ final class LODatePickerCell: FSCalendarCell {
         }
     }
     
-    // 전체 컴포넌트 구성
+    // MARK: Public Configuration
+    
     func configure(selection: SelectionType, date: Date) {
         let day = String(Calendar.current.component(.day, from: date))
         let weakDay = Calendar.current.component(.weekday, from: date)
@@ -224,5 +232,7 @@ final class LODatePickerCell: FSCalendarCell {
         configureDateLabel(day: day, for: selection)
     }
 }
+
+// MARK: - Preview
 
 #Preview { LODatePickerStyledBodyView() }

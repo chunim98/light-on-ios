@@ -21,6 +21,15 @@ final class LOButton: UIButton {
     
     private let height: CGFloat = 47
     
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: super.intrinsicContentSize.width, height: height)
+    }
+    
+    var attributedTitle: AttributedString? {
+        get { self.configuration?.attributedTitle }
+        set { self.configuration?.attributedTitle = newValue }
+    }
+    
     // MARK: Life Cycle
     
     init(style: LOButton.Style) {
@@ -32,13 +41,7 @@ final class LOButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Overrides
-    
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: super.intrinsicContentSize.width, height: height)
-    }
-    
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults(_ style: LOButton.Style) {
         var config = UIButton.Configuration.filled()
@@ -66,11 +69,8 @@ final class LOButton: UIButton {
         
         self.configuration = config
     }
-    
-    var attributedTitle: AttributedString? {
-        get { self.configuration?.attributedTitle }
-        set { self.configuration?.attributedTitle = newValue }
-    }
 }
+
+// MARK: - Preview
 
 #Preview { LOButton(style: .filled) }

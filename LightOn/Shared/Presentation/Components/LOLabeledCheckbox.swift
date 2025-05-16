@@ -72,4 +72,6 @@ extension LOLabeledCheckbox {
     }
 }
 
+// MARK: - Preview
+
 #Preview { LOLabeledCheckbox() }

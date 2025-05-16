@@ -53,4 +53,6 @@ extension LoginOptionButtonsView {
     }
 }
 
+// MARK: - Preview
+
 #Preview { LoginOptionButtonsView() }

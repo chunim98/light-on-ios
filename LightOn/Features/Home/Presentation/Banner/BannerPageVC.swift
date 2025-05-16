@@ -125,4 +125,6 @@ extension BannerPageVC: UIPageViewControllerDataSource {
     }
 }
 
+// MARK: - Preview
+
 #Preview(traits: .fixedLayout(width: 402, height: 402)) { BannerPageVC() }

@@ -17,6 +17,10 @@ final class HomeBarButton: UIButton {
         return config
     }()
     
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: 27, height: 27)
+    }
+    
     // MARK: Life Cycle
     
     init(image: UIImage) {
@@ -29,16 +33,10 @@ final class HomeBarButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func setImage(_ image: UIImage) {
         config.image = image.withTintColor(.loBlack)
         self.configuration = config
-    }
-    
-    // MARK: Overrides
-    
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: 27, height: 27)
     }
 }

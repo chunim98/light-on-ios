@@ -23,7 +23,7 @@ final class LODatePickerStyledBodyView: LODatePickerBodyView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         dataSource = self
@@ -92,5 +92,7 @@ extension LODatePickerStyledBodyView: FSCalendarDataSource {
         return cell
     }
 }
+
+// MARK: - Preview
 
 #Preview { LODatePickerStyledBodyView() }

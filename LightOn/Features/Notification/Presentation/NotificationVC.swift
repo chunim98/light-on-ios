@@ -37,10 +37,10 @@ final class NotificationVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.applySnapshot(items: Item.mockItems)
+        tableView.setSnapshot(items: Item.mockItems)
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         view.backgroundColor = .loWhite
@@ -82,6 +82,8 @@ extension NotificationVC: UIGestureRecognizerDelegate {
     /// 제스처가 시작되기 전에 동작 여부를 결정
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }
+
+// MARK: - Preview
 
 //#Preview { UINavigationController(rootViewController: NotificationVC()) }
 #Preview { TabBarVC() }

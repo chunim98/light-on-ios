@@ -56,19 +56,13 @@ final class LOTipBalloon: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.12
         layer.shadowRadius = 20
-    }
-    
-    func setText(_ text: String) { descriptionLabel.text = text }
-    
-    func setHighlightText(_ text: String, highlight: String, color: UIColor) {
-        descriptionLabel.setHighlightText(text: text, highlight: highlight, color: color)
     }
     
     // MARK: Layout
@@ -84,7 +78,17 @@ final class LOTipBalloon: UIView {
             $0.centerX.equalToSuperview()
         }
     }
+    
+    // MARK: Public Configuration
+    
+    func setText(_ text: String) { descriptionLabel.text = text }
+    
+    func setHighlightText(_ text: String, highlight: String, color: UIColor) {
+        descriptionLabel.setHighlightText(text: text, highlight: highlight, color: color)
+    }
 }
+
+// MARK: - Preview
 
 #Preview {
     let tb = LOTipBalloon()

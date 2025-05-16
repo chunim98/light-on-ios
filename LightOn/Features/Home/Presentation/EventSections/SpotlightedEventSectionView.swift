@@ -32,7 +32,7 @@ final class SpotlightedEventSectionView: UIStackView {
         setupLayout()
         
         #if DEBUG
-        collectionView.applySnapshot(items: TestMediumEventCardItem.mockItems)
+        collectionView.setSnapshot(items: TestMediumEventCardItem.mockItems)
         #endif          
     }
     
@@ -54,8 +54,8 @@ final class SpotlightedEventSectionView: UIStackView {
         collectionView.snp.makeConstraints { $0.height.equalTo(120) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func setHeaderText(_ text: String) {
         headerView.titleLabel.text = text
     }
@@ -65,8 +65,10 @@ final class SpotlightedEventSectionView: UIStackView {
 
 extension SpotlightedEventSectionView {
     func itemsBinder(_ items: [Item]) {
-        collectionView.applySnapshot(items: items)
+        collectionView.setSnapshot(items: items)
     }
 }
+
+// MARK: - Preview
 
 #Preview { SpotlightedEventSectionView() }

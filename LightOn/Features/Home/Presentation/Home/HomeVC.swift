@@ -41,10 +41,9 @@ final class HomeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {}
     override func viewWillDisappear(_ animated: Bool) {}
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() { view.backgroundColor = .loWhite }
-
     
     // MARK: Navigation Bar
     
@@ -96,5 +95,7 @@ final class HomeVC: UIViewController {
             .store(in: &cancellables)
     }
 }
+
+// MARK: - Preview
 
 #Preview { UINavigationController(rootViewController: HomeVC()) }

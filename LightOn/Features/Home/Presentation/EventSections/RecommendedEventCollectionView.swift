@@ -27,17 +27,20 @@ final class RecommendedEventCollectionView<Item: SmallEventCardItem>: UICollecti
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
         setupDefaults()
-        configureDiffableDataSource()
+        setupDiffableDataSource()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
-        register(SmallEventCardCell.self, forCellWithReuseIdentifier: SmallEventCardCell.id)
+        register(
+            SmallEventCardCell.self,
+            forCellWithReuseIdentifier: SmallEventCardCell.id
+        )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
         setFixedLayout(
@@ -47,7 +50,9 @@ final class RecommendedEventCollectionView<Item: SmallEventCardItem>: UICollecti
         )
     }
     
-    private func configureDiffableDataSource() {
+    // MARK: DiffableDataSource
+    
+    private func setupDiffableDataSource() {
         diffableDataSource = DataSource(collectionView: self) {
             collectionView, indexPath, item in
             
@@ -61,7 +66,9 @@ final class RecommendedEventCollectionView<Item: SmallEventCardItem>: UICollecti
         }
     }
     
-    func applySnapshot(items: [Item]) {
+    // MARK: Public Configuration
+    
+    func setSnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

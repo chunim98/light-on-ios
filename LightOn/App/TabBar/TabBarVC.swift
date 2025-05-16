@@ -36,7 +36,7 @@ final class TabBarVC: UITabBarController {
         setupBindings()
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         #if DEBUG
@@ -75,5 +75,7 @@ final class TabBarVC: UITabBarController {
             .store(in: &cancellables)
     }
 }
+
+// MARK: - Preview
 
 #Preview { TabBarVC() }

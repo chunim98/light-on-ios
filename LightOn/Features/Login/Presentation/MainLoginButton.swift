@@ -43,4 +43,6 @@ extension MainLoginButton {
     }
 }
 
+// MARK: - Preview
+
 #Preview { MainLoginButton() }

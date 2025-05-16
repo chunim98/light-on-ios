@@ -59,12 +59,14 @@ final class SmallEventCardCell: UICollectionViewCell {
         thumbnailView.snp.makeConstraints { $0.size.equalTo(130) }
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func configure(item: (any SmallEventCardItem)?) {
         thumbnailView.image = item?.thumbnail
         titleLabel.text = item?.title
     }
 }
+
+// MARK: - Preview
 
 #Preview(traits: .fixedLayout(width: 130, height: 186)) { SmallEventCardCell() }

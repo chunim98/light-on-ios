@@ -83,7 +83,7 @@ final class LOFormField: UIStackView {
         footerHStack.snp.makeConstraints { $0.height.equalTo(18) }
     }
     
-    // MARK: Bindig
+    // MARK: Bindings
     
     private func setupBindings() {
         // 텍스트 필드 작성 시작 시, 색상 변경
@@ -103,8 +103,8 @@ final class LOFormField: UIStackView {
             .store(in: &cancellables)
     }
     
-    // MARK: Configuration
-    
+    // MARK: Public Configuration
+
     func setTitle       (_ text: String) { titleLabel.text = text }
     func setPlaceHolder (_ text: String) { textField.setPlaceHolder(text) }
     func addTrailingButton(_ button: UIButton) { bodyHStack.addArrangedSubview(button) }
@@ -123,5 +123,7 @@ final class LOFormField: UIStackView {
         captionIconLabel.isHidden = false
     }
 }
+
+// MARK: - Preview
 
 #Preview { LOFormField(isEssential: true, isSecureTextEntry: true) }

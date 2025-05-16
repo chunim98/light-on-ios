@@ -14,6 +14,10 @@ final class SocialLoginButton: UIImageView {
     
     private let size: CGFloat = 37
     
+    override var intrinsicContentSize: CGSize {
+        CGSize(width: size, height: size)
+    }
+    
     // MARK: Components
     
     private let tapGesture = UITapGestureRecognizer()
@@ -34,12 +38,6 @@ final class SocialLoginButton: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: Override
-    
-    override var intrinsicContentSize: CGSize {
-        CGSize(width: size, height: size)
-    }
 }
 
 // MARK: Binders & Publishers
@@ -49,6 +47,8 @@ extension SocialLoginButton {
         tapGesture.publisher().map{ _ in }.eraseToAnyPublisher()
     }
 }
+
+// MARK: - Preview
 
 #Preview { SocialLoginButton(image: .loginSocialKakao) }
 

@@ -54,4 +54,6 @@ final class HomeSectionHeaderView: UIStackView {
     }
 }
 
+// MARK: - Preview
+
 #Preview { HomeSectionHeaderView() }

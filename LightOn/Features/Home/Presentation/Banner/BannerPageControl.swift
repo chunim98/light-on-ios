@@ -16,6 +16,11 @@ final class BannerPageControl: UIPageControl {
     private let horizontalMaskWidth: CGFloat = 19.66 // 마스킹으로 가려질 너비
     private var radius: CGFloat { height/2 }
     
+    override var intrinsicContentSize: CGSize {
+        let base = super.intrinsicContentSize
+        return CGSize(width: base.width, height: height)
+    }
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -31,15 +36,8 @@ final class BannerPageControl: UIPageControl {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: Overrides
-    
-    override var intrinsicContentSize: CGSize {
-        let base = super.intrinsicContentSize
-        return CGSize(width: base.width, height: height)
-    }
-    
-    // MARK: Draw Layer Mask
+
+    // MARK: Layer Mask
     
     /// 좌우 패딩이 넓어서 마스킹 처리
     private func drawLayerMask() {
@@ -55,6 +53,8 @@ final class BannerPageControl: UIPageControl {
     }
 }
 
+// MARK: Binders & Publishers
+
 extension BannerPageControl {
     var pageIndexPublisher: AnyPublisher<Int, Never> {
         self.publisher(for: .valueChanged)
@@ -62,5 +62,7 @@ extension BannerPageControl {
             .eraseToAnyPublisher()
     }
 }
+
+// MARK: - Preview
 
 #Preview { BannerPageControl() }

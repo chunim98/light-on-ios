@@ -22,6 +22,11 @@ final class LOGenreTagView: UIStackView {
     
     private let tagType: TagType
     
+    var text: String? {
+        get { label.text }
+        set { label.text = newValue }
+    }
+    
     // MARK: Components
     
     private let label = {
@@ -48,12 +53,8 @@ final class LOGenreTagView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Layout
-    
-    private func setupLayout() { addArrangedSubview(label) }
-    
-    // MARK: Configuration
-    
+    // MARK: Defaults
+
     private func setupDefaults() {
         clipsToBounds = true
         backgroundColor = UIColor(hex: 0xEEE7FB)
@@ -69,10 +70,11 @@ final class LOGenreTagView: UIStackView {
         }
     }
     
-    var text: String? {
-        get { label.text }
-        set { label.text = newValue }
-    }
+    // MARK: Layout
+    
+    private func setupLayout() { addArrangedSubview(label) }
 }
+
+// MARK: - Preview
 
 #Preview { LOGenreTagView(tagType: .large, text: "어쿠스틱") }

@@ -102,6 +102,8 @@ final class LOIconLabel: UIView {
     }
 }
 
+// MARK: - Preview
+
 #Preview {
     let iconLabel = LOIconLabel(iconIn: .front)
     iconLabel.icon = UIImage(named: "event_card_cell_clock")

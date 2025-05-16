@@ -32,7 +32,7 @@ final class PopularEventSectionView: UIStackView {
         setupLayout()
         
         #if DEBUG
-        collectionView.applySnapshot(items: TestLargeEventCardItem.mockItems)
+        collectionView.setSnapshot(items: TestLargeEventCardItem.mockItems)
         #endif
     }
     
@@ -54,7 +54,7 @@ final class PopularEventSectionView: UIStackView {
         collectionView.snp.makeConstraints { $0.height.equalTo(246.17) }
     }
     
-    // MARK: Configuration
+    // MARK: Public Configuration
     
     func setHeaderText(_ text: String) {
         headerView.titleLabel.text = text
@@ -65,8 +65,10 @@ final class PopularEventSectionView: UIStackView {
 
 extension PopularEventSectionView {
     func itemsBinder(_ items: [Item]) {
-        collectionView.applySnapshot(items: items)
+        collectionView.setSnapshot(items: items)
     }
 }
+
+// MARK: - Preview
 
 #Preview { PopularEventSectionView() }

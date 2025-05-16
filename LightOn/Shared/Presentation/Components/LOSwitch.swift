@@ -29,7 +29,7 @@ final class LOSwitch: UISwitch {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
+    // MARK: Defaults
     
     private func setupDefaults() {
         // onTintColor 설정
@@ -40,7 +40,7 @@ final class LOSwitch: UISwitch {
         self.thumbView = self.subviews.first?.subviews.last?.subviews.last as? UIImageView
     }
     
-    // MARK: Draw Layer Mask
+    // MARK: Layer Mask
     
     private func drawLayerMask() {
         guard let thumbView else { return }
@@ -59,5 +59,7 @@ final class LOSwitch: UISwitch {
         thumbView.layer.mask = mask
     }
 }
+
+// MARK: - Preview
 
 #Preview { LOSwitch() }
