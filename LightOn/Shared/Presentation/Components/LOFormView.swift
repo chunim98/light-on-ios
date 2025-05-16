@@ -1,5 +1,5 @@
 //
-//  LOFormField.swift
+//  LOFormView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/11/25.
@@ -10,20 +10,16 @@ import Combine
 
 import SnapKit
 
-final class LOFormField: UIStackView {
+class LOFormView: UIStackView {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let isEssential: Bool
-    var invalidCaptionText: String?
-    var validCaptionText: String?
 
     // MARK: Components
     
-    private let headerHStack = UIStackView(spacing: 2, inset: .init(horizontal: 16))
+    let headerHStack = UIStackView(spacing: 2, inset: .init(horizontal: 16))
     private let bodyHStack = UIStackView(spacing: 12)
-    private let footerHStack = UIStackView(inset: .init(leading: 2))
     
     private let titleLabel = {
         let label = UILabel()
@@ -32,31 +28,13 @@ final class LOFormField: UIStackView {
         return label
     }()
     
-    private let essentialMarkLabel = {
-        let label = UILabel()
-        label.font = .pretendard.semiBold(14)
-        label.textColor = .destructive
-        label.text = "*"
-        return label
-    }()
-    
     private let textField = LOTextField()
-    
-    private let captionIconLabel = {
-        let il = LOIconLabel()
-        il.font = .pretendard.regular(12)
-        il.isHidden = true
-        il.spacing = 3
-        return il
-    }()
     
     // MARK: Life Cycle
     
-    init(isEssential: Bool = false, isSecureTextEntry: Bool = false) {
-        self.isEssential = isEssential
+    init(isSecureTextEntry: Bool = false) {
         self.textField.isSecureTextEntry = isSecureTextEntry
         super.init(frame: .zero)
-        
         axis = .vertical
         spacing = 6
         setupLayout()
@@ -72,15 +50,12 @@ final class LOFormField: UIStackView {
     private func setupLayout() {
         addArrangedSubview(headerHStack)
         addArrangedSubview(bodyHStack)
-        addArrangedSubview(footerHStack)
         headerHStack.addArrangedSubview(titleLabel)
-        if isEssential { headerHStack.addArrangedSubview(essentialMarkLabel) }
-        headerHStack.addArrangedSubview(UIView())
         bodyHStack.addArrangedSubview(textField)
-        footerHStack.addArrangedSubview(captionIconLabel)
+        
+        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
         textField.snp.makeConstraints { $0.height.equalTo(47) }
-        footerHStack.snp.makeConstraints { $0.height.equalTo(18) }
     }
     
     // MARK: Bindings
@@ -105,25 +80,15 @@ final class LOFormField: UIStackView {
     
     // MARK: Public Configuration
 
-    func setTitle       (_ text: String) { titleLabel.text = text }
-    func setPlaceHolder (_ text: String) { textField.setPlaceHolder(text) }
+    func setTitle(_ text: String) { titleLabel.text = text }
+    func setPlaceHolder(_ text: String) { textField.setPlaceHolder(text) }
     func addTrailingButton(_ button: UIButton) { bodyHStack.addArrangedSubview(button) }
-    
-    func showInvalidCaption() {
-        captionIconLabel.icon = UIImage(resource: .formFieldExclamation)
-        captionIconLabel.text = invalidCaptionText
-        captionIconLabel.setColor(.destructive)
-        captionIconLabel.isHidden = false
-    }
-    
-    func showValidCaption() {
-        captionIconLabel.icon = UIImage(resource: .formFieldCheck)
-        captionIconLabel.text = validCaptionText
-        captionIconLabel.setColor(.brand)
-        captionIconLabel.isHidden = false
-    }
 }
 
 // MARK: - Preview
 
-#Preview { LOFormField(isEssential: true, isSecureTextEntry: true) }
+#Preview {
+    let formView = LOFormView()
+    formView.setTitle("아이디")
+    return formView
+}

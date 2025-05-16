@@ -1,5 +1,5 @@
 //
-//  LoginFormFieldsView.swift
+//  LoginFormsView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/16/25.
@@ -7,19 +7,19 @@
 
 import UIKit
 
-final class LoginFormFieldsView: UIStackView {
+final class LoginFormsView: UIStackView {
     
     // MARK: Components
     
-    private let idFormField = {
-        let ff = LOFormField()
+    private let idFormView = {
+        let ff = LOFormView()
         ff.setPlaceHolder("아이디 (이메일 주소)")
         ff.setTitle("아이디")
         return ff
     }()
     
-    private let pwFormField = {
-        let ff = LOFormField(isSecureTextEntry: true)
+    private let pwFormView = {
+        let ff = LOFormView(isSecureTextEntry: true)
         ff.setPlaceHolder("비밀번호")
         ff.setTitle("비밀번호")
         return ff
@@ -42,11 +42,11 @@ final class LoginFormFieldsView: UIStackView {
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(idFormField)
-        addArrangedSubview(pwFormField)
+        addArrangedSubview(idFormView)
+        addArrangedSubview(pwFormView)
     }
 }
 
 // MARK: - Preview
 
-#Preview { LoginFormFieldsView() }
+#Preview { LoginFormsView() }

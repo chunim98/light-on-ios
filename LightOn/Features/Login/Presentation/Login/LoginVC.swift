@@ -22,7 +22,7 @@ final class LoginVC: UIViewController {
     
     private let backBarButton = BackBarButton()
     private let logoImageView = UIImageView(image: .loginLogo)
-    private let loginFormFieldsView = LoginFormFieldsView()
+    private let loginFormFieldsView = LoginFormsView()
     private let mainLoginButton = MainLoginButton()
     private let loginElseDivider = LoginElseDivider()
     private let socialLoginButtonsView = SocialLoginButtonsView()
