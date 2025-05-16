@@ -37,7 +37,7 @@ final class HomeSectionHeaderView: UIStackView {
         spacing = 8
         
         // Layout
-        setAutoLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -46,7 +46,7 @@ final class HomeSectionHeaderView: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(titleLabel)
         addArrangedSubview(UIView())
         addArrangedSubview(arrowButton)

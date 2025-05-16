@@ -32,7 +32,7 @@ final class ResultVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setAutoLayout()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +41,7 @@ final class ResultVC: UIViewController {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(textView)
         textView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide) }
     }

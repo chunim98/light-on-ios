@@ -75,7 +75,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         timeLabel.text = "17:00"
         #endif
         
-        setAutoLayout()
+        setupLayout()
     }
     
     override func prepareForReuse() {
@@ -89,7 +89,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(mainVStack)
         // depth 1
         mainVStack.addArrangedSubview(thumbnailView)

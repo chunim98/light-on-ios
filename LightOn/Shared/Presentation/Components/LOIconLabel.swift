@@ -43,7 +43,7 @@ final class LOIconLabel: UIView {
         self.iconPlacement = iconPlacement
         super.init(frame: .zero)
 
-        setAutoLayout()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +52,7 @@ final class LOIconLabel: UIView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         self.addSubview(mainHStack)
         
         if iconPlacement == .front {

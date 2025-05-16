@@ -65,7 +65,7 @@ final class BannerVC: UIViewController {
         super.viewDidLoad()
         
         view.addGestureRecognizer(tapGesture)
-        setAutoLayout()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -74,7 +74,7 @@ final class BannerVC: UIViewController {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(imageView)
         view.addSubview(gradientView)
         view.addSubview(mainVStack)
@@ -95,7 +95,7 @@ final class BannerVC: UIViewController {
     }
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension BannerVC {
     var tapGesturePublisher: AnyPublisher<Void, Never> {

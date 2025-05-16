@@ -42,7 +42,7 @@ final class LODatePickerCell: FSCalendarCell {
     override init!(frame: CGRect) {
         super.init(frame: frame)
         titleLabel.isHidden = true // 자체 타이틀 사용(dateLabel)
-        setAutoLayout()
+        setupLayout()
     }
     
     override func prepareForReuse() {
@@ -56,7 +56,7 @@ final class LODatePickerCell: FSCalendarCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(backView)
         backView.addSubview(selectionView)
         backView.addSubview(dateLabel)

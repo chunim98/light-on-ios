@@ -32,13 +32,13 @@ final class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
-        setLayout()
+        setupNavigationBar()
+        setupLayout()
     }
     
     // MARK: NavigationBar
     
-    private func setNavigationBar() {
+    private func setupNavigationBar() {
         let barBuilder = ComposableNavigationBarBuilder(base: self)
         // interactivePopGesture 복구
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -49,7 +49,7 @@ final class LoginVC: UIViewController {
     
     // MARK: Layout
     
-    private func setLayout() {
+    private func setupLayout() {
         view.addSubview(logoImageView)
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(loginFormFieldsView)
@@ -71,7 +71,7 @@ final class LoginVC: UIViewController {
         loginElseDivider.snp.makeConstraints { $0.horizontalEdges.equalToSuperview() }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
 
 }
 

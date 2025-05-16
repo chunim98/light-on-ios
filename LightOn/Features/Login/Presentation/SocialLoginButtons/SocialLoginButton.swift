@@ -42,7 +42,7 @@ final class SocialLoginButton: UIImageView {
     }
 }
 
-// MARK: Publisher
+// MARK: Binders & Publishers
 
 extension SocialLoginButton {
     var tapPublisher: AnyPublisher<Void, Never> {

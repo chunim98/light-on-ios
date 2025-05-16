@@ -42,8 +42,8 @@ final class TabBarButton: UIStackView {
         self.title = title
         super.init(frame: .zero)
 
-        configure()
-        setAutoLayout()
+        setupDefaults()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -52,7 +52,7 @@ final class TabBarButton: UIStackView {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         addGestureRecognizer(tapGesture)
         axis = .vertical
         spacing = 7
@@ -63,14 +63,14 @@ final class TabBarButton: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         self.addArrangedSubview(iconView)
         self.addArrangedSubview(titleLabel)
         iconView.snp.makeConstraints { $0.height.equalTo(20) }
     }
 }
 
-// MARK: Publisher & Binder
+// MARK: Binders & Publishers
 
 extension TabBarButton {
     var indexPublisher: AnyPublisher<Int, Never> {

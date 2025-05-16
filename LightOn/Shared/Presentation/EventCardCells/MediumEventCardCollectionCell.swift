@@ -23,7 +23,7 @@ final class MediumEventCardCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setAutoLayout()
+        setupLayout()
     }
     
     override func prepareForReuse() {
@@ -37,7 +37,7 @@ final class MediumEventCardCollectionCell: UICollectionViewCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(mediumEventCardView)
         contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }

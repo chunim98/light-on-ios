@@ -93,7 +93,7 @@ final class MediumEventCardView: UIView {
         locationIconLabel.text = "서울 영등포구 여의도동 81-8"
         #endif
         
-        setAutoLayout()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -102,7 +102,7 @@ final class MediumEventCardView: UIView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         // depth 0
         self.addSubview(mainHStack)
         // depth 1

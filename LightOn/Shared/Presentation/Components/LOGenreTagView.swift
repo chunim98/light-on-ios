@@ -35,8 +35,8 @@ final class LOGenreTagView: UIStackView {
     init(tagType: TagType = .small) {
         self.tagType = tagType
         super.init(frame: .zero)
-        configure()
-        setAutoLayout()
+        setupDefaults()
+        setupLayout()
     }
     
     convenience init(tagType: TagType = .small, text: String) {
@@ -50,11 +50,11 @@ final class LOGenreTagView: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() { addArrangedSubview(label) }
+    private func setupLayout() { addArrangedSubview(label) }
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         clipsToBounds = true
         backgroundColor = UIColor(hex: 0xEEE7FB)
         

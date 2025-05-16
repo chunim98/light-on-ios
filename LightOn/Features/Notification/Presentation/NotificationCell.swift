@@ -80,7 +80,7 @@ final class NotificationCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        setAutoLayout()
+        setupLayout()
     }
     
     override func prepareForReuse() {
@@ -94,7 +94,7 @@ final class NotificationCell: UITableViewCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(mainHStack)
         mainHStack.addArrangedSubview(iconView)
         mainHStack.addArrangedSubview(detailVStack)
@@ -113,7 +113,7 @@ final class NotificationCell: UITableViewCell {
         iconView.snp.makeConstraints { $0.size.equalTo(20) }
     }
     
-    // MARK: Configration
+    // MARK: Configuration
     
     func configure(item: (any NotificationItem)?) {
         iconView.image        = item?.notificationType.icon

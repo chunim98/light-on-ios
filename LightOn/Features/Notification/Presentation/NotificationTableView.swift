@@ -27,7 +27,7 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
     init() {
         super.init(frame: .zero, style: .plain)
         contentInset = .init(bottom: 30)
-        configureSelf()
+        setupDefaults()
         configureDiffableDataSource()
     }
     
@@ -37,7 +37,7 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.id)
         backgroundColor = .clear
         separatorStyle = .none

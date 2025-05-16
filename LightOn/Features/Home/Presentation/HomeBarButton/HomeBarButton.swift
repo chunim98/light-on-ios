@@ -17,7 +17,7 @@ final class HomeBarButton: UIButton {
         return config
     }()
     
-    // MARK: Initializer
+    // MARK: Life Cycle
     
     init(image: UIImage) {
         super.init(frame: .zero)

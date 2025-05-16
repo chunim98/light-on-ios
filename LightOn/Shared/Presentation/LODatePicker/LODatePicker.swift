@@ -38,8 +38,8 @@ final class LODatePicker: UIStackView {
         super.init(frame: frame)
         axis = .vertical
         spacing = 14
-        setAutoLayout()
-        setBinding()
+        setupLayout()
+        setupBindings()
     }
     
     required init(coder: NSCoder) {
@@ -48,7 +48,7 @@ final class LODatePicker: UIStackView {
     
     // MARK: Layout
 
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(titleLabel)
         addArrangedSubview(pickerHeaderView)
         addArrangedSubview(datePickerBodyContainer)
@@ -59,7 +59,7 @@ final class LODatePicker: UIStackView {
     
     // MARK: Bindig
     
-    private func setBinding() {
+    private func setupBindings() {
         let input = LODatePickerVM.Input(
             previousButtonTapEvent: pickerHeaderView.previousButtonTapEventPublisher,
             nextButtonTapEvent: pickerHeaderView.nextButtonTapEventPublisher,

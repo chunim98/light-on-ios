@@ -32,7 +32,7 @@ final class LoginFormFieldsView: UIStackView {
         inset = .init(horizontal: 18)
         axis = .vertical
         spacing = 24
-        setLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -41,7 +41,7 @@ final class LoginFormFieldsView: UIStackView {
     
     // MARK: Layout
     
-    private func setLayout() {
+    private func setupLayout() {
         addArrangedSubview(idFormField)
         addArrangedSubview(pwFormField)
     }

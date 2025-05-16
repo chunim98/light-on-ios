@@ -17,7 +17,7 @@ final class LOSwitch: UISwitch {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupDefaults()
     }
     
     override func draw(_ rect: CGRect) {
@@ -31,7 +31,7 @@ final class LOSwitch: UISwitch {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         // onTintColor 설정
         self.onTintColor = .brand
         // offTintColor 설정

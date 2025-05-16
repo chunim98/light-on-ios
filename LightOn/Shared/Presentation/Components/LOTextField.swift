@@ -18,7 +18,7 @@ final class LOTextField: UITextField {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupDefaults()
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +41,7 @@ final class LOTextField: UITextField {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         layer.borderColor = UIColor.thumbLine.cgColor
         font = .pretendard.regular(16)
         layer.cornerRadius = 6

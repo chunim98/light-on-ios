@@ -31,7 +31,7 @@ final class LoginElseDivider: UIStackView {
         alignment = .center
         spacing = 16
         
-        setAutoLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -40,7 +40,7 @@ final class LoginElseDivider: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(leftDivider)
         addArrangedSubview(elseLabel)
         addArrangedSubview(rightDivider)

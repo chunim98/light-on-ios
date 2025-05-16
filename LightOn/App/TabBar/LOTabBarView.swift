@@ -28,9 +28,9 @@ final class LOTabBarView: UIStackView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupDefaults()
         tabBarButtons.forEach { addArrangedSubview($0) } // Layout
-        setBinding()
+        setupBindings()
     }
 
     override func draw(_ rect: CGRect) {
@@ -45,7 +45,7 @@ final class LOTabBarView: UIStackView {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         backgroundColor = .loWhite
         distribution = .fillEqually
         inset = .init(horizontal: 16, vertical: 14)
@@ -56,9 +56,9 @@ final class LOTabBarView: UIStackView {
         layer.shadowColor = UIColor.black.cgColor
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         let selectedIndex = Publishers
             .MergeMany(tabBarButtons.map { $0.indexPublisher })
             .eraseToAnyPublisher()
@@ -73,7 +73,7 @@ final class LOTabBarView: UIStackView {
     }
 }
 
-// MARK: Binder
+// MARK: Binders & Publishers
 
 extension LOTabBarView {
     private func selectedIndexBinder(_ selectedIndex: Int) {

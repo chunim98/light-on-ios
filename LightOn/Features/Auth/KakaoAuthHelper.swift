@@ -45,7 +45,7 @@ final class KakaoAuthHelper: NSObject {
     }
 }
 
-// MARK: Event Handling
+// MARK: Binders & Publishers
 
 extension KakaoAuthHelper {
     func signInBinder() { signIn() }

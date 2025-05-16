@@ -42,8 +42,8 @@ final class LOTipBalloon: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureSelf()
-        setAutoLayout()
+        setupDefaults()
+        setupLayout()
     }
     
     override func draw(_ rect: CGRect) {
@@ -58,7 +58,7 @@ final class LOTipBalloon: UIView {
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         layer.shadowOffset = CGSize(width: 0, height: 2)
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.12
@@ -73,7 +73,7 @@ final class LOTipBalloon: UIView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         self.addSubview(mainHStack)
         self.addSubview(triangleImageView)
         mainHStack.addArrangedSubview(descriptionLabel)

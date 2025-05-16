@@ -29,7 +29,7 @@ final class SpotlightedEventSectionView: UIStackView {
         axis = .vertical
         
         // Layout
-        setAutoLayout()
+        setupLayout()
         
         #if DEBUG
         collectionView.applySnapshot(items: TestMediumEventCardItem.mockItems)
@@ -47,7 +47,7 @@ final class SpotlightedEventSectionView: UIStackView {
     
     // MARK: Layout
 
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(headerView)
         addArrangedSubview(collectionView)
         headerView.snp.makeConstraints { $0.height.equalTo(63) }
@@ -61,7 +61,7 @@ final class SpotlightedEventSectionView: UIStackView {
     }
 }
 
-// MARK: Binder
+// MARK: Binders & Publishers
 
 extension SpotlightedEventSectionView {
     func itemsBinder(_ items: [Item]) {

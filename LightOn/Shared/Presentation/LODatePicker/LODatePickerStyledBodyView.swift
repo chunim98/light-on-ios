@@ -16,7 +16,7 @@ final class LODatePickerStyledBodyView: LODatePickerBodyView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupDefaults()
     }
     
     required init?(coder: NSCoder) {
@@ -25,7 +25,7 @@ final class LODatePickerStyledBodyView: LODatePickerBodyView {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         dataSource = self
         
         register(LODatePickerCell.self, forCellReuseIdentifier: LODatePickerCell.id)

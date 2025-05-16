@@ -51,13 +51,13 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setAutoLayout()
-        setBinding()
+        setupLayout()
+        setupBindings()
     }
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(kakaoSignInButton)
         mainVStack.addArrangedSubview(alertButton)
@@ -72,9 +72,9 @@ final class ViewController: UIViewController {
         datePicker.snp.makeConstraints { $0.height.equalTo(400) }
     }
 
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         kakaoSignInButton.publisher(for: .touchUpInside)
             .sink { [weak self] _ in self?.kakaoAuthHelper.signInBinder() }
             .store(in: &cancellables)
@@ -89,7 +89,7 @@ final class ViewController: UIViewController {
     }
 }
 
-// MARK: - Event Handling
+// MARK: Binders & Publishers
 
 extension ViewController {
     private func pushResultVCBinder(_ resultText: String) {

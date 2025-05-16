@@ -23,7 +23,7 @@ final class MediumEventCardTableCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setAutoLayout()
+        setupLayout()
     }
     
     override func prepareForReuse() {
@@ -37,7 +37,7 @@ final class MediumEventCardTableCell: UITableViewCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(mediumEventCardView)
         contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }

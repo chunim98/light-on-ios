@@ -26,7 +26,7 @@ final class SpotlightedEventCollectionView<Item: MediumEventCardItem>: UICollect
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
-        configureSelf()
+        setupDefaults()
         configureDiffableDataSource()
     }
     
@@ -36,7 +36,7 @@ final class SpotlightedEventCollectionView<Item: MediumEventCardItem>: UICollect
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         register(
             MediumEventCardCollectionCell.self,
             forCellWithReuseIdentifier: MediumEventCardCollectionCell.id

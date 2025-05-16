@@ -51,7 +51,7 @@ final class LODatePickerHeaderView: UIStackView {
         inset = .init(horizontal: 18, vertical: 4)
         distribution = .equalSpacing
         
-        setAutoLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -60,7 +60,7 @@ final class LODatePickerHeaderView: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(previousButton)
         addArrangedSubview(dateHeaderButton)
         addArrangedSubview(nextButton)

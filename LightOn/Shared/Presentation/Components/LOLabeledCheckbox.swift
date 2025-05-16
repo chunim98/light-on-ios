@@ -31,7 +31,7 @@ final class LOLabeledCheckbox: UIView {
         titleLabel.text = "출입 방법 저장"
         #endif
         
-        setAutoLayout()
+        setupLayout()
     }
         
     required init?(coder: NSCoder) {
@@ -40,7 +40,7 @@ final class LOLabeledCheckbox: UIView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         self.addSubview(mainHStack)
         mainHStack.addArrangedSubview(checkbox)
         mainHStack.addArrangedSubview(titleLabel)
@@ -64,7 +64,7 @@ final class LOLabeledCheckbox: UIView {
     }
 }
 
-// MARK: Publishers
+
 
 extension LOLabeledCheckbox {
     var isSelectedPublisher: AnyPublisher<Bool, Never> {

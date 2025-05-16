@@ -21,7 +21,7 @@ final class SocialLoginButtonsView: UIStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         spacing = 10
-        setLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -30,14 +30,14 @@ final class SocialLoginButtonsView: UIStackView {
     
     // MARK: Layout
     
-    private func setLayout() {
+    private func setupLayout() {
         addArrangedSubview(kakaoLoginButton)
         addArrangedSubview(googleLoginButton)
         addArrangedSubview(appleLoginButton)
     }
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension SocialLoginButtonsView {
     var kakaoLoginTapPublisher: AnyPublisher<Void, Never> {

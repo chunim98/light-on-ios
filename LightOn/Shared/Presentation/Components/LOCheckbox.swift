@@ -13,7 +13,7 @@ final class LOCheckbox: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configure()
+        setupDefaults()
     }
     
     required init?(coder: NSCoder) {
@@ -22,7 +22,7 @@ final class LOCheckbox: UIButton {
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         self.setBackgroundImage(UIImage(named: "checkbox_unchecked"), for: .normal)
         self.setBackgroundImage(UIImage(named: "checkbox_checked"), for: .selected)
         self.addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)

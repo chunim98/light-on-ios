@@ -9,7 +9,7 @@ import UIKit
 
 final class BackBarButton: UIButton {
     
-    // MARK: Initializer
+    // MARK: Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)

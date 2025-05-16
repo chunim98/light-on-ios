@@ -26,7 +26,7 @@ final class RecommendedEventCollectionView<Item: SmallEventCardItem>: UICollecti
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
-        configureSelf()
+        setupDefaults()
         configureDiffableDataSource()
     }
     
@@ -36,7 +36,7 @@ final class RecommendedEventCollectionView<Item: SmallEventCardItem>: UICollecti
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         register(SmallEventCardCell.self, forCellWithReuseIdentifier: SmallEventCardCell.id)
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear

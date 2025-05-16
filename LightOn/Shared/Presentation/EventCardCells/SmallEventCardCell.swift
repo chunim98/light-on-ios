@@ -42,7 +42,7 @@ final class SmallEventCardCell: UICollectionViewCell {
         thumbnailView.image = UIImage(named: "debug_busking")
         #endif
         
-        setAutoLayout()
+        setupLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -51,7 +51,7 @@ final class SmallEventCardCell: UICollectionViewCell {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         contentView.addSubview(mainVStack)
         mainVStack.addArrangedSubview(thumbnailView)
         mainVStack.addArrangedSubview(titleLabel)

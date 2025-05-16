@@ -59,8 +59,8 @@ final class LOFormField: UIStackView {
         
         axis = .vertical
         spacing = 6
-        setAutoLayout()
-        setBinding()
+        setupLayout()
+        setupBindings()
     }
     
     required init(coder: NSCoder) {
@@ -69,7 +69,7 @@ final class LOFormField: UIStackView {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         addArrangedSubview(headerHStack)
         addArrangedSubview(bodyHStack)
         addArrangedSubview(footerHStack)
@@ -85,7 +85,7 @@ final class LOFormField: UIStackView {
     
     // MARK: Bindig
     
-    private func setBinding() {
+    private func setupBindings() {
         // 텍스트 필드 작성 시작 시, 색상 변경
         textField.publisher(for: .editingDidBegin)
             .sink { [weak self] _ in

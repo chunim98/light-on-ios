@@ -75,8 +75,8 @@ final class LOAlertVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .loBlack.withAlphaComponent(0.6)
-        setAutoLayout()
-        setBinding()
+        setupLayout()
+        setupBindings()
     }
     
     required init?(coder: NSCoder) {
@@ -85,7 +85,7 @@ final class LOAlertVC: UIViewController {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(contentView)
         contentView.addArrangedSubview(detailContainer)
         contentView.addArrangedSubview(buttonContainer)
@@ -102,9 +102,9 @@ final class LOAlertVC: UIViewController {
         }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         acceptButton.publisher(for: .touchUpInside)
             .sink { [weak self] _ in self?.dismiss(animated: true) }
             .store(in: &cancellables)
@@ -123,7 +123,7 @@ final class LOAlertVC: UIViewController {
     }
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension LOAlertVC {
     var acceptEventPublisher: AnyPublisher<Void, Never> {

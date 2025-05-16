@@ -21,7 +21,7 @@ final class LoginOptionButtonsView: LODividerStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         spacing = 18
-        setLayout()
+        setupLayout()
     }
     
     @MainActor required init(coder: NSCoder) {
@@ -30,14 +30,14 @@ final class LoginOptionButtonsView: LODividerStackView {
     
     // MARK: Layout
     
-    private func setLayout() {
+    private func setupLayout() {
         addArrangedSubview(registerButton)
         addArrangedSubview(findMyIDButton)
         addArrangedSubview(findMyPWButton)
     }
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension LoginOptionButtonsView {
     var registerTapPublisher: AnyPublisher<Void, Never> {

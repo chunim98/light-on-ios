@@ -23,7 +23,7 @@ final class MainLoginButton: UIStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         inset = .init(horizontal: 18)
-        setLayout()
+        setupLayout()
     }
     
     required init(coder: NSCoder) {
@@ -32,10 +32,10 @@ final class MainLoginButton: UIStackView {
     
     // MARK: Layout
     
-    private func setLayout() { addArrangedSubview(loginButton) }
+    private func setupLayout() { addArrangedSubview(loginButton) }
 }
 
-// MARK: Publishers
+// MARK: Binders & Publishers
 
 extension MainLoginButton {
     var tapPublisher: AnyPublisher<Void, Never> {

@@ -31,14 +31,14 @@ final class TabBarVC: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-        setAutoLayout()
-        setBinding()
+        setupDefaults()
+        setupLayout()
+        setupBindings()
     }
     
     // MARK: Configuration
     
-    private func configure() {
+    private func setupDefaults() {
         #if DEBUG
         let vc = UINavigationController(rootViewController: HomeVC())
         let vc2 = ViewController()
@@ -52,7 +52,7 @@ final class TabBarVC: UITabBarController {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         tabBar.addSubview(loTabBarView)
         tabBar.addSubview(bottomSafeAreaCoverView)
         
@@ -66,9 +66,9 @@ final class TabBarVC: UITabBarController {
         }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         // loTabBarView 선택값을 컨트롤러에 전달
         loTabBarView.selectedIndexPublisher
             .assign(to: \.selectedIndex, on: self)

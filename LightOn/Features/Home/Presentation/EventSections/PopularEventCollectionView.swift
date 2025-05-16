@@ -26,7 +26,7 @@ final class PopularEventCollectionView<Item: LargeEventCardItem>: UICollectionVi
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
-        configureSelf()
+        setupDefaults()
         configureDiffableDataSource()
     }
     
@@ -36,7 +36,7 @@ final class PopularEventCollectionView<Item: LargeEventCardItem>: UICollectionVi
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         register(
             LargeEventCardCell.self,
             forCellWithReuseIdentifier: LargeEventCardCell.id

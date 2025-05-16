@@ -15,7 +15,6 @@ final class HomeVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private lazy var navigationBarBuilder = ComposableNavigationBarBuilder(base: self)
 
     // MARK: Components
     
@@ -33,42 +32,42 @@ final class HomeVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Self Configuration
-        view.backgroundColor = .loWhite
-        
-        setNavigationBar()
-        setBinding()
-        setAutoLayout()
+        setupDefaults()
+        setupNavigationBar()
+        setupBindings()
+        setupLayout()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-    }
+    override func viewWillAppear(_ animated: Bool) {}
+    override func viewWillDisappear(_ animated: Bool) {}
+    
+    // MARK: Configuration
+    
+    private func setupDefaults() { view.backgroundColor = .loWhite }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        
-    }
     
     // MARK: Navigation Bar
     
-    private func setNavigationBar() {
+    private func setupNavigationBar() {
         let logoImageView = UIImageView()
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.image = .homeNavBarLogo.withTintColor(.loBlack)
         
-        navigationBarBuilder.addLeftBarItem(logoImageView)
-        navigationBarBuilder.addRightBarItem(notificationBarButton)
-        navigationBarBuilder.addRightBarItem(searchBarButton)
+        let barBuilder = ComposableNavigationBarBuilder(base: self)
         
-        navigationBarBuilder.setLeftBarLayout(leadingInset: 18)
-        navigationBarBuilder.setRightBarLayout(spacing: 9, trailingInset: 18)
+        barBuilder.addLeftBarItem(logoImageView)
+        barBuilder.addRightBarItem(notificationBarButton)
+        barBuilder.addRightBarItem(searchBarButton)
         
-        navigationBarBuilder.build()
+        barBuilder.setLeftBarLayout(leadingInset: 18)
+        barBuilder.setRightBarLayout(spacing: 9, trailingInset: 18)
+        
+        barBuilder.build()
     }
     
     // MARK: Layout
         
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(bannerPageVC.view)
@@ -86,9 +85,9 @@ final class HomeVC: UIViewController {
         bannerPageVC.view.snp.makeConstraints { $0.size.equalTo(view.snp.width) }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         notificationBarButton.publisher(for: .touchUpInside)
             .sink { [weak self] _ in
                 let vc = NotificationVC()

@@ -38,8 +38,8 @@ final class BannerPageVC: UIPageViewController {
         self.dataSource = self
         self.delegate = self
 
-        setAutoLayout()
-        setBinding()
+        setupLayout()
+        setupBindings()
         
         #if DEBUG
         self.setViewControllers([pages[0]], direction: .forward, animated: true)
@@ -52,7 +52,7 @@ final class BannerPageVC: UIPageViewController {
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(pageControl)
         pageControl.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -60,16 +60,16 @@ final class BannerPageVC: UIPageViewController {
         }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         pageControl.pageIndexPublisher
             .sink { [weak self] in self?.pageIndexBidner(index: $0) }
             .store(in: &cancellables)
     }
 }
 
-// MARK: Binders
+// MARK: Binders & Publishers
 
 extension BannerPageVC {
     private func pageIndexBidner(index: Int) {
@@ -81,7 +81,7 @@ extension BannerPageVC {
     }
 }
 
-// MARK: UIPageViewControllerDelegate
+// MARK: - UIPageViewControllerDelegate
 
 extension BannerPageVC: UIPageViewControllerDelegate {
     /// 사용자가 스와이프해서 페이지를 변경할 때만 실행됨
@@ -95,7 +95,7 @@ extension BannerPageVC: UIPageViewControllerDelegate {
     }
 }
 
-// MARK: UIPageViewControllerDataSource
+// MARK: - UIPageViewControllerDataSource
 
 extension BannerPageVC: UIPageViewControllerDataSource {
     /// 좌우 스와이프 할 때 어떤 페이지를 보여줄지에 관한 메서드

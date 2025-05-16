@@ -25,7 +25,7 @@ final class LOButton: UIButton {
     
     init(style: LOButton.Style) {
         super.init(frame: .zero)
-        configure(style)
+        setupDefaults(style)
     }
     
     required init?(coder: NSCoder) {
@@ -40,7 +40,7 @@ final class LOButton: UIButton {
     
     // MARK: Configuration
     
-    private func configure(_ style: LOButton.Style) {
+    private func setupDefaults(_ style: LOButton.Style) {
         var config = UIButton.Configuration.filled()
         config.attributedTitle = AttributedString("버튼", .systemFont(ofSize: 16))
         config.background.cornerRadius = 6

@@ -19,7 +19,6 @@ final class NotificationVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private lazy var navigationBarBuilder = ComposableNavigationBarBuilder(base: self)
     
     // MARK: Components
     
@@ -30,10 +29,10 @@ final class NotificationVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureSelf()
-        setNavigationBar()
-        setAutoLayout()
-        setBinding()
+        setupDefaults()
+        setupNavigationBar()
+        setupLayout()
+        setupBindings()
     }
     
     override func viewDidLayoutSubviews() {
@@ -43,32 +42,32 @@ final class NotificationVC: UIViewController {
     
     // MARK: Configuration
     
-    private func configureSelf() {
+    private func setupDefaults() {
         view.backgroundColor = .loWhite
-        navigationItem.setHidesBackButton(true, animated: false)
-        // interactivePopGesture 복구
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: Navigation Bar
     
-    private func setNavigationBar() {
-        navigationBarBuilder.setTitle("알림")
-        navigationBarBuilder.setLeftBarLayout(leadingInset: 16)
-        navigationBarBuilder.addLeftBarItem(backBarButton)
-        navigationBarBuilder.build()
+    private func setupNavigationBar() {
+        // interactivePopGesture 복구
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        let barBuilder = ComposableNavigationBarBuilder(base: self)
+        barBuilder.setLeftBarLayout(leadingInset: 16)
+        barBuilder.addLeftBarItem(backBarButton)
+        barBuilder.setTitle("알림")
+        barBuilder.build()
     }
     
     // MARK: Layout
     
-    private func setAutoLayout() {
+    private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    // MARK: Binding
+    // MARK: Bindings
     
-    private func setBinding() {
+    private func setupBindings() {
         backBarButton.publisher(for: .touchUpInside)
             .sink { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
@@ -77,15 +76,11 @@ final class NotificationVC: UIViewController {
     }
 }
 
-// MARK: UIGestureRecognizerDelegate
+// MARK: - UIGestureRecognizerDelegate
 
 extension NotificationVC: UIGestureRecognizerDelegate {
     /// 제스처가 시작되기 전에 동작 여부를 결정
-    func gestureRecognizerShouldBegin(
-        _ gestureRecognizer: UIGestureRecognizer
-    ) -> Bool {
-        true
-    }
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }
 
 //#Preview { UINavigationController(rootViewController: NotificationVC()) }
