@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "login_social_button_apple.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "login_social_button_kakao.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

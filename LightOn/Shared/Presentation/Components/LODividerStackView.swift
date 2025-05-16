@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class LODividerStackView: UIStackView {
+class LODividerStackView: UIStackView {
     
     // MARK: Life Cycle
     

@@ -47,7 +47,7 @@ final class LOTextField: UITextField {
         layer.cornerRadius = 6
         layer.borderWidth = 1
         clipsToBounds = true
-        textColor = .caption
+        textColor = .loBlack
     }
     
     func setPlaceHolder(_ text: String) {
