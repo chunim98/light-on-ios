@@ -9,7 +9,7 @@ import UIKit
 
 final class LOButton: UIButton {
     
-    // MARK: enum
+    // MARK: Enum
     
     enum Style {
         case filled
@@ -19,33 +19,29 @@ final class LOButton: UIButton {
 
     // MARK: Properties
     
+    private let style: Style
     private let height: CGFloat = 47
     
     override var intrinsicContentSize: CGSize {
         CGSize(width: super.intrinsicContentSize.width, height: height)
     }
-    
-    var attributedTitle: AttributedString? {
-        get { self.configuration?.attributedTitle }
-        set { self.configuration?.attributedTitle = newValue }
-    }
-    
+
     // MARK: Life Cycle
     
     init(style: LOButton.Style) {
+        self.style = style
         super.init(frame: .zero)
-        setupDefaults(style)
+        setupStyle(style)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Defaults
+    // MARK: Style
     
-    private func setupDefaults(_ style: LOButton.Style) {
+    private func setupStyle(_ style: LOButton.Style) {
         var config = UIButton.Configuration.filled()
-        config.attributedTitle = AttributedString("버튼", .systemFont(ofSize: 16))
         config.background.cornerRadius = 6
         config.cornerStyle = .fixed
         
@@ -66,11 +62,29 @@ final class LOButton: UIButton {
             config.background.strokeColor = .brand
             config.background.strokeWidth = 1
         }
+    
+        configuration = config
+    }
+    
+    // MARK: Public Configuration
+    
+    func setTitle(_ title: String, _ font: UIFont) {
+        configuration?.attributedTitle = .init(title, font)
         
-        self.configuration = config
+        // disable 상태이고, fill 스타일일 때만 비활성화 스타일 적용
+        guard style == .filled else { return }
+        configurationUpdateHandler = {
+            guard !$0.isEnabled else { return }
+            $0.configuration?.background.backgroundColor = .disable
+            $0.configuration?.attributedTitle = .init(title, font, color: .loWhite)
+        }
     }
 }
 
 // MARK: - Preview
 
-#Preview { LOButton(style: .filled) }
+#Preview {
+    let button = LOButton(style: .filled)
+    button.setTitle("로그인", .pretendard.bold(16))
+    return button
+}

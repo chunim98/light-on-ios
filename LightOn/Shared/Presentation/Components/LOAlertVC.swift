@@ -59,12 +59,10 @@ final class LOAlertVC: UIViewController {
         // 헤더 제목
         self.headerLabel.text = headerTitle
         // 확인 버튼 제목
-        self.acceptButton.attributedTitle =
-        AttributedString(acceptTitle, .pretendard.semiBold(16))
+        self.acceptButton.setTitle(acceptTitle, .pretendard.semiBold(16))
         // 취소 버튼 제목(사용 시)
         if let cancelTitle {
-            self.cancelButton.attributedTitle =
-            AttributedString(cancelTitle, .pretendard.regular(16))
+            self.cancelButton.setTitle(cancelTitle, .pretendard.regular(16))
         }
         // 취소 버튼 표시 여부
         self.isCancelButtonHidden = (cancelTitle == nil)

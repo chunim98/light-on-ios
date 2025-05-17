@@ -14,7 +14,7 @@ final class MainLoginButton: UIStackView {
     
     private let loginButton = {
         let button = LOButton(style: .filled)
-        button.attributedTitle = .init("로그인", .pretendard.bold(16))
+        button.setTitle("로그인", .pretendard.bold(16))
         return button
     }()
     
