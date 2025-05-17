@@ -52,7 +52,7 @@ final class HomeVC: UIViewController {
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.image = .homeNavBarLogo.withTintColor(.loBlack)
         
-        let barBuilder = ComposableNavigationBarBuilder(base: self)
+        let barBuilder = NavigationBarBuilderWithLayout(base: self)
         
         barBuilder.addLeftBarItem(logoImageView)
         barBuilder.addRightBarItem(notificationBarButton)

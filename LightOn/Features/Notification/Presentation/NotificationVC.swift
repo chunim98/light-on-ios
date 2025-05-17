@@ -51,7 +51,7 @@ final class NotificationVC: UIViewController {
     private func setupNavigationBar() {
         // interactivePopGesture 복구
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-        let barBuilder = ComposableNavigationBarBuilder(base: self)
+        let barBuilder = NavigationBarBuilderWithLayout(base: self)
         barBuilder.setLeftBarLayout(leadingInset: 16)
         barBuilder.addLeftBarItem(backBarButton)
         barBuilder.setTitle("알림")

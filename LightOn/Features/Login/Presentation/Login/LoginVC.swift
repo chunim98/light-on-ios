@@ -39,7 +39,7 @@ final class LoginVC: UIViewController {
     // MARK: NavigationBar
     
     private func setupNavigationBar() {
-        let barBuilder = ComposableNavigationBarBuilder(base: self)
+        let barBuilder = NavigationBarBuilderWithLayout(base: self)
         // interactivePopGesture 복구
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         barBuilder.setLeftBarLayout(leadingInset: 16)
