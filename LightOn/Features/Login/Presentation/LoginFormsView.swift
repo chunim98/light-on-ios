@@ -14,6 +14,7 @@ final class LoginFormsView: UIStackView {
     private let idFormView = {
         let ff = LOFormView()
         ff.setPlaceHolder("아이디 (이메일 주소)")
+        ff.setTitleColor(.infoText)
         ff.setTitle("아이디")
         return ff
     }()
@@ -21,6 +22,7 @@ final class LoginFormsView: UIStackView {
     private let pwFormView = {
         let ff = LOFormView(isSecureTextEntry: true)
         ff.setPlaceHolder("비밀번호")
+        ff.setTitleColor(.infoText)
         ff.setTitle("비밀번호")
         return ff
     }()

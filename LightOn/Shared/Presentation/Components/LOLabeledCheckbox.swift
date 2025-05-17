@@ -12,6 +12,18 @@ import SnapKit
 
 final class LOLabeledCheckbox: UIView {
     
+    // MARK: Properties
+    
+    var title: String? {
+        get { titleLabel.text }
+        set { titleLabel.text = newValue }
+    }
+    
+    var isSelected: Bool {
+        get { checkbox.isSelected }
+        set { checkbox.isSelected = newValue }
+    }
+    
     // MARK: Components
     
     private let mainHStack = UIStackView(alignment: .center, spacing: 6)
@@ -50,21 +62,7 @@ final class LOLabeledCheckbox: UIView {
             $0.height.equalTo(23)
         }
     }
-    
-    // MARK: Configuration
-    
-    var title: String? {
-        get { titleLabel.text }
-        set { titleLabel.text = newValue }
-    }
-    
-    var isSelected: Bool {
-        get { checkbox.isSelected }
-        set { checkbox.isSelected = newValue }
-    }
 }
-
-
 
 extension LOLabeledCheckbox {
     var isSelectedPublisher: AnyPublisher<Bool, Never> {

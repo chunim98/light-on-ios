@@ -15,6 +15,7 @@ class LOFormView: UIStackView {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private var titleColor: UIColor = .loBlack
 
     // MARK: Components
     
@@ -24,7 +25,6 @@ class LOFormView: UIStackView {
     private let titleLabel = {
         let label = UILabel()
         label.font = .pretendard.semiBold(14)
-        label.textColor = .infoText
         return label
     }()
     
@@ -35,14 +35,22 @@ class LOFormView: UIStackView {
     init(isSecureTextEntry: Bool = false) {
         self.textField.isSecureTextEntry = isSecureTextEntry
         super.init(frame: .zero)
-        axis = .vertical
-        spacing = 6
+        setupDefaults()
         setupLayout()
         setupBindings()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        axis = .vertical
+        spacing = 6
+        
+        titleLabel.textColor = titleColor
     }
     
     // MARK: Layout
@@ -73,7 +81,7 @@ class LOFormView: UIStackView {
         textField.publisher(for: .editingDidEnd)
             .sink { [weak self] _ in
                 self?.textField.layer.borderColor = UIColor.thumbLine.cgColor
-                self?.titleLabel.textColor = .infoText
+                self?.titleLabel.textColor = self?.titleColor
             }
             .store(in: &cancellables)
     }
@@ -81,6 +89,10 @@ class LOFormView: UIStackView {
     // MARK: Public Configuration
 
     func setTitle(_ text: String) { titleLabel.text = text }
+    func setTitleColor(_ color: UIColor) {
+        titleLabel.textColor = color
+        titleColor = color
+    }
     func setPlaceHolder(_ text: String) { textField.setPlaceHolder(text) }
     func addTrailingButton(_ button: UIButton) { bodyHStack.addArrangedSubview(button) }
 }

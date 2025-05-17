@@ -29,11 +29,11 @@ final class LOTextField: UITextField {
     
     private func setupDefaults() {
         layer.borderColor = UIColor.thumbLine.cgColor
-        font = .pretendard.regular(16)
         layer.cornerRadius = 6
         layer.borderWidth = 1
         clipsToBounds = true
         textColor = .loBlack
+        font = .pretendard.regular(16)
     }
     
     // MARK: Overrides
@@ -57,6 +57,16 @@ final class LOTextField: UITextField {
             string: text,
             attributes: [.foregroundColor: UIColor.assistive]
         )
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension LOTextField {
+    var textPublisher: AnyPublisher<String?, Never> {
+        publisher(for: .editingChanged)
+            .map { [weak self] _ in self?.text }
+            .eraseToAnyPublisher()
     }
 }
 
