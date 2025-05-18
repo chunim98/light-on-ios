@@ -1,5 +1,5 @@
 //
-//  LOTextField.swift
+//  LOFormTextField.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/11/25.
@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class LOTextField: UITextField {
+final class LOFormTextField: UITextField {
 
     // MARK: Properties
     
@@ -38,38 +38,28 @@ final class LOTextField: UITextField {
     
     // MARK: Overrides
     
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: inset)
-    }
-    
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: inset)
-    }
-    
-    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        bounds.inset(by: inset)
-    }
+    override func textRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: inset) }
+    override func editingRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: inset) }
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect { bounds.inset(by: inset) }
 
     // MARK: Public Configuration
     
     func setPlaceHolder(_ text: String) {
-        attributedPlaceholder = NSAttributedString(
-            string: text,
-            attributes: [.foregroundColor: UIColor.assistive]
-        )
+        attributedPlaceholder =
+        NSAttributedString(string: text, attributes: [.foregroundColor: UIColor.assistive])
     }
+    
+    func setBorderColor(_ color: UIColor) { layer.borderColor = color.cgColor }
 }
 
 // MARK: Binders & Publishers
 
-extension LOTextField {
+extension LOFormTextField {
     var textPublisher: AnyPublisher<String?, Never> {
-        publisher(for: .editingChanged)
-            .map { [weak self] _ in self?.text }
-            .eraseToAnyPublisher()
+        publisher(for: .editingChanged).map { [weak self] _ in self?.text }.eraseToAnyPublisher()
     }
 }
 
 // MARK: - Preview
 
-#Preview { LOTextField() }
+#Preview { LOFormTextField() }

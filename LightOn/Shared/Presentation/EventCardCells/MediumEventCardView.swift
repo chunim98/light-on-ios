@@ -56,8 +56,8 @@ final class MediumEventCardView: UIView {
     
     private let dateIconLabel = {
         let iconLabel = LOIconLabel()
-        iconLabel.icon = UIImage(resource: .eventCardCellClock)
-        iconLabel.font = .pretendard.regular(12)
+        iconLabel.setIcon(.eventCardCellClock)
+        iconLabel.setFont(.pretendard.regular(12))
         iconLabel.setColor(.caption)
         iconLabel.spacing = 5
         return iconLabel
@@ -72,8 +72,8 @@ final class MediumEventCardView: UIView {
     
     private let locationIconLabel = {
         let iconLabel = LOIconLabel()
-        iconLabel.icon = UIImage(resource: .eventCardCellPin)
-        iconLabel.font = .pretendard.regular(12)
+        iconLabel.setIcon(.eventCardCellPin)
+        iconLabel.setFont(.pretendard.regular(12))
         iconLabel.setColor(.caption)
         iconLabel.spacing = 6
         return iconLabel
@@ -88,9 +88,9 @@ final class MediumEventCardView: UIView {
         artistLabel.text = "라이트온"
         titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
         genreTagView.text = "어쿠스틱"
-        dateIconLabel.text = "2025.05.01"
+        dateIconLabel.setText("2025.05.01")
         timeLabel.text = "17:00"
-        locationIconLabel.text = "서울 영등포구 여의도동 81-8"
+        locationIconLabel.setText("서울 영등포구 여의도동 81-8")
         #endif
         
         setupLayout()
@@ -136,12 +136,12 @@ final class MediumEventCardView: UIView {
 
     func configure(item: (any MediumEventCardItem)?) {
         thumbnailView.image = item?.thumbnail
-        artistLabel.text = item?.artist
-        titleLabel.text = item?.title
-        genreTagView.text = item?.genre
-        dateIconLabel.text = item?.date
-        timeLabel.text = item?.time
-        locationIconLabel.text = item?.location
+        artistLabel.text    = item?.artist
+        titleLabel.text     = item?.title
+        genreTagView.text   = item?.genre
+        timeLabel.text      = item?.time
+        dateIconLabel.setText(item?.date)
+        locationIconLabel.setText(item?.location)
     }
 }
 

@@ -40,8 +40,8 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     private let dateIconLabel = {
         let il = LOIconLabel()
-        il.icon = UIImage(resource: .eventCardCellClock)
-        il.font = .pretendard.regular(12)
+        il.setIcon(.eventCardCellClock)
+        il.setFont(.pretendard.regular(12))
         il.setColor(.caption)
         il.spacing = 5
         return il
@@ -56,8 +56,8 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     private let locationIconLabel = {
         let il = LOIconLabel()
-        il.icon = UIImage(resource: .eventCardCellPin)
-        il.font = .pretendard.regular(12)
+        il.setIcon(.eventCardCellPin)
+        il.setFont(.pretendard.regular(12))
         il.setColor(.caption)
         il.spacing = 6
         return il
@@ -70,8 +70,8 @@ final class LargeEventCardCell: UICollectionViewCell {
         #if DEBUG
         thumbnailView.image = UIImage(resource: .debugBusking)
         titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
-        locationIconLabel.text = "서울 영등포구 여의도동 81-8"
-        dateIconLabel.text = "2025.05.01"
+        locationIconLabel.setText("서울 영등포구 여의도동 81-8")
+        dateIconLabel.setText("2025.05.01")
         timeLabel.text = "17:00"
         #endif
         
@@ -118,11 +118,11 @@ final class LargeEventCardCell: UICollectionViewCell {
     // MARK: Public Configuration
 
     func configure(item: (any LargeEventCardItem)?) {
-        thumbnailView.image    = item?.thumbnail
-        titleLabel.text        = item?.title
-        dateIconLabel.text     = item?.date
-        timeLabel.text         = item?.time
-        locationIconLabel.text = item?.location
+        thumbnailView.image = item?.thumbnail
+        titleLabel.text     = item?.title
+        timeLabel.text      = item?.time
+        locationIconLabel.setText(item?.location)
+        dateIconLabel.setText(item?.date)
     }
 }
 

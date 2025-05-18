@@ -35,9 +35,9 @@ final class LODatePickerHeaderView: UIStackView {
     private let dateHeaderIconLabel = {
         let il = LOIconLabel(iconIn: .rear)
         il.isUserInteractionEnabled = false
-        il.icon = .loDatePickerBottomArrow
-        il.font = .pretendard.semiBold(20)
-        il.textColor = .loBlack
+        il.setIcon(.loDatePickerBottomArrow)
+        il.setFont(.pretendard.semiBold(20))
+        il.setTextColor(.loBlack)
         il.spacing = 4
         return il
     }()
@@ -73,7 +73,7 @@ final class LODatePickerHeaderView: UIStackView {
 
 extension LODatePickerHeaderView {
     func dateHeaderTextBinder(_ text: String) {
-        dateHeaderIconLabel.text = text
+        dateHeaderIconLabel.setText(text)
     }
     
     var previousButtonTapEventPublisher: AnyPublisher<Void, Never> {
