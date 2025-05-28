@@ -29,8 +29,8 @@ final class LOCheckbox: UIButton {
     // MARK: Defaults
     
     private func setupDefaults() {
-        self.setBackgroundImage(UIImage(named: "checkbox_unchecked"), for: .normal)
-        self.setBackgroundImage(UIImage(named: "checkbox_checked"), for: .selected)
+        self.setBackgroundImage(.checkboxUnchecked, for: .normal)
+        self.setBackgroundImage(.checkboxChecked, for: .selected)
         self.addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)
     }
 

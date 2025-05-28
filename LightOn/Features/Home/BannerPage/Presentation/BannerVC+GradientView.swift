@@ -1,5 +1,5 @@
 //
-//  BannerGradientView.swift
+//  GradientView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/13/25.
@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class BannerGradientView: UIView {
+extension BannerVC {
+final class GradientView: UIView {
     
     // MARK: Components
     
@@ -46,3 +47,5 @@ final class BannerGradientView: UIView {
         self.layer.addSublayer(gradientLayer)
     }
 }
+}
+

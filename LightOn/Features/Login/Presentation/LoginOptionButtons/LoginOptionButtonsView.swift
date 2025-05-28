@@ -41,15 +41,15 @@ final class LoginOptionButtonsView: LODividerStackView {
 
 extension LoginOptionButtonsView {
     var registerTapPublisher: AnyPublisher<Void, Never> {
-        registerButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        registerButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
     
     var findMyIDTapPublisher: AnyPublisher<Void, Never> {
-        findMyIDButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        findMyIDButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
     
     var findMyPWTapPublisher: AnyPublisher<Void, Never> {
-        findMyPWButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        findMyPWButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
 }
 

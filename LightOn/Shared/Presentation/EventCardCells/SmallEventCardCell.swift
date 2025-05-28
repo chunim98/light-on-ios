@@ -28,7 +28,7 @@ final class SmallEventCardCell: UICollectionViewCell {
     private let titleLabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        label.textColor = .loBlack
+        label.textColor = .blackLO
         label.font = .pretendard.semiBold(16)
         return label
     }()

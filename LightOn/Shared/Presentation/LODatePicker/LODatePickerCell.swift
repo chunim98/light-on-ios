@@ -188,7 +188,7 @@ final class LODatePickerCell: FSCalendarCell {
             
         case .end:
             selectionView.layer.cornerRadius = radius
-            selectionView.backgroundColor = .loWhite
+            selectionView.backgroundColor = .white
             selectionView.layer.borderColor = UIColor.brand.cgColor
             selectionView.layer.borderWidth = 1
             
@@ -205,7 +205,7 @@ final class LODatePickerCell: FSCalendarCell {
         switch selection {
         case .single, .start:
             dateLabel.font = .pretendard.semiBold(18)
-            dateLabel.textColor = .loWhite
+            dateLabel.textColor = .white
             
         case .end:
             dateLabel.font = .pretendard.semiBold(18)

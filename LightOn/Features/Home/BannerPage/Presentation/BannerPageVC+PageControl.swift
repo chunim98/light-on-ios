@@ -1,5 +1,5 @@
 //
-//  BannerPageControl.swift
+//  PageControl.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/13/25.
@@ -8,7 +8,10 @@
 import UIKit
 import Combine
 
-final class BannerPageControl: UIPageControl {
+import CombineCocoa
+
+extension BannerPageVC {
+final class PageControl: UIPageControl {
     
     // MARK: Properties
     
@@ -25,7 +28,7 @@ final class BannerPageControl: UIPageControl {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .black.withAlphaComponent(0.2)
+        setupDefaults()
     }
     
     override func draw(_ rect: CGRect) {
@@ -36,6 +39,10 @@ final class BannerPageControl: UIPageControl {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() { backgroundColor = .black.withAlphaComponent(0.2) }
 
     // MARK: Layer Mask
     
@@ -49,15 +56,17 @@ final class BannerPageControl: UIPageControl {
             height: bounds.height
         )
         mask.path = UIBezierPath(roundedRect: rect, cornerRadius: radius).cgPath
-        self.layer.mask = mask
+        layer.mask = mask
     }
+}
 }
 
 // MARK: Binders & Publishers
 
-extension BannerPageControl {
+extension BannerPageVC.PageControl {
+    /// currentPagePublisher가 제대로 동작 안해서 있는 퍼블리셔
     var pageIndexPublisher: AnyPublisher<Int, Never> {
-        self.publisher(for: .valueChanged)
+        self.controlEventPublisher(for: .valueChanged)
             .compactMap { [weak self] _ in self?.currentPage }
             .eraseToAnyPublisher()
     }
@@ -65,4 +74,4 @@ extension BannerPageControl {
 
 // MARK: - Preview
 
-#Preview { BannerPageControl() }
+#Preview { BannerPageVC.PageControl() }

@@ -14,38 +14,39 @@ final class BannerVC: UIViewController {
     
     // MARK: Components
     
-    private let tapGesture = UITapGestureRecognizer()
+    let tapGesture = UITapGestureRecognizer()
     
-    private let mainVStack = UIStackView(
-        .vertical,
-        spacing: 8,
-        inset: .init(horizontal: 30) + .init(bottom: 60)
-    )
+    private let mainVStack =
+    UIStackView(.vertical, spacing: 8, inset: .init(horizontal: 30) + .init(bottom: 60))
     
     private let imageView = {
         let iv = UIImageView()
-        iv.backgroundColor = UIColor(hex: 0xC5C5C5)
         iv.contentMode = .scaleAspectFill
+        iv.backgroundColor = .xC5C5C5
         iv.clipsToBounds = true
         return iv
     }()
     
-    private let gradientView = BannerGradientView()
+    private let gradientView = GradientView()
     
     private let titleLabel = {
-        let label = UILabel()
-        label.font = .pretendard.bold(28)
-        label.textColor = .loWhite
+        var config = TextConfiguration()
+        config.font = .pretendard.bold(28)
+        config.foregroundColor = .white
+        config.paragraphSpacing = 12
+        config.lineHeight = 36
+        
+        let label = TPLabel(config: config)
         label.numberOfLines = 2
         return label
     }()
     
     private let subTitleLabel = {
-        let label = UILabel()
-        label.font = .pretendard.regular(18)
-        label.textColor = .loWhite
-        label.numberOfLines = 1
-        return label
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(18)
+        config.foregroundColor = .white
+        config.lineHeight = 27
+        return TPLabel(config: config)
     }()
     
     // MARK: Life Cycle
@@ -57,8 +58,8 @@ final class BannerVC: UIViewController {
     convenience init(item: any BannerItem) {
         self.init(nibName: nil, bundle: nil)
         self.imageView.image    = item.image
-        self.titleLabel.text    = item.title
-        self.subTitleLabel.text = item.subTitle
+        self.titleLabel.config.text = item.title
+        self.subTitleLabel.config.text = item.subTitle
     }
 
     override func viewDidLoad() {
@@ -90,20 +91,13 @@ final class BannerVC: UIViewController {
     
     func configure(item: any BannerItem) {
         imageView.image    = item.image
-        titleLabel.text    = item.title
-        subTitleLabel.text = item.subTitle
-    }
-}
-
-// MARK: Binders & Publishers
-
-extension BannerVC {
-    var tapGesturePublisher: AnyPublisher<Void, Never> {
-        tapGesture.publisher().map { _ in }.eraseToAnyPublisher()
+        titleLabel.config.text = item.title
+        subTitleLabel.config.text = item.subTitle
     }
 }
 
 // MARK: - Preview
 
 #Preview(traits: .fixedLayout(width: 402, height: 402)) { BannerVC() }
+#Preview { HomeVC() }
 

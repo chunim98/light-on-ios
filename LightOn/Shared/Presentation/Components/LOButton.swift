@@ -48,11 +48,11 @@ final class LOButton: UIButton {
         switch style {
         case .filled:
             config.baseBackgroundColor = .brand
-            config.baseForegroundColor = .loWhite
+            config.baseForegroundColor = .white
             
         case .bordered:
             config.baseBackgroundColor = .clear
-            config.baseForegroundColor = .loBlack
+            config.baseForegroundColor = .blackLO
             config.background.strokeColor = UIColor(hex: 0xCECECE)
             config.background.strokeWidth = 1
             
@@ -76,7 +76,7 @@ final class LOButton: UIButton {
         configurationUpdateHandler = {
             guard !$0.isEnabled else { return }
             $0.configuration?.background.backgroundColor = .disable
-            $0.configuration?.attributedTitle = .init(title, font, color: .loWhite)
+            $0.configuration?.attributedTitle = .init(title, font, color: .white)
         }
     }
 }

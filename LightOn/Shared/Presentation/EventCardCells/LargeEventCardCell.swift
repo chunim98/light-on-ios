@@ -34,7 +34,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     private let titleLabel = {
         let label = UILabel()
         label.font = .pretendard.bold(14)
-        label.textColor = .loBlack
+        label.textColor = .blackLO
         return label
     }()
     

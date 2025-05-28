@@ -39,7 +39,7 @@ final class MainLoginButton: UIStackView {
 
 extension MainLoginButton {
     var tapPublisher: AnyPublisher<Void, Never> {
-        loginButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        loginButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
 }
 

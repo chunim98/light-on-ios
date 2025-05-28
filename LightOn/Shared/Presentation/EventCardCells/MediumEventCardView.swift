@@ -48,7 +48,7 @@ final class MediumEventCardView: UIView {
     private let titleLabel = {
         let label = UILabel()
         label.font = .pretendard.semiBold(12)
-        label.textColor = .loBlack
+        label.textColor = .blackLO
         return label
     }()
     

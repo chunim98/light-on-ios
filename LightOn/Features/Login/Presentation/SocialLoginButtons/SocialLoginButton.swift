@@ -44,7 +44,7 @@ final class SocialLoginButton: UIImageView {
 
 extension SocialLoginButton {
     var tapPublisher: AnyPublisher<Void, Never> {
-        tapGesture.publisher().map{ _ in }.eraseToAnyPublisher()
+        tapGesture.tapPublisher.map{ _ in }.eraseToAnyPublisher()
     }
 }
 

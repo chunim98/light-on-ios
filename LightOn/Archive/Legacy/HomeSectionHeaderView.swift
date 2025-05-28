@@ -16,7 +16,7 @@ final class HomeSectionHeaderView: UIStackView {
     let titleLabel = {
         let label = UILabel()
         label.font = .pretendard.bold(23)
-        label.textColor = .loBlack
+        label.textColor = .x262626
         return label
     }()
     

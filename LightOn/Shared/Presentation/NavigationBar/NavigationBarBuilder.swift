@@ -15,7 +15,7 @@ class NavigationBarBuilder: NSObject {
     let appearance = {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .loWhite
+        appearance.backgroundColor = .white
         // #DEDEDE를 알파0.3으로 쓰면, 최종이 #F5F5F5(.background)
         appearance.shadowColor = UIColor(hex: 0xDEDEDE)
         return appearance
@@ -41,7 +41,7 @@ class NavigationBarBuilder: NSObject {
     
     func setTitle(_ text: String) {
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.loBlack,
+            .foregroundColor: UIColor.blackLO,
             .font: UIFont.pretendard.semiBold(19)!
         ]
         base?.title = text

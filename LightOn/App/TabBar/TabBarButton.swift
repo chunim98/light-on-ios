@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class TabBarButton: UIStackView {
@@ -83,7 +84,7 @@ extension TabBarButton {
     }
     
     var indexPublisher: AnyPublisher<Int, Never> {
-        tapGesture.publisher()
+        tapGesture.tapPublisher
             .compactMap { [weak self] _ in self?.index }
             .eraseToAnyPublisher()
     }

@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 class LOFormView: UIStackView {
@@ -76,13 +77,13 @@ extension LOFormView {
     }
     
     var editingBeginPublisher: AnyPublisher<Void, Never> {
-        textField.publisher(for: .editingDidBegin)
+        textField.didBeginEditingPublisher
             .map { _ in }
             .eraseToAnyPublisher()
     }
     
     var editingEndPublisher: AnyPublisher<Void, Never> {
-        textField.publisher(for: .editingDidEnd)
+        textField.returnPublisher
             .map { _ in }
             .eraseToAnyPublisher()
     }

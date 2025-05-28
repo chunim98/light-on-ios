@@ -15,6 +15,7 @@ final class BannerPageVC: UIPageViewController {
     // MARK: Properties
 
     private var cancellables = Set<AnyCancellable>()
+    
     private var pages = [UIViewController]()
     private var currentIndex: Int {
         guard let vc = viewControllers?.first else { return 0 }
@@ -23,7 +24,7 @@ final class BannerPageVC: UIPageViewController {
     
     // MARK: Components
     
-    private let pageControl = BannerPageControl()
+    private let pageControl = PageControl()
 
     // MARK: Life Cycle
     
@@ -31,23 +32,26 @@ final class BannerPageVC: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        pages = TestBannerItem.mockItems.map { BannerVC(item: $0) }
-        pageControl.numberOfPages = pages.count
-        pageControl.currentPage = 0
-        self.dataSource = self
-        self.delegate = self
-
+        setupDefaults()
         setupLayout()
         setupBindings()
-        
-        #if DEBUG
-        self.setViewControllers([pages[0]], direction: .forward, animated: true)
-        #endif
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        pages = TestBannerItem.mockItems.map { BannerVC(item: $0) } // temp
+        setViewControllers([pages[0]], direction: .forward, animated: true)
+        
+        pageControl.numberOfPages = pages.count
+        pageControl.currentPage = 0
+        
+        dataSource = self
+        delegate = self
     }
     
     // MARK: Layout

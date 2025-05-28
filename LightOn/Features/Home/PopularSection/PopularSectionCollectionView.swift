@@ -1,5 +1,5 @@
 //
-//  PopularEventCollectionView.swift
+//  PopularSectionCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PopularEventCollectionView<Item: LargeEventCardItem>: UICollectionView {
+final class PopularSectionCollectionView<Item: LargeEventCardItem>: UICollectionView {
     
     // MARK: Enum
     

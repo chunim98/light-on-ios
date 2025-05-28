@@ -24,7 +24,7 @@ final class LOAlertVC: UIViewController {
         let sv = UIStackView(.vertical, spacing: 28)
         sv.clipsToBounds = true
         sv.layer.cornerRadius = 8
-        sv.backgroundColor = .loWhite
+        sv.backgroundColor = .white
         sv.inset = .init(horizontal: 18, vertical: 28)
         return sv
     }()
@@ -33,7 +33,7 @@ final class LOAlertVC: UIViewController {
     
     private let headerLabel = {
         let label = UILabel()
-        label.textColor = .loBlack
+        label.textColor = .blackLO
         label.font = .pretendard.bold(22)
         return label
     }()
@@ -72,7 +72,7 @@ final class LOAlertVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .loBlack.withAlphaComponent(0.6)
+        view.backgroundColor = .blackLO.withAlphaComponent(0.6)
         setupLayout()
         setupBindings()
     }
@@ -103,11 +103,11 @@ final class LOAlertVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        acceptButton.publisher(for: .touchUpInside)
+        acceptButton.tapPublisher
             .sink { [weak self] _ in self?.dismiss(animated: true) }
             .store(in: &cancellables)
         
-        cancelButton.publisher(for: .touchUpInside)
+        cancelButton.tapPublisher
             .sink { [weak self] _ in self?.dismiss(animated: true) }
             .store(in: &cancellables)
     }
@@ -125,13 +125,13 @@ final class LOAlertVC: UIViewController {
 
 extension LOAlertVC {
     var acceptEventPublisher: AnyPublisher<Void, Never> {
-        self.acceptButton.publisher(for: .touchUpInside)
+        self.acceptButton.tapPublisher
             .map { _ in }
             .eraseToAnyPublisher()
     }
     
     var cancelEventPublisher: AnyPublisher<Void, Never> {
-        self.cancelButton.publisher(for: .touchUpInside)
+        self.cancelButton.tapPublisher
             .map { _ in }
             .eraseToAnyPublisher()
     }

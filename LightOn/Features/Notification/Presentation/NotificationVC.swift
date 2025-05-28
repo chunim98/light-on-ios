@@ -43,7 +43,7 @@ final class NotificationVC: UIViewController {
     // MARK: Defaults
     
     private func setupDefaults() {
-        view.backgroundColor = .loWhite
+        view.backgroundColor = .white
     }
     
     // MARK: Navigation Bar
@@ -68,7 +68,7 @@ final class NotificationVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        backBarButton.publisher(for: .touchUpInside)
+        backBarButton.tapPublisher
             .sink { [weak self] _ in
                 self?.navigationController?.popViewController(animated: true)
             }

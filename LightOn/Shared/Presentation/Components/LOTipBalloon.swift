@@ -16,7 +16,7 @@ final class LOTipBalloon: UIView {
     private let mainHStack = {
         let sv = UIStackView()
         sv.inset = .init(horizontal: 18, vertical: 8)
-        sv.backgroundColor = .loWhite
+        sv.backgroundColor = .white
         sv.layer.cornerRadius = 6
         return sv
     }()
@@ -27,13 +27,13 @@ final class LOTipBalloon: UIView {
         label.font = .pretendard.medium(12)
         label.textAlignment = .center
         label.numberOfLines = .max
-        label.textColor = .loBlack
+        label.textColor = .blackLO
         return label
     }()
     
     private let triangleImageView = {
         let iv = UIImageView()
-        iv.image = .loTipBalloonTriangle.withTintColor(.loWhite)
+        iv.image = .loTipBalloonTriangle.withTintColor(.white)
         iv.contentMode = .scaleAspectFit
         return iv
     }()

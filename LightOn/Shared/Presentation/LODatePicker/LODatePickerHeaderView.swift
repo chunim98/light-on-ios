@@ -37,7 +37,7 @@ final class LODatePickerHeaderView: UIStackView {
         il.isUserInteractionEnabled = false
         il.setIcon(.loDatePickerBottomArrow)
         il.setFont(.pretendard.semiBold(20))
-        il.setTextColor(.loBlack)
+        il.setTextColor(.blackLO)
         il.spacing = 4
         return il
     }()
@@ -77,11 +77,11 @@ extension LODatePickerHeaderView {
     }
     
     var previousButtonTapEventPublisher: AnyPublisher<Void, Never> {
-        previousButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        previousButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
     
     var nextButtonTapEventPublisher: AnyPublisher<Void, Never> {
-        nextButton.publisher(for: .touchUpInside).map { _ in }.eraseToAnyPublisher()
+        nextButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
     }
 }
 

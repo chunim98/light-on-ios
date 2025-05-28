@@ -32,7 +32,7 @@ final class LOFormTextField: UITextField {
         layer.cornerRadius = 6
         layer.borderWidth = 1
         clipsToBounds = true
-        textColor = .loBlack
+        textColor = .blackLO
         font = .pretendard.regular(16)
     }
     
@@ -50,14 +50,6 @@ final class LOFormTextField: UITextField {
     }
     
     func setBorderColor(_ color: UIColor) { layer.borderColor = color.cgColor }
-}
-
-// MARK: Binders & Publishers
-
-extension LOFormTextField {
-    var textPublisher: AnyPublisher<String?, Never> {
-        publisher(for: .editingChanged).map { [weak self] _ in self?.text }.eraseToAnyPublisher()
-    }
 }
 
 // MARK: - Preview

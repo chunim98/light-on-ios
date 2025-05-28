@@ -46,7 +46,7 @@ final class LOTabBarView: UIStackView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        backgroundColor = .loWhite
+        backgroundColor = .white
         distribution = .fillEqually
         inset = .init(horizontal: 16, vertical: 14)
         

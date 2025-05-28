@@ -23,7 +23,7 @@ final class TabBarVC: UITabBarController {
     private let loTabBarView = LOTabBarView()
     private let bottomSafeAreaCoverView = {
         let view = UIView()
-        view.backgroundColor = .loWhite
+        view.backgroundColor = .white
         return view
     }()
 

@@ -75,7 +75,7 @@ final class ViewController: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        kakaoSignInButton.publisher(for: .touchUpInside)
+        kakaoSignInButton.tapPublisher
             .sink { [weak self] _ in self?.kakaoAuthHelper.signInBinder() }
             .store(in: &cancellables)
         
@@ -83,7 +83,7 @@ final class ViewController: UIViewController {
             .sink { [weak self] in self?.pushResultVCBinder($0) }
             .store(in: &cancellables)
         
-        alertButton.publisher(for: .touchUpInside)
+        alertButton.tapPublisher
             .sink { [weak self] _ in self?.alert.show() }
             .store(in: &cancellables)
     }
