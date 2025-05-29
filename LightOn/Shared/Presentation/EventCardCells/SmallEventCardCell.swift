@@ -42,11 +42,6 @@ final class SmallEventCardCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        #if DEBUG
-        titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
-        thumbnailView.image = UIImage(named: "debug_busking")
-        #endif
-        
         setupLayout()
     }
     
@@ -60,6 +55,7 @@ final class SmallEventCardCell: UICollectionViewCell {
         contentView.addSubview(mainVStack)
         mainVStack.addArrangedSubview(thumbnailView)
         mainVStack.addArrangedSubview(titleLabel)
+        
         mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints { $0.size.equalTo(130) }
     }

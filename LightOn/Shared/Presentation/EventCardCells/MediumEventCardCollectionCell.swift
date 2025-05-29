@@ -39,7 +39,6 @@ final class MediumEventCardCollectionCell: UICollectionViewCell {
     
     private func setupLayout() {
         contentView.addSubview(mediumEventCardView)
-        contentView.snp.makeConstraints { $0.edges.equalToSuperview() }
         mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     

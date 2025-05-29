@@ -18,48 +18,57 @@ final class LargeEventCardCell: UICollectionViewCell {
     // MARK: Components
     
     private let mainVStack = UIStackView(.vertical, spacing: 14)
-    private let detailsVStack = UIStackView(.vertical, spacing: 8, inset: .init(horizontal: 2))
-    private let scheduleVStack = UIStackView(.vertical, spacing: 5)
-    private let dateTimeHStack = LODividerStackView(spacing: 5)
-
+    private let detailsVStack = UIStackView(.vertical, inset: .init(horizontal: 2))
+    private let dateTimeHStack = {
+        let il = TPIconLabelStack()
+        il.iconView.image = .eventCardCellClock
+        il.addArrangedSubview(il.iconView)
+        il.spacing = 5
+        return il
+    }()
+    
     private let thumbnailView = {
         let iv = UIImageView()
-        iv.backgroundColor = UIColor(hex: 0xD9D9D9)
         iv.contentMode = .scaleAspectFill
+        iv.backgroundColor = .xD9D9D9
         iv.layer.cornerRadius = 5
         iv.clipsToBounds = true
         return iv
     }()
     
     private let titleLabel = {
-        let label = UILabel()
-        label.font = .pretendard.bold(14)
-        label.textColor = .blackLO
-        return label
+        var config = TextConfiguration()
+        config.font = .pretendard.bold(14)
+        config.foregroundColor = .blackLO
+        return TPLabel(config: config)
     }()
     
-    private let dateIconLabel = {
-        let il = LOIconLabel()
-        il.setIcon(.eventCardCellClock)
-        il.setFont(.pretendard.regular(12))
-        il.setColor(.caption)
-        il.spacing = 5
-        return il
+    private let dateLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return TPLabel(config: config)
     }()
     
     private let timeLabel = {
-        let label = UILabel()
-        label.font = .pretendard.regular(12)
-        label.textColor = .caption
-        return label
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return TPLabel(config: config)
     }()
     
     private let locationIconLabel = {
-        let il = LOIconLabel()
-        il.setIcon(.eventCardCellPin)
-        il.setFont(.pretendard.regular(12))
-        il.setColor(.caption)
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        
+        let il = TPIconLabelStack()
+        il.iconView.image = .eventCardCellPin
+        il.titleLabel.config = config
         il.spacing = 6
+        
+        il.addArrangedSubview(il.iconView)
+        il.addArrangedSubview(il.titleLabel)
         return il
     }()
     
@@ -67,14 +76,6 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        #if DEBUG
-        thumbnailView.image = UIImage(resource: .debugBusking)
-        titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
-        locationIconLabel.setText("서울 영등포구 여의도동 81-8")
-        dateIconLabel.setText("2025.05.01")
-        timeLabel.text = "17:00"
-        #endif
-        
         setupLayout()
     }
     
@@ -91,41 +92,39 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     private func setupLayout() {
         contentView.addSubview(mainVStack)
-        // depth 1
         mainVStack.addArrangedSubview(thumbnailView)
         mainVStack.addArrangedSubview(detailsVStack)
-        // depth 2
+        
         detailsVStack.addArrangedSubview(titleLabel)
-        detailsVStack.addArrangedSubview(scheduleVStack)
-        // depth 3
-        scheduleVStack.addArrangedSubview(dateTimeHStack)
-        scheduleVStack.addArrangedSubview(locationIconLabel)
-        // depth 4
-        dateTimeHStack.addArrangedSubview(dateIconLabel)
+        detailsVStack.addArrangedSubview(Spacer(spacing: 8))
+        detailsVStack.addArrangedSubview(dateTimeHStack)
+        detailsVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailsVStack.addArrangedSubview(locationIconLabel)
+        
+        dateTimeHStack.addArrangedSubview(dateLabel)
+        dateTimeHStack.addArrangedSubview(Divider(width: 1, height: 10, color: .disable))
         dateTimeHStack.addArrangedSubview(timeLabel)
-        dateTimeHStack.addArrangedSubviewWithoutDivider(UIView())
-
-        contentView.snp.makeConstraints { $0.center.equalToSuperview()}
+        dateTimeHStack.addArrangedSubview(Spacer())
+        
         mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints {
             $0.width.equalTo(278)
             $0.height.equalTo(158)
         }
-        dateTimeHStack.snp.makeConstraints { $0.height.equalTo(14) }
-        locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
     
     // MARK: Public Configuration
 
     func configure(item: (any LargeEventCardItem)?) {
-        thumbnailView.image = item?.thumbnail
-        titleLabel.text     = item?.title
-        timeLabel.text      = item?.time
-        locationIconLabel.setText(item?.location)
-        dateIconLabel.setText(item?.date)
+        thumbnailView.image     = item?.thumbnail
+        titleLabel.config.text  = item?.title
+        dateLabel.config.text   = item?.date
+        timeLabel.config.text   = item?.time
+        locationIconLabel.titleLabel.config.text = item?.location
     }
 }
 
 // MARK: - Preview
 
 #Preview { LargeEventCardCell() }
+#Preview { HomeVC() }

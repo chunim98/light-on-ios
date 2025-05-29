@@ -43,6 +43,7 @@
 				Archive/Legacy/HomeSectionHeaderView.swift,
 				Archive/Legacy/RecommendedEventSectionView.swift,
 				Archive/Legacy/SpotlightedEventSectionView.swift,
+				Archive/LegacyComponents/LOGenreTagView.swift,
 				Archive/LegacyTabBar/LOTabBarView.swift,
 				Archive/LegacyTabBar/LOTabBarVM.swift,
 				Archive/LegacyTabBar/TabBarButton.swift,
