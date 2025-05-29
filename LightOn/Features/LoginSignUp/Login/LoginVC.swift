@@ -63,7 +63,7 @@ final class LoginVC: TPBackViewController {
     private let googleLoginButton = SocialLoginButton(image: .loginSocialGoogle)
     private let appleLoginButton  = SocialLoginButton(image: .loginSocialApple)
     
-    let registerButton = LoginOptionButton(title: "회원가입")
+    let signUpButton = LoginOptionButton(title: "회원가입")
     let findMyIDButton = LoginOptionButton(title: "아이디 찾기")
     let findMyPWButton = LoginOptionButton(title: "비밀번호 찾기")
     
@@ -97,7 +97,7 @@ final class LoginVC: TPBackViewController {
         socialButtonHStack.addArrangedSubview(googleLoginButton)
         socialButtonHStack.addArrangedSubview(appleLoginButton)
         
-        optionButtonHStack.addArrangedSubview(registerButton)
+        optionButtonHStack.addArrangedSubview(signUpButton)
         optionButtonHStack.addArrangedSubview(Divider(width: 1, height: 12, color: .disable))
         optionButtonHStack.addArrangedSubview(findMyIDButton)
         optionButtonHStack.addArrangedSubview(Divider(width: 1, height: 12, color: .disable))
