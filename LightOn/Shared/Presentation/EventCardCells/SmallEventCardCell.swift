@@ -18,18 +18,23 @@ final class SmallEventCardCell: UICollectionViewCell {
     // MARK: Components
     
     private let mainVStack = UIStackView(.vertical, alignment: .center, spacing: 14)
+    
     private let thumbnailView = {
         let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 130/2
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 130/2
+        imageView.clipsToBounds = true
         return imageView
     }()
+    
     private let titleLabel = {
-        let label = UILabel()
+        var config = TextConfiguration()
+        config.font = .pretendard.semiBold(16)
+        config.foregroundColor = .blackLO
+        config.lineHeight = 21
+        
+        let label = TPLabel(config: config)
         label.numberOfLines = 2
-        label.textColor = .blackLO
-        label.font = .pretendard.semiBold(16)
         return label
     }()
     
@@ -63,7 +68,7 @@ final class SmallEventCardCell: UICollectionViewCell {
 
     func configure(item: (any SmallEventCardItem)?) {
         thumbnailView.image = item?.thumbnail
-        titleLabel.text = item?.title
+        titleLabel.config.text = item?.title
     }
 }
 

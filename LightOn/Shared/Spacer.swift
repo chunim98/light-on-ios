@@ -15,11 +15,6 @@ final class Spacer: UIView {
     
     // MARK: Life Cycle
     
-    convenience init(spacing: CGFloat, color: UIColor) {
-        self.init(spacing: spacing)
-        backgroundColor = color
-    }
-    
     init(spacing: CGFloat? = nil) {
         self.spacing = spacing
         super.init(frame: .zero)

@@ -9,142 +9,150 @@ import UIKit
 
 import SnapKit
 
-final class MediumEventCardView: UIView {
+final class MediumEventCardView: UIStackView {
     
     // MARK: Components
     
-    // Containers
-    private let mainHStack = {
-        let sv = UIStackView(alignment: .center, spacing: 12)
-        sv.clipsToBounds = true
-        sv.layer.borderWidth = 1
-        sv.layer.cornerRadius = 5
-        sv.inset = .init(edges: 12)
-        sv.layer.borderColor = UIColor.disable.cgColor
-        return sv
-    }()
-    private let detailVStack = UIStackView(.vertical, spacing: 8)
-    private let artistTitleGenreVStack = UIStackView(.vertical, spacing: 5)
-    private let dateTimePlaceVStack = UIStackView(.vertical, spacing: 5)
+    private let detailVStack = UIStackView(.vertical)
     private let titleGenreHStack = UIStackView(spacing: 4)
-    private let dateTimeHStack = LODividerStackView(spacing: 5)
-    
-    // Components
+    private let dateTimeHStack = {
+        let il = TPIconLabelStack()
+        il.iconView.image = .eventCardCellClock
+        il.addArrangedSubview(il.iconView)
+        il.spacing = 5
+        return il
+    }()
+
     private let thumbnailView = {
         let imageView = UIImageView()
-        imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 4
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 4
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     private let artistLabel = {
-        let label = UILabel()
-        label.font = .pretendard.regular(12)
-        label.textColor = .caption
-        return label
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return TPLabel(config: config)
     }()
     
     private let titleLabel = {
-        let label = UILabel()
-        label.font = .pretendard.semiBold(12)
-        label.textColor = .blackLO
+        var config = TextConfiguration()
+        config.font = .pretendard.semiBold(12)
+        config.foregroundColor = .blackLO
+        return TPLabel(config: config)
+    }()
+    
+    private let genreLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.bold(8)
+        config.foregroundColor = .brand
+        
+        let padding = UIEdgeInsets(horizontal: 4, vertical: 2)
+        let label = TPPaddingLabel(configuration: config, padding: padding)
+        label.backgroundColor = .xF5F0FF
+        label.layer.cornerRadius = 2
+        label.clipsToBounds = true
         return label
     }()
     
-    private let genreTagView = LOGenreTagView()
-    
-    private let dateIconLabel = {
-        let iconLabel = LOIconLabel()
-        iconLabel.setIcon(.eventCardCellClock)
-        iconLabel.setFont(.pretendard.regular(12))
-        iconLabel.setColor(.caption)
-        iconLabel.spacing = 5
-        return iconLabel
+    private let dateLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return TPLabel(config: config)
     }()
         
     private let timeLabel = {
-        let label = UILabel()
-        label.font = .pretendard.regular(12)
-        label.textColor = .caption
-        return label
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return TPLabel(config: config)
     }()
     
     private let locationIconLabel = {
-        let iconLabel = LOIconLabel()
-        iconLabel.setIcon(.eventCardCellPin)
-        iconLabel.setFont(.pretendard.regular(12))
-        iconLabel.setColor(.caption)
-        iconLabel.spacing = 6
-        return iconLabel
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        
+        let il = TPIconLabelStack()
+        il.iconView.image = .eventCardCellPin
+        il.titleLabel.config = config
+        il.spacing = 6
+        
+        il.addArrangedSubview(il.iconView)
+        il.addArrangedSubview(il.titleLabel)
+        return il
     }()
     
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        #if DEBUG
-        thumbnailView.image = UIImage(resource: .debugBusking)
-        artistLabel.text = "라이트온"
-        titleLabel.text = "[여의도] Light ON 홀리데이 버스킹"
-        genreTagView.text = "어쿠스틱"
-        dateIconLabel.setText("2025.05.01")
-        timeLabel.text = "17:00"
-        locationIconLabel.setText("서울 영등포구 여의도동 81-8")
-        #endif
-        
+        setupDefaults()
         setupLayout()
     }
     
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        layer.borderColor = UIColor.disable.cgColor
+        layer.borderWidth = 1
+        layer.cornerRadius = 5
+        clipsToBounds = true
+        inset = .init(edges: 12)
+        alignment = .center
+        spacing = 12
     }
     
     // MARK: Layout
     
     private func setupLayout() {
-        // depth 0
-        self.addSubview(mainHStack)
-        // depth 1
-        mainHStack.addArrangedSubview(thumbnailView)
-        mainHStack.addArrangedSubview(detailVStack)
-        // depth 2
-        detailVStack.addArrangedSubview(artistTitleGenreVStack)
-        detailVStack.addArrangedSubview(dateTimePlaceVStack)
-        // depth 3
-        artistTitleGenreVStack.addArrangedSubview(artistLabel)
-        artistTitleGenreVStack.addArrangedSubview(titleGenreHStack)
-        dateTimePlaceVStack.addArrangedSubview(dateTimeHStack)
-        dateTimePlaceVStack.addArrangedSubview(locationIconLabel)
-        // depth 4
+        addArrangedSubview(thumbnailView)
+        addArrangedSubview(detailVStack)
+
+        detailVStack.addArrangedSubview(artistLabel)
+        detailVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailVStack.addArrangedSubview(titleGenreHStack)
+        detailVStack.addArrangedSubview(Spacer(spacing: 8))
+        detailVStack.addArrangedSubview(dateTimeHStack)
+        detailVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailVStack.addArrangedSubview(locationIconLabel)
+
         titleGenreHStack.addArrangedSubview(titleLabel)
-        titleGenreHStack.addArrangedSubview(genreTagView)
-        titleGenreHStack.addArrangedSubview(UIView())
-        dateTimeHStack.addArrangedSubview(dateIconLabel)
+        titleGenreHStack.addArrangedSubview(genreLabel)
+        titleGenreHStack.addArrangedSubview(Spacer())
+        
+        dateTimeHStack.addArrangedSubview(dateLabel)
+        dateTimeHStack.addArrangedSubview(Divider(width: 1, height: 10, color: .disable))
         dateTimeHStack.addArrangedSubview(timeLabel)
-        dateTimeHStack.addArrangedSubviewWithoutDivider(UIView())
+        dateTimeHStack.addArrangedSubview(Spacer())
         
-        genreTagView.setContentCompressionResistancePriority(.init(999), for: .horizontal)
+        genreLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
-        mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints { $0.size.equalTo(80) }
-        dateTimeHStack.snp.makeConstraints { $0.height.equalTo(14) }
-        locationIconLabel.snp.makeConstraints { $0.height.equalTo(14) }
     }
     
     // MARK: Public Configuration
 
     func configure(item: (any MediumEventCardItem)?) {
-        thumbnailView.image = item?.thumbnail
-        artistLabel.text    = item?.artist
-        titleLabel.text     = item?.title
-        genreTagView.text   = item?.genre
-        timeLabel.text      = item?.time
-        dateIconLabel.setText(item?.date)
-        locationIconLabel.setText(item?.location)
+        thumbnailView.image     = item?.thumbnail
+        artistLabel.config.text = item?.artist
+        titleLabel.config.text  = item?.title
+        genreLabel.config.text  = item?.genre
+        dateLabel.config.text   = item?.date
+        timeLabel.config.text   = item?.time
+        locationIconLabel.titleLabel.config.text = item?.location
     }
 }
 
 // MARK: - Preview
 
 #Preview { MediumEventCardView() }
+#Preview { HomeVC() }
