@@ -13,8 +13,8 @@ class TPBackViewController: TPBarViewController {
     
     let backBarButton = {
         var config = UIButton.Configuration.plain()
-        config.image = .backBarButtonArrow.withTintColor(.white)
         config.contentInsets = .init(vertical: 8)
+        config.image = .backBarButtonArrow
         return UIButton(configuration: config)
     }()
     

@@ -13,10 +13,7 @@ final class Divider: UIView {
     
     private let width: CGFloat?
     private let height: CGFloat?
-    
-    // MARK: Components
-    
-    
+
     // MARK: Life Cycle
     
     init(width: CGFloat? = nil, height: CGFloat? = nil, color: UIColor) {
@@ -29,6 +26,8 @@ final class Divider: UIView {
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Intrinsic Content Size
     
     override var intrinsicContentSize: CGSize {
         CGSize(

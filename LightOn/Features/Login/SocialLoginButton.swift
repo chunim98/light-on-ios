@@ -20,31 +20,28 @@ final class SocialLoginButton: UIImageView {
     
     // MARK: Components
     
-    private let tapGesture = UITapGestureRecognizer()
+    let tapGesture = UITapGestureRecognizer()
     
     // MARK: Life Cycle
     
     override init(image: UIImage?) {
         super.init(image: image)
-        
+        setupDefaults()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
         addGestureRecognizer(tapGesture)
         contentMode = .scaleAspectFill
         layer.borderColor = UIColor.thumbLine.cgColor
         layer.cornerRadius = size/2
         layer.borderWidth = 1
         clipsToBounds = true
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: Binders & Publishers
-
-extension SocialLoginButton {
-    var tapPublisher: AnyPublisher<Void, Never> {
-        tapGesture.tapPublisher.map{ _ in }.eraseToAnyPublisher()
     }
 }
 

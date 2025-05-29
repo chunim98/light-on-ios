@@ -68,7 +68,7 @@ final class HomeVC: TPBarViewController {
         
         navigationBar.leftItemHStack.addArrangedSubview(logoImageView)
         navigationBar.rightItemHStack.addArrangedSubview(notificationBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(Spacer(spacing: 9))
+        navigationBar.rightItemHStack.addArrangedSubview(Spacer(9))
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
     }
     
@@ -79,11 +79,11 @@ final class HomeVC: TPBarViewController {
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(bannerPageVC.view)
         contentVStack.addArrangedSubview(recommendSectionView)
-        contentVStack.addArrangedSubview(Spacer(spacing: 18))
+        contentVStack.addArrangedSubview(Spacer(18))
         contentVStack.addArrangedSubview(spotlightedSectionView)
-        contentVStack.addArrangedSubview(Spacer(spacing: 18))
+        contentVStack.addArrangedSubview(Spacer(18))
         contentVStack.addArrangedSubview(popularSectionView)
-        contentVStack.addArrangedSubview(Spacer(spacing: 30))
+        contentVStack.addArrangedSubview(Spacer(30))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }

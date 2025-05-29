@@ -15,7 +15,7 @@ final class Spacer: UIView {
     
     // MARK: Life Cycle
     
-    init(spacing: CGFloat? = nil) {
+    init(_ spacing: CGFloat? = nil) {
         self.spacing = spacing
         super.init(frame: .zero)
     }
@@ -24,8 +24,8 @@ final class Spacer: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Overrides
-    
+    // MARK: Intrinsic Content Size
+
     override var intrinsicContentSize: CGSize {
         if let spacing {
             return CGSize(width: spacing, height: spacing)

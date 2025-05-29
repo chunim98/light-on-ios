@@ -118,11 +118,11 @@ final class MediumEventCardView: UIStackView {
         addArrangedSubview(detailVStack)
 
         detailVStack.addArrangedSubview(artistLabel)
-        detailVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailVStack.addArrangedSubview(Spacer(5))
         detailVStack.addArrangedSubview(titleGenreHStack)
-        detailVStack.addArrangedSubview(Spacer(spacing: 8))
+        detailVStack.addArrangedSubview(Spacer(8))
         detailVStack.addArrangedSubview(dateTimeHStack)
-        detailVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailVStack.addArrangedSubview(Spacer(5))
         detailVStack.addArrangedSubview(locationIconLabel)
 
         titleGenreHStack.addArrangedSubview(titleLabel)

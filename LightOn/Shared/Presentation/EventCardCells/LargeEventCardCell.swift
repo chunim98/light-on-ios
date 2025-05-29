@@ -96,9 +96,9 @@ final class LargeEventCardCell: UICollectionViewCell {
         mainVStack.addArrangedSubview(detailsVStack)
         
         detailsVStack.addArrangedSubview(titleLabel)
-        detailsVStack.addArrangedSubview(Spacer(spacing: 8))
+        detailsVStack.addArrangedSubview(Spacer(8))
         detailsVStack.addArrangedSubview(dateTimeHStack)
-        detailsVStack.addArrangedSubview(Spacer(spacing: 5))
+        detailsVStack.addArrangedSubview(Spacer(5))
         detailsVStack.addArrangedSubview(locationIconLabel)
         
         dateTimeHStack.addArrangedSubview(dateLabel)
