@@ -36,6 +36,12 @@ final class TabBarView: UIStackView {
         setupBindings()
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        // shadowPath로 그림자 렌더링 성능 개선
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+    }
+    
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -46,6 +52,12 @@ final class TabBarView: UIStackView {
         inset = .init(horizontal: 16, vertical: 14)
         distribution = .fillEqually
         backgroundColor = .white
+        
+        // 그림자 설정
+        layer.shadowRadius = 15
+        layer.shadowOpacity = 0.15
+        layer.shadowOffset = .zero
+        layer.shadowColor = UIColor.black.cgColor
     }
     
     // MARK: Layout

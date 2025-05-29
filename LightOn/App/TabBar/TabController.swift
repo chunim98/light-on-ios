@@ -1,14 +1,13 @@
 //
-//  TabViewController.swift
+//  TabController.swift
 //  TennisPark
 //
 //  Created by 신정욱 on 5/26/25.
 //
 
-
 import UIKit
 
-class TabViewController: UIViewController {
+class TabController: UIViewController {
     
     // MARK: Properties
 
@@ -62,6 +61,6 @@ class TabViewController: UIViewController {
 
 // MARK: Binders & Publishers
 
-extension TabViewController {
+extension TabController {
     func selectedIndexBinder(_ index: Int) { transition(to: index) }
 }

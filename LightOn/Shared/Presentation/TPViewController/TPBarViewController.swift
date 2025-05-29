@@ -17,6 +17,8 @@ class TPBarViewController: UIViewController {
     
     // MARK: Components
     
+    weak var tabBar: TabBarController?
+    
     let topSafeAreaView = UIView()
     let navigationBar = TPNavigationBar(height: 50)
     

@@ -12,8 +12,6 @@ import SnapKit
 
 final class HomeVC: TPBarViewController {
     
-    var tabBar: TabBarVC?
-    
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
@@ -46,7 +44,6 @@ final class HomeVC: TPBarViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBar?.bottomSafeAreaView.backgroundColor = .white
         setupDefaults()
         setupBindings()
         setupLayout()
@@ -54,18 +51,12 @@ final class HomeVC: TPBarViewController {
     
 //    override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
-//        UIView.animate(withDuration: 0.15) { [weak self] in
-//            self?.tabBar?.tabBarView.snp.updateConstraints { $0.height.equalTo(0) }
-//            self?.tabBar?.view.layoutIfNeeded()
-//        }
+//        tabBar?.setIsTabBarHidden(true)
 //    }
-//    
+    
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)
-//        UIView.animate(withDuration: 0.15) { [weak self] in
-//            self?.tabBar?.tabBarView.snp.updateConstraints { $0.height.equalTo(72) }
-//            self?.tabBar?.view.layoutIfNeeded()
-//        }
+//        tabBar?.setIsTabBarHidden(false)
 //    }
     
     // MARK: Defaults
@@ -114,4 +105,4 @@ final class HomeVC: TPBarViewController {
 // MARK: - Preview
 
 #Preview { UINavigationController(rootViewController: HomeVC()) }
-#Preview { TabBarVC() }
+#Preview { TabBarController() }

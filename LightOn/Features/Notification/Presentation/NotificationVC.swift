@@ -86,5 +86,5 @@ extension NotificationVC: UIGestureRecognizerDelegate {
 // MARK: - Preview
 
 //#Preview { UINavigationController(rootViewController: NotificationVC()) }
-#Preview { TabBarVC() }
+#Preview { TabBarController() }
 
