@@ -25,7 +25,7 @@ final class Button: UIButton {
         config.font = .pretendard.regular(16)
         config.foregroundColor = .assistive
         
-        let il = TPIconLabelStack()
+        let il = TPIconLabelContainer()
         il.inset = .init(horizontal: 18)
         il.iconView.image = .signUpArrow
         il.titleLabel.config = config

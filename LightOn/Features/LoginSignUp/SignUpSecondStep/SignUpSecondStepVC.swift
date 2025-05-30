@@ -6,13 +6,16 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class SignUpSecondStepVC: TPBackViewController {
     
     // MARK: Properties
     
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
     
@@ -22,6 +25,13 @@ final class SignUpSecondStepVC: TPBackViewController {
     private let userInfoSection = UserInfoSectionView()
     private let marketingSection = MarketingSectionView()
     private let policySection = PolicySectionView()
+    
+    private let privacyPolicyAlert = {
+        let alert = PolicyDetailAlert()
+        alert.titleLabel.config.text = "이용약관"
+        alert.textView.setText("대충 엄청 긴 텍스트") // temp
+        return alert
+    }()
     
     private let nextButton = {
         let button = TPButton(style: .filled)
@@ -35,6 +45,7 @@ final class SignUpSecondStepVC: TPBackViewController {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupBindings()
     }
     
     // MARK: Defaults
@@ -64,6 +75,22 @@ final class SignUpSecondStepVC: TPBackViewController {
             $0.top.equalTo(scrollView.snp.bottom)
         }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        
+        policySection.privacyPolicyDetailButton.tapPublisher
+            .sink { [weak self] _ in
+                print("되냐?")
+                guard let self else { return }
+                privacyPolicyAlert.modalPresentationStyle = .overFullScreen
+                privacyPolicyAlert.modalTransitionStyle = .crossDissolve
+                present(privacyPolicyAlert, animated: true)
+            }
+            .store(in: &cancellables)
+        
     }
 }
 

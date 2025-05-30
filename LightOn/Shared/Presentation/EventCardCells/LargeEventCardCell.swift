@@ -20,7 +20,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     private let mainVStack = UIStackView(.vertical, spacing: 14)
     private let detailsVStack = UIStackView(.vertical, inset: .init(horizontal: 2))
     private let dateTimeHStack = {
-        let il = TPIconLabelStack()
+        let il = TPIconLabelContainer()
         il.iconView.image = .eventCardCellClock
         il.addArrangedSubview(il.iconView)
         il.spacing = 5
@@ -62,7 +62,7 @@ final class LargeEventCardCell: UICollectionViewCell {
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         
-        let il = TPIconLabelStack()
+        let il = TPIconLabelContainer()
         il.iconView.image = .eventCardCellPin
         il.titleLabel.config = config
         il.spacing = 6

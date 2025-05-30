@@ -16,7 +16,7 @@ final class MediumEventCardView: UIStackView {
     private let detailVStack = UIStackView(.vertical)
     private let titleGenreHStack = UIStackView(spacing: 4)
     private let dateTimeHStack = {
-        let il = TPIconLabelStack()
+        let il = TPIconLabelContainer()
         il.iconView.image = .eventCardCellClock
         il.addArrangedSubview(il.iconView)
         il.spacing = 5
@@ -77,7 +77,7 @@ final class MediumEventCardView: UIStackView {
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         
-        let il = TPIconLabelStack()
+        let il = TPIconLabelContainer()
         il.iconView.image = .eventCardCellPin
         il.titleLabel.config = config
         il.spacing = 6

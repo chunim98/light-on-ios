@@ -1,5 +1,5 @@
 //
-//  TPIconLabelStack.swift
+//  TPIconLabelContainer.swift
 //  TennisParkForManager
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TPIconLabelStack: UIStackView {
+final class TPIconLabelContainer: UIStackView {
     
     // MARK: Components
     
