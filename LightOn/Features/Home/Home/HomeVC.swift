@@ -66,10 +66,13 @@ final class HomeVC: TPBarViewController {
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.image = .homeNavBarLogo
         
+        navigationBar.leftItemHStack.addArrangedSubview(Spacer(18))
         navigationBar.leftItemHStack.addArrangedSubview(logoImageView)
+        
         navigationBar.rightItemHStack.addArrangedSubview(notificationBarButton)
         navigationBar.rightItemHStack.addArrangedSubview(Spacer(9))
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
+        navigationBar.rightItemHStack.addArrangedSubview(Spacer(18))
     }
     
     // MARK: Layout

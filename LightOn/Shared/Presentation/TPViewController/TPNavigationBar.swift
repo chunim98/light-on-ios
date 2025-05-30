@@ -22,8 +22,8 @@ final class TPNavigationBar: UIView {
     
     // MARK: Components
     
-    let leftItemHStack = UIStackView(alignment: .center, inset: .init(leading: 16))
-    let rightItemHStack = UIStackView(alignment: .center, inset: .init(trailing: 16))
+    let leftItemHStack = UIStackView(alignment: .center)
+    let rightItemHStack = UIStackView(alignment: .center)
     
     let titleLabel = {
         var config = TextConfiguration()

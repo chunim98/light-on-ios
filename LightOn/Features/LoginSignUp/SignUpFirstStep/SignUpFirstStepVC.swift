@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class SignUpFirstStepVC: TPBackViewController {
+final class SignUpFirstStepVC: TPBackButtonViewController {
     
     // MARK: Properties
     
