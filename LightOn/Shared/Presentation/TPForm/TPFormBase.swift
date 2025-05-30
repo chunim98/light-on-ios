@@ -11,7 +11,7 @@ class TPFormBase: UIStackView {
     
     // MARK: Components
     
-    private let titleHStack = UIStackView(spacing: 2, inset: .init(horizontal: 16))
+    let titleHStack = UIStackView(spacing: 2, inset: .init(horizontal: 16))
     
     let titleLabel = {
         var config = TextConfiguration()
