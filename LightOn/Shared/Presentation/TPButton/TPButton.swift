@@ -12,15 +12,15 @@ class TPButton: UIButton {
     // MARK: Properties
     
     let style: TPButtonStyle
+    private var config = Configuration.filled()
     private let width: CGFloat?
     private let height: CGFloat
     
     override var intrinsicContentSize: CGSize {
-        if let width {
-            CGSize(width: width, height: height)
-        } else {
-            CGSize(width: super.intrinsicContentSize.width, height: height)
-        }
+        CGSize(
+            width: width ?? super.intrinsicContentSize.width,
+            height: height
+        )
     }
     
     // MARK: Life Cycle
@@ -40,7 +40,6 @@ class TPButton: UIButton {
     // MARK: Style
     
     private func setupStyle() {
-        var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = style.backgroundColor
         config.background.strokeColor = style.strokeColor
         config.background.strokeWidth = style.strokeWidth
@@ -52,22 +51,33 @@ class TPButton: UIButton {
     // MARK: Public Configuration
     
     func setTitle(_ title: String, _ font: UIFont) {
-        configurationUpdateHandler = { [style] in
-            var config = TextConfiguration()
-            config.text = title
-            config.font = font
+        configurationUpdateHandler = { [weak self] in
+            guard let self else { return }
+            
+            var titleConfig = TextConfiguration()
+            titleConfig.text = title
+            titleConfig.font = font
+            
+            var config = config // 복사해서 가지고 있어야 함
             
             if $0.isEnabled {
-                $0.configuration?.baseBackgroundColor = style.backgroundColor
-                $0.configuration?.baseForegroundColor = style.foregroundColor
-                $0.configuration?.attributedTitle = .init(textConfig: config)
+                config.baseBackgroundColor = style.backgroundColor
+                config.baseForegroundColor = style.foregroundColor
+                config.attributedTitle = .init(textConfig: titleConfig)
                 
             } else {
-                config.foregroundColor = style.disabledForegroundColor
-                $0.configuration?.background.backgroundColor = style.disabledBackgroundColor
-                $0.configuration?.attributedTitle = .init(textConfig: config)
+                titleConfig.foregroundColor = style.disabledForegroundColor
+                config.background.backgroundColor = style.disabledBackgroundColor
+                config.attributedTitle = .init(textConfig: titleConfig)
             }
+            
+            $0.configuration = config
         }
+    }
+    
+    func setIndicator(isLoading: Bool) {
+        config.showsActivityIndicator = isLoading
+        configuration = config
     }
 }
 

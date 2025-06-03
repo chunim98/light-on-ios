@@ -48,7 +48,6 @@
 				Archive/LegacyTabBar/LOTabBarVM.swift,
 				Archive/LegacyTabBar/TabBarButton.swift,
 				Archive/LegacyTabBar/TabBarVC.swift,
-				"Archive/UICollectionView+Combine.swift",
 				"Archive/UIControl+Combine.swift",
 				"Archive/UIGestureRecognizer+Combine.swift",
 				Resources/Info.plist,

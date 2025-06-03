@@ -13,16 +13,23 @@ import SnapKit
 
 final class SignUpTextForm: TPTextForm {
     
+    // MARK: Struct
+    
+    struct CaptionConfiguration {
+        let text: String
+        let isValid: Bool
+    }
+    
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
     
-    private let captionHStack = UIStackView(spacing: 3, inset: .init(leading: 2))
+    let captionHStack = UIStackView(spacing: 3, inset: .init(leading: 2))
     
-    private let captionIconView = UIImageView(contentMode: .scaleAspectFit)
-    private let captionLabel = {
+    let captionIconView = UIImageView(contentMode: .scaleAspectFit)
+    let captionLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
         return TPLabel(config: config)
@@ -32,6 +39,7 @@ final class SignUpTextForm: TPTextForm {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupDefaults()
         setupLayout()
         setupBindings()
     }
@@ -40,9 +48,13 @@ final class SignUpTextForm: TPTextForm {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Defaults
+    
+    private func setupDefaults() { textField.autocapitalizationType = .none }
+    
     // MARK: Layout
     
-    func setupLayout() {
+    private func setupLayout() {
         addArrangedSubview(captionHStack)
         captionHStack.addArrangedSubview(captionIconView)
         captionHStack.addArrangedSubview(captionLabel)
@@ -71,15 +83,22 @@ final class SignUpTextForm: TPTextForm {
 // MARK: Binders & Publishers
 
 extension SignUpTextForm {
-    func showValidCaptionBinder(_ text: String) {
-        captionIconView.image = .formFieldCheck
-        captionLabel.config.foregroundColor = .brand
-        captionLabel.config.text = text
-    }
     
-    func showInvalidCaptionBinder(_ text: String) {
-        captionIconView.image = .formFieldExclamation
-        captionLabel.config.foregroundColor = .destructive
-        captionLabel.config.text = text
+    func captionConfigBinder(config: CaptionConfiguration?) {
+        if let config {
+            captionIconView.image = config.isValid ?
+                .formFieldCheck :
+                .formFieldExclamation
+            
+            captionLabel.config.foregroundColor = config.isValid ?
+                .brand :
+                .destructive
+            
+            captionLabel.config.text = config.text
+            captionHStack.isHidden = false
+            
+        } else {
+            captionHStack.isHidden = true
+        }
     }
 }
