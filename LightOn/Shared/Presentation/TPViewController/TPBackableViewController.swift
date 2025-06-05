@@ -20,7 +20,10 @@ class TPBackableViewController: TPBarViewController {
     
     private func setupDefaults() {
         // interactivePopGesture 복구
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        // 화면 이동할 때마다 델리게이트가 덮어씌워지면 안되니까, nil 체크
+        if navigationController?.interactivePopGestureRecognizer?.delegate == nil {
+            navigationController?.interactivePopGestureRecognizer?.delegate = self
+        }
     }
 }
 
