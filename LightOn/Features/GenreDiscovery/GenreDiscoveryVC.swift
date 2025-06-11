@@ -1,16 +1,17 @@
 //
-//  PerformanceListVC.swift
+//  GenreDiscoveryVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/11/25.
 //
 
 import UIKit
+import SwiftUI
 import Combine
 
 import SnapKit
 
-final class PerformanceListVC: BarViewController {
+final class GenreDiscoveryVC: BarViewController {
     
     // MARK: Properties
     
@@ -21,7 +22,8 @@ final class PerformanceListVC: BarViewController {
     private let mainVStack = UIStackView(.vertical)
     
     private let upperTabBar = UpperTabBar()
-    private let pageVC = ListPageVC()
+    private let genreTagsView = UIHostingController(rootView: GenreTagsView(vm: .init()))
+    private let pageVC = PerformanceListPageController()
     
     // MARK: Life Cycle
     
@@ -43,6 +45,9 @@ final class PerformanceListVC: BarViewController {
     private func setupLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(upperTabBar)
+        mainVStack.addArrangedSubview(Spacer(20))
+        mainVStack.addArrangedSubview(genreTagsView.view)
+        mainVStack.addArrangedSubview(Spacer(4))
         mainVStack.addArrangedSubview(pageVC.view)
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
     }
@@ -57,6 +62,13 @@ final class PerformanceListVC: BarViewController {
         pageVC.pageIndexPublisher
             .sink { [weak self] in self?.upperTabBar.selectedIndexBinder(index: $0) }
             .store(in: &cancellables)
+        
+        genreTagsView.rootView.selectedIndexPublisher
+            .sink { print("genreTagsView", $0) }
+            .store(in: &cancellables)
     }
-
 }
+
+// MARK: - Preview
+
+#Preview { TabBarController() }

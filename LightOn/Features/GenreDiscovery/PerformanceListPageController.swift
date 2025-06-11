@@ -1,17 +1,16 @@
 //
-//  ListPageVC.swift
+//  PerformanceListPageController.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/11/25.
 //
-
 
 import UIKit
 import Combine
 
 import SnapKit
 
-final class ListPageVC: UIPageViewController {
+final class PerformanceListPageController: UIPageViewController {
     
     // MARK: Properties
 
@@ -43,18 +42,7 @@ final class ListPageVC: UIPageViewController {
     // MARK: Defaults
     
     private func setupDefaults() {
-        pages = [
-            {
-                let vc = UIViewController()
-                vc.view.backgroundColor = .gray
-                return vc
-            }(),
-            {
-                let vc = UIViewController()
-                vc.view.backgroundColor = .darkGray
-                return vc
-            }()
-        ]
+        pages = [PerformanceListVC(), PerformanceListVC()]
         setViewControllers([pages[0]], direction: .forward, animated: true)
         
         dataSource = self
@@ -64,7 +52,7 @@ final class ListPageVC: UIPageViewController {
 
 // MARK: Binders & Publishers
 
-extension ListPageVC {
+extension PerformanceListPageController {
     func pageIndexBidner(index: Int) {
         // 이전 페이지 인덱스에 따라, 전환 애니메이션 방향을 다르게 설정
         let direction: UIPageViewController.NavigationDirection
@@ -80,7 +68,7 @@ extension ListPageVC {
 
 // MARK: - UIPageViewControllerDelegate
 
-extension ListPageVC: UIPageViewControllerDelegate {
+extension PerformanceListPageController: UIPageViewControllerDelegate {
     /// 사용자가 스와이프해서 페이지를 변경할 때만 실행됨
     func pageViewController(
         _ pageViewController: UIPageViewController,
@@ -94,7 +82,7 @@ extension ListPageVC: UIPageViewControllerDelegate {
 
 // MARK: - UIPageViewControllerDataSource
 
-extension ListPageVC: UIPageViewControllerDataSource {
+extension PerformanceListPageController: UIPageViewControllerDataSource {
     /// 좌우 스와이프 할 때 어떤 페이지를 보여줄지에 관한 메서드
     func pageViewController(
         _ pageViewController: UIPageViewController,

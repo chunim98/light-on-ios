@@ -1,5 +1,5 @@
 //
-//  TagPerformanceCell.swift
+//  HashtagPerformanceCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/11/25.
@@ -9,11 +9,11 @@ import UIKit
 
 import SnapKit
 
-final class TagPerformanceCell: UITableViewCell {
+final class HashtagPerformanceCell: UITableViewCell {
     
     // MARK: Properties
     
-    static let id = "TagPerformanceCell"
+    static let id = "HashtagPerformanceCell"
     
     // MARK: Components
     
@@ -47,7 +47,7 @@ final class TagPerformanceCell: UITableViewCell {
         return label
     }()
     
-    private let tagLabel = {
+    private let hashtagLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.bold(13)
         config.foregroundColor = .brand
@@ -123,7 +123,7 @@ final class TagPerformanceCell: UITableViewCell {
         
         thumbnailView.addSubview(typeLabel)
         
-        detailVStack.addArrangedSubview(tagLabel)
+        detailVStack.addArrangedSubview(hashtagLabel)
         detailVStack.addArrangedSubview(Spacer(9))
         detailVStack.addArrangedSubview(titleLabel)
         detailVStack.addArrangedSubview(Spacer(6))
@@ -142,10 +142,10 @@ final class TagPerformanceCell: UITableViewCell {
     
     // MARK: Public Configuration
     
-    func configure(item: TagPerformanceCellItem?) {
+    func configure(item: HashtagPerformanceCellItem?) {
         // item?.thumbnailPath 는 나중에 킹피셔 넣으면..?
         typeLabel.isHidden      = item?.typeLabelHidden ?? true
-        tagLabel.config.text    = item?.tag
+        hashtagLabel.config.text    = item?.hashtag
         titleLabel.config.text  = item?.title
         placeILContainer.titleLabel.config.text = item?.place
         dateLabel.config.text   = item?.date
@@ -154,4 +154,4 @@ final class TagPerformanceCell: UITableViewCell {
 
 // MARK: - Preview
 
-#Preview { TagPerformanceCell() }
+#Preview { HashtagPerformanceCell() }

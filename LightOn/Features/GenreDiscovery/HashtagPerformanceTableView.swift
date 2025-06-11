@@ -1,5 +1,5 @@
 //
-//  TagPerformanceTableView.swift
+//  HashtagPerformanceTableView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/11/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TagPerformanceTableView: UITableView {
+final class HashtagPerformanceTableView: UITableView {
     
     // MARK: Enum
     
@@ -15,8 +15,8 @@ final class TagPerformanceTableView: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, TagPerformanceCellItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagPerformanceCellItem>
+    typealias DataSource = UITableViewDiffableDataSource<Section, HashtagPerformanceCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, HashtagPerformanceCellItem>
     
     // MARK: Properties
     
@@ -26,7 +26,6 @@ final class TagPerformanceTableView: UITableView {
     
     init() {
         super.init(frame: .zero, style: .plain)
-        contentInset = .init(bottom: 30)
         setupDefaults()
         setupDiffableDataSource()
     }
@@ -38,7 +37,8 @@ final class TagPerformanceTableView: UITableView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        register(TagPerformanceCell.self, forCellReuseIdentifier: TagPerformanceCell.id)
+        register(HashtagPerformanceCell.self, forCellReuseIdentifier: HashtagPerformanceCell.id)
+        contentInset = .init(top: 16, bottom: 4) // 셀 자체 하단인셋(12) 고려
         backgroundColor = .clear
         separatorStyle = .none
     }
@@ -50,9 +50,9 @@ final class TagPerformanceTableView: UITableView {
             tableView, indexPath, item in
             
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TagPerformanceCell.id,
+                withIdentifier: HashtagPerformanceCell.id,
                 for: indexPath
-            ) as? TagPerformanceCell else { return .init() }
+            ) as? HashtagPerformanceCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -61,7 +61,7 @@ final class TagPerformanceTableView: UITableView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [TagPerformanceCellItem]) {
+    func setSnapshot(items: [HashtagPerformanceCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
