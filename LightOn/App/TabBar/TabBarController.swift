@@ -39,7 +39,7 @@ final class TabBarController: TabController {
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = BarViewController()
+                let vc = PerformanceListVC()
                 vc.tabBar = self
                 return vc
             }()),
