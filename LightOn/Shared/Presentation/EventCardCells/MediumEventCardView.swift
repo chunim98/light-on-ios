@@ -141,7 +141,7 @@ final class MediumEventCardView: UIStackView {
     
     // MARK: Public Configuration
 
-    func configure(item: (any MediumEventCardItem)?) {
+    func configure(item: MediumEventCardItem?) {
         thumbnailView.image     = item?.thumbnail
         artistLabel.config.text = item?.artist
         titleLabel.config.text  = item?.title

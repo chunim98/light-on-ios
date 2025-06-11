@@ -11,13 +11,9 @@ import SnapKit
 
 final class RecommendSectionView: BaseHomeSectionView {
     
-    // MARK: Typealias
-    
-    typealias Item = TestSmallEventCardItem // temp
-    
     // MARK: Components
 
-    private let collectionView = RecommendSectionCollectionView<Item>()
+    private let collectionView = RecommendSectionCollectionView()
     
     // MARK: Life Cycle
 
@@ -35,7 +31,7 @@ final class RecommendSectionView: BaseHomeSectionView {
     
     private func setupDefaults() {
         titleLabel.config.text = "추천 공연"
-        collectionView.setSnapshot(items: TestSmallEventCardItem.mockItems) // temp
+        collectionView.setSnapshot(items: SmallEventCardItem.mockItems) // temp
     }
     
     // MARK: Layout
@@ -49,7 +45,7 @@ final class RecommendSectionView: BaseHomeSectionView {
 // MARK: Binders & Publishers
 
 extension RecommendSectionView {
-    func itemsBinder(_ items: [Item]) {
+    func itemsBinder(_ items: [SmallEventCardItem]) {
         collectionView.setSnapshot(items: items)
     }
 }

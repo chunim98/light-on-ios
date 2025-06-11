@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class SpotlightedSectionCollectionView<Item: MediumEventCardItem>: UICollectionView {
+final class SpotlightedSectionCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,8 +15,8 @@ final class SpotlightedSectionCollectionView<Item: MediumEventCardItem>: UIColle
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, MediumEventCardItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MediumEventCardItem>
     
     // MARK: Properties
     
@@ -68,7 +68,7 @@ final class SpotlightedSectionCollectionView<Item: MediumEventCardItem>: UIColle
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [Item]) {
+    func setSnapshot(items: [MediumEventCardItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

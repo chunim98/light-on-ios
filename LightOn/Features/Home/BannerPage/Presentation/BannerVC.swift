@@ -55,7 +55,7 @@ final class BannerVC: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    convenience init(item: any BannerItem) {
+    convenience init(item: BannerItem) {
         self.init(nibName: nil, bundle: nil)
         self.imageView.image    = item.image
         self.titleLabel.config.text = item.title
@@ -64,13 +64,18 @@ final class BannerVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.addGestureRecognizer(tapGesture)
+        setupDefaults()
         setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        view.addGestureRecognizer(tapGesture)
     }
     
     // MARK: Layout
@@ -89,7 +94,7 @@ final class BannerVC: UIViewController {
     
     // MARK: Public Configuration
     
-    func configure(item: any BannerItem) {
+    func configure(item: BannerItem) {
         imageView.image    = item.image
         titleLabel.config.text = item.title
         subTitleLabel.config.text = item.subTitle

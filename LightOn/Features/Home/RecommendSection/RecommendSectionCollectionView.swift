@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RecommendSectionCollectionView<Item: SmallEventCardItem>: UICollectionView {
+final class RecommendSectionCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,8 +15,8 @@ final class RecommendSectionCollectionView<Item: SmallEventCardItem>: UICollecti
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, SmallEventCardItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SmallEventCardItem>
     
     // MARK: Properties
     
@@ -68,7 +68,7 @@ final class RecommendSectionCollectionView<Item: SmallEventCardItem>: UICollecti
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [Item]) {
+    func setSnapshot(items: [SmallEventCardItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

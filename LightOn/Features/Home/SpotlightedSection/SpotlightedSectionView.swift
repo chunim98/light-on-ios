@@ -11,13 +11,9 @@ import SnapKit
 
 final class SpotlightedSectionView: BaseHomeSectionView {
     
-    // MARK: Typealias
-    
-    typealias Item = TestMediumEventCardItem // temp
-    
     // MARK: Components
     
-    private let collectionView = SpotlightedSectionCollectionView<Item>()
+    private let collectionView = SpotlightedSectionCollectionView()
     
     // MARK: Life Cycle
     
@@ -34,7 +30,7 @@ final class SpotlightedSectionView: BaseHomeSectionView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        collectionView.setSnapshot(items: TestMediumEventCardItem.mockItems) // temp
+        collectionView.setSnapshot(items: MediumEventCardItem.mockItems) // temp
         titleLabel.config.text = "주목할 만한 아티스트 공연"
     }
     
@@ -49,7 +45,7 @@ final class SpotlightedSectionView: BaseHomeSectionView {
 // MARK: Binders & Publishers
 
 extension SpotlightedSectionView {
-    func itemsBinder(_ items: [Item]) {
+    func itemsBinder(_ items: [MediumEventCardItem]) {
         collectionView.setSnapshot(items: items)
     }
 }

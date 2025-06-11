@@ -10,14 +10,10 @@ import UIKit
 import SnapKit
 
 final class PopularSectionView: BaseHomeSectionView {
-    
-    // MARK: Typealias
-    
-    typealias Item = TestLargeEventCardItem // temp
-    
+        
     // MARK: Components
 
-    private let collectionView = PopularSectionCollectionView<Item>()
+    private let collectionView = PopularSectionCollectionView()
     
     // MARK: Life Cycle
 
@@ -35,7 +31,7 @@ final class PopularSectionView: BaseHomeSectionView {
     
     private func setupDefaults() {
         titleLabel.config.text = "현재 인기 있는 공연"
-        collectionView.setSnapshot(items: TestLargeEventCardItem.mockItems) // temp
+        collectionView.setSnapshot(items: LargeEventCardItem.mockItems) // temp
     }
     
     // MARK: Layout
@@ -49,7 +45,7 @@ final class PopularSectionView: BaseHomeSectionView {
 // MARK: Binders & Publishers
 
 extension PopularSectionView {
-    func itemsBinder(_ items: [Item]) {
+    func itemsBinder(_ items: [LargeEventCardItem]) {
         collectionView.setSnapshot(items: items)
     }
 }

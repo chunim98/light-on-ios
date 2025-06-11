@@ -44,7 +44,7 @@ final class MediumEventCardTableCell: UITableViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: (any MediumEventCardItem)?) {
+    func configure(item: MediumEventCardItem?) {
         mediumEventCardView.configure(item: item)
     }
 }

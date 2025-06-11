@@ -12,10 +12,6 @@ import SnapKit
 
 final class NotificationVC: UIViewController {
     
-    // MARK: Typealias
-    
-    typealias Item = TestNotificationItem // temp
-    
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
@@ -23,7 +19,7 @@ final class NotificationVC: UIViewController {
     // MARK: Components
     
     private let backBarButton = BackBarButton()
-    private let tableView = NotificationTableView<Item>()
+    private let tableView = NotificationTableView()
 
     // MARK: Life Cycle
     
@@ -37,7 +33,7 @@ final class NotificationVC: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.setSnapshot(items: Item.mockItems)
+        tableView.setSnapshot(items: NotificationItem.mockItems)
     }
     
     // MARK: Defaults

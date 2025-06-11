@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PopularSectionCollectionView<Item: LargeEventCardItem>: UICollectionView {
+final class PopularSectionCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,6 +15,7 @@ final class PopularSectionCollectionView<Item: LargeEventCardItem>: UICollection
     
     // MARK: Typealias
     
+    typealias Item = LargeEventCardItem
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     

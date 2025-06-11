@@ -115,7 +115,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: (any LargeEventCardItem)?) {
+    func configure(item: LargeEventCardItem?) {
         thumbnailView.image     = item?.thumbnail
         titleLabel.config.text  = item?.title
         dateLabel.config.text   = item?.date

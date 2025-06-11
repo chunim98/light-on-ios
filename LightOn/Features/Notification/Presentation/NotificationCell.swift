@@ -115,7 +115,7 @@ final class NotificationCell: UITableViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: (any NotificationItem)?) {
+    func configure(item: NotificationItem?) {
         iconView.image        = item?.notificationType.icon
         titleLabel.text       = item?.notificationType.title
         elapsedTimeLabel.text = item?.elapsedTimeText

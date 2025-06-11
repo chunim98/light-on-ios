@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class NotificationTableView<Item: NotificationItem>: UITableView {
+final class NotificationTableView: UITableView {
     
     // MARK: Enum
     
@@ -15,8 +15,8 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UITableViewDiffableDataSource<Section, NotificationItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, NotificationItem>
     
     // MARK: Properties
     
@@ -61,7 +61,7 @@ final class NotificationTableView<Item: NotificationItem>: UITableView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [Item]) {
+    func setSnapshot(items: [NotificationItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

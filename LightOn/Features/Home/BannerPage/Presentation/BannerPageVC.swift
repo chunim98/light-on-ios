@@ -44,7 +44,7 @@ final class BannerPageVC: UIPageViewController {
     // MARK: Defaults
     
     private func setupDefaults() {
-        pages = TestBannerItem.mockItems.map { BannerVC(item: $0) } // temp
+        pages = BannerItem.mockItems.map { BannerVC(item: $0) } // temp
         setViewControllers([pages[0]], direction: .forward, animated: true)
         
         pageControl.numberOfPages = pages.count
