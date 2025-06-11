@@ -62,7 +62,7 @@ final class NotificationCell: UITableViewCell {
     private let descriptionLabel = {
         let label = UILabel()
         label.font = .pretendard.semiBold(16)
-        label.textColor = .blackLO
+        label.textColor = .loBlack
         label.numberOfLines = 2
         return label
     }()

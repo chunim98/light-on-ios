@@ -18,7 +18,7 @@ class BaseHomeSectionView: UIStackView {
     let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.bold(23)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.text = "추천 공연"
         return TPLabel(config: config)
     }()

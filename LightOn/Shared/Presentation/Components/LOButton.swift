@@ -52,7 +52,7 @@ final class LOButton: UIButton {
             
         case .bordered:
             config.baseBackgroundColor = .clear
-            config.baseForegroundColor = .blackLO
+            config.baseForegroundColor = .loBlack
             config.background.strokeColor = UIColor(hex: 0xCECECE)
             config.background.strokeWidth = 1
             

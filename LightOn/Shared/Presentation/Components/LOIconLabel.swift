@@ -25,13 +25,13 @@ class LOIconLabel: UIStackView {
     private let imageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.tintColor = .blackLO
+        iv.tintColor = .loBlack
         return iv
     }()
     
     private let label = {
         let label = UILabel()
-        label.textColor = .blackLO
+        label.textColor = .loBlack
         return label
     }()
     

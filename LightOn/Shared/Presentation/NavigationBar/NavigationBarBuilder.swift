@@ -41,7 +41,7 @@ class NavigationBarBuilder: NSObject {
     
     func setTitle(_ text: String) {
         appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.blackLO,
+            .foregroundColor: UIColor.loBlack,
             .font: UIFont.pretendard.semiBold(19)!
         ]
         base?.title = text

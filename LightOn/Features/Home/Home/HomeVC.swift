@@ -23,14 +23,14 @@ final class HomeVC: BarViewController {
     
     private let notificationBarButton = {
         var config = UIButton.Configuration.plain()
-        config.image = .homeNavBarBell.withTintColor(.blackLO)
+        config.image = .homeNavBarBell.withTintColor(.loBlack)
         config.contentInsets = .zero
         return UIButton(configuration: config)
     }()
     
     private let searchBarButton = {
         var config = UIButton.Configuration.plain()
-        config.image = .homeNavBarMagnifier.withTintColor(.blackLO)
+        config.image = .homeNavBarMagnifier.withTintColor(.loBlack)
         config.contentInsets = .zero
         return UIButton(configuration: config)
     }()

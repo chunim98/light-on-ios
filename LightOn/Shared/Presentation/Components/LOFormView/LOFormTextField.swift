@@ -32,7 +32,7 @@ final class LOFormTextField: UITextField {
         layer.cornerRadius = 6
         layer.borderWidth = 1
         clipsToBounds = true
-        textColor = .blackLO
+        textColor = .loBlack
         font = .pretendard.regular(16)
     }
     

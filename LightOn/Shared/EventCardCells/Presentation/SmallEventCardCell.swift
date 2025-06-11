@@ -30,7 +30,7 @@ final class SmallEventCardCell: UICollectionViewCell {
     private let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(16)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.lineHeight = 21
         
         let label = TPLabel(config: config)

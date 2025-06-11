@@ -39,7 +39,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     private let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.bold(14)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         return TPLabel(config: config)
     }()
     

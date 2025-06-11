@@ -17,7 +17,7 @@ final class MarketingSectionView: UIStackView {
     private let marketingHeaderLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(16)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.text = "마케팅 정보 수신 (선택)"
         config.lineHeight = 24
         return TPLabel(config: config)

@@ -36,7 +36,7 @@ struct TPButtonStyle {
             strokeWidth: 1,
             strokeColor: .xCECECE,
             backgroundColor: .clear,
-            foregroundColor: .blackLO
+            foregroundColor: .loBlack
         )
     }
     

@@ -37,7 +37,7 @@ final class LODatePickerHeaderView: UIStackView {
         il.isUserInteractionEnabled = false
         il.setIcon(.loDatePickerBottomArrow)
         il.setFont(.pretendard.semiBold(20))
-        il.setTextColor(.blackLO)
+        il.setTextColor(.loBlack)
         il.spacing = 4
         return il
     }()

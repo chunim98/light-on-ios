@@ -21,7 +21,7 @@ final class PolicySectionView: UIStackView {
     private let policyHeaderLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(16)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.text = "약관 동의"
         config.lineHeight = 24
         return TPLabel(config: config)

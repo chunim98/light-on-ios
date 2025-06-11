@@ -33,7 +33,7 @@ final class LOAlertVC: UIViewController {
     
     private let headerLabel = {
         let label = UILabel()
-        label.textColor = .blackLO
+        label.textColor = .loBlack
         label.font = .pretendard.bold(22)
         return label
     }()
@@ -72,7 +72,7 @@ final class LOAlertVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blackLO.withAlphaComponent(0.6)
+        view.backgroundColor = .loBlack.withAlphaComponent(0.6)
         setupLayout()
         setupBindings()
     }

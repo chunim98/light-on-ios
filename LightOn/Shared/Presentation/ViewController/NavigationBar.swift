@@ -28,7 +28,7 @@ final class NavigationBar: UIView {
     let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(19)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         return TPLabel(config: config)
     }()
     

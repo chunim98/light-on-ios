@@ -49,7 +49,7 @@ final class SelectLikingVC: BackableViewController {
     private let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.bold(22)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.text = "음악 취향을 알려주세요!"
         config.alignment = .center
         return TPLabel(config: config)
@@ -59,7 +59,7 @@ final class SelectLikingVC: BackableViewController {
         var config = TextConfiguration()
         config.text = "좋아하는 음악 장르를 알려주시면\n취향에 맞는 공연을 알려드려요"
         config.font = .pretendard.regular(16)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.alignment = .center
         config.lineHeight = 22
         

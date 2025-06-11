@@ -27,7 +27,7 @@ final class LOTipBalloon: UIView {
         label.font = .pretendard.medium(12)
         label.textAlignment = .center
         label.numberOfLines = .max
-        label.textColor = .blackLO
+        label.textColor = .loBlack
         return label
     }()
     

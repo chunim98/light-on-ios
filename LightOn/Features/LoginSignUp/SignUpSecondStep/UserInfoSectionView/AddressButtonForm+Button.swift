@@ -73,7 +73,7 @@ final class Button: UIButton {
     // MARK: Public Configuration
     
     func setSelectedTitle(_ text: String) {
-        iconLabelStack.titleLabel.config.foregroundColor = .blackLO
+        iconLabelStack.titleLabel.config.foregroundColor = .loBlack
         iconLabelStack.titleLabel.config.text = text
     }
 }

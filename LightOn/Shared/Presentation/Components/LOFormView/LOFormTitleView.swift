@@ -67,6 +67,6 @@ final class LOFormTitleView: UIStackView {
 #Preview {
     let ftv = LOFormTitleView()
     ftv.setText("아이디")
-    ftv.setColor(.blackLO)
+    ftv.setColor(.loBlack)
     return ftv
 }

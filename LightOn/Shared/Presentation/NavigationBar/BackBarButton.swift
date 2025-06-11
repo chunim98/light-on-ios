@@ -15,7 +15,7 @@ final class BackBarButton: UIButton {
         super.init(frame: frame)
         
         var config = UIButton.Configuration.plain()
-        config.image = .backBarButtonArrow.withTintColor(.blackLO)
+        config.image = .backBarButtonArrow.withTintColor(.loBlack)
         config.contentInsets = .zero
         config.imagePadding = .zero
         

@@ -41,7 +41,7 @@ final class MediumEventCardView: UIStackView {
     private let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(12)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         return TPLabel(config: config)
     }()
     

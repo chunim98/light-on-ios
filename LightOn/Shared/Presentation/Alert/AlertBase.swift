@@ -25,7 +25,7 @@ class AlertBase: UIViewController {
     let titleLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.bold(22)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.alignment = .center
         config.lineHeight = 28.6
         return TPLabel(config: config)

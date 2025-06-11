@@ -27,7 +27,7 @@ extension UIColor {
     static let infoText    = UIColor(hex: 0xBFBFBF)
     static let clickable   = UIColor(hex: 0xABABAB)
     
-    static let blackLO = UIColor(hex: 0x262626) // 기본 블랙 (0x000000은 사용 안 함)
+    static let loBlack = UIColor(hex: 0x262626) // 기본 블랙 (0x000000은 사용 안 함)
     
     static let xFFFFFF = UIColor(hex: 0xFFFFFF)
     static let xD2D2D2 = UIColor(hex: 0xD2D2D2)

@@ -14,7 +14,7 @@ final class UserInfoSectionView: UIStackView {
     private let userInfoHeaderLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.semiBold(16)
-        config.foregroundColor = .blackLO
+        config.foregroundColor = .loBlack
         config.text = "개인정보 입력"
         config.lineHeight = 24
         return TPLabel(config: config)
