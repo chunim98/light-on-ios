@@ -49,16 +49,6 @@ final class HomeVC: BarViewController {
         setupLayout()
     }
     
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        tabBar?.setIsTabBarHidden(true)
-//    }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        tabBar?.setIsTabBarHidden(false)
-//    }
-    
     // MARK: Defaults
     
     private func setupDefaults() {
