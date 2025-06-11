@@ -20,7 +20,7 @@ final class FormatDateHeaderUC {
         self.currentPageRepository = currentPageRepository
     }
     
-    // MARK: Mehtods
+    // MARK: Methods
     
     func publisher() -> AnyPublisher<String, Never> {
         currentPageRepository.publisher
