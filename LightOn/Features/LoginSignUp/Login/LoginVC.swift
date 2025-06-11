@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class LoginVC: TPBackButtonViewController {
+final class LoginVC: BackButtonViewController {
     
     // MARK: Properties
     

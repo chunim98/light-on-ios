@@ -39,17 +39,17 @@ final class TabBarController: TabController {
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = TPBarViewController()
+                let vc = BarViewController()
                 vc.tabBar = self
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = TPBarViewController()
+                let vc = BarViewController()
                 vc.tabBar = self
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = TPBarViewController()
+                let vc = BarViewController()
                 vc.tabBar = self
                 return vc
             }()),

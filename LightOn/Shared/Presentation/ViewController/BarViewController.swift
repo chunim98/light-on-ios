@@ -1,5 +1,5 @@
 //
-//  TPBarViewController.swift
+//  BarViewController.swift
 //  TennisParkForManager
 //
 //  Created by 신정욱 on 5/23/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-class TPBarViewController: UIViewController {
+class BarViewController: UIViewController {
     
     // MARK: Properties
     
@@ -20,7 +20,7 @@ class TPBarViewController: UIViewController {
     weak var tabBar: TabBarController?
     
     let topSafeAreaView = UIView()
-    let navigationBar = TPNavigationBar(height: 50)
+    let navigationBar = NavigationBar(height: 50)
     
     // MARK: Life Cycle
     
@@ -61,4 +61,4 @@ class TPBarViewController: UIViewController {
 
 // MARK: - Preview
 
-#Preview { TPBarViewController() }
+#Preview { BarViewController() }

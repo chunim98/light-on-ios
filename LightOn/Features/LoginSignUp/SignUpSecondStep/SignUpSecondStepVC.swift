@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class SignUpSecondStepVC: TPBackButtonViewController {
+final class SignUpSecondStepVC: BackButtonViewController {
     
     // MARK: Properties
     

@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class SelectLikingVC: TPBackableViewController {
+final class SelectLikingVC: BackableViewController {
     
     // MARK: Properties
     

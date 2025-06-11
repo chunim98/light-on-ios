@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class HomeVC: TPBarViewController {
+final class HomeVC: BarViewController {
     
     // MARK: Properties
     

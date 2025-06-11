@@ -1,5 +1,5 @@
 //
-//  TPBackableViewController.swift
+//  BackableViewController.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/30/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TPBackableViewController: TPBarViewController {
+class BackableViewController: BarViewController {
     
     // MARK: Life Cycle
     
@@ -29,7 +29,7 @@ class TPBackableViewController: TPBarViewController {
 
 // MARK: - UIGestureRecognizerDelegate
 
-extension TPBackableViewController: UIGestureRecognizerDelegate {
+extension BackableViewController: UIGestureRecognizerDelegate {
     /// 제스처가 시작되기 전에 동작 여부를 결정
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool { true }
 }

@@ -1,5 +1,5 @@
 //
-//  TPBackButtonViewController.swift
+//  BackButtonViewController.swift
 //  TennisParkForManager
 //
 //  Created by 신정욱 on 5/23/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TPBackButtonViewController: TPBackableViewController {
+class BackButtonViewController: BackableViewController {
 
     // MARK: Components
     

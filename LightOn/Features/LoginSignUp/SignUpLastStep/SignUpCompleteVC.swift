@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class SignUpCompleteVC: TPBackableViewController {
+final class SignUpCompleteVC: BackableViewController {
     
     // MARK: Components
     

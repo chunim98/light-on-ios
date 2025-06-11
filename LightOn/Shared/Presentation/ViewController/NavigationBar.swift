@@ -1,5 +1,5 @@
 //
-//  TPNavigationBar.swift
+//  NavigationBar.swift
 //  TennisPark
 //
 //  Created by 신정욱 on 5/26/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TPNavigationBar: UIView {
+final class NavigationBar: UIView {
     
     // MARK: Properties
     
@@ -59,4 +59,4 @@ final class TPNavigationBar: UIView {
 
 // MARK: - Preview
 
-#Preview { TPNavigationBar(height: 80) }
+#Preview { NavigationBar(height: 80) }
