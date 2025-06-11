@@ -7,6 +7,8 @@
 
 import UIKit
 
+import SnapKit
+
 class TabController: UIViewController {
     
     // MARK: Properties
@@ -14,14 +16,41 @@ class TabController: UIViewController {
     var tabs: [UIViewController] = []
     private var selectedIndex = 0
     
-    // MARK: Helper Methods
+    // MARK: Components
+    
+    let contentVStack = UIStackView(.vertical)
+    let contentView = UIView()
+    
+    // MARK: Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupDefaults()
+        setupLayout()
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        navigationController?.navigationBar.isHidden = true
+    }
+
+    // MARK: Layout
+    
+    private func setupLayout() {
+        view.addSubview(contentVStack)
+        contentVStack.addArrangedSubview(contentView)
+        contentVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+    
+    // MARK: ransition
 
     func setupVC(index: Int) {
         let selectedVC = tabs[index]
         
         addChild(selectedVC)
-        view.addSubview(selectedVC.view)
-        selectedVC.view.frame = view.bounds
+        contentView.addSubview(selectedVC.view)
+        selectedVC.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         selectedVC.didMove(toParent: self)
     }
     
@@ -40,7 +69,8 @@ class TabController: UIViewController {
         let newVC = tabs[index]
         
         addChild(newVC)
-        newVC.view.frame = view.bounds // 미리 프레임은 잡아주기
+        contentView.addSubview(newVC.view)
+        newVC.view.snp.makeConstraints { $0.edges.equalToSuperview() }
         
         // addSubview, removeFromSuperview는
         // transition 메서드가 알아서 처리해줌
