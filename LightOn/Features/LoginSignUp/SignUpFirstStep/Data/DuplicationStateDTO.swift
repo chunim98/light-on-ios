@@ -5,16 +5,10 @@
 //  Created by 신정욱 on 6/2/25.
 //
 
-struct DuplicationStateDTO: Decodable {
-    let success: Bool
-    let response: Response?
-    let error: LightOnAPIErrorDTO?
+struct DuplicationStateResponseDTO: Decodable {
+    let isDuplicate: Bool
     
-    struct Response: Decodable {
-        let isDuplicate: Bool
-        
-        func toDomain() -> DuplicationState {
-            self.isDuplicate ? .duplicated : .verified
-        }
+    func toDomain() -> DuplicationState {
+        isDuplicate ? .duplicated : .verified
     }
 }

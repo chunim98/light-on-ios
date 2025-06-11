@@ -10,7 +10,8 @@ import Combine
 import Alamofire
 
 protocol DuplicationStateRepository {
-    func fetchDuplicationState(
+    /// 이메일 중복 조회
+    func getDuplicationState(
         emailText: String
     ) -> AnyPublisher<DuplicationState, Never>
 }

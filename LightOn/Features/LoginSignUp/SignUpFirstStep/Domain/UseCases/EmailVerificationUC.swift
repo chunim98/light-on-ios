@@ -42,7 +42,7 @@ final class EmailVerificationUC {
             .withLatestFrom(emailState) { _, emailState in emailState }
             .compactMap { [weak self] emailState in
                 self?.repository
-                    .fetchDuplicationState(emailText: emailState.text)
+                    .getDuplicationState(emailText: emailState.text)
                     .map { emailState.updated(duplicationState: $0) }
                     .eraseToAnyPublisher()
             }
