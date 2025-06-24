@@ -2,22 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LightOnRootURL</key>
-	<string>$(LIGHT_ON_ROOT_URL)</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Pretendard-Thin.otf</string>
-		<string>Pretendard-SemiBold.otf</string>
-		<string>Pretendard-Regular.otf</string>
-		<string>Pretendard-Medium.otf</string>
-		<string>Pretendard-Light.otf</string>
-		<string>Pretendard-ExtraLight.otf</string>
-		<string>Pretendard-ExtraBold.otf</string>
-		<string>Pretendard-Bold.otf</string>
-		<string>Pretendard-Black.otf</string>
-	</array>
-	<key>KakaoNativeAppKey</key>
-	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -31,11 +15,27 @@
 			</array>
 		</dict>
 	</array>
+	<key>KakaoNativeAppKey</key>
+	<string>$(KAKAO_NATIVE_APP_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
 		<string>kakaoplus</string>
+	</array>
+	<key>LightOnRootURL</key>
+	<string>$(LIGHT_ON_ROOT_URL)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Pretendard-Thin.otf</string>
+		<string>Pretendard-SemiBold.otf</string>
+		<string>Pretendard-Regular.otf</string>
+		<string>Pretendard-Medium.otf</string>
+		<string>Pretendard-Light.otf</string>
+		<string>Pretendard-ExtraLight.otf</string>
+		<string>Pretendard-ExtraBold.otf</string>
+		<string>Pretendard-Bold.otf</string>
+		<string>Pretendard-Black.otf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

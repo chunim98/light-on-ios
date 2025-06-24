@@ -21,4 +21,5 @@ struct TextConfiguration: Hashable {
     var paragraphSpacing: CGFloat?
     var underlineStyle: NSUnderlineStyle?
     var underlineColor: UIColor?
+    var lineBreakMode: NSLineBreakMode?
 }
