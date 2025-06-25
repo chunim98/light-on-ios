@@ -1,0 +1,168 @@
+//
+//  DetailInfoSectionView.swift
+//  LightOn
+//
+//  Created by 신정욱 on 6/25/25.
+//
+
+import UIKit
+
+import SnapKit
+
+final class DetailInfoSectionView: UIStackView {
+
+    // MARK: Components
+    
+    private let genreTagHStack = UIStackView(alignment: .center)
+    private let dateHStack = UIStackView(alignment: .center, spacing: 8)
+    
+    private let placeHStack = {
+        let iv = UIImageView(image: .performanceDetailPin)
+        iv.contentMode = .scaleAspectFit
+        
+        let sv = UIStackView(alignment: .center)
+        sv.addArrangedSubview(iv)
+        sv.addArrangedSubview(Spacer(6))
+        return sv
+    }()
+    
+    private let priceHStack = {
+        let iv = UIImageView(image: .performanceDetailCard)
+        iv.contentMode = .scaleAspectFit
+        
+        let sv = UIStackView(alignment: .center)
+        sv.addArrangedSubview(iv)
+        sv.addArrangedSubview(Spacer(6))
+        return sv
+    }()
+    
+    let shareButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = .performanceDetailShare
+        config.contentInsets = .zero
+        return UIButton(configuration: config)
+    }()
+    
+    let openMapButton = {
+        let button = LinkButton()
+        button.setTitle(
+            title:  "지도 보기", // temp
+            font:   .pretendard.medium(14),
+            color:  .assistive
+        )
+        return button
+    }()
+    
+    let genreTagLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.bold(14)
+        config.foregroundColor = .brand
+        config.text = "어쿠스틱" // temp
+        
+        let label = TPPaddingLabel(
+            configuration: config,
+            padding: .init(horizontal: 8, vertical: 4)
+        )
+        label.backgroundColor = .xEEE7FB
+        label.layer.cornerRadius = 4
+        label.clipsToBounds = true
+        return label
+    }()
+    
+    let titleLabel = {
+        var config = TextConfiguration()
+        config.lineBreakMode = .byTruncatingTail
+        config.font = .pretendard.bold(23)
+        config.foregroundColor = .loBlack
+        config.text = "[여의도] Light ON 홀리데이 버스킹버스킹" // temp
+        return TPLabel(config: config)
+    }()
+    
+    let dateLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(16)
+        config.foregroundColor = .caption
+        config.text = "2025.05.01" // temp
+        return TPLabel(config: config)
+    }()
+    
+    let timeLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(16)
+        config.foregroundColor = .caption
+        config.text = "17:00" // temp
+        return TPLabel(config: config)
+    }()
+    
+    let placeLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(16)
+        config.foregroundColor = .caption
+        config.text = "서울 영등포구 여의도동 81-8" // temp
+        return TPLabel(config: config)
+    }()
+    
+    let priceLabel = {
+        var config = TextConfiguration()
+        config.font = .pretendard.regular(16)
+        config.foregroundColor = .caption
+        config.text = "(유료) 10,000원" // temp
+        return TPLabel(config: config)
+    }()
+
+    // MARK: Life Cycle
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupDefaults()
+        setupLayout()
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        inset = .init(horizontal: 18) + .init(top: 40, bottom: 16)
+        axis = .vertical
+    }
+    
+    // MARK: Layout
+    
+    private func setupLayout() {
+        addArrangedSubview(genreTagHStack)
+        addArrangedSubview(Spacer(20))
+        addArrangedSubview(titleLabel)
+        addArrangedSubview(Spacer(12))
+        addArrangedSubview(dateHStack)
+        addArrangedSubview(Spacer(8))
+        addArrangedSubview(placeHStack)
+        addArrangedSubview(Spacer(8))
+        addArrangedSubview(priceHStack)
+        
+        genreTagHStack.addArrangedSubview(genreTagLabel)
+        genreTagHStack.addArrangedSubview(Spacer())
+        genreTagHStack.addArrangedSubview(shareButton)
+        
+        dateHStack.addArrangedSubview(dateLabel)
+        dateHStack.addArrangedSubview(Divider(
+            width: 1, height: 12, color: .disable
+        ))
+        dateHStack.addArrangedSubview(timeLabel)
+        dateHStack.addArrangedSubview(Spacer())
+        
+        placeHStack.addArrangedSubview(placeLabel)
+        placeHStack.addArrangedSubview(Spacer(8))
+        placeHStack.addArrangedSubview(openMapButton)
+        placeHStack.addArrangedSubview(Spacer())
+        
+        priceHStack.addArrangedSubview(priceLabel)
+        priceHStack.addArrangedSubview(Spacer())
+    }
+}
+
+// MARK: - Preview
+
+#Preview { DetailInfoSectionView() }
