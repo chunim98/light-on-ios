@@ -17,7 +17,7 @@ final class UserInfoSectionView: UIStackView {
         config.foregroundColor = .loBlack
         config.text = "개인정보 입력"
         config.lineHeight = 24
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let nameForm = {
@@ -37,23 +37,23 @@ final class UserInfoSectionView: UIStackView {
     
     let codeForm = VerifyCodeForm()
     
-    let addressForm = AddressButtonForm()
+    let addressForm = AddressForm()
     
     let requestCodeButton = {
-        let button = TPButton(style: .filled, width: 91)
+        let button = LOButton(style: .filled, width: 91)
         button.setTitle("인증 받기", .pretendard.semiBold(16))
         return button
     }()
     
     let retryButton = {
-        let button = TPButton(style: .bordered, width: 78)
+        let button = LOButton(style: .bordered, width: 78)
         button.setTitle("재전송", .pretendard.regular(16))
         button.configuration?.background.strokeColor = .thumbLine
         return button
     }()
 
     let codeConfirmButton = {
-        let button = TPButton(style: .filled, width: 64)
+        let button = LOButton(style: .filled, width: 64)
         button.setTitle("확인", .pretendard.semiBold(16))
         return button
     }()
@@ -81,20 +81,20 @@ final class UserInfoSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(userInfoHeaderLabel)
-        addArrangedSubview(Spacer(16))
+        addArrangedSubview(LOSpacer(16))
         addArrangedSubview(nameForm)
-        addArrangedSubview(Spacer(24))
+        addArrangedSubview(LOSpacer(24))
         addArrangedSubview(phoneNumberForm)
         addArrangedSubview(codeForm)
-        addArrangedSubview(Spacer(24))
+        addArrangedSubview(LOSpacer(24))
         addArrangedSubview(addressForm)
         
-        phoneNumberForm.addTrailingView(Spacer(12))
+        phoneNumberForm.addTrailingView(LOSpacer(12))
         phoneNumberForm.addTrailingView(requestCodeButton)
         
-        codeForm.addTrailingView(Spacer(12))
+        codeForm.addTrailingView(LOSpacer(12))
         codeForm.addTrailingView(retryButton)
-        codeForm.addTrailingView(Spacer(7))
+        codeForm.addTrailingView(LOSpacer(7))
         codeForm.addTrailingView(codeConfirmButton)
     }
 }

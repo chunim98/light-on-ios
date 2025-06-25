@@ -20,7 +20,7 @@ class BaseHomeSectionView: UIStackView {
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "추천 공연"
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let arrowButton = {

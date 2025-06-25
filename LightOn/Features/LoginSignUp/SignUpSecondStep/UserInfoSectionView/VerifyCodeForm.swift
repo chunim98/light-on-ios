@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class VerifyCodeForm: TPTextForm {
+final class VerifyCodeForm: TextForm {
     
     // MARK: Properties
     
@@ -26,7 +26,7 @@ final class VerifyCodeForm: TPTextForm {
         config.underlineStyle = .single
         config.underlineColor = .brand
         config.lineHeight = 23
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle

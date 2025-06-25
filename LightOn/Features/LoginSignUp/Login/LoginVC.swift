@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class LoginVC: BackButtonViewController {
+final class LoginVC: BackButtonVC {
     
     // MARK: Properties
     
@@ -38,7 +38,7 @@ final class LoginVC: BackButtonViewController {
     }()
     
     private let loginButton = {
-        let button = TPButton(style: .filled)
+        let button = LOButton(style: .filled)
         button.setTitle("로그인", .pretendard.bold(16))
         return button
     }()
@@ -49,12 +49,12 @@ final class LoginVC: BackButtonViewController {
         config.foregroundColor = .assistive
         config.lineHeight = 30
         config.text = "또는"
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         
         let sv = UIStackView(alignment: .center, spacing: 16)
-        sv.addArrangedSubview(Divider(height: 1, color: .background))
+        sv.addArrangedSubview(LODivider(height: 1, color: .background))
         sv.addArrangedSubview(label)
-        sv.addArrangedSubview(Divider(height: 1, color: .background))
+        sv.addArrangedSubview(LODivider(height: 1, color: .background))
         label.snp.makeConstraints { $0.centerX.equalToSuperview() }
         return sv
     }()
@@ -78,19 +78,19 @@ final class LoginVC: BackButtonViewController {
     
     private func setupLayout() {
         view.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(Spacer(60))
+        mainVStack.addArrangedSubview(LOSpacer(60))
         mainVStack.addArrangedSubview(UIImageView(image: .loginLogo))
-        mainVStack.addArrangedSubview(Spacer(70))
+        mainVStack.addArrangedSubview(LOSpacer(70))
         mainVStack.addArrangedSubview(idForm)
-        mainVStack.addArrangedSubview(Spacer(24))
+        mainVStack.addArrangedSubview(LOSpacer(24))
         mainVStack.addArrangedSubview(pwForm)
-        mainVStack.addArrangedSubview(Spacer(40))
+        mainVStack.addArrangedSubview(LOSpacer(40))
         mainVStack.addArrangedSubview(loginButton)
-        mainVStack.addArrangedSubview(Spacer(23))
+        mainVStack.addArrangedSubview(LOSpacer(23))
         mainVStack.addArrangedSubview(loginElseDivider)
-        mainVStack.addArrangedSubview(Spacer(23))
+        mainVStack.addArrangedSubview(LOSpacer(23))
         mainVStack.addArrangedSubview(socialButtonHStack)
-        mainVStack.addArrangedSubview(Spacer(23))
+        mainVStack.addArrangedSubview(LOSpacer(23))
         mainVStack.addArrangedSubview(optionButtonHStack)
         
         socialButtonHStack.addArrangedSubview(kakaoLoginButton)
@@ -98,9 +98,9 @@ final class LoginVC: BackButtonViewController {
         socialButtonHStack.addArrangedSubview(appleLoginButton)
         
         optionButtonHStack.addArrangedSubview(signUpButton)
-        optionButtonHStack.addArrangedSubview(Divider(width: 1, height: 12, color: .disable))
+        optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
         optionButtonHStack.addArrangedSubview(findMyIDButton)
-        optionButtonHStack.addArrangedSubview(Divider(width: 1, height: 12, color: .disable))
+        optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
         optionButtonHStack.addArrangedSubview(findMyPWButton)
 
         mainVStack.snp.makeConstraints { $0.top.horizontalEdges.equalTo(contentLayoutGuide) }

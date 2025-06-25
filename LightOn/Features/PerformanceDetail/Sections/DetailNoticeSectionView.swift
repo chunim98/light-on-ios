@@ -16,7 +16,7 @@ final class DetailNoticeSectionView: UIStackView {
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "입장 시 유의사항"
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let descriptionLabel = {
@@ -32,7 +32,7 @@ final class DetailNoticeSectionView: UIStackView {
         • 외부 음식 반입 금지
         """ // temp
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label
     }()
@@ -60,7 +60,7 @@ final class DetailNoticeSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(titleLabel)
-        addArrangedSubview(Spacer(16))
+        addArrangedSubview(LOSpacer(16))
         addArrangedSubview(descriptionLabel)
     }
 }

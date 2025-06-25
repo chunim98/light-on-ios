@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class SignUpTextForm: TPTextForm {
+final class SignUpTextForm: TextForm {
     
     // MARK: Struct
     
@@ -32,7 +32,7 @@ final class SignUpTextForm: TPTextForm {
     let captionLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle

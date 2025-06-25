@@ -36,7 +36,7 @@ final class BannerVC: UIViewController {
         config.paragraphSpacing = 12
         config.lineHeight = 36
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = 2
         return label
     }()
@@ -46,7 +46,7 @@ final class BannerVC: UIViewController {
         config.font = .pretendard.regular(18)
         config.foregroundColor = .white
         config.lineHeight = 27
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle

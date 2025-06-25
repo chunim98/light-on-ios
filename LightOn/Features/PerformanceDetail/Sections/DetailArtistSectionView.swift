@@ -19,7 +19,7 @@ final class DetailArtistSectionView: UIStackView {
         config.foregroundColor = .caption
         config.text = "아티스트 명"
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.snp.makeConstraints { $0.width.equalTo(90) }
         
         let sv = UIStackView()
@@ -34,7 +34,7 @@ final class DetailArtistSectionView: UIStackView {
         config.foregroundColor = .caption
         config.text = "아티스트 소개"
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.snp.makeConstraints { $0.width.equalTo(90) }
         
         let sv = UIStackView()
@@ -49,7 +49,7 @@ final class DetailArtistSectionView: UIStackView {
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "아티스트 정보"
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let descriptionLabel = {
@@ -62,7 +62,7 @@ final class DetailArtistSectionView: UIStackView {
         """
         라이트 온은 홍익대학교 동아리 출신으로 이루어진 2022년 대뷔한 신입 밴드로 ‘일탈’이라는 곡을 통해 많은 팬덤을 보유한 4인조 밴드 그룹 입니다.
         """ // temp
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label
     }()
@@ -100,13 +100,13 @@ final class DetailArtistSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(titleLabel)
-        addArrangedSubview(Spacer(16))
+        addArrangedSubview(LOSpacer(16))
         addArrangedSubview(nameHStack)
-        addArrangedSubview(Spacer(10))
+        addArrangedSubview(LOSpacer(10))
         addArrangedSubview(descriptionHStack)
         
         nameHStack.addArrangedSubview(artistButton)
-        nameHStack.addArrangedSubview(Spacer())
+        nameHStack.addArrangedSubview(LOSpacer())
         
         descriptionHStack.addArrangedSubview(descriptionLabel)
     }

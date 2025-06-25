@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class SignUpSecondStepVC: BackButtonViewController {
+final class SignUpSecondStepVC: BackButtonVC {
     
     // MARK: Properties
     
@@ -34,7 +34,7 @@ final class SignUpSecondStepVC: BackButtonViewController {
     }()
     
     private let nextButton = {
-        let button = TPButton(style: .filled)
+        let button = LOButton(style: .filled)
         button.setTitle("다음", .pretendard.bold(16))
         return button
     }()
@@ -63,7 +63,7 @@ final class SignUpSecondStepVC: BackButtonViewController {
         contentVStack.addArrangedSubview(userInfoSection)
         contentVStack.addArrangedSubview(marketingSection)
         contentVStack.addArrangedSubview(policySection)
-        contentVStack.addArrangedSubview(Spacer(30))
+        contentVStack.addArrangedSubview(LOSpacer(30))
         
         scrollView.snp.makeConstraints {
             $0.horizontalEdges.top.equalTo(contentLayoutGuide)

@@ -11,7 +11,7 @@ import Combine
 
 import SnapKit
 
-final class GenreDiscoveryVC: BarViewController {
+final class GenreDiscoveryVC: NavigationBarVC {
     
     // MARK: Properties
     
@@ -45,9 +45,9 @@ final class GenreDiscoveryVC: BarViewController {
     private func setupLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(upperTabBar)
-        mainVStack.addArrangedSubview(Spacer(20))
+        mainVStack.addArrangedSubview(LOSpacer(20))
         mainVStack.addArrangedSubview(genreTagsView.view)
-        mainVStack.addArrangedSubview(Spacer(4))
+        mainVStack.addArrangedSubview(LOSpacer(4))
         mainVStack.addArrangedSubview(pageVC.view)
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
     }

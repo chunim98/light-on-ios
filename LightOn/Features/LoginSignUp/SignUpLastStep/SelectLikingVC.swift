@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class SelectLikingVC: BackableViewController {
+final class SelectLikingVC: BackableVC {
     
     // MARK: Properties
     
@@ -35,13 +35,13 @@ final class SelectLikingVC: BackableViewController {
     }()
     
     private let skipButton = {
-        let button = TPButton(style: .borderedTinted)
+        let button = LOButton(style: .borderedTinted)
         button.setTitle("건너뛰기", .pretendard.bold(16))
         return button
     }()
     
     private let nextButton = {
-        let button = TPButton(style: .filled)
+        let button = LOButton(style: .filled)
         button.setTitle("다음", .pretendard.bold(16))
         return button
     }()
@@ -52,7 +52,7 @@ final class SelectLikingVC: BackableViewController {
         config.foregroundColor = .loBlack
         config.text = "음악 취향을 알려주세요!"
         config.alignment = .center
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let descriptionLabel = {
@@ -63,7 +63,7 @@ final class SelectLikingVC: BackableViewController {
         config.alignment = .center
         config.lineHeight = 22
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = 2
         return label
     }()
@@ -83,7 +83,7 @@ final class SelectLikingVC: BackableViewController {
     
     private func setupDefaults() {
         navigationBar.rightItemHStack.addArrangedSubview(closeBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(Spacer(16))
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
     }
     
     // MARK: Layout
@@ -91,9 +91,9 @@ final class SelectLikingVC: BackableViewController {
     private func setupLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(titleLabel)
-        mainVStack.addArrangedSubview(Spacer(7))
+        mainVStack.addArrangedSubview(LOSpacer(7))
         mainVStack.addArrangedSubview(descriptionLabel)
-        mainVStack.addArrangedSubview(Spacer(40))
+        mainVStack.addArrangedSubview(LOSpacer(40))
         mainVStack.addArrangedSubview(genreSelectionCollectionView)
         mainVStack.addArrangedSubview(buttonHStack)
         

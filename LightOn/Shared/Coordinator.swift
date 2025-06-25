@@ -1,6 +1,6 @@
 //
 //  Coordinator.swift
-//  TennisPark
+//  LightOn
 //
 //  Created by 신정욱 on 5/19/25.
 //

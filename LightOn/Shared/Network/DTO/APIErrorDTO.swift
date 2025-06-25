@@ -1,6 +1,6 @@
 //
 //  APIErrorDTO.swift
-//  TennisPark
+//  LightOn
 //
 //  Created by 신정욱 on 6/4/25.
 //

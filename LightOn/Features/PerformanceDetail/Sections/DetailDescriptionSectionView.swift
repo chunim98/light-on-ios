@@ -31,13 +31,13 @@ final class DetailDescriptionSectionView: UIStackView {
         config.font = .pretendard.bold(16)
         config.foregroundColor = .brand
         config.text = "공연 소개"
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         
         let sv = UIStackView()
         sv.spacing = 8
         sv.addArrangedSubview(iv)
         sv.addArrangedSubview(label)
-        sv.addArrangedSubview(Spacer())
+        sv.addArrangedSubview(LOSpacer())
         return sv
     }()
     
@@ -52,7 +52,7 @@ final class DetailDescriptionSectionView: UIStackView {
         압도적인 라이브 실력과 폭발적인 히트곡 퍼레이드로 ‘무대장인’이라 호평받은 신인 인디밴드 단독 콘서트
         네번째 미니앨범 [HOLIDAY]를 기반으로 사랑받은 곡들만 뽑아 공연을 진행합니다.
         """ // temp
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label
     }()

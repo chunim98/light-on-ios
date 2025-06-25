@@ -33,7 +33,7 @@ final class SmallEventCardCell: UICollectionViewCell {
         config.foregroundColor = .loBlack
         config.lineHeight = 21
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = 2
         return label
     }()

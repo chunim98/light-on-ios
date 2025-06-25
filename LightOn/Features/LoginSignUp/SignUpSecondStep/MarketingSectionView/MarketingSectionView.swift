@@ -20,7 +20,7 @@ final class MarketingSectionView: UIStackView {
         config.foregroundColor = .loBlack
         config.text = "마케팅 정보 수신 (선택)"
         config.lineHeight = 24
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let marketingCaptionLabel = {
@@ -29,29 +29,29 @@ final class MarketingSectionView: UIStackView {
         config.font = .pretendard.regular(12)
         config.foregroundColor = .infoText
         config.lineHeight = 14
-        return TPPaddingLabel(configuration: config, padding: .init(left: 2))
+        return LOPaddingLabel(configuration: config, padding: .init(left: 2))
     }()
     
     let entryMethodCheckbox = {
-        let box = TPCheckbox()
+        let box = Checkbox()
         box.titleConfig.text = "출입 방법 저장"
         return box
     }()
     
     let smsCheckbox = {
-        let box = TPCheckbox()
+        let box = Checkbox()
         box.titleConfig.text = "SMS"
         return box
     }()
     
     let appPushCheckbox = {
-        let box = TPCheckbox()
+        let box = Checkbox()
         box.titleConfig.text = "앱 푸시"
         return box
     }()
     
     let emailCheckbox = {
-        let box = TPCheckbox()
+        let box = Checkbox()
         box.titleConfig.text = "이메일"
         return box
     }()
@@ -79,19 +79,19 @@ final class MarketingSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(marketingHeaderLabel)
-        addArrangedSubview(Spacer(16))
+        addArrangedSubview(LOSpacer(16))
         addArrangedSubview(checkboxFirstHStack)
-        addArrangedSubview(Spacer(10))
+        addArrangedSubview(LOSpacer(10))
         addArrangedSubview(checkboxSecondHStack)
-        addArrangedSubview(Spacer(4))
+        addArrangedSubview(LOSpacer(4))
         addArrangedSubview(marketingCaptionLabel)
         
         checkboxFirstHStack.addArrangedSubview(entryMethodCheckbox)
-        checkboxFirstHStack.addArrangedSubview(Spacer())
+        checkboxFirstHStack.addArrangedSubview(LOSpacer())
         
         checkboxSecondHStack.addArrangedSubview(smsCheckbox)
         checkboxSecondHStack.addArrangedSubview(appPushCheckbox)
         checkboxSecondHStack.addArrangedSubview(emailCheckbox)
-        checkboxSecondHStack.addArrangedSubview(Spacer())
+        checkboxSecondHStack.addArrangedSubview(LOSpacer())
     }
 }

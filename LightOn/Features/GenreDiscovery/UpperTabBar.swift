@@ -78,13 +78,13 @@ final class UpperTabBar: UIStackView {
     }()
     
     private let baseIndicator = {
-        let view = Divider(height: 2, color: .background)
+        let view = LODivider(height: 2, color: .background)
         view.isUserInteractionEnabled = false
         return view
     }()
     
     private let tintIndicator = {
-        let view = Divider(height: 2, color: .brand)
+        let view = LODivider(height: 2, color: .brand)
         view.isUserInteractionEnabled = false
         return view
     }()

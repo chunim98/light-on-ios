@@ -9,14 +9,14 @@ import UIKit
 
 import SnapKit
 
-final class PolicyDetailAlert: AlertBase {
+final class PolicyDetailAlert: BaseAlertVC {
 
     // MARK: Components
     
     let textView = TextView()
     
     let acceptButton = {
-        let button = TPButton(style: .filled, height: 45)
+        let button = LOButton(style: .filled, height: 45)
         button.setTitle("확인", .pretendard.semiBold(16))
         return button
     }()
@@ -31,9 +31,9 @@ final class PolicyDetailAlert: AlertBase {
     // MARK: Layout
     
     private func setupLayout() {
-        contentVStack.addArrangedSubview(Spacer(8))
+        contentVStack.addArrangedSubview(LOSpacer(8))
         contentVStack.addArrangedSubview(textView)
-        contentVStack.addArrangedSubview(Spacer(28))
+        contentVStack.addArrangedSubview(LOSpacer(28))
         contentVStack.addArrangedSubview(acceptButton)
         
         textView.snp.makeConstraints { $0.height.equalTo(300) }

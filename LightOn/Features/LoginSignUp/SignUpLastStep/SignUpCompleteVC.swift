@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class SignUpCompleteVC: BackableViewController {
+final class SignUpCompleteVC: BackableVC {
     
     // MARK: Components
     
@@ -29,7 +29,7 @@ final class SignUpCompleteVC: BackableViewController {
     }()
         
     private let nextButton = {
-        let button = TPButton(style: .filled)
+        let button = LOButton(style: .filled)
         button.setTitle("다음", .pretendard.bold(16))
         return button
     }()
@@ -40,7 +40,7 @@ final class SignUpCompleteVC: BackableViewController {
         config.foregroundColor = .loBlack
         config.text = "회원가입을 축하드립니다!"
         config.alignment = .center
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let descriptionLabel = {
@@ -51,7 +51,7 @@ final class SignUpCompleteVC: BackableViewController {
         config.alignment = .center
         config.lineHeight = 22
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = 2
         return label
     }()
@@ -68,7 +68,7 @@ final class SignUpCompleteVC: BackableViewController {
     
     private func setupDefaults() {
         navigationBar.rightItemHStack.addArrangedSubview(closeBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(Spacer(16))
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
     }
     
     // MARK: Layout
@@ -77,9 +77,9 @@ final class SignUpCompleteVC: BackableViewController {
         view.addSubview(mainVStack)
         view.addSubview(nextButton)
         mainVStack.addArrangedSubview(imageView)
-        mainVStack.addArrangedSubview(Spacer(40))
+        mainVStack.addArrangedSubview(LOSpacer(40))
         mainVStack.addArrangedSubview(titleLabel)
-        mainVStack.addArrangedSubview(Spacer(7))
+        mainVStack.addArrangedSubview(LOSpacer(7))
         mainVStack.addArrangedSubview(descriptionLabel)
         
         mainVStack.snp.makeConstraints {

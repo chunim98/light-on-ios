@@ -33,7 +33,7 @@ final class GenreCell: UICollectionViewCell {
         var config = TextConfiguration()
         config.font = .pretendard.bold(20)
         config.lineHeight = 22
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let overlayLayer = CALayer()

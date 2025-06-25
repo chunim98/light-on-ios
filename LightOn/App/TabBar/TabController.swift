@@ -1,6 +1,6 @@
 //
 //  TabController.swift
-//  TennisPark
+//  LightOn
 //
 //  Created by 신정욱 on 5/26/25.
 //

@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class PerformanceDetailVC: BackButtonViewController {
+final class PerformanceDetailVC: BackButtonVC {
     
     // MARK: Properties
     
@@ -39,7 +39,7 @@ final class PerformanceDetailVC: BackButtonViewController {
     
     private let likeButton = LikeButton()
     private let applicationButton = {
-        let button = TPButton(style: .filled, height: 48)
+        let button = LOButton(style: .filled, height: 48)
         button.setTitle("신청하기", .pretendard.bold(16))
         return button
     }()
@@ -73,11 +73,11 @@ final class PerformanceDetailVC: BackButtonViewController {
         contentVStack.addArrangedSubview(imageView)
         contentVStack.addArrangedSubview(infoSection)
         contentVStack.addArrangedSubview(descriptionSection)
-        contentVStack.addArrangedSubview(Divider(height: 1, color: .background))
+        contentVStack.addArrangedSubview(LODivider(height: 1, color: .background))
         contentVStack.addArrangedSubview(artistSection)
-        contentVStack.addArrangedSubview(Divider(height: 8, color: .background))
+        contentVStack.addArrangedSubview(LODivider(height: 8, color: .background))
         contentVStack.addArrangedSubview(seatSection)
-        contentVStack.addArrangedSubview(Divider(height: 1, color: .background))
+        contentVStack.addArrangedSubview(LODivider(height: 1, color: .background))
         contentVStack.addArrangedSubview(noticeSection)
         
         likeButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)

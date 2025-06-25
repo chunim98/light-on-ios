@@ -16,7 +16,7 @@ final class DetailSeatSectionView: UIStackView {
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "좌석 정보"
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let descriptionLabel = {
@@ -32,7 +32,7 @@ final class DetailSeatSectionView: UIStackView {
         • 지정좌석
         """ // temp
         
-        let label = TPLabel(config: config)
+        let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label
     }()
@@ -60,7 +60,7 @@ final class DetailSeatSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(titleLabel)
-        addArrangedSubview(Spacer(16))
+        addArrangedSubview(LOSpacer(16))
         addArrangedSubview(descriptionLabel)
     }
 }

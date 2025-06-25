@@ -33,11 +33,11 @@ final class LOSwitch: UISwitch {
     
     private func setupDefaults() {
         // onTintColor 설정
-        self.onTintColor = .brand
+        onTintColor = .brand
         // offTintColor 설정
-        self.subviews.first?.subviews.first?.backgroundColor = .assistive
+        subviews.first?.subviews.first?.backgroundColor = .assistive
         // 내부에 있는 thumbView 인스턴스 가져오기
-        self.thumbView = self.subviews.first?.subviews.last?.subviews.last as? UIImageView
+        thumbView = subviews.first?.subviews.last?.subviews.last as? UIImageView
     }
     
     // MARK: Layer Mask

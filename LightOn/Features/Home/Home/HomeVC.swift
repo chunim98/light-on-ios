@@ -10,7 +10,7 @@ import Combine
 
 import SnapKit
 
-final class HomeVC: BarViewController {
+final class HomeVC: NavigationBarVC {
     
     // MARK: Properties
     
@@ -56,13 +56,13 @@ final class HomeVC: BarViewController {
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.image = .homeNavBarLogo
         
-        navigationBar.leftItemHStack.addArrangedSubview(Spacer(18))
+        navigationBar.leftItemHStack.addArrangedSubview(LOSpacer(18))
         navigationBar.leftItemHStack.addArrangedSubview(logoImageView)
         
         navigationBar.rightItemHStack.addArrangedSubview(notificationBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(Spacer(9))
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(9))
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(Spacer(18))
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
     }
     
     // MARK: Layout
@@ -72,11 +72,11 @@ final class HomeVC: BarViewController {
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(bannerPageVC.view)
         contentVStack.addArrangedSubview(recommendSectionView)
-        contentVStack.addArrangedSubview(Spacer(18))
+        contentVStack.addArrangedSubview(LOSpacer(18))
         contentVStack.addArrangedSubview(spotlightedSectionView)
-        contentVStack.addArrangedSubview(Spacer(18))
+        contentVStack.addArrangedSubview(LOSpacer(18))
         contentVStack.addArrangedSubview(popularSectionView)
-        contentVStack.addArrangedSubview(Spacer(30))
+        contentVStack.addArrangedSubview(LOSpacer(30))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }

@@ -44,12 +44,12 @@ final class TabBarController: TabController {
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = BarViewController()
+                let vc = NavigationBarVC()
                 vc.tabBar = self
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = BarViewController()
+                let vc = NavigationBarVC()
                 vc.tabBar = self
                 return vc
             }()),
@@ -61,7 +61,7 @@ final class TabBarController: TabController {
     
     private func setupLayout() {
         contentVStack.addArrangedSubview(tabBarView)
-        contentVStack.addArrangedSubview(Divider(color: .white))
+        contentVStack.addArrangedSubview(LODivider(color: .white))
         
         tabBarView.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)

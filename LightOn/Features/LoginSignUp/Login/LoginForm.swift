@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-final class LoginForm: TPTextForm {
+final class LoginForm: TextForm {
     
     // MARK: Properties
     

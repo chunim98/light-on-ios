@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class SignUpFirstStepVC: BackButtonViewController {
+final class SignUpFirstStepVC: BackButtonVC {
     
     // MARK: Properties
     
@@ -46,13 +46,13 @@ final class SignUpFirstStepVC: BackButtonViewController {
     }()
     
     private let checkDuplicationButton = {
-        let button = TPButton(style: .filled, width: 91)
+        let button = LOButton(style: .filled, width: 91)
         button.setTitle("중복확인", .pretendard.semiBold(16))
         return button
     }()
     
     private let nextButton = {
-        let button = TPButton(style: .filled)
+        let button = LOButton(style: .filled)
         button.setTitle("다음", .pretendard.bold(16))
         return button
     }()
@@ -76,16 +76,16 @@ final class SignUpFirstStepVC: BackButtonViewController {
     
     private func setupLayout() {
         view.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(Spacer(20))
+        mainVStack.addArrangedSubview(LOSpacer(20))
         mainVStack.addArrangedSubview(emailForm)
-        mainVStack.addArrangedSubview(Spacer(24))
+        mainVStack.addArrangedSubview(LOSpacer(24))
         mainVStack.addArrangedSubview(pwForm)
-        mainVStack.addArrangedSubview(Spacer(24))
+        mainVStack.addArrangedSubview(LOSpacer(24))
         mainVStack.addArrangedSubview(confirmForm)
-        mainVStack.addArrangedSubview(Spacer())
+        mainVStack.addArrangedSubview(LOSpacer())
         mainVStack.addArrangedSubview(nextButton)
         
-        emailForm.addTrailingView(Spacer(12))
+        emailForm.addTrailingView(LOSpacer(12))
         emailForm.addTrailingView(checkDuplicationButton)
         
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }

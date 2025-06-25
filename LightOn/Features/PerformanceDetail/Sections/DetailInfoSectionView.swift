@@ -22,7 +22,7 @@ final class DetailInfoSectionView: UIStackView {
         
         let sv = UIStackView(alignment: .center)
         sv.addArrangedSubview(iv)
-        sv.addArrangedSubview(Spacer(6))
+        sv.addArrangedSubview(LOSpacer(6))
         return sv
     }()
     
@@ -32,7 +32,7 @@ final class DetailInfoSectionView: UIStackView {
         
         let sv = UIStackView(alignment: .center)
         sv.addArrangedSubview(iv)
-        sv.addArrangedSubview(Spacer(6))
+        sv.addArrangedSubview(LOSpacer(6))
         return sv
     }()
     
@@ -59,7 +59,7 @@ final class DetailInfoSectionView: UIStackView {
         config.foregroundColor = .brand
         config.text = "어쿠스틱" // temp
         
-        let label = TPPaddingLabel(
+        let label = LOPaddingLabel(
             configuration: config,
             padding: .init(horizontal: 8, vertical: 4)
         )
@@ -75,7 +75,7 @@ final class DetailInfoSectionView: UIStackView {
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "[여의도] Light ON 홀리데이 버스킹버스킹" // temp
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let dateLabel = {
@@ -83,7 +83,7 @@ final class DetailInfoSectionView: UIStackView {
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "2025.05.01" // temp
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let timeLabel = {
@@ -91,7 +91,7 @@ final class DetailInfoSectionView: UIStackView {
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "17:00" // temp
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let placeLabel = {
@@ -99,7 +99,7 @@ final class DetailInfoSectionView: UIStackView {
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "서울 영등포구 여의도동 81-8" // temp
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     let priceLabel = {
@@ -107,7 +107,7 @@ final class DetailInfoSectionView: UIStackView {
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "(유료) 10,000원" // temp
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
 
     // MARK: Life Cycle
@@ -133,33 +133,33 @@ final class DetailInfoSectionView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(genreTagHStack)
-        addArrangedSubview(Spacer(20))
+        addArrangedSubview(LOSpacer(20))
         addArrangedSubview(titleLabel)
-        addArrangedSubview(Spacer(12))
+        addArrangedSubview(LOSpacer(12))
         addArrangedSubview(dateHStack)
-        addArrangedSubview(Spacer(8))
+        addArrangedSubview(LOSpacer(8))
         addArrangedSubview(placeHStack)
-        addArrangedSubview(Spacer(8))
+        addArrangedSubview(LOSpacer(8))
         addArrangedSubview(priceHStack)
         
         genreTagHStack.addArrangedSubview(genreTagLabel)
-        genreTagHStack.addArrangedSubview(Spacer())
+        genreTagHStack.addArrangedSubview(LOSpacer())
         genreTagHStack.addArrangedSubview(shareButton)
         
         dateHStack.addArrangedSubview(dateLabel)
-        dateHStack.addArrangedSubview(Divider(
+        dateHStack.addArrangedSubview(LODivider(
             width: 1, height: 12, color: .disable
         ))
         dateHStack.addArrangedSubview(timeLabel)
-        dateHStack.addArrangedSubview(Spacer())
+        dateHStack.addArrangedSubview(LOSpacer())
         
         placeHStack.addArrangedSubview(placeLabel)
-        placeHStack.addArrangedSubview(Spacer(8))
+        placeHStack.addArrangedSubview(LOSpacer(8))
         placeHStack.addArrangedSubview(openMapButton)
-        placeHStack.addArrangedSubview(Spacer())
+        placeHStack.addArrangedSubview(LOSpacer())
         
         priceHStack.addArrangedSubview(priceLabel)
-        priceHStack.addArrangedSubview(Spacer())
+        priceHStack.addArrangedSubview(LOSpacer())
     }
 }
 

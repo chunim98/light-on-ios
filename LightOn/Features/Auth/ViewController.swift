@@ -17,13 +17,13 @@ final class ViewController: UIViewController {
     
     // MARK: Components
     
-    private lazy var alert = LOAlertVC(
-        base: self,
-        content: LOSwitch(),
-        headerTitle: "알림",
-        acceptTitle: "확인",
-        cancelTitle: "취소"
-    )
+//    private lazy var alert = LOAlertVC(
+//        base: self,
+//        content: LOSwitch(),
+//        headerTitle: "알림",
+//        acceptTitle: "확인",
+//        cancelTitle: "취소"
+//    )
     
     private let mainVStack = {
         let sv = UIStackView()
@@ -84,7 +84,7 @@ final class ViewController: UIViewController {
             .store(in: &cancellables)
         
         alertButton.tapPublisher
-            .sink { [weak self] _ in self?.alert.show() }
+            .sink { [weak self] _ in /*self?.alert.show()*/ }
             .store(in: &cancellables)
     }
 }

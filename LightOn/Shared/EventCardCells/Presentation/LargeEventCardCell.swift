@@ -19,12 +19,27 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     private let mainVStack = UIStackView(.vertical, spacing: 14)
     private let detailsVStack = UIStackView(.vertical, inset: .init(horizontal: 2))
+    
     private let dateTimeHStack = {
-        let il = TPIconLabelContainer()
-        il.iconView.image = .eventCardCellClock
-        il.addArrangedSubview(il.iconView)
-        il.spacing = 5
-        return il
+        let iv = UIImageView(image: .eventCardCellClock)
+        iv.contentMode = .scaleAspectFit
+        
+        let sv = UIStackView()
+        sv.alignment = .center
+        sv.spacing = 5
+        sv.addArrangedSubview(iv)
+        return sv
+    }()
+    
+    private let locationHStack = {
+        let iv = UIImageView(image: .eventCardCellPin)
+        iv.contentMode = .scaleAspectFit
+        
+        let sv = UIStackView()
+        sv.alignment = .center
+        sv.spacing = 6
+        sv.addArrangedSubview(iv)
+        return sv
     }()
     
     private let thumbnailView = {
@@ -40,36 +55,28 @@ final class LargeEventCardCell: UICollectionViewCell {
         var config = TextConfiguration()
         config.font = .pretendard.bold(14)
         config.foregroundColor = .loBlack
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let dateLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
     private let timeLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        return TPLabel(config: config)
+        return LOLabel(config: config)
     }()
     
-    private let locationIconLabel = {
+    private let locationLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        
-        let il = TPIconLabelContainer()
-        il.iconView.image = .eventCardCellPin
-        il.titleLabel.config = config
-        il.spacing = 6
-        
-        il.addArrangedSubview(il.iconView)
-        il.addArrangedSubview(il.titleLabel)
-        return il
+        return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle
@@ -96,15 +103,20 @@ final class LargeEventCardCell: UICollectionViewCell {
         mainVStack.addArrangedSubview(detailsVStack)
         
         detailsVStack.addArrangedSubview(titleLabel)
-        detailsVStack.addArrangedSubview(Spacer(8))
+        detailsVStack.addArrangedSubview(LOSpacer(8))
         detailsVStack.addArrangedSubview(dateTimeHStack)
-        detailsVStack.addArrangedSubview(Spacer(5))
-        detailsVStack.addArrangedSubview(locationIconLabel)
+        detailsVStack.addArrangedSubview(LOSpacer(5))
+        detailsVStack.addArrangedSubview(locationHStack)
         
         dateTimeHStack.addArrangedSubview(dateLabel)
-        dateTimeHStack.addArrangedSubview(Divider(width: 1, height: 10, color: .disable))
+        dateTimeHStack.addArrangedSubview(LODivider(
+            width: 1, height: 10, color: .disable
+        ))
         dateTimeHStack.addArrangedSubview(timeLabel)
-        dateTimeHStack.addArrangedSubview(Spacer())
+        dateTimeHStack.addArrangedSubview(LOSpacer())
+        
+        locationHStack.addArrangedSubview(locationLabel)
+        locationHStack.addArrangedSubview(LOSpacer())
         
         mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         thumbnailView.snp.makeConstraints {
@@ -116,11 +128,11 @@ final class LargeEventCardCell: UICollectionViewCell {
     // MARK: Public Configuration
 
     func configure(item: LargeEventCardItem?) {
-        thumbnailView.image     = item?.thumbnail
-        titleLabel.config.text  = item?.title
-        dateLabel.config.text   = item?.date
-        timeLabel.config.text   = item?.time
-        locationIconLabel.titleLabel.config.text = item?.location
+        thumbnailView.image = item?.thumbnail
+        titleLabel.config.text = item?.title
+        dateLabel.config.text = item?.date
+        timeLabel.config.text = item?.time
+        locationLabel.config.text = item?.location
     }
 }
 
