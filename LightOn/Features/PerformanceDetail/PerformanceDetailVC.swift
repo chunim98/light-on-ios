@@ -44,6 +44,13 @@ final class PerformanceDetailVC: BackButtonVC {
         return button
     }()
     
+    private let balloonView = {
+        let view = TipBalloonView()
+        view.setText(text: "무료공연으로 별도의 결제가 필요하지않아요!", highlighted: "무료공연")
+        view.isUserInteractionEnabled = false
+        return view
+    }()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -65,6 +72,7 @@ final class PerformanceDetailVC: BackButtonVC {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(scrollView)
         mainVStack.addArrangedSubview(buttonsHStack)
+        mainVStack.addSubview(balloonView)
         
         scrollView.addSubview(contentVStack)
         buttonsHStack.addArrangedSubview(likeButton)
@@ -85,6 +93,10 @@ final class PerformanceDetailVC: BackButtonVC {
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         imageView.snp.makeConstraints { $0.size.equalTo(scrollView.snp.width) }
+        balloonView.snp.makeConstraints {
+            $0.bottom.equalTo(applicationButton.snp.top).offset(-17)
+            $0.centerX.equalTo(applicationButton)
+        }
     }
     
     // MARK: Bindings

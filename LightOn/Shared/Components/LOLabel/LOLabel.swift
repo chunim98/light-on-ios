@@ -36,7 +36,7 @@ class LOLabel: UILabel {
     // MARK: Public Configuration
     
     /// 해당 메서드를 통해 적용한 효과는 소급 적용되지 않음 (config 구성을 마친 후 가장 마지막에 적용할 것)
-    func addAnyAttribute(_ name: NSAttributedString.Key, value: Any) {
+    func addAnyAttribute(name: NSAttributedString.Key, value: Any) {
         guard let full = config.text else { return }
         
         let range = NSString(string: full).range(of: full)
@@ -45,7 +45,7 @@ class LOLabel: UILabel {
     }
     
     /// 해당 메서드를 통해 적용한 효과는 소급 적용되지 않음 (config 구성을 마친 후 가장 마지막에 적용할 것)
-    func addAnyAttribute(_ name: NSAttributedString.Key, value: Any, segment: String) {
+    func addAnyAttribute(name: NSAttributedString.Key, value: Any, segment: String) {
         guard let full = config.text else { return }
         
         let range = NSString(string: full).range(of: segment)

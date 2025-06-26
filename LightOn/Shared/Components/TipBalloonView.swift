@@ -1,5 +1,5 @@
 //
-//  TipBalloon.swift
+//  TipBalloonView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/15/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class TipBalloon: UIView {
+final class TipBalloonView: UIView {
     
     // MARK: Components
     
@@ -22,12 +22,15 @@ final class TipBalloon: UIView {
     }()
     
     private let descriptionLabel = {
-        let label = UILabel()
+        var config = TextConfiguration()
+        config.font = .pretendard.medium(12)
+        config.foregroundColor = .loBlack
+        config.alignment = .center
+        config.lineHeight = 16
+        
+        let label = LOLabel(config: config)
         label.lineBreakStrategy = .hangulWordPriority
-        label.font = .pretendard.medium(12)
-        label.textAlignment = .center
         label.numberOfLines = .max
-        label.textColor = .loBlack
         return label
     }()
     
@@ -81,21 +84,18 @@ final class TipBalloon: UIView {
     
     // MARK: Public Configuration
     
-    func setText(_ text: String) { descriptionLabel.text = text }
-    
-    func setHighlightText(_ text: String, highlight: String, color: UIColor) {
-        descriptionLabel.setHighlightText(text: text, highlight: highlight, color: color)
+    /// 말풍선 텍스트 설정
+    func setText(text: String, highlighted: String) {
+        descriptionLabel.config.text = text
+        descriptionLabel.addAnyAttribute(
+            name: .font,
+            value: UIFont.pretendard.bold(12)!,
+            segment: highlighted
+        )
+        descriptionLabel.addAnyAttribute(
+            name: .foregroundColor,
+            value: UIColor.brand,
+            segment: highlighted
+        )
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    let tb = TipBalloon()
-    tb.setHighlightText(
-        "지금가입하고\n다양한 공연 소식을 받아보세요!",
-        highlight: "다양한 공연 소식",
-        color: .brand
-    )
-    return tb
 }
