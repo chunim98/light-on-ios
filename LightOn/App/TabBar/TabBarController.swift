@@ -49,7 +49,7 @@ final class TabBarController: TabController {
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = NavigationBarVC()
+                let vc = MyPageVC()
                 vc.tabBar = self
                 return vc
             }()),
