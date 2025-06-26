@@ -19,6 +19,12 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     // MARK: Components
     
+    private let hideOverlayGesture = {
+        let gesture = UITapGestureRecognizer()
+        gesture.cancelsTouchesInView = false
+        return gesture
+    }()
+    
     private let scrollView = UIScrollView()
     private let contentVStack = UIStackView(.vertical)
     
@@ -45,6 +51,7 @@ final class SignUpSecondStepVC: BackButtonVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupOverlayLayout()
         setupBindings()
     }
     
@@ -52,6 +59,7 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "회원가입"
+        contentVStack.addGestureRecognizer(hideOverlayGesture)
     }
     
     // MARK: Layout
@@ -77,6 +85,20 @@ final class SignUpSecondStepVC: BackButtonVC {
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
     }
     
+    private func setupOverlayLayout() {
+        contentVStack.addSubview(userInfoSection.addressForm.cityTableContainer)
+        contentVStack.addSubview(userInfoSection.addressForm.townTableContainer)
+        
+        userInfoSection.addressForm.cityTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.cityButton)
+            $0.height.equalTo(329)
+        }
+        userInfoSection.addressForm.townTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.townButton)
+            $0.height.equalTo(329)
+        }
+    }
+    
     // MARK: Bindings
     
     private func setupBindings() {
@@ -90,7 +112,34 @@ final class SignUpSecondStepVC: BackButtonVC {
                 present(privacyPolicyAlert, animated: true)
             }
             .store(in: &cancellables)
+
+        // 배경을 터치하면, 오버레이 닫기
+        hideOverlayGesture.tapPublisher
+            .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension SignUpSecondStepVC {
+    /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
+    private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
+        let cityTableView = userInfoSection.addressForm.cityTableContainer
+        let townTableView = userInfoSection.addressForm.townTableContainer
+        let point = gesture.location(in: contentVStack)
         
+        // 오버레이가 열려있고, 배경을 탭하면 닫기
+        if !cityTableView.isHidden, !cityTableView.frame.contains(point) {
+            cityTableView.isHidden = true
+        }
+        
+        // 오버레이가 열려있고, 배경을 탭하면 닫기
+        if !townTableView.isHidden, !townTableView.frame.contains(point) {
+            townTableView.isHidden = true
+        }
+        
+        view.endEditing(true)   // 키보드 닫기
     }
 }
 
