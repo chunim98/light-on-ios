@@ -18,6 +18,10 @@ final class AppCoordinator: Coordinator {
     
     private var cancellables = Set<AnyCancellable>()
     
+    /// 화면전환 이벤트 퍼블리셔
+    private let navigationEventPublisher =
+    AppCoordinatorBus.shared.navigationEventSubject.eraseToAnyPublisher()
+    
     // MARK: Methods
     
     func start() { showTabBarController() }
