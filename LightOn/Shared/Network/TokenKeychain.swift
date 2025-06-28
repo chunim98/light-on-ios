@@ -8,18 +8,31 @@
 import Foundation
 import Security
 
-final class TokenKeychain: Sendable {
+final class TokenKeychain: @unchecked Sendable {
     
     // MARK: Enum
     
-    enum TokenType: String { case access, refresh }
+    enum TokenType: String { case access, refresh, fcm }
     
-    // MARK: Singletone
+    // MARK: Singleton
     
     static let shared = TokenKeychain()
     private init() {}
+    
+    // MARK: Properties
+    
+    /// 앱 설치 후 최초 실행 여부 (키체인 초기화 용도)
+    @Storage("isFirstLaunch", true) var isFirstLaunch: Bool
 
     // MARK: Methods
+    
+    /// 앱 재설치 후, 잔여토큰 초기화
+    func clear() {
+        guard isFirstLaunch else { return }
+        save(.access, token: "")
+        save(.refresh, token: "")
+        isFirstLaunch = false
+    }
     
     /// 토큰 저장
     func save(_ type: TokenType, token: String) {

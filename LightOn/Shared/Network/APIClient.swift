@@ -120,4 +120,29 @@ final class APIClient {
             }
         }
     }
+    
+    /// 토큰 재발급
+    func reissueToken(
+        completion: @escaping () -> Void,
+        errorHandler: (() -> Void)? = nil
+    ) {
+        guard let refreshToken = TokenKeychain.shared.load(.refresh)
+        else { errorHandler?(); return }
+        
+        APIClient.shared.requestPost(
+            endPoint: "/api/members/auth/token/refresh",
+            parameters: Optional<EmptyDTO>.none,            // 파라미터 없음
+            headers: ["Refresh-Token": refreshToken],
+            tokenIncluded: false,                           // 인터셉터 없음
+            decodeType: TokenResponseDTO.self
+        ) {
+            TokenKeychain.shared.save(.access, token: $0.accessToken)
+            TokenKeychain.shared.save(.refresh, token: $0.refreshToken)
+            completion()
+            
+        } errorHandler: { _ in
+            print(#function, "토큰 재발급 실패")
+            errorHandler?()
+        }
+    }
 }

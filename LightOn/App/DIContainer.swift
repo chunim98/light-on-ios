@@ -7,7 +7,7 @@
 
 final class DIContainer {
     
-    // MARK: SingleTone
+    // MARK: Singleton
     
     static let shared = DIContainer()
     init() {}

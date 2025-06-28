@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: Properties
 
     var window: UIWindow?
+    var appCoordinator: AppCoordinator?
     
     // MARK: Methods
 
@@ -25,8 +26,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = TabBarController()
+
+        appCoordinator = AppCoordinator()
+        window?.rootViewController = appCoordinator?.navigation
+        appCoordinator?.start()
+        
         window?.makeKeyAndVisible()
+    }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        // 씬이 활성화 됐을 때 로그인 상태 확인
+        SessionManager.shared.updateLoginState()
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
