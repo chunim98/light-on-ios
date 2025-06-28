@@ -34,7 +34,7 @@ final class LoginSignUpFlowCoordinator: Coordinator {
     private func showLoginVC() {
         let vc = LoginVC()
         
-        // 회원가입 버튼, 화면 이동
+        // 회원가입 버튼, 회원가입 1단계 이동
         vc.signUpTapPublisher
             .sink { [weak self] _ in self?.showSignUpFirstStepVC() }
             .store(in: &cancellables)
@@ -60,9 +60,27 @@ final class LoginSignUpFlowCoordinator: Coordinator {
         
         // 뒤로가기 버튼, 화면 닫기
         vc.backBarButton.tapPublisher
-            .sink { [weak self] _ in self?.navigation.popViewController(animated: true) }
+            .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
             .store(in: &cancellables)
-
+        
+        // 다음 버튼 탭, 회원가입 2단계 이동
+        vc.nextTapPublisher
+            .sink { [weak self] _ in self?.showSignUpSecondSetpVC() }
+            .store(in: &cancellables)
+        
+        // 화면 이동
+        flowNav?.pushViewController(vc, animated: true)
+    }
+    
+    private func showSignUpSecondSetpVC() {
+        let vc = SignUpSecondStepVC()
+        
+        // 뒤로가기 버튼, 화면 닫기
+        vc.backBarButton.tapPublisher
+            .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        // 화면 이동
         flowNav?.pushViewController(vc, animated: true)
     }
     

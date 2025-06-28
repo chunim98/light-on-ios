@@ -19,6 +19,12 @@ final class LoginVC: BackButtonVC {
     
     // MARK: Components
     
+    private let backgroundTapGesture = {
+        let gesture = UITapGestureRecognizer()
+        gesture.cancelsTouchesInView = false
+        return gesture
+    }()
+    
     private let mainVStack = UIStackView(.vertical, alignment: .center)
     private let socialButtonHStack = UIStackView(spacing: 10)
     private let optionButtonHStack = UIStackView(spacing: 18)
@@ -72,7 +78,15 @@ final class LoginVC: BackButtonVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupDefaults()
         setupLayout()
+        setupBindings()
+    }
+    
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        mainVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
     // MARK: Layout
@@ -109,6 +123,19 @@ final class LoginVC: BackButtonVC {
         pwForm.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         loginButton.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         loginElseDivider.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(16) }
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        // 화면 빈 공간, 키보드 리턴키 터치하면 키보드 내리기
+        Publishers.Merge3(
+            backgroundTapGesture.tapPublisher.map { _ in },
+            idForm.textField.returnPublisher,
+            pwForm.textField.returnPublisher
+        )
+        .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
+        .store(in: &cancellables)
     }
 }
 

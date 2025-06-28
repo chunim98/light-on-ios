@@ -19,7 +19,7 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     // MARK: Components
     
-    private let hideOverlayGesture = {
+    private let backgroundTapGesture = {
         let gesture = UITapGestureRecognizer()
         gesture.cancelsTouchesInView = false
         return gesture
@@ -59,7 +59,7 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "회원가입"
-        contentVStack.addGestureRecognizer(hideOverlayGesture)
+        contentVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
     // MARK: Layout
@@ -114,7 +114,7 @@ final class SignUpSecondStepVC: BackButtonVC {
             .store(in: &cancellables)
 
         // 배경을 터치하면, 오버레이 닫기
-        hideOverlayGesture.tapPublisher
+        backgroundTapGesture.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
     }

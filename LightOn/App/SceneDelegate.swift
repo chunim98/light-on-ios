@@ -36,7 +36,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidBecomeActive(_ scene: UIScene) {
         // 씬이 활성화 됐을 때 로그인 상태 확인
-        SessionManager.shared.updateLoginState()
+#warning("이거 활성화 시킬 것")
+//        SessionManager.shared.updateLoginState()
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

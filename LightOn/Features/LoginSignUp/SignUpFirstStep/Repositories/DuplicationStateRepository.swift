@@ -1,11 +1,22 @@
 //
-//  DefaultDuplicationStateRepository.swift
+//  DuplicationStateRepository.swift
 //  LightOn
 //
-//  Created by 신정욱 on 6/2/25.
+//  Created by 신정욱 on 6/3/25.
 //
 
 import Combine
+
+import Alamofire
+
+protocol DuplicationStateRepository {
+    /// 이메일 중복 조회
+    func getDuplicationState(
+        emailText: String
+    ) -> AnyPublisher<DuplicationState, Never>
+}
+
+// MARK: - Default
 
 final class DefaultDuplicationStateRepository: DuplicationStateRepository {
     
@@ -25,4 +36,3 @@ final class DefaultDuplicationStateRepository: DuplicationStateRepository {
         .eraseToAnyPublisher()
     }
 }
-
