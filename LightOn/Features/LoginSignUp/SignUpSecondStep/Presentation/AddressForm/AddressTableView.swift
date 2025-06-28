@@ -58,7 +58,7 @@ final class AddressTableView: UITableView {
                 for: indexPath
             ) as? AddressCell else { return .init() }
             
-            cell.configure(text: item, index: indexPath.row)
+            cell.configure(text: item)
             return cell
         }
     }

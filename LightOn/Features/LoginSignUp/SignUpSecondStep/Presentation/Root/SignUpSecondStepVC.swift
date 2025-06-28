@@ -128,8 +128,8 @@ extension SignUpSecondStepVC {
         let cityTableView = userInfoSection.addressForm.cityTableContainer
         let townTableView = userInfoSection.addressForm.townTableContainer
         let point = gesture.location(in: contentVStack)
-        
         // 오버레이가 열려있고, 배경을 탭하면 닫기
+        
         if !cityTableView.isHidden, !cityTableView.frame.contains(point) {
             cityTableView.isHidden = true
         }

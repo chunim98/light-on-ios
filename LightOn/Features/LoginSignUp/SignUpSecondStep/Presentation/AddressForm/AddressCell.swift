@@ -42,7 +42,7 @@ final class AddressCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        configure(text: nil, index: -1)
+        configure(text: nil)
     }
     
     // MARK: Defaults
@@ -58,8 +58,5 @@ final class AddressCell: UITableViewCell {
 
     // MARK: Public Configuration
     
-    func configure(text: String?, index: Int) {
-        label.config.foregroundColor = index == 0 ? .assistive : .loBlack
-        label.config.text = text
-    }
+    func configure(text: String?) { label.config.text = text }
 }

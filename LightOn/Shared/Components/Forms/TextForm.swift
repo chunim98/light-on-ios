@@ -13,9 +13,9 @@ class TextForm: BaseForm {
 
     // MARK: Components
     
-    private let bodyHStack = UIStackView()
+    let textFieldHStack = UIStackView()
     
-    let textField = LOTextField()
+    let textField = LOTintedTextField()
     
     // MARK: Life Cycle
     
@@ -36,8 +36,8 @@ class TextForm: BaseForm {
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(bodyHStack)
-        bodyHStack.addArrangedSubview(textField)
+        addArrangedSubview(textFieldHStack)
+        textFieldHStack.addArrangedSubview(textField)
         
         textField.setContentHuggingPriority(.init(0), for: .horizontal)
         textField.setContentCompressionResistancePriority(.init(0), for: .horizontal)
@@ -47,5 +47,5 @@ class TextForm: BaseForm {
     
     // MARK: Public Configuration
     
-    func addTrailingView(_ view: UIView) { bodyHStack.addArrangedSubview(view) }
+    func addTrailingView(_ view: UIView) { textFieldHStack.addArrangedSubview(view) }
 }

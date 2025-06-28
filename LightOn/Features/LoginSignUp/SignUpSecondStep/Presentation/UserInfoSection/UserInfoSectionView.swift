@@ -98,3 +98,7 @@ final class UserInfoSectionView: UIStackView {
         codeForm.addTrailingView(codeConfirmButton)
     }
 }
+
+// MARK: - Preview
+
+#Preview { UserInfoSectionView() }

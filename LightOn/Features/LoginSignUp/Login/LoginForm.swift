@@ -39,17 +39,18 @@ final class LoginForm: TextForm {
     // MARK: Bindings
     
     private func setupBindings() {
+        textField.didBeginEditingPublisher
+            .sink { [weak self] _ in
+                self?.titleLabel.config.foregroundColor = .brand
+                self?.textField.layer.borderColor = UIColor.brand.cgColor
+            }
+            .store(in: &cancellables)
         
-        textField.didBeginEditingPublisher.sink { [weak self] _ in
-            self?.titleLabel.config.foregroundColor = .brand
-            self?.textField.layer.borderColor = UIColor.brand.cgColor
-        }
-        .store(in: &cancellables)
-        
-        textField.controlEventPublisher(for: .editingDidEnd).sink { [weak self] _ in
-            self?.titleLabel.config.foregroundColor = .infoText
-            self?.textField.layer.borderColor = UIColor.thumbLine.cgColor
-        }
-        .store(in: &cancellables)
+        textField.controlEventPublisher(for: .editingDidEnd)
+            .sink { [weak self] _ in
+                self?.titleLabel.config.foregroundColor = .infoText
+                self?.textField.layer.borderColor = UIColor.thumbLine.cgColor
+            }
+            .store(in: &cancellables)
     }
 }

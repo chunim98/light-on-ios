@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class LOTextField: UITextField {
+class LOTextField: UITextField {
 
     // MARK: Properties
     
@@ -36,6 +36,8 @@ final class LOTextField: UITextField {
         backgroundColor = .white
         layer.cornerRadius = 6
         clipsToBounds = true
+        
+        setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
     
     // MARK: Overrides
