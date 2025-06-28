@@ -24,11 +24,23 @@ final class AppCoordinator: Coordinator {
     
     // MARK: Methods
     
-    func start() { showTabBarController() }
+    func start() {
+        showTabBarController()
+        Task {
+            try await Task.sleep(nanoseconds: 100000)
+            await MainActor.run { showLoginVC() }
+        } // temp
+    }
     
     private func showTabBarController() {
         let tabBar = TabBarController()
         navigation.pushViewController(tabBar, animated: true)
+    }
+    
+    private func showLoginVC() {
+        let coord = LoginSignUpFlowCoordinator(navigation: navigation)
+        store(child: coord)
+        coord.start()
     }
     
     deinit { print("AppCoordinator deinit") }

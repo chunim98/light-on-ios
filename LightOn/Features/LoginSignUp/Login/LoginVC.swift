@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class LoginVC: BackButtonVC {
@@ -109,6 +110,13 @@ final class LoginVC: BackButtonVC {
         loginButton.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         loginElseDivider.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(16) }
     }
+}
+
+// MARK: Binders & Publishers
+
+extension LoginVC {
+    /// 회원가입 버튼 탭
+    var signUpTapPublisher: AnyPublisher<Void, Never> { signUpButton.tapPublisher }
 }
 
 // MARK: - Preview
