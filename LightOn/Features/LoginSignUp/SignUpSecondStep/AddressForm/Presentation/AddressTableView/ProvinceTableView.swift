@@ -1,5 +1,5 @@
 //
-//  AddressTableView.swift
+//  ProvinceTableView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/26/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddressTableView: UITableView {
+final class ProvinceTableView: UITableView {
     
     // MARK: Enum
     
@@ -15,12 +15,12 @@ final class AddressTableView: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, String>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
+    typealias DataSource = UITableViewDiffableDataSource<Section, Province>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Province>
     
     // MARK: Properties
     
-    private var diffableDataSource: DataSource?
+    private(set) var diffableDataSource: DataSource?
 
     // MARK: Life Cycle
     
@@ -58,14 +58,14 @@ final class AddressTableView: UITableView {
                 for: indexPath
             ) as? AddressCell else { return .init() }
             
-            cell.configure(text: item)
+            cell.configure(text: item.rawValue)
             return cell
         }
     }
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [String]) {
+    func setSnapshot(items: [Province]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
@@ -75,5 +75,5 @@ final class AddressTableView: UITableView {
 
 // MARK: - Preview
 
-#Preview { AddressTableView() }
+#Preview { ProvinceTableView() }
 #Preview { SignUpSecondStepVC() }

@@ -1,19 +1,19 @@
 //
-//  AddressTableViewContainer.swift
+//  CityTableViewContainer.swift
 //  LightOn
 //
-//  Created by 신정욱 on 6/26/25.
+//  Created by 신정욱 on 6/30/25.
 //
 
 import UIKit
 
 import SnapKit
 
-final class AddressTableViewContainer: UIView {
+final class CityTableViewContainer: UIView {
 
     // MARK: Components
     
-    let tableView = AddressTableView()
+    let tableView = CityTableView()
     
     // MARK: Life Cycle
     

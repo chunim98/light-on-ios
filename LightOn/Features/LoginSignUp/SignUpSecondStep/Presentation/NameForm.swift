@@ -35,7 +35,7 @@ final class NameForm: TextForm {
 
 extension NameForm {
     /// 이름 퍼블리셔(아무것도 없으면 nil)
-    var validNamePublisher: AnyPublisher<String?, Never> {
+    var namePublisher: AnyPublisher<String?, Never> {
         textField.textPublisher
             .compactMap { $0 }
             .map { $0.isEmpty ? nil : $0 }

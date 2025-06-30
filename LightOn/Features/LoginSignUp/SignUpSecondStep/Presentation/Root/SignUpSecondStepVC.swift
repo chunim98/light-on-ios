@@ -90,15 +90,15 @@ final class SignUpSecondStepVC: BackButtonVC {
     }
     
     private func setupOverlayLayout() {
+        contentVStack.addSubview(userInfoSection.addressForm.provinceTableContainer)
         contentVStack.addSubview(userInfoSection.addressForm.cityTableContainer)
-        contentVStack.addSubview(userInfoSection.addressForm.townTableContainer)
         
-        userInfoSection.addressForm.cityTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.cityButton)
+        userInfoSection.addressForm.provinceTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.provinceButton)
             $0.height.equalTo(329)
         }
-        userInfoSection.addressForm.townTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.townButton)
+        userInfoSection.addressForm.cityTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(userInfoSection.addressForm.cityButton)
             $0.height.equalTo(329)
         }
     }
@@ -129,8 +129,8 @@ final class SignUpSecondStepVC: BackButtonVC {
 extension SignUpSecondStepVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        let cityTableView = userInfoSection.addressForm.cityTableContainer
-        let townTableView = userInfoSection.addressForm.townTableContainer
+        let cityTableView = userInfoSection.addressForm.provinceTableContainer
+        let townTableView = userInfoSection.addressForm.cityTableContainer
         let point = gesture.location(in: contentVStack)
         // 오버레이가 열려있고, 배경을 탭하면 닫기
         

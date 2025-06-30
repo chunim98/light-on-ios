@@ -11,20 +11,10 @@ final class AddressFormButton: UIButton {
     
     // MARK: Properties
     
-    var titleConfig = {
-        var config = TextConfiguration()
-        config.font = .pretendard.regular(16)
-        config.foregroundColor = .assistive
-        config.lineHeight = 23
-        return config
-    }() { didSet {
-        configuration?.attributedTitle = .init(textConfig: titleConfig)
-    } }
-        
     override var intrinsicContentSize: CGSize {
         CGSize(width: super.intrinsicContentSize.width, height: 47)
     }
-
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -53,6 +43,18 @@ final class AddressFormButton: UIButton {
         
         configuration = config
         contentHorizontalAlignment = .fill
+    }
+    
+    // MARK: Public Configuration
+
+    /// 타이틀 설정
+    func setTitle(selected: String?, normal: String) {
+        var config = TextConfiguration()
+        config.foregroundColor  = selected == nil ? .assistive : .loBlack
+        config.text             = selected == nil ? normal : selected
+        config.font = .pretendard.regular(16)
+        config.lineHeight = 23
+        configuration?.attributedTitle = .init(textConfig: config)
     }
 }
 
