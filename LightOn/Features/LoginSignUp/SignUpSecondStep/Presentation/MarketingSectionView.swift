@@ -71,7 +71,7 @@ final class MarketingSectionView: UIStackView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        inset = .init(horizontal: 18, vertical: 20)
+        inset = .init(vertical: 20)
         axis = .vertical
     }
     

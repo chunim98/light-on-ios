@@ -6,7 +6,9 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class Checkbox: UIButton {
@@ -52,6 +54,17 @@ final class Checkbox: UIButton {
     // MARK: Event Handling
     
     @objc private func handleTapEvent() { self.isSelected.toggle() }
+}
+
+// MARK: Binders & Publishers
+
+extension Checkbox {
+    /// 선택 상태 퍼블리셔
+    var isSelectedPublisher: AnyPublisher<Bool, Never> {
+        self.tapPublisher
+            .compactMap { [weak self] in self?.isSelected }
+            .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview
