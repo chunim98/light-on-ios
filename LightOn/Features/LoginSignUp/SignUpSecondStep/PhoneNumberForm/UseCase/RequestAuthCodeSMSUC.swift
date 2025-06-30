@@ -9,9 +9,9 @@ import Combine
 
 final class RequestAuthCodeSMSUC {
     
-    private let repo: AuthCodeRepository
+    private let repo: AuthCodeRepo
     
-    init(repo: AuthCodeRepository) {
+    init(repo: AuthCodeRepo) {
         self.repo = repo
     }
     
@@ -25,6 +25,7 @@ final class RequestAuthCodeSMSUC {
             .withLatestFrom(state) { _, state in state }
             .compactMap { [weak self] in self?.repo.requestAuthCodeSMS(state: $0) }
             .switchToLatest()
+            .share()
             .eraseToAnyPublisher()
     }
 }

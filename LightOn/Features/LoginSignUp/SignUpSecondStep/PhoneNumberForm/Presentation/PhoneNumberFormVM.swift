@@ -22,35 +22,41 @@ final class PhoneNumberFormVM {
     struct Output {
         /// 폰번호 인증 폼의 상태
         let state: AnyPublisher<PhoneNumberFormState, Never>
+        /// 최종 인증된 폰번호
+        let validPhoneNumber: AnyPublisher<String?, Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let requestAuthCodeSMSUC = RequestAuthCodeSMSUC(repo: DefaultAuthCodeRepository())
+    private let requestAuthCodeSMSUC = RequestAuthCodeSMSUC(repo: DefaultAuthCodeRepo())
     private let countDownUC = CountDownUC()
     private let updatePhoneNumberFormStateUC = UpdatePhoneNumberFormStateUC()
+    private let verifyPhoneNumberUC = VerifyPhoneNumberUC(repo: DefaultAuthCodeRepo())
+    private let getValidPhoneNumberUC = GetValidPhoneNumberUC()
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
         let stateSubject = CurrentValueSubject<PhoneNumberFormState, Never>(.init(
-            phoneNumber: "", authCode: "", time: "",
-            authCodeHStackHidden: true,
-            requestButtonEnabled: false,
-            confirmButtonEnabled: false
+            phoneNumber: "", authCode: "", time: "", isVerified: false, style: .initial
         ))
         
-        // 이거 완료되면 캡션 보여주면 될 듯?
-        let requestSMSCompletionEvent = requestAuthCodeSMSUC.execute(
+        let smsRequestCompletion = requestAuthCodeSMSUC.execute(
             trigger1: input.requestTap,
             trigger2: input.retryTap,
             state: stateSubject.eraseToAnyPublisher()
         )
         
+        let verificationCompletion = verifyPhoneNumberUC.execute(
+            trigger: input.confirmTap,
+            state: stateSubject.eraseToAnyPublisher()
+        )
+        
         let countDownSeconds = countDownUC.startCountDown(
-            trigger1: input.requestTap,
-            trigger2: input.retryTap
+            trigger: smsRequestCompletion,
+            stopTrigger1: verificationCompletion,
+            stopTrigger2: input.phoneNumber
         )
         
         updatePhoneNumberFormStateUC.execute(
@@ -58,11 +64,19 @@ final class PhoneNumberFormVM {
             authCode: input.authCode,
             requestTap: input.requestTap,
             countDownSeconds: countDownSeconds,
+            verificationCompletion: verificationCompletion,
             state: stateSubject.eraseToAnyPublisher()
         )
         .sink { stateSubject.send($0) }
         .store(in: &cancellables)
         
-        return Output(state: stateSubject.eraseToAnyPublisher())
+        let validPhoneNumber = getValidPhoneNumberUC.execute(
+            state: stateSubject.eraseToAnyPublisher()
+        )
+        
+        return Output(
+            state: stateSubject.eraseToAnyPublisher(),
+            validPhoneNumber: validPhoneNumber
+        )
     }
 }

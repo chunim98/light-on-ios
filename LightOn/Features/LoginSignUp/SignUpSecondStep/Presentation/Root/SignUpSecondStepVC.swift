@@ -26,9 +26,12 @@ final class SignUpSecondStepVC: BackButtonVC {
     }()
     
     private let scrollView = UIScrollView()
-    private let contentVStack = UIStackView(.vertical)
+    private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
     
     private let userInfoSection = UserInfoSectionView()
+    
+    private let phoneNumberForm = PhoneNumberForm()
+    
     private let marketingSection = MarketingSectionView()
     private let policySection = PolicySectionView()
     
@@ -69,6 +72,7 @@ final class SignUpSecondStepVC: BackButtonVC {
         view.addSubview(nextButton)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(userInfoSection)
+        contentVStack.addArrangedSubview(phoneNumberForm)
         contentVStack.addArrangedSubview(marketingSection)
         contentVStack.addArrangedSubview(policySection)
         contentVStack.addArrangedSubview(LOSpacer(30))

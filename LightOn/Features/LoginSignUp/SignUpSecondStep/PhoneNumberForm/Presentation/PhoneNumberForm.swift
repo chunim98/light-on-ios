@@ -18,6 +18,10 @@ final class PhoneNumberForm: TextForm {
     private let vm = PhoneNumberFormVM()
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: Outputs
+    
+    private let phoneNumberSubject = PassthroughSubject<String?, Never>()
+    
     // MARK: Components
     
     private let authCodeHStack = UIStackView()
@@ -53,6 +57,8 @@ final class PhoneNumberForm: TextForm {
         config.text = "00:00"
         return LOLabel(config: config)
     }()
+    
+    private let captionView = PhoneNumberFormCaptionView()
         
     // MARK: Life Cycle
     
@@ -79,6 +85,8 @@ final class PhoneNumberForm: TextForm {
     
     private func setupLayout() {
         addArrangedSubview(authCodeHStack)
+        addArrangedSubview(captionView)
+        
         textFieldHStack.addArrangedSubview(LOSpacer(12))
         textFieldHStack.addArrangedSubview(requestButton)
 
@@ -94,7 +102,6 @@ final class PhoneNumberForm: TextForm {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(18)
         }
-        self.snp.makeConstraints { $0.width.equalTo(350) }
     }
     
     // MARK: Bindings
@@ -111,25 +118,27 @@ final class PhoneNumberForm: TextForm {
             .removeDuplicates()
             .eraseToAnyPublisher()
         
+        /// 연속 터치를 막고자 0.75초 뒤에 이벤트 방출
+        let debouncedRetryTap = retryButton.tapPublisher
+            .debounce(for: 0.75, scheduler: RunLoop.main)
+            .eraseToAnyPublisher()
+        
         let input = PhoneNumberFormVM.Input(
             phoneNumber: phoneNumber,
             authCode: authCode,
             requestTap: requestButton.tapPublisher,
-            retryTap: retryButton.tapPublisher,
+            retryTap: debouncedRetryTap,
             confirmTap: confirmButton.tapPublisher
         )
         
         let output = vm.transform(input)
         
         output.state
-            .handleEvents(
-                receiveSubscription: { _ in print("구독 시작됐다냥") },
-                receiveOutput: { value in print("값 받았당: \(value)") },
-                receiveCompletion: { completion in
-                    print("완료됐당냥: \(completion)")  // 여기서 .finished 또는 .failure 확인 가능
-                },
-                receiveCancel: { print("취소됐다냥") }
-            )            .sink { [weak self] in self?.bindState($0) }
+            .sink { [weak self] in self?.bindState($0) }
+            .store(in: &cancellables)
+        
+        output.validPhoneNumber
+            .sink { [weak self] in self?.phoneNumberSubject.send($0) }
             .store(in: &cancellables)
     }
 }
@@ -139,10 +148,19 @@ final class PhoneNumberForm: TextForm {
 extension PhoneNumberForm {
     /// 화면 상태 바인딩
     private func bindState(_ state: PhoneNumberFormState) {
+        // 스타일
+        requestButton.isEnabled = state.style.requestButtonEnabled
+        confirmButton.isEnabled = state.style.confirmButtonEnabled
+        authCodeHStack.isHidden = state.style.authCodeHStackHidden
+        captionView.isHidden = state.style.captionViewHidden
+        // 값
+        authCodeTextField.text = state.authCode
         timeLabel.config.text = state.time
-        authCodeHStack.isHidden = state.authCodeHStackHidden
-        requestButton.isEnabled = state.requestButtonEnabled
-        confirmButton.isEnabled = state.confirmButtonEnabled
+    }
+    
+    /// 최종 인증된 폰번호 퍼블리셔
+    var phoneNumberPublisher: AnyPublisher<String?, Never> {
+        phoneNumberSubject.eraseToAnyPublisher()
     }
 }
 

@@ -126,8 +126,9 @@ final class SignUpFirstStepVC: BackButtonVC {
         
         let output = vm.transform(input)
         
+#warning("! 제거해 둘 것")
         output.isNextButtonEnabled
-            .sink { [weak self] in self?.nextButton.isEnabled = $0 }
+            .sink { [weak self] in self?.nextButton.isEnabled = !$0 }
             .store(in: &cancellables)
         
         output.isDuplicationButtonEnabled
