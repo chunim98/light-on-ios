@@ -9,9 +9,9 @@ import Combine
 
 final class EmailVerificationUC {
     
-    private let repository: DuplicationStateRepository
+    private let repository: DuplicationStateRepo
     
-    init(repository: DuplicationStateRepository) {
+    init(repository: DuplicationStateRepo) {
         self.repository = repository
     }
     

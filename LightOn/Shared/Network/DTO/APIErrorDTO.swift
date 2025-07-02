@@ -8,4 +8,8 @@
 struct APIErrorDTO: Decodable, Error {
     let status: Int
     let message: String
+    
+    func toDomain() -> APIError {
+        APIError(status: status, message: message)
+    }
 }

@@ -17,6 +17,7 @@ final class SignUpFirstStepVM {
         let pwText: AnyPublisher<String, Never>
         let confirmText: AnyPublisher<String, Never>
         let duplicationTap: AnyPublisher<Void, Never>
+        let nextButtonTap: AnyPublisher<Void, Never>
     }
     struct Output {
         let isNextButtonEnabled: AnyPublisher<Bool, Never>
@@ -24,6 +25,8 @@ final class SignUpFirstStepVM {
         let emailCaption: AnyPublisher<SignUpTextForm.CaptionConfiguration?, Never>
         let pwCaption: AnyPublisher<SignUpTextForm.CaptionConfiguration?, Never>
         let confirmCaption: AnyPublisher<SignUpTextForm.CaptionConfiguration?, Never>
+        /// 임시 회원 번호
+        let tempUserID: AnyPublisher<Int, Never>
     }
     
     // MARK: Properties
@@ -34,11 +37,12 @@ final class SignUpFirstStepVM {
     
     private let makeRootStateUC = MakeRootStateUC()
     private let emailVerificationUC = EmailVerificationUC(
-        repository: DefaultDuplicationStateRepository()
+        repository: DefaultDuplicationStateRepo()
     )
     private let pwVerificationUC = PWVerificationUC()
     private let makeCaptionUC = MakeCaptionUC()
     private let buttonEnabledUC = ButtonEnabledUC()
+    private let requestPresignUpUC = RequestPresignUpUC(repo: DefaultPresignUpRepo())
     
     // MARK: Event Handling
     
@@ -54,7 +58,7 @@ final class SignUpFirstStepVM {
         // 이메일, 비번 검증 파이프라인의 시작 지점
         let rootEmailState = makeRootStateUC.makeEmailState(input.emailText)
         let rootPWState = makeRootStateUC.makePWState(input.pwText, input.confirmText)
-
+        
         // 이메일 검증 1단계: 이메일 형식 검사
         emailVerificationUC
             .checkFormat(rootEmailState)
@@ -72,7 +76,7 @@ final class SignUpFirstStepVM {
             .checkFormat(rootPWState)
             .sink { pwStateSubject.send($0) }
             .store(in: &cancellables)
-
+        
         // 이메일, 비번 상태로 캡션 만들기
         let emailCaption = makeCaptionUC.makeEmailCaption(emailState)
         let pwCaption = makeCaptionUC.makePWCaption(pwState)
@@ -86,12 +90,20 @@ final class SignUpFirstStepVM {
         let isNextButtonEnabled = buttonEnabledUC
             .getNextButtonEnabled(emailState, pwState)
         
+        // 임시 회원번호
+        let tempUserID = requestPresignUpUC.execute(
+            trigger: input.nextButtonTap,
+            email: emailState,
+            pw: pwState
+        )
+        
         return Output(
             isNextButtonEnabled:        isNextButtonEnabled,
             isDuplicationButtonEnabled: isDuplicationButtonEnabled,
             emailCaption:               emailCaption,
             pwCaption:                  pwCaption,
-            confirmCaption:             confirmCaption
+            confirmCaption:             confirmCaption,
+            tempUserID:                 tempUserID
         )
     }
 }

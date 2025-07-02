@@ -18,6 +18,10 @@ final class SignUpFirstStepVC: BackButtonVC {
     private var cancellables = Set<AnyCancellable>()
     private let vm = SignUpFirstStepVM()
     
+    // MARK: Outputs
+    
+    private let tempUserIDSubject = PassthroughSubject<Int, Never>()
+    
     // MARK: Components
     
     private let backgroundTapGesture = {
@@ -121,14 +125,14 @@ final class SignUpFirstStepVC: BackButtonVC {
             emailText: idText,
             pwText: pwText,
             confirmText: confirmText,
-            duplicationTap: checkDuplicationButton.tapPublisher
+            duplicationTap: checkDuplicationButton.tapPublisher,
+            nextButtonTap: nextButton.tapPublisher
         )
         
         let output = vm.transform(input)
         
-#warning("! 제거해 둘 것")
         output.isNextButtonEnabled
-            .sink { [weak self] in self?.nextButton.isEnabled = !$0 }
+            .sink { [weak self] in self?.nextButton.isEnabled = $0 }
             .store(in: &cancellables)
         
         output.isDuplicationButtonEnabled
@@ -147,6 +151,11 @@ final class SignUpFirstStepVC: BackButtonVC {
             .sink { [weak self] in self?.confirmForm.captionConfigBinder(config: $0) }
             .store(in: &cancellables)
         
+        output.tempUserID
+            .print()
+            .sink { [weak self] in self?.tempUserIDSubject.send($0) }
+            .store(in: &cancellables)
+        
         backgroundTapGesture.tapPublisher
             .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
             .store(in: &cancellables)
@@ -156,8 +165,10 @@ final class SignUpFirstStepVC: BackButtonVC {
 // MARK: Binders & Publishers
 
 extension SignUpFirstStepVC {
-    /// 다음 버튼 탭 퍼블리셔
-    var nextTapPublisher: AnyPublisher<Void, Never> { nextButton.tapPublisher }
+    /// 임시 회원 번호 퍼블리셔
+    var tempUserIDPublisher: AnyPublisher<Int, Never> {
+        tempUserIDSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview

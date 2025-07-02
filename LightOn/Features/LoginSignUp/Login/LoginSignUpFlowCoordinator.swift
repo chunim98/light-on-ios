@@ -63,8 +63,9 @@ final class LoginSignUpFlowCoordinator: Coordinator {
             .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
             .store(in: &cancellables)
         
-        // 다음 버튼 탭, 회원가입 2단계 이동
-        vc.nextTapPublisher
+#warning("임시 회원 번호 2단계로 전달")
+        // 임시 회원번호, 회원가입 2단계 이동
+        vc.tempUserIDPublisher
             .sink { [weak self] _ in self?.showSignUpSecondSetpVC() }
             .store(in: &cancellables)
         

@@ -1,5 +1,5 @@
 //
-//  DuplicationStateRepository.swift
+//  DuplicationStateRepo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/3/25.
@@ -7,19 +7,14 @@
 
 import Combine
 
-import Alamofire
-
-protocol DuplicationStateRepository {
+protocol DuplicationStateRepo {
     /// 이메일 중복 조회
-    func getDuplicationState(
-        emailText: String
-    ) -> AnyPublisher<DuplicationState, Never>
+    func getDuplicationState(emailText: String) -> AnyPublisher<DuplicationState, Never>
 }
 
 // MARK: - Default
 
-final class DefaultDuplicationStateRepository: DuplicationStateRepository {
-    
+final class DefaultDuplicationStateRepo: DuplicationStateRepo {
     func getDuplicationState(emailText: String) -> AnyPublisher<DuplicationState, Never> {
         Future { promise in
             
