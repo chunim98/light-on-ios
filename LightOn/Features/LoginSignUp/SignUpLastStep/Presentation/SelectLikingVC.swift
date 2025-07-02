@@ -10,10 +10,11 @@ import Combine
 
 import SnapKit
 
-final class SelectLikingVC: BackableVC {
+final class SelectLikingVC: NavigationBarVC {
     
     // MARK: Properties
     
+    private let vm = SelectLikingVM()
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
@@ -25,13 +26,6 @@ final class SelectLikingVC: BackableVC {
         sv.distribution = .fillEqually
         sv.spacing = 8
         return sv
-    }()
-    
-    private let closeBarButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = .selectLikingCross
-        config.contentInsets = .zero
-        return UIButton(configuration: config)
     }()
     
     private let skipButton = {
@@ -68,7 +62,7 @@ final class SelectLikingVC: BackableVC {
         return label
     }()
     
-    private let genreSelectionCollectionView = GenreSelectionCollectionView()
+    private let genreCollectionView = GenreCollectionView()
 
     // MARK: Life Cycle
     
@@ -81,10 +75,7 @@ final class SelectLikingVC: BackableVC {
 
     // MARK: Defaults
     
-    private func setupDefaults() {
-        navigationBar.rightItemHStack.addArrangedSubview(closeBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
-    }
+    private func setupDefaults() {}
     
     // MARK: Layout
     
@@ -93,8 +84,8 @@ final class SelectLikingVC: BackableVC {
         mainVStack.addArrangedSubview(titleLabel)
         mainVStack.addArrangedSubview(LOSpacer(7))
         mainVStack.addArrangedSubview(descriptionLabel)
-        mainVStack.addArrangedSubview(LOSpacer(40))
-        mainVStack.addArrangedSubview(genreSelectionCollectionView)
+        mainVStack.addArrangedSubview(LOSpacer(20))
+        mainVStack.addArrangedSubview(genreCollectionView)
         mainVStack.addArrangedSubview(buttonHStack)
         
         buttonHStack.addArrangedSubview(skipButton)
@@ -106,8 +97,15 @@ final class SelectLikingVC: BackableVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        Just(GenreCellItem.mocks)
-            .sink { [weak self] in self?.genreSelectionCollectionView.setSnapshot(items: $0) }
+        let selectedItem = genreCollectionView.selectedModelPublisher(
+            dataSource: genreCollectionView.diffableDataSource
+        )
+        
+        let input = SelectLikingVM.Input(selectedItem: selectedItem)
+        let output = vm.transform(input)
+        
+        output.genreCellItems
+            .sink { [weak self] in self?.genreCollectionView.setSnapshot(items: $0) }
             .store(in: &cancellables)
     }
 }

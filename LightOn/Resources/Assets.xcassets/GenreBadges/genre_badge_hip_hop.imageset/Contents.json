@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "genre_badge_hip_hop.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

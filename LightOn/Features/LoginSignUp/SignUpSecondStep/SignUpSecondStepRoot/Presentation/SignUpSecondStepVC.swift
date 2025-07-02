@@ -210,7 +210,7 @@ extension SignUpSecondStepVC {
     }
     
     /// 회원가입 완료 이벤트
-    var signUpCompletion: AnyPublisher<Void, Never> {
+    var signUpCompletionPublisher: AnyPublisher<Void, Never> {
         signUpCompletionSubject.eraseToAnyPublisher()
     }
 }

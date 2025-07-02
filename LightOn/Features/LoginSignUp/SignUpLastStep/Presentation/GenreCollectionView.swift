@@ -1,5 +1,5 @@
 //
-//  GenreSelectionCollectionView.swift
+//  GenreCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/30/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class GenreSelectionCollectionView: UICollectionView {
+final class GenreCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -20,7 +20,7 @@ final class GenreSelectionCollectionView: UICollectionView {
     
     // MARK: Properties
     
-    private var diffableDataSource: DataSource?
+    private(set) var diffableDataSource: DataSource?
 
     // MARK: Life Cycle
     

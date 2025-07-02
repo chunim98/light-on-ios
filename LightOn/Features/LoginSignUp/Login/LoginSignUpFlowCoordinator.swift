@@ -78,7 +78,12 @@ final class LoginSignUpFlowCoordinator: Coordinator {
         
         // 뒤로가기 버튼, 화면 닫기
         vc.backBarButton.tapPublisher
-            .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
+            .sink { [weak self] in self?.flowNav?.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        // 회원가입 완료, 장르선택 화면 이동
+        vc.signUpCompletionPublisher
+            .sink { [weak self] in }
             .store(in: &cancellables)
         
         // 화면 이동
