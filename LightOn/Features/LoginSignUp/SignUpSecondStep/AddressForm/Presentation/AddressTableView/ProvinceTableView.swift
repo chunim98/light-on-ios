@@ -76,4 +76,4 @@ final class ProvinceTableView: UITableView {
 // MARK: - Preview
 
 #Preview { ProvinceTableView() }
-#Preview { SignUpSecondStepVC() }
+#Preview { SignUpSecondStepVC(vm: .init(tempUserID: 0)) }

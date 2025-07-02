@@ -130,7 +130,7 @@ extension AddressForm {
     }
     
     /// 선택한 지역 아이디
-    private var regionIDPublisher: AnyPublisher<Int?, Never> {
+    var regionIDPublisher: AnyPublisher<Int?, Never> {
         regionIDSubject.eraseToAnyPublisher()
     }
 }

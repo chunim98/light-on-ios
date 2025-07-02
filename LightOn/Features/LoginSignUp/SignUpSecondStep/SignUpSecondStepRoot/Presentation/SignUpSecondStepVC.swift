@@ -15,7 +15,12 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     // MARK: Properties
     
+    private let vm: SignUpSecondStepVM
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Outputs
+    
+    private let signUpCompletionSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -44,13 +49,6 @@ final class SignUpSecondStepVC: BackButtonVC {
     private let marketingSection = MarketingSectionView()
     private let termsSection = TermsSectionView()
     
-    private let privacyPolicyAlert = {
-        let alert = PolicyDetailAlert()
-        alert.titleLabel.config.text = "이용약관"
-        alert.textView.setText("대충 엄청 긴 텍스트") // temp
-        return alert
-    }()
-    
     private let nextButton = {
         let button = LOButton(style: .filled)
         button.setTitle("다음", .pretendard.bold(16))
@@ -58,6 +56,15 @@ final class SignUpSecondStepVC: BackButtonVC {
     }()
     
     // MARK: Life Cycle
+    
+    init(vm: SignUpSecondStepVM) {
+        self.vm = vm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,8 +106,7 @@ final class SignUpSecondStepVC: BackButtonVC {
         }
         nextButton.snp.makeConstraints {
             $0.horizontalEdges.equalTo(contentLayoutGuide).inset(18)
-            $0.bottom.equalTo(contentLayoutGuide)
-            $0.top.equalTo(scrollView.snp.bottom)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
     }
@@ -122,17 +128,38 @@ final class SignUpSecondStepVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = SignUpSecondStepVM.Input(
+            name: nameForm.namePublisher,
+            phone: phoneNumberForm.phoneNumberPublisher,
+            regionCode: addressForm.regionIDPublisher,
+            termsAgreed: termsSection.isAllAgreed,
+            smsAgreed: marketingSection.smsCheckbox.isSelectedPublisher,
+            pushAgreed: marketingSection.appPushCheckbox.isSelectedPublisher,
+            emailAgreed: marketingSection.emailCheckbox.isSelectedPublisher,
+            nextButtonTap: nextButton.tapPublisher
+        )
         
-        termsSection.privacyPolicyDetailButton.tapPublisher
-            .sink { [weak self] _ in
-                print("되냐?")
-                guard let self else { return }
-                privacyPolicyAlert.modalPresentationStyle = .overFullScreen
-                privacyPolicyAlert.modalTransitionStyle = .crossDissolve
-                present(privacyPolicyAlert, animated: true)
-            }
+        let output = vm.transform(input)
+        
+        output.nextButtonEnabled
+            .sink { [weak self] in self?.nextButton.isEnabled = $0 }
             .store(in: &cancellables)
-
+        
+        output.signUpCompletion
+            .print("회원 가입 완료 이벤트")
+            .sink { [weak self] in self?.signUpCompletionSubject.send($0) }
+            .store(in: &cancellables)
+        
+        // 이용약관 상세 얼럿
+        termsSection.servicePolicyDetailButton.tapPublisher
+            .sink { [weak self] in self?.bindShowTermsAlert() }
+            .store(in: &cancellables)
+        
+        // 개인정보 동의 상세 얼럿
+        termsSection.privacyPolicyDetailButton.tapPublisher
+            .sink { [weak self] in self?.bindShowPrivacyAlert() }
+            .store(in: &cancellables)
+        
         // 배경을 터치하면, 오버레이 닫기
         backgroundTapGesture.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
@@ -161,9 +188,34 @@ extension SignUpSecondStepVC {
         
         view.endEditing(true)   // 키보드 닫기
     }
+    
+    /// 이용약관 상세 얼럿 띄우기
+    private func bindShowTermsAlert() {
+        let alert = PolicyDetailAlert()
+        alert.titleLabel.config.text = "이용약관"
+        alert.textView.setText("대충 엄청 긴 텍스트") // temp
+        alert.modalPresentationStyle = .overFullScreen
+        alert.modalTransitionStyle = .crossDissolve
+        present(alert, animated: true)
+    }
+    
+    /// 개인정보 동의 상세 얼럿 띄우기
+    private func bindShowPrivacyAlert() {
+        let alert = PolicyDetailAlert()
+        alert.titleLabel.config.text = "개인정보 수집 및 이용동의"
+        alert.textView.setText("대충 엄청 긴 텍스트") // temp
+        alert.modalPresentationStyle = .overFullScreen
+        alert.modalTransitionStyle = .crossDissolve
+        present(alert, animated: true)
+    }
+    
+    /// 회원가입 완료 이벤트
+    var signUpCompletion: AnyPublisher<Void, Never> {
+        signUpCompletionSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview
 
-#Preview { SignUpSecondStepVC() }
+#Preview { SignUpSecondStepVC(vm: .init(tempUserID: 0)) }
 

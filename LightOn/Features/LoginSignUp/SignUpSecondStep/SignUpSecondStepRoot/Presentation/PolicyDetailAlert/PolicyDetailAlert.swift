@@ -6,16 +6,22 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class PolicyDetailAlert: BaseAlertVC {
+    
+    // MARK: Properties
+    
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: Components
     
     let textView = TextView()
     
-    let acceptButton = {
+    private let acceptButton = {
         let button = LOButton(style: .filled, height: 45)
         button.setTitle("확인", .pretendard.semiBold(16))
         return button
@@ -26,6 +32,7 @@ final class PolicyDetailAlert: BaseAlertVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
+        setupBindings()
     }
 
     // MARK: Layout
@@ -37,6 +44,14 @@ final class PolicyDetailAlert: BaseAlertVC {
         contentVStack.addArrangedSubview(acceptButton)
         
         textView.snp.makeConstraints { $0.height.equalTo(300) }
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        acceptButton.tapPublisher
+            .sink { [weak self] _ in self?.dismiss(animated: true) }
+            .store(in: &cancellables)
     }
 }
 

@@ -63,18 +63,18 @@ final class LoginSignUpFlowCoordinator: Coordinator {
             .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
             .store(in: &cancellables)
         
-#warning("임시 회원 번호 2단계로 전달")
         // 임시 회원번호, 회원가입 2단계 이동
         vc.tempUserIDPublisher
-            .sink { [weak self] _ in self?.showSignUpSecondSetpVC() }
+            .sink { [weak self] in self?.showSignUpSecondSetpVC(tempUserID: $0) }
             .store(in: &cancellables)
         
         // 화면 이동
         flowNav?.pushViewController(vc, animated: true)
     }
     
-    private func showSignUpSecondSetpVC() {
-        let vc = SignUpSecondStepVC()
+    private func showSignUpSecondSetpVC(tempUserID: Int) {
+        let vm = SignUpSecondStepVM(tempUserID: tempUserID)
+        let vc = SignUpSecondStepVC(vm: vm)
         
         // 뒤로가기 버튼, 화면 닫기
         vc.backBarButton.tapPublisher

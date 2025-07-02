@@ -21,6 +21,7 @@ final class DefaultPresignUpRepo: PresignUpRepo {
             APIClient.shared.requestPost(
                 endPoint: "/api/members",
                 parameters: PresignUpRequestDTO(email: email, password: pw),
+                tokenIncluded: false,
                 decodeType: PresignUpResponseDTO.self
             ) {
                 print("임시 회원가입 요청 성공")
