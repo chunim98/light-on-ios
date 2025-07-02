@@ -72,7 +72,7 @@ final class GenreCollectionView: UICollectionView {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
-        diffableDataSource?.apply(snapshot)
+        diffableDataSource?.apply(snapshot, animatingDifferences: false)
     }
 }
 

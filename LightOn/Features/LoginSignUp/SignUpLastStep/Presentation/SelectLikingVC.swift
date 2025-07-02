@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class SelectLikingVC: NavigationBarVC {
@@ -16,6 +17,10 @@ final class SelectLikingVC: NavigationBarVC {
     
     private let vm = SelectLikingVM()
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Outputs
+    
+    private let postCompletionSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -63,7 +68,7 @@ final class SelectLikingVC: NavigationBarVC {
     }()
     
     private let genreCollectionView = GenreCollectionView()
-
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -72,7 +77,7 @@ final class SelectLikingVC: NavigationBarVC {
         setupLayout()
         setupBindings()
     }
-
+    
     // MARK: Defaults
     
     private func setupDefaults() {}
@@ -101,12 +106,35 @@ final class SelectLikingVC: NavigationBarVC {
             dataSource: genreCollectionView.diffableDataSource
         )
         
-        let input = SelectLikingVM.Input(selectedItem: selectedItem)
+        let input = SelectLikingVM.Input(
+            selectedItem: selectedItem,
+            nextButtonTap: nextButton.tapPublisher
+        )
         let output = vm.transform(input)
         
         output.genreCellItems
             .sink { [weak self] in self?.genreCollectionView.setSnapshot(items: $0) }
             .store(in: &cancellables)
+        
+        output.nextButtonEnabled
+            .sink { [weak self] in self?.nextButton.isEnabled = $0 }
+            .store(in: &cancellables)
+        
+        output.postCompletion
+            .sink { [weak self] in self?.postCompletionSubject.send($0) }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension SelectLikingVC {
+    /// 스킵 버튼 탭 퍼블리셔
+    var skipTapPublisher: AnyPublisher<Void, Never> { skipButton.tapPublisher }
+    
+    /// 장르 전송 완료 이벤트 퍼블리셔
+    var postCompletionPublisher: AnyPublisher<Void, Never> {
+        postCompletionSubject.eraseToAnyPublisher()
     }
 }
 
