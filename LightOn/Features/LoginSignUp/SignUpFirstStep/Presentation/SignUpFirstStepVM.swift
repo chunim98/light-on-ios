@@ -36,13 +36,21 @@ final class SignUpFirstStepVM {
     // MARK: UseCases
     
     private let makeRootStateUC = MakeRootStateUC()
-    private let emailVerificationUC = EmailVerificationUC(
-        repository: DefaultDuplicationStateRepo()
-    )
+    private let emailVerificationUC: EmailVerificationUC
     private let pwVerificationUC = PWVerificationUC()
     private let makeCaptionUC = MakeCaptionUC()
     private let buttonEnabledUC = ButtonEnabledUC()
-    private let requestPresignUpUC = RequestPresignUpUC(repo: DefaultPresignUpRepo())
+    private let requestPresignUpUC: RequestPresignUpUC
+    
+    // MARK: Initializer
+    
+    init(
+        duplicationStateRepo: DuplicationStateRepo,
+        presignUpRepo: PresignUpRepo
+    ) {
+        self.emailVerificationUC = EmailVerificationUC(repository: duplicationStateRepo)
+        self.requestPresignUpUC = RequestPresignUpUC(repo: presignUpRepo)
+    }
     
     // MARK: Event Handling
     

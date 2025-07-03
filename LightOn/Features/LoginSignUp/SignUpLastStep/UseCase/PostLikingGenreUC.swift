@@ -21,7 +21,7 @@ final class PostLikingGenreUC {
         genreItems: AnyPublisher<[GenreCellItem], Never>
     ) -> AnyPublisher<Void, Never> {
         trigger
-            .withLatestFrom(genreItems) { _, items in items }
+            .withLatestFrom(genreItems) { _, items in items.filter { $0.isSelected } } // 선택 장르 필터
             .compactMap { [weak self] in self?.repo.postLikingGenre(genreItems: $0) }
             .switchToLatest()
             .share()

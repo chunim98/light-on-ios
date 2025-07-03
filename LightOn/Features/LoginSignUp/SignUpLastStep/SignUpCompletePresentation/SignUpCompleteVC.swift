@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
-final class SignUpCompleteVC: BackableVC {
+final class SignUpCompleteVC: NavigationBarVC {
     
     // MARK: Components
     
@@ -19,13 +21,6 @@ final class SignUpCompleteVC: BackableVC {
         let iv = UIImageView(image: .signUpComplete)
         iv.contentMode = .scaleAspectFit
         return iv
-    }()
-    
-    private let closeBarButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = .selectLikingCross
-        config.contentInsets = .zero
-        return UIButton(configuration: config)
     }()
         
     private let nextButton = {
@@ -66,10 +61,7 @@ final class SignUpCompleteVC: BackableVC {
 
     // MARK: Defaults
     
-    private func setupDefaults() {
-        navigationBar.rightItemHStack.addArrangedSubview(closeBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
-    }
+    private func setupDefaults() {}
     
     // MARK: Layout
     
@@ -90,6 +82,13 @@ final class SignUpCompleteVC: BackableVC {
             $0.bottom.equalTo(contentLayoutGuide)
         }
     }
+}
+
+// MARK: Binders & Publishers
+
+extension SignUpCompleteVC {
+    /// 다음 버튼 탭 퍼블리셔
+    var nextTapPublisher: AnyPublisher<Void, Never> { nextButton.tapPublisher }
 }
 
 // MARK: - Preview

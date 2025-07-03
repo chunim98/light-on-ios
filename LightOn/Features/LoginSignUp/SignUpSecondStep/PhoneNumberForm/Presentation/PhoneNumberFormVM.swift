@@ -29,11 +29,19 @@ final class PhoneNumberFormVM {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let requestAuthCodeSMSUC = RequestAuthCodeSMSUC(repo: DefaultAuthCodeRepo())
-    private let countDownUC = CountDownUC()
+    
     private let updatePhoneNumberFormStateUC = UpdatePhoneNumberFormStateUC()
-    private let verifyPhoneNumberUC = VerifyPhoneNumberUC(repo: DefaultAuthCodeRepo())
     private let getValidPhoneNumberUC = GetValidPhoneNumberUC()
+    private let countDownUC = CountDownUC()
+    private let requestAuthCodeSMSUC: RequestAuthCodeSMSUC
+    private let verifyPhoneNumberUC: VerifyPhoneNumberUC
+    
+    // MARK: Initializer
+    
+    init(authCodeRepo: AuthCodeRepo) {
+        self.requestAuthCodeSMSUC = RequestAuthCodeSMSUC(repo: authCodeRepo)
+        self.verifyPhoneNumberUC = VerifyPhoneNumberUC(repo: authCodeRepo)
+    }
     
     // MARK: Event Handling
     

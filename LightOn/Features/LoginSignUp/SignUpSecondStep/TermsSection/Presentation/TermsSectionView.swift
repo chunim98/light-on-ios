@@ -188,4 +188,9 @@ extension TermsSectionView {
 
 // MARK: - Preview
 
-#Preview { SignUpSecondStepVC(vm: .init(tempUserID: 0)) }
+#Preview {
+    SignUpSecondStepVC(vm: .init(
+        tempUserID: 0,
+        signUpRepo: DefaultSignUpRepo()
+    ))
+}

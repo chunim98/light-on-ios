@@ -15,7 +15,7 @@ final class SelectLikingVC: NavigationBarVC {
     
     // MARK: Properties
     
-    private let vm = SelectLikingVM()
+    private let vm = SelectLikingVM(likingGenreRepo: DefaultLikingGenreRepo())
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Outputs

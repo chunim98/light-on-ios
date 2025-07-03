@@ -48,7 +48,7 @@ final class LoginSignUpFlowCoordinator: Coordinator {
                 }
             }
             .store(in: &cancellables)
-
+        
         // 모달 풀 스크린으로 화면 이동
         flowNav = UINavigationController(rootViewController: vc)
         flowNav?.modalPresentationStyle = .fullScreen
@@ -73,7 +73,10 @@ final class LoginSignUpFlowCoordinator: Coordinator {
     }
     
     private func showSignUpSecondSetpVC(tempUserID: Int) {
-        let vm = SignUpSecondStepVM(tempUserID: tempUserID)
+        let vm = SignUpSecondStepVM(
+            tempUserID: tempUserID,
+            signUpRepo: DefaultSignUpRepo()
+        )
         let vc = SignUpSecondStepVC(vm: vm)
         
         // 뒤로가기 버튼, 화면 닫기
@@ -83,7 +86,39 @@ final class LoginSignUpFlowCoordinator: Coordinator {
         
         // 회원가입 완료, 장르선택 화면 이동
         vc.signUpCompletionPublisher
-            .sink { [weak self] in }
+            .sink { [weak self] in self?.showSelectLikingVC() }
+            .store(in: &cancellables)
+        
+        // 화면 이동
+        flowNav?.pushViewController(vc, animated: true)
+    }
+    
+    private func showSelectLikingVC() {
+        let vc = SelectLikingVC()
+        
+        // 선호 장르 선택 완료, 건너뛰기, 완료 화면 이동
+        Publishers.Merge(
+            vc.postCompletionPublisher,
+            vc.skipTapPublisher
+        )
+        .sink { [weak self] in self?.showSignUpCompleteVC() }
+        .store(in: &cancellables)
+        
+        // 화면 이동
+        flowNav?.pushViewController(vc, animated: true)
+    }
+    
+    private func showSignUpCompleteVC() {
+        let vc = SignUpCompleteVC()
+        
+        // 다음 버튼, 화면 닫기
+        vc.nextTapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                navigation.dismiss(animated: true) {
+                    self.parent?.free(child: self)
+                }
+            }
             .store(in: &cancellables)
         
         // 화면 이동

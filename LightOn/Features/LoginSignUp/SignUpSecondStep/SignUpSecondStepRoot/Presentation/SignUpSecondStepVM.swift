@@ -36,10 +36,14 @@ final class SignUpSecondStepVM {
     
     private let updateMemberInfoUC = UpdateMemberInfoUC()
     private let isMemberInfoValidUC = IsMemberInfoValidUC()
-    private let requestSignUpUC = RequestSignUpUC(repo: DefaultSignUpRepo())
+    private let requestSignUpUC: RequestSignUpUC
     
-    init(tempUserID: Int) {
+    init(
+        tempUserID: Int,
+        signUpRepo: SignUpRepo
+    ) {
         self.tempUserID = tempUserID
+        self.requestSignUpUC = RequestSignUpUC(repo: signUpRepo)
     }
     
     // MARK: Event Handling

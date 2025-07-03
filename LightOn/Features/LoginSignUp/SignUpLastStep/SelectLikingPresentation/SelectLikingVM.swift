@@ -30,7 +30,13 @@ final class SelectLikingVM {
     private var cancellables = Set<AnyCancellable>()
     
     private let updateGenreCellItemUC = UpdateGenreCellItemUC()
-    private let postLikingGenreUC = PostLikingGenreUC(repo: DefaultLikingGenreRepo())
+    private let postLikingGenreUC: PostLikingGenreUC
+    
+    // MARK: Initializer
+    
+    init(likingGenreRepo: LikingGenreRepo) {
+        self.postLikingGenreUC = PostLikingGenreUC(repo: likingGenreRepo)
+    }
     
     // MARK: Event Handling
     
