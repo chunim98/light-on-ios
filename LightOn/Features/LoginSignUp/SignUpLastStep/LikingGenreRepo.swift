@@ -31,3 +31,17 @@ final class DefaultLikingGenreRepo: LikingGenreRepo {
         .eraseToAnyPublisher()
     }
 }
+
+// MARK: - Test
+
+final class TestLikingGenreRepo: LikingGenreRepo {
+    func postLikingGenre(genreItems: [GenreCellItem]) -> AnyPublisher<Void, Never> {
+        Future { promise in
+            
+            print("선호 장르 전송 완료(테스트)")
+            promise(.success(()))
+            
+        }
+        .eraseToAnyPublisher()
+    }
+}

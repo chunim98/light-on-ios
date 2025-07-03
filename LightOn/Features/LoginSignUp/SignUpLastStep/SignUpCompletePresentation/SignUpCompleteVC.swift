@@ -61,7 +61,10 @@ final class SignUpCompleteVC: NavigationBarVC {
 
     // MARK: Defaults
     
-    private func setupDefaults() {}
+    private func setupDefaults() {
+        // 뒤로가기 스와이프 제스처 비활성화
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
     
     // MARK: Layout
     

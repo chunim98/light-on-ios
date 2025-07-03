@@ -31,3 +31,20 @@ final class DefaultSignUpRepo: SignUpRepo {
         .eraseToAnyPublisher()
     }
 }
+
+// MARK: - Test
+
+final class TestSignUpRepo: SignUpRepo {
+    func postMemberInfo(memberInfo: MemberInfo) -> AnyPublisher<UserToken, Never> {
+        Future { promise in
+            
+            print("정식 회원가입 요청 완료(테스트)")
+            promise(.success(UserToken(
+                accessToken: "",
+                refreshToken: ""
+            )))
+            
+        }
+        .eraseToAnyPublisher()
+    }
+}

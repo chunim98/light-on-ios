@@ -146,7 +146,6 @@ final class SignUpSecondStepVC: BackButtonVC {
             .store(in: &cancellables)
         
         output.signUpCompletion
-            .print("회원 가입 완료 이벤트")
             .sink { [weak self] in self?.signUpCompletionSubject.send($0) }
             .store(in: &cancellables)
         
