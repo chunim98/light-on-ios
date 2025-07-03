@@ -1,5 +1,5 @@
 //
-//  MyPageUserInfoSectionView.swift
+//  MyPageLoggedInInfoView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/26/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MyPageUserInfoSectionView: UIStackView {
+final class MyPageLoggedInInfoView: UIStackView {
 
     // MARK: Components
     
@@ -133,4 +133,4 @@ final class MyPageUserInfoSectionView: UIStackView {
 
 // MARK: - Preview
 
-#Preview { MyPageUserInfoSectionView() }
+#Preview { MyPageLoggedInInfoView() }

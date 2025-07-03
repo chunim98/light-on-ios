@@ -18,7 +18,9 @@ class TabController: UIViewController {
     
     // MARK: Components
     
+    /// 컨텐츠 뷰의 컨테이너 (아래에 탭 바 배치할 때 사용)
     let contentVStack = UIStackView(.vertical)
+    /// 실질적으로 컨텐츠가 담기는 뷰
     let contentView = UIView()
     
     // MARK: Life Cycle
@@ -43,7 +45,7 @@ class TabController: UIViewController {
         contentVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
-    // MARK: ransition
+    // MARK: Transition
 
     func setupVC(index: Int) {
         let selectedVC = tabs[index]
@@ -87,10 +89,4 @@ class TabController: UIViewController {
             self?.selectedIndex = index
         }
     }
-}
-
-// MARK: Binders & Publishers
-
-extension TabController {
-    func selectedIndexBinder(_ index: Int) { transition(to: index) }
 }
