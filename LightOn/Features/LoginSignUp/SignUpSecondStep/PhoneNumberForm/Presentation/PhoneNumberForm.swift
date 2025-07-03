@@ -15,7 +15,7 @@ final class PhoneNumberForm: TextForm {
 
     // MARK: Properties
     
-    private let vm = PhoneNumberFormVM(authCodeRepo: DefaultAuthCodeRepo())
+    private let vm = LoginSignUpDI.shared.makePhoneNumberFormVM()
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Outputs

@@ -16,10 +16,7 @@ final class SignUpFirstStepVC: BackButtonVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let vm = SignUpFirstStepVM(
-        duplicationStateRepo: DefaultDuplicationStateRepo(),
-        presignUpRepo: DefaultPresignUpRepo()
-    )
+    private let vm = LoginSignUpDI.shared.makeSignUpFirstStepVM()
     
     // MARK: Outputs
     
