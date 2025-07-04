@@ -27,6 +27,8 @@ class LOTextField: UITextField {
     // MARK: Defaults
     
     private func setupDefaults() {
+        autocapitalizationType = .none  // 자동 대문자 비활성화
+        
         font = .pretendard.regular(16)
         textColor = .caption
         

@@ -60,7 +60,7 @@ final class SignUpFlowCoordinator: Coordinator {
     }
     
     private func showSignUpSecondStepVC(tempUserID: Int) {
-        let vm = LoginSignUpDI.shared.makeSignUpSecondStepVM(tempUserID: tempUserID)
+        let vm = SignUpDI.shared.makeSignUpSecondStepVM(tempUserID: tempUserID)
         let vc = SignUpSecondStepVC(vm: vm)
         
         // 뒤로가기 버튼, 화면 닫기

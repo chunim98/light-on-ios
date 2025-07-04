@@ -16,8 +16,13 @@ final class LoginVC: NavigationBarVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = LoginDI.shared.makeLoginVM()
     
     private var signUpFlowCoord: SignUpFlowCoordinator?
+    
+    // MARK: Outputs
+    
+    private let loginCompleteSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -33,6 +38,7 @@ final class LoginVC: NavigationBarVC {
     
     private let idForm = {
         let form = LoginForm()
+        form.textField.keyboardType = .emailAddress
         form.textField.setPlaceHolder("아이디 (이메일 주소)")
         form.titleLabel.config.text = "아이디"
         return form
@@ -40,6 +46,7 @@ final class LoginVC: NavigationBarVC {
     
     private let pwForm = {
         let form = LoginForm()
+        form.textField.textContentType = .oneTimeCode   // 강력한 비번 생성 방지
         form.textField.isSecureTextEntry = true
         form.textField.setPlaceHolder("비밀번호")
         form.titleLabel.config.text = "비밀번호"
@@ -139,6 +146,28 @@ final class LoginVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
+        let email = idForm.textField.textPublisher
+            .compactMap { $0 }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+        
+        let pw = pwForm.textField.textPublisher
+            .compactMap { $0 }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+        
+        let input = LoginVM.Input(
+            email: email,
+            pw: pw,
+            loginTap: loginButton.tapPublisher
+        )
+        
+        let output = vm.transform(input)
+        
+        output.loginComplete
+            .sink { [weak self] in self?.loginCompleteSubject.send($0) }
+            .store(in: &cancellables)
+        
         // 화면 빈 공간, 키보드 리턴키 터치하면 키보드 내리기
         Publishers.Merge3(
             backgroundTapGesture.tapPublisher.map { _ in },
@@ -165,6 +194,11 @@ extension LoginVC {
     
     /// 닫기 버튼 탭 퍼블리셔
     var closeTapPublisher: AnyPublisher<Void, Never> { closeButton.tapPublisher }
+    
+    /// 로그인 완료 이벤트 퍼블리셔
+    var loginCompletePublisher: AnyPublisher<Void, Never> {
+        loginCompleteSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview

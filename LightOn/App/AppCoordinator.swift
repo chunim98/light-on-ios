@@ -46,10 +46,13 @@ final class AppCoordinator: Coordinator {
     private func showLoginVC() {
         let vc = LoginVC()
         
-        // 닫기 버튼, 화면 닫기
-        vc.closeTapPublisher
-            .sink { vc.dismiss(animated: true) }
-            .store(in: &cancellables)
+        // 닫기 버튼, 로그인 완료, 화면 닫기
+        Publishers.Merge(
+            vc.closeTapPublisher,
+            vc.loginCompletePublisher
+        )
+        .sink { vc.dismiss(animated: true) }
+        .store(in: &cancellables)
         
         // 모달 풀 스크린으로 화면 이동
         let flowNav = UINavigationController(rootViewController: vc)

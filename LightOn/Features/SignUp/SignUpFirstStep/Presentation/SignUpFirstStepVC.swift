@@ -16,7 +16,7 @@ final class SignUpFirstStepVC: BackButtonVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let vm = LoginSignUpDI.shared.makeSignUpFirstStepVM()
+    private let vm = SignUpDI.shared.makeSignUpFirstStepVM()
     
     /// 모달로 진입했는지 여부
     private let isInModal: Bool

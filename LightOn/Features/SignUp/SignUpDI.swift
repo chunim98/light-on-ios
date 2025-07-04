@@ -1,15 +1,15 @@
 //
-//  LoginSignUpDI.swift
+//  SignUpDI.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/4/25.
 //
 
-final class LoginSignUpDI {
+final class SignUpDI {
     
     // MARK: Singleton
     
-    static let shared = LoginSignUpDI()
+    static let shared = SignUpDI()
     private init() {}
     
     // MARK: Methods

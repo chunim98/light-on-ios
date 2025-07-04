@@ -15,7 +15,7 @@ final class SelectLikingVC: NavigationBarVC {
     
     // MARK: Properties
     
-    private let vm = LoginSignUpDI.shared.makeSelectLikingVM()
+    private let vm = SignUpDI.shared.makeSelectLikingVM()
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Outputs
