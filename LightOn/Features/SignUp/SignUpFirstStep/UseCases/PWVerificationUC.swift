@@ -15,7 +15,7 @@ final class PWVerificationUC {
     ) -> AnyPublisher<PWState, Never> {
         
         rootPWState.map {
-            let regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=]).{8,}$/
+            let regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=]).{8,}$/
             let isFormatChecked = $0.text.wholeMatch(of: regex) != nil
             return $0.updated(isFormatChecked: isFormatChecked)
         }
