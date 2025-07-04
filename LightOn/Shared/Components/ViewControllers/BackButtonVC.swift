@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Combine
+
+import CombineCocoa
 
 class BackButtonVC: BackableVC {
 
@@ -31,4 +34,11 @@ class BackButtonVC: BackableVC {
         navigationBar.leftItemHStack.addArrangedSubview(LOSpacer(16))
         navigationBar.leftItemHStack.addArrangedSubview(backBarButton)
     }
+}
+
+// MARK: Binders & Publishers
+
+extension BackButtonVC {
+    /// 뒤로가기 바 버튼 탭
+    var backTapPublisher: AnyPublisher<Void, Never> { backBarButton.tapPublisher }
 }

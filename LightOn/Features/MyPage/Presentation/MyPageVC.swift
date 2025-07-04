@@ -57,6 +57,11 @@ final class MyPageVC: NavigationBarVC {
         setupBindings()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tabBar?.setTabBarHidden(false)
+    }
+    
     // MARK: Defaults
     
     private func setupDefaults() {
@@ -126,7 +131,10 @@ extension MyPageVC {
     
     /// 공연 등록 플로우 시작
     private func bindStartRegisterPerformanceFlow() {
-        registerPerformanceFlowCoord = .init(navigation: navigationController!)
+        registerPerformanceFlowCoord = .init(
+            navigation: navigationController!,
+            tabBar: tabBar
+        )
         registerPerformanceFlowCoord?.start()
     }
 }

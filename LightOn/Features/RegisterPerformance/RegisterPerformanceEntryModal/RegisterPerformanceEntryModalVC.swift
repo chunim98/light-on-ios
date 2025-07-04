@@ -39,11 +39,6 @@ final class RegisterPerformanceEntryModalVC: ModalVC {
         setupLayout()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print(contentVStack.frame.height)
-    }
-    
     // MARK: Defaults
     
     private func setupDefaults() {
