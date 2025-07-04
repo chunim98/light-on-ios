@@ -1,5 +1,5 @@
 //
-//  MyPageLoggedOutInfoView.swift
+//  MyPageLogoutInfoView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/4/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MyPageLoggedOutInfoView: UIStackView {
+final class MyPageLogoutInfoView: UIStackView {
     
     // MARK: Components
     
@@ -83,4 +83,4 @@ final class MyPageLoggedOutInfoView: UIStackView {
 
 // MARK: - Preview
 
-#Preview { MyPageLoggedOutInfoView() }
+#Preview { MyPageLogoutInfoView() }

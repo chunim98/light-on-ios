@@ -1,11 +1,11 @@
 //
-//  MyPageStyle.swift
+//  MyPageState.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/4/25.
 //
 
-struct MyPageStyle {
+struct MyPageState {
     let loggedInInfoViewHidden: Bool
     let loggedOutInfoViewHidden: Bool
     let joinArtistButtonHidden: Bool
@@ -13,8 +13,8 @@ struct MyPageStyle {
     let deleteAccountButtonHidden: Bool
     let dividersHidden: [Bool]
     
-    static var logOut: MyPageStyle {
-        MyPageStyle(
+    static var logout: MyPageState {
+        MyPageState(
             loggedInInfoViewHidden: true,
             loggedOutInfoViewHidden: false,
             joinArtistButtonHidden: true,
@@ -24,8 +24,8 @@ struct MyPageStyle {
         )
     }
     
-    static var logIn: MyPageStyle {
-        MyPageStyle(
+    static var login: MyPageState {
+        MyPageState(
             loggedInInfoViewHidden: false,
             loggedOutInfoViewHidden: true,
             joinArtistButtonHidden: false,

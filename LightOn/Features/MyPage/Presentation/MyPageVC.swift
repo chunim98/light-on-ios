@@ -15,6 +15,7 @@ final class MyPageVC: NavigationBarVC {
     
     // MARK: Properties
     
+    private let vm = MyPageVM()
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
@@ -25,8 +26,8 @@ final class MyPageVC: NavigationBarVC {
         .vertical, inset: .init(horizontal: 18, vertical: 15)
     )
     
-    private let loggedInInfoView = MyPageLoggedInInfoView()
-    private let loggedOutInfoView = MyPageLoggedOutInfoView()
+    private let loginInfoView = MyPageLoginInfoView()
+    private let logoutInfoView = MyPageLogoutInfoView()
     
     private let noticeButton        = MyPageRowButton(title: "공지사항")
     private let appSettingsButton   = MyPageRowButton(title: "앱 설정")
@@ -51,6 +52,7 @@ final class MyPageVC: NavigationBarVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupBindings()
     }
     
     // MARK: Defaults
@@ -63,8 +65,8 @@ final class MyPageVC: NavigationBarVC {
     
     private func setupLayout() {
         view.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(loggedInInfoView)
-        mainVStack.addArrangedSubview(loggedOutInfoView)
+        mainVStack.addArrangedSubview(loginInfoView)
+        mainVStack.addArrangedSubview(logoutInfoView)
         mainVStack.addArrangedSubview(scrollView)
         
         scrollView.addSubview(contentVStack)
@@ -86,22 +88,29 @@ final class MyPageVC: NavigationBarVC {
     
     // MARK: Bindings
     
-    private func setupBindings() {}
+    private func setupBindings() {
+        let input = MyPageVM.Input()
+        let output = vm.transform(input)
+        
+        output.state
+            .sink { [weak self] in self?.bindState(state: $0) }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: Binders & Publishers
 
 extension MyPageVC {
-    /// 뷰 스타일 바인딩
-    private func bindStyle(style: MyPageStyle) {
-        loggedOutInfoView.isHidden = style.loggedOutInfoViewHidden
-        loggedInInfoView.isHidden = style.loggedInInfoViewHidden
+    /// 뷰 상태 바인딩
+    private func bindState(state: MyPageState) {
+        logoutInfoView.isHidden = state.loggedOutInfoViewHidden
+        loginInfoView.isHidden = state.loggedInInfoViewHidden
         
-        deleteAccountButton.isHidden = style.deleteAccountButtonHidden
-        joinArtistButton.isHidden = style.joinArtistButtonHidden
-        logoutButton.isHidden = style.logoutButtonHidden
+        deleteAccountButton.isHidden = state.deleteAccountButtonHidden
+        joinArtistButton.isHidden = state.joinArtistButtonHidden
+        logoutButton.isHidden = state.logoutButtonHidden
         
-        zip(dividers, style.dividersHidden).forEach { $0.0.isHidden = $0.1 }
+        zip(dividers, state.dividersHidden).forEach { $0.0.isHidden = $0.1 }
     }
 }
 
