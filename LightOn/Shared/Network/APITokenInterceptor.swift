@@ -23,7 +23,7 @@ final class APITokenInterceptor: RequestInterceptor {
         for session: Session,
         completion: @escaping (Result<URLRequest, Error>) -> Void
     ) {
-        print(#function, "어댑터 접근함")
+        print("어댑터 접근")
         
         let access = keychain.load(.access) ?? ""
         var urlRequest = urlRequest

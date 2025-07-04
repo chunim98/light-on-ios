@@ -76,10 +76,11 @@ final class SignUpSecondStepVM {
             memberInfo: memberInfoSubject.eraseToAnyPublisher()
         )
         
-        // 로그인 성공 시, 발급받은 토큰 저장
+        // 로그인 성공 시, 발급받은 토큰 저장, 로그인 상태 업데이트
         userToken.sink {
             TokenKeychain.shared.save(.access, token: $0.accessToken)
             TokenKeychain.shared.save(.refresh, token: $0.refreshToken)
+            SessionManager.shared.updateLoginState()
         }
         .store(in: &cancellables)
         
