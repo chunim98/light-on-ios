@@ -10,6 +10,6 @@ struct LikingGenreRequestDTO: Encodable {
     let genres: [String]
     
     init(from domain: [GenreCellItem]) {
-        self.genres = domain.map { String($0.id) }
+        self.genres = domain.map { String($0.title) }
     }
 }
