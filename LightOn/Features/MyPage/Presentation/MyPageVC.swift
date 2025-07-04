@@ -18,6 +18,8 @@ final class MyPageVC: NavigationBarVC {
     private let vm = MyPageVM()
     private var cancellables = Set<AnyCancellable>()
     
+    private var registerPerformanceFlowCoord: RegisterPerformanceFlowCoordinator?
+    
     // MARK: Components
     
     private let mainVStack = UIStackView(.vertical)
@@ -99,6 +101,11 @@ final class MyPageVC: NavigationBarVC {
         output.state
             .sink { [weak self] in self?.bindState(state: $0) }
             .store(in: &cancellables)
+        
+        // 공연 등록 플로우 시작
+        loginInfoView.performanceRegisterButton.tapPublisher
+            .sink { [weak self] in self?.bindStartRegisterPerformanceFlow() }
+            .store(in: &cancellables)
     }
 }
 
@@ -115,6 +122,12 @@ extension MyPageVC {
         logoutButton.isHidden = state.logoutButtonHidden
         
         zip(dividers, state.dividersHidden).forEach { $0.0.isHidden = $0.1 }
+    }
+    
+    /// 공연 등록 플로우 시작
+    private func bindStartRegisterPerformanceFlow() {
+        registerPerformanceFlowCoord = .init(navigation: navigationController!)
+        registerPerformanceFlowCoord?.start()
     }
 }
 
