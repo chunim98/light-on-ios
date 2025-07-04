@@ -18,6 +18,9 @@ final class SignUpFirstStepVC: BackButtonVC {
     private var cancellables = Set<AnyCancellable>()
     private let vm = LoginSignUpDI.shared.makeSignUpFirstStepVM()
     
+    /// 모달로 진입했는지 여부
+    private let isInModal: Bool
+    
     // MARK: Outputs
     
     private let tempUserIDSubject = PassthroughSubject<Int, Never>()
@@ -69,7 +72,23 @@ final class SignUpFirstStepVC: BackButtonVC {
         return button
     }()
     
+    private let closeButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = .selectLikingCross
+        config.contentInsets = .zero
+        return UIButton(configuration: config)
+    }()
+    
     // MARK: Life Cycle
+    
+    init(isInModal: Bool) {
+        self.isInModal = isInModal
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +101,13 @@ final class SignUpFirstStepVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "회원가입"
+        navigationBar.rightItemHStack.addArrangedSubview(closeButton)
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
+        
         mainVStack.addGestureRecognizer(backgroundTapGesture)
+        
+        backBarButton.isHidden = isInModal
+        closeButton.isHidden = !isInModal
     }
     
     // MARK: Layout
@@ -103,7 +128,7 @@ final class SignUpFirstStepVC: BackButtonVC {
         
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
     }
-  
+    
     // MARK: Bindings
     
     private func setupBindings() {
@@ -146,7 +171,7 @@ final class SignUpFirstStepVC: BackButtonVC {
         output.pwCaption
             .sink { [weak self] in self?.pwForm.captionConfigBinder(config: $0) }
             .store(in: &cancellables)
-
+        
         output.confirmCaption
             .sink { [weak self] in self?.confirmForm.captionConfigBinder(config: $0) }
             .store(in: &cancellables)
@@ -169,8 +194,13 @@ extension SignUpFirstStepVC {
     var tempUserIDPublisher: AnyPublisher<Int, Never> {
         tempUserIDSubject.eraseToAnyPublisher()
     }
+    
+    /// 닫기 버튼 탭 퍼블리셔
+    var closeTapPublisher: AnyPublisher<Void, Never> {
+        closeButton.tapPublisher
+    }
 }
 
 // MARK: - Preview
 
-#Preview { SignUpFirstStepVC() }
+#Preview { SignUpFirstStepVC(isInModal: false) }

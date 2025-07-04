@@ -1,5 +1,5 @@
 //
-//  LoginSignUpFlowCoordinator.swift
+//  SignUpFlowCoordinator.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/28/25.
@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-final class LoginSignUpFlowCoordinator: Coordinator {
+final class SignUpFlowCoordinator: Coordinator {
     
     // MARK: Properties
     
@@ -18,29 +18,30 @@ final class LoginSignUpFlowCoordinator: Coordinator {
     var children: [any Coordinator] = [] // 자식 없음
     let navigation: UINavigationController
     
-    private var flowNav: UINavigationController?
     private var cancellables = Set<AnyCancellable>()
+    private let isInModal: Bool
     
     // MARK: Initializer
     
-    init(navigation: UINavigationController) {
+    init(navigation: UINavigationController, isInModal: Bool) {
+        self.isInModal = isInModal
         self.navigation = navigation
     }
     
     // MARK: Methods
     
-    func start() { showLoginVC() }
+    func start() { showSignUpFirstStepVC() }
     
-    private func showLoginVC() {
-        let vc = LoginVC()
+    private func showSignUpFirstStepVC() {
+        let vc = SignUpFirstStepVC(isInModal: isInModal)
         
-        // 회원가입 버튼, 회원가입 1단계 이동
-        vc.signUpTapPublisher
-            .sink { [weak self] _ in self?.showSignUpFirstStepVC() }
+        // 뒤로가기 버튼, 화면 닫기 (모달이 아닐 경우)
+        vc.backBarButton.tapPublisher
+            .sink { [weak self] _ in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
-        // 뒤로가기 버튼, 화면 닫기
-        vc.backBarButton.tapPublisher
+        // 닫기 버튼, 화면 닫기 (모달인 경우)
+        vc.closeTapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
                 navigation.dismiss(animated: true) {
@@ -49,27 +50,13 @@ final class LoginSignUpFlowCoordinator: Coordinator {
             }
             .store(in: &cancellables)
         
-        // 모달 풀 스크린으로 화면 이동
-        flowNav = UINavigationController(rootViewController: vc)
-        flowNav?.modalPresentationStyle = .fullScreen
-        if let flowNav { navigation.present(flowNav, animated: true) }
-    }
-    
-    private func showSignUpFirstStepVC() {
-        let vc = SignUpFirstStepVC()
-        
-        // 뒤로가기 버튼, 화면 닫기
-        vc.backBarButton.tapPublisher
-            .sink { [weak self] _ in self?.flowNav?.popViewController(animated: true) }
-            .store(in: &cancellables)
-        
         // 임시 회원번호, 회원가입 2단계 이동
         vc.tempUserIDPublisher
             .sink { [weak self] in self?.showSignUpSecondStepVC(tempUserID: $0) }
             .store(in: &cancellables)
         
         // 화면 이동
-        flowNav?.pushViewController(vc, animated: true)
+        navigation.pushViewController(vc, animated: true)
     }
     
     private func showSignUpSecondStepVC(tempUserID: Int) {
@@ -78,7 +65,7 @@ final class LoginSignUpFlowCoordinator: Coordinator {
         
         // 뒤로가기 버튼, 화면 닫기
         vc.backBarButton.tapPublisher
-            .sink { [weak self] in self?.flowNav?.popViewController(animated: true) }
+            .sink { [weak self] _ in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
         // 회원가입 완료, 장르선택 화면 이동
@@ -87,7 +74,7 @@ final class LoginSignUpFlowCoordinator: Coordinator {
             .store(in: &cancellables)
         
         // 화면 이동
-        flowNav?.pushViewController(vc, animated: true)
+        navigation.pushViewController(vc, animated: true)
     }
     
     private func showSelectLikingVC() {
@@ -102,7 +89,7 @@ final class LoginSignUpFlowCoordinator: Coordinator {
         .store(in: &cancellables)
         
         // 화면 이동
-        flowNav?.pushViewController(vc, animated: true)
+        navigation.pushViewController(vc, animated: true)
     }
     
     private func showSignUpCompleteVC() {
@@ -119,8 +106,8 @@ final class LoginSignUpFlowCoordinator: Coordinator {
             .store(in: &cancellables)
         
         // 화면 이동
-        flowNav?.pushViewController(vc, animated: true)
+        navigation.pushViewController(vc, animated: true)
     }
     
-    deinit { print("LoginSignUpFlowCoordinator deinit") }
+    deinit { print("SignUpFlowCoordinator deinit") }
 }

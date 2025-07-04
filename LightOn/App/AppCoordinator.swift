@@ -19,17 +19,23 @@ final class AppCoordinator: Coordinator {
     private var cancellables = Set<AnyCancellable>()
     
     /// 화면전환 이벤트 퍼블리셔
-    private let navigationEventPublisher =
+    private let navigationEvent =
     AppCoordinatorBus.shared.navigationEventSubject.eraseToAnyPublisher()
     
     // MARK: Methods
     
     func start() {
         showTabBarController()
-        Task {
-            try await Task.sleep(nanoseconds: 100000)
-            await MainActor.run { showLoginVC() }
-        } // temp
+        
+        // 외부에서 전달받은 화면이동 요청 바인딩
+        navigationEvent
+            .sink { [weak self] event in
+                switch event {
+                case .login: self?.showLoginVC()
+                case .signUp: self?.startSignUpFlow()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func showTabBarController() {
@@ -38,7 +44,26 @@ final class AppCoordinator: Coordinator {
     }
     
     private func showLoginVC() {
-        let coord = LoginSignUpFlowCoordinator(navigation: navigation)
+        let vc = LoginVC()
+        
+        // 닫기 버튼, 화면 닫기
+        vc.closeTapPublisher
+            .sink { vc.dismiss(animated: true) }
+            .store(in: &cancellables)
+        
+        // 모달 풀 스크린으로 화면 이동
+        let flowNav = UINavigationController(rootViewController: vc)
+        flowNav.modalPresentationStyle = .fullScreen
+        navigation.present(flowNav, animated: true)
+    }
+    
+    private func startSignUpFlow() {
+        // 빈 모달 만들고 그 안에서 플로우 시작
+        let flowNav = UINavigationController()
+        flowNav.modalPresentationStyle = .fullScreen
+        navigation.present(flowNav, animated: true)
+        
+        let coord = SignUpFlowCoordinator(navigation: flowNav, isInModal: true)
         store(child: coord)
         coord.start()
     }

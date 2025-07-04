@@ -12,7 +12,10 @@ final class MyPageVM {
     
     // MARK: Input & Ouput
     
-    struct Input {}
+    struct Input {
+        let loginTap: AnyPublisher<Void, Never>
+        let signUpTap: AnyPublisher<Void, Never>
+    }
     struct Output {
         /// 뷰 상태
         let state: AnyPublisher<MyPageState, Never>
@@ -32,6 +35,14 @@ final class MyPageVM {
 
         updateMyPageStateUC.execute()
             .sink { stateSubject.send($0) }
+            .store(in: &cancellables)
+        
+        input.loginTap
+            .sink { AppCoordinatorBus.shared.navigationEventSubject.send(.login) }
+            .store(in: &cancellables)
+        
+        input.signUpTap
+            .sink { AppCoordinatorBus.shared.navigationEventSubject.send(.signUp) }
             .store(in: &cancellables)
         
         return Output(state: stateSubject.eraseToAnyPublisher())

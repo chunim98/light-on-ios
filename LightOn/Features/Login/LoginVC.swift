@@ -11,11 +11,13 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class LoginVC: BackButtonVC {
+final class LoginVC: NavigationBarVC {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    
+    private var signUpFlowCoord: SignUpFlowCoordinator?
     
     // MARK: Components
     
@@ -74,6 +76,13 @@ final class LoginVC: BackButtonVC {
     let findMyIDButton = LoginOptionButton(title: "아이디 찾기")
     let findMyPWButton = LoginOptionButton(title: "비밀번호 찾기")
     
+    private let closeButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = .selectLikingCross
+        config.contentInsets = .zero
+        return UIButton(configuration: config)
+    }()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -86,6 +95,8 @@ final class LoginVC: BackButtonVC {
     // MARK: Defaults
     
     private func setupDefaults() {
+        navigationBar.rightItemHStack.addArrangedSubview(closeButton)
+        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
         mainVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
@@ -136,14 +147,24 @@ final class LoginVC: BackButtonVC {
         )
         .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
         .store(in: &cancellables)
+        
+        signUpButton.tapPublisher
+            .sink { [weak self] in self?.bindStartSignUpFlow() }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: Binders & Publishers
 
 extension LoginVC {
-    /// 회원가입 버튼 탭
-    var signUpTapPublisher: AnyPublisher<Void, Never> { signUpButton.tapPublisher }
+    /// 회원가입 플로우 시작 바인딩
+    private func bindStartSignUpFlow() {
+        signUpFlowCoord = .init(navigation: navigationController!, isInModal: false)
+        signUpFlowCoord?.start()
+    }
+    
+    /// 닫기 버튼 탭 퍼블리셔
+    var closeTapPublisher: AnyPublisher<Void, Never> { closeButton.tapPublisher }
 }
 
 // MARK: - Preview

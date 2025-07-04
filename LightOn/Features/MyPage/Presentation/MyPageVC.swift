@@ -89,7 +89,11 @@ final class MyPageVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = MyPageVM.Input()
+        let input = MyPageVM.Input(
+            loginTap: logoutInfoView.loginButton.tapPublisher,
+            signUpTap: logoutInfoView.signUpButton.tapPublisher
+        )
+        
         let output = vm.transform(input)
         
         output.state
