@@ -20,25 +20,28 @@ final class CounterTextFormVM {
     struct Output {
         /// 폼 상태
         let state: AnyPublisher<CounterTextFormState, Never>
+        /// 유효한 텍스트
+        let validText: AnyPublisher<String?, Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-
-    private let updateStateUC: UpdateCounterTextFormStateUC
+    private let maxByte: Int
+    
+    private let updateStateUC = UpdateCounterTextFormStateUC()
     
     // MARK: Initializer
     
     init(maxByte: Int) {
-        updateStateUC = .init(maxByte: maxByte)
+        self.maxByte = maxByte
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
         let stateSubject = CurrentValueSubject<CounterTextFormState, Never>(.init(
-            text: "", byte: 0, isEditing: false, style: .empty
+            text: "", byte: 0, maxByte: maxByte, isEditing: false, style: .empty
         ))
         
         updateStateUC.execute(
@@ -50,6 +53,18 @@ final class CounterTextFormVM {
         .sink { stateSubject.send($0) }
         .store(in: &cancellables)
         
-        return Output(state: stateSubject.eraseToAnyPublisher())
+        let validText = stateSubject
+            .map {
+                $0.byte <= $0.maxByte ?
+                $0.text.isEmpty ? String?.none : $0.text :
+                String?.none
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+        
+        return Output(
+            state: stateSubject.eraseToAnyPublisher(),
+            validText: validText
+        )
     }
 }

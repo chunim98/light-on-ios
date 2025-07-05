@@ -18,8 +18,9 @@ final class CounterMultiLineTextForm: BaseForm {
     private var cancellables = Set<AnyCancellable>()
     private let vm: CounterTextFormVM
     
-    /// 최대 글자 수
-    private let maxByte: Int
+    // MARK: Outputs
+    
+    private let validTextSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Components
     
@@ -37,7 +38,6 @@ final class CounterMultiLineTextForm: BaseForm {
     
     init(maxByte: Int) {
         self.vm = .init(maxByte: maxByte)
-        self.maxByte = maxByte
         super.init(frame: .zero)
         setupLayout()
         setupBindings()
@@ -73,6 +73,11 @@ final class CounterMultiLineTextForm: BaseForm {
         output.state
             .sink { [weak self] in self?.bindState(state: $0) }
             .store(in: &cancellables)
+        
+        output.validText
+            .sink { [weak self] in self?.validTextSubject.send($0) }
+            .store(in: &cancellables)
+        
     }
 }
 
@@ -82,11 +87,16 @@ extension CounterMultiLineTextForm {
     /// 상태 바인딩
     private func bindState(state: CounterTextFormState) {
         // 값
-        byteLabel.config.text = "\(state.byte)/\(maxByte)"
+        byteLabel.config.text = "\(state.byte)/\(state.maxByte)"
         // 스타일
         textView.layer.borderColor = state.style.fieldBorderColor.cgColor
         titleLabel.config.foregroundColor = state.style.titleColor
         byteLabel.config.foregroundColor = state.style.byteColor
+    }
+    
+    /// 유효한 텍스트 퍼블리셔
+    var validTextPublisher: AnyPublisher<String?, Never> {
+        validTextSubject.eraseToAnyPublisher()
     }
 }
 

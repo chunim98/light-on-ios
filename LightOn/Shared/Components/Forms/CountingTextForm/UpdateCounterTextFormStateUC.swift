@@ -8,19 +8,6 @@
 import Combine
 
 final class UpdateCounterTextFormStateUC {
-    
-    // MARK: Properties
-    
-    private let maxByte: Int
-    
-    // MARK: Initializer
-    
-    init(maxByte: Int) {
-        self.maxByte = maxByte
-    }
-    
-    // MARK: Methods
-    
     /// 폼 상태 갱신
     func execute(
         text: AnyPublisher<String, Never>,
@@ -40,10 +27,10 @@ final class UpdateCounterTextFormStateUC {
             }
         )
         .map { state in
-            state.updated(style: { [maxByte = self.maxByte] in
+            state.updated(style: {
                 state.isEditing ?
-                (state.byte <= maxByte ? .focused : .invalid) :
-                (state.byte == 0 ? .empty : (state.byte <= maxByte ? .filled : .invalid))
+                (state.byte <= state.maxByte ? .focused : .invalid) :
+                (state.byte == 0 ? .empty : (state.byte <= state.maxByte ? .filled : .invalid))
             }())
         }
         .eraseToAnyPublisher()
