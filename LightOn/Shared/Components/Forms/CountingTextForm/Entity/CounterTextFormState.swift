@@ -1,22 +1,22 @@
 //
-//  PerformanceNameFormState.swift
+//  CounterTextFormState.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/5/25.
 //
 
-struct PerformanceNameFormState {
+struct CounterTextFormState {
     let text: String
     let byte: Int
     let isEditing: Bool
-    let style: PerformanceNameFormStyle
+    let style: CounterTextFormStyle
     
     func updated(
         text: String? = nil,
         byte: Int? = nil,
         isEditing: Bool? = nil,
-        style: PerformanceNameFormStyle? = nil
-    ) -> PerformanceNameFormState {
+        style: CounterTextFormStyle? = nil
+    ) -> CounterTextFormState {
         return .init(
             text: text ?? self.text,
             byte: byte ?? self.byte,

@@ -1,5 +1,5 @@
 //
-//  PerformanceNameForm.swift
+//  CounterTextForm.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/5/25.
@@ -11,68 +11,71 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class PerformanceNameForm: BaseForm {
+final class CounterTextForm: BaseForm {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let vm = PerformanceNameFormVM()
+    private let vm: CounterTextFormVM
+    
+    /// 최대 글자 수
+    private let maxByte: Int
     
     // MARK: Components
     
-    let textView = {
-        let tv = PlaceholderTextView()
-        tv.placeHolderLabel.config.text = "공연명을 입력해주세요 (50자 이내)"
-        return tv
+    let textField = {
+        let tf = LOTextField()
+        tf.snp.makeConstraints { $0.height.equalTo(47) }
+        return tf
     }()
     
-    let byteLabel = {
+    private let byteLabel = {
         var config = TextConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         config.alignment = .right
-        config.text = "0/50" // temp
         return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupDefaults()
+    init(maxByte: Int) {
+        self.vm = .init(maxByte: maxByte)
+        self.maxByte = maxByte
+        super.init(frame: .zero)
         setupLayout()
         setupBindings()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        print(textField.frame.height)
     }
     
     @MainActor required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Defaults
-    
-    private func setupDefaults() {
-        titleLabel.config.text = "공연명"
-    }
-    
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(textView)
+        addArrangedSubview(textField)
         addArrangedSubview(byteLabel)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let text = textView.textPublisher
+        let text = textField.textPublisher
             .compactMap { $0 }
             .removeDuplicates()
             .eraseToAnyPublisher()
         
-        let input = PerformanceNameFormVM.Input(
+        let input = CounterTextFormVM.Input(
             text: text,
-            didBeginEditing: textView.didBeginEditingPublisher,
-            didEndEditing: textView.didEndEditingPublisher
+            didBeginEditing: textField.didBeginEditingPublisher,
+            didEndEditing: textField.controlEventPublisher(for: .editingDidEnd)
         )
         
         let output = vm.transform(input)
@@ -85,13 +88,13 @@ final class PerformanceNameForm: BaseForm {
 
 // MARK: Binders & Publishers
 
-extension PerformanceNameForm {
+extension CounterTextForm {
     /// 상태 바인딩
-    private func bindState(state: PerformanceNameFormState) {
+    private func bindState(state: CounterTextFormState) {
         // 값
-        byteLabel.config.text = "\(state.byte)/50"
+        byteLabel.config.text = "\(state.byte)/\(maxByte)"
         // 스타일
-        textView.layer.borderColor = state.style.fieldBorderColor.cgColor
+        textField.layer.borderColor = state.style.fieldBorderColor.cgColor
         titleLabel.config.foregroundColor = state.style.titleColor
         byteLabel.config.foregroundColor = state.style.byteColor
     }
@@ -99,4 +102,4 @@ extension PerformanceNameForm {
 
 // MARK: - Preview
 
-#Preview { PerformanceNameForm() }
+#Preview { CounterTextForm(maxByte: 20) }

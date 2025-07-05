@@ -88,4 +88,8 @@ final class PlaceholderTextView: UITextView {
         }
         .store(in: &cancellables)
     }
+    
+    // MARK: Public Configuration
+    
+    func setPlaceHolder(_ text: String) { placeHolderLabel.config.text = text }
 }

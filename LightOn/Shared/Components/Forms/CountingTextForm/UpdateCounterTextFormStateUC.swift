@@ -1,5 +1,5 @@
 //
-//  UpdatePerformanceNameFormStateUC.swift
+//  UpdateCounterTextFormStateUC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/5/25.
@@ -7,14 +7,27 @@
 
 import Combine
 
-final class UpdatePerformanceNameFormStateUC {
-    /// 공연 이름 폼 상태 갱신
+final class UpdateCounterTextFormStateUC {
+    
+    // MARK: Properties
+    
+    private let maxByte: Int
+    
+    // MARK: Initializer
+    
+    init(maxByte: Int) {
+        self.maxByte = maxByte
+    }
+    
+    // MARK: Methods
+    
+    /// 폼 상태 갱신
     func execute(
         text: AnyPublisher<String, Never>,
         didBeginEditing: AnyPublisher<Void, Never>,
         didEndEditing: AnyPublisher<Void, Never>,
-        state: AnyPublisher<PerformanceNameFormState, Never>
-    ) -> AnyPublisher<PerformanceNameFormState, Never> {
+        state: AnyPublisher<CounterTextFormState, Never>
+    ) -> AnyPublisher<CounterTextFormState, Never> {
         Publishers.Merge3(
             text.withLatestFrom(state) {
                 $1.updated(text: $0, byte: $0.count)
@@ -27,10 +40,10 @@ final class UpdatePerformanceNameFormStateUC {
             }
         )
         .map { state in
-            state.updated(style: {
+            state.updated(style: { [maxByte = self.maxByte] in
                 state.isEditing ?
-                (state.byte <= 50 ? .focused : .invalid) :
-                (state.byte == 0 ? .empty : (state.byte <= 50 ? .filled : .invalid))
+                (state.byte <= maxByte ? .focused : .invalid) :
+                (state.byte == 0 ? .empty : (state.byte <= maxByte ? .filled : .invalid))
             }())
         }
         .eraseToAnyPublisher()

@@ -36,7 +36,12 @@ final class RegisterPerformanceVC: BackButtonVC {
         return LOLabel(config: config)
     }()
     
-    private let nameForm = PerformanceNameForm()
+    private let nameForm = {
+        let form = CounterMultiLineTextForm(maxByte: 50)
+        form.textView.setPlaceHolder("공연명을 입력해주세요 (50자 이내)")
+        form.titleLabel.config.text = "공연명"
+        return form
+    }()
     
     // MARK: Life Cycle
     

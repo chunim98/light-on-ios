@@ -1,5 +1,5 @@
 //
-//  PerformanceNameFormVM.swift
+//  CounterTextFormVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/5/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class PerformanceNameFormVM {
+final class CounterTextFormVM {
     
     // MARK: Input & Ouput
     
@@ -18,20 +18,26 @@ final class PerformanceNameFormVM {
         let didEndEditing: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 이름 폼 상태
-        let state: AnyPublisher<PerformanceNameFormState, Never>
+        /// 폼 상태
+        let state: AnyPublisher<CounterTextFormState, Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+
+    private let updateStateUC: UpdateCounterTextFormStateUC
     
-    private let updateStateUC = UpdatePerformanceNameFormStateUC()
+    // MARK: Initializer
+    
+    init(maxByte: Int) {
+        updateStateUC = .init(maxByte: maxByte)
+    }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let stateSubject = CurrentValueSubject<PerformanceNameFormState, Never>(.init(
+        let stateSubject = CurrentValueSubject<CounterTextFormState, Never>(.init(
             text: "", byte: 0, isEditing: false, style: .empty
         ))
         
