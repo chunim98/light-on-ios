@@ -30,7 +30,7 @@ final class BannerVC: UIViewController {
     private let gradientView = GradientView()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(28)
         config.foregroundColor = .white
         config.paragraphSpacing = 12
@@ -42,7 +42,7 @@ final class BannerVC: UIViewController {
     }()
     
     private let subTitleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(18)
         config.foregroundColor = .white
         config.lineHeight = 27

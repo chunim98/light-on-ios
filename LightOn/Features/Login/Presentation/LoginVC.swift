@@ -60,7 +60,7 @@ final class LoginVC: NavigationBarVC {
     }()
     
     private let loginElseDivider = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(12)
         config.foregroundColor = .assistive
         config.lineHeight = 30

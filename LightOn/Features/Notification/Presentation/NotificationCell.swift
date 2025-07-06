@@ -68,13 +68,13 @@ final class NotificationCell: UITableViewCell {
     }()
     
     private let readMoreButton = {
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.regular(14)
         titleConfig.foregroundColor = .clickable
         titleConfig.text = "더보기"
         
         var config = UIButton.Configuration.plain()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.contentInsets = .zero
         return UIButton(configuration: config)
     }()

@@ -30,7 +30,7 @@ final class GenreCell: UICollectionViewCell {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(20)
         config.lineHeight = 22
         return LOLabel(config: config)

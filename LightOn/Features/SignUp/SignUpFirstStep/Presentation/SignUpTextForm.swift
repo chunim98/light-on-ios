@@ -30,7 +30,7 @@ final class SignUpTextForm: TextForm {
     
     let captionIconView = UIImageView(contentMode: .scaleAspectFit)
     let captionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         return LOLabel(config: config)
     }()

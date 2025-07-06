@@ -26,7 +26,7 @@ final class NavigationBarView: UIView {
     let rightItemHStack = UIStackView(alignment: .center)
     
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(19)
         config.foregroundColor = .loBlack
         return LOLabel(config: config)

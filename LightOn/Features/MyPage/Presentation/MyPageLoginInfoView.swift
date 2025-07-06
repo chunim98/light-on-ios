@@ -23,7 +23,7 @@ final class MyPageLoginInfoView: UIStackView {
     
     private let infoDetailVStack = UIStackView(.vertical, spacing: 4)
     private let nameHStack = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(18)
         config.foregroundColor = .loBlack
         config.lineHeight = 17
@@ -51,7 +51,7 @@ final class MyPageLoginInfoView: UIStackView {
     }()
     
     let nameLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(18)
         config.foregroundColor = .brand
         config.lineHeight = 17
@@ -60,7 +60,7 @@ final class MyPageLoginInfoView: UIStackView {
     }()
     
     let idLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .xA9A9A9
         config.lineHeight = 17

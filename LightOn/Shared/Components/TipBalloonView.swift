@@ -22,7 +22,7 @@ final class TipBalloonView: UIView {
     }()
     
     private let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.medium(12)
         config.foregroundColor = .loBlack
         config.alignment = .center

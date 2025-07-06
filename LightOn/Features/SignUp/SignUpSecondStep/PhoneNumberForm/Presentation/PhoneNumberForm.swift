@@ -48,7 +48,7 @@ final class PhoneNumberForm: TextForm {
     private let authCodeTextField = LOTintedTextField()
     
     private let timeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .brand
         config.underlineStyle = .single

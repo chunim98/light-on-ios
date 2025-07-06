@@ -47,21 +47,21 @@ final class MediumEventCardView: UIStackView {
     }()
     
     private let artistLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(12)
         config.foregroundColor = .loBlack
         return LOLabel(config: config)
     }()
     
     private let genreLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(8)
         config.foregroundColor = .brand
         
@@ -74,21 +74,21 @@ final class MediumEventCardView: UIStackView {
     }()
     
     private let dateLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
         
     private let timeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
     
     private let locationLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)

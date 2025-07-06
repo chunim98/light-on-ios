@@ -27,7 +27,7 @@ final class CounterMultiLineTextForm: BaseForm {
     let textView = PlaceholderTextView()
     
     private let byteLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         config.alignment = .right

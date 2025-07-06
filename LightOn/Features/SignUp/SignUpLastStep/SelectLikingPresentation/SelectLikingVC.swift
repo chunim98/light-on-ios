@@ -46,7 +46,7 @@ final class SelectLikingVC: NavigationBarVC {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(22)
         config.foregroundColor = .loBlack
         config.text = "음악 취향을 알려주세요!"
@@ -55,7 +55,7 @@ final class SelectLikingVC: NavigationBarVC {
     }()
     
     private let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.text = "좋아하는 음악 장르를 알려주시면\n취향에 맞는 공연을 알려드려요"
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack

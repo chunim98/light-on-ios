@@ -18,8 +18,8 @@ final class TabBarButton: UIButton {
     private let image: UIImage
     private let title: String
     
-    var titleConfig = TextConfiguration() { didSet {
-        configuration?.attributedTitle = .init(textConfig: titleConfig)
+    var titleConfig = AttrConfiguration() { didSet {
+        configuration?.attributedTitle = .init(config: titleConfig)
     } }
 
     // MARK: Life Cycle
@@ -42,7 +42,7 @@ final class TabBarButton: UIButton {
         titleConfig.text = title
         
         var config = UIButton.Configuration.filled()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.baseBackgroundColor = .clear
         config.imagePlacement = .top
         config.contentInsets = .zero

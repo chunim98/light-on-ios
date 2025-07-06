@@ -18,7 +18,7 @@ class ModalVC: UIViewController {
     
     let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(22)
         config.foregroundColor = .loBlack
         config.alignment = .center

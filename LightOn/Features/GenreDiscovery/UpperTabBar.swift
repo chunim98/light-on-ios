@@ -25,7 +25,7 @@ final class UpperTabBar: UIStackView {
 
     // 버튼이 2개 뿐이라, 하드코딩 해버림!
     private let popularButton = {
-        var textConfig = TextConfiguration()
+        var textConfig = AttrConfiguration()
         textConfig.letterSpacing = .zero
         textConfig.alignment = .center
         textConfig.lineHeight = 18.8
@@ -44,7 +44,7 @@ final class UpperTabBar: UIStackView {
                 textConfig.font = .pretendard.regular(17)
                 textConfig.foregroundColor = .assistive
             }
-            config.attributedTitle = .init(textConfig: textConfig)
+            config.attributedTitle = .init(config: textConfig)
             $0.configuration = config
         }
         button.isSelected = true
@@ -52,7 +52,7 @@ final class UpperTabBar: UIStackView {
     }()
     
     private let recommendButton = {
-        var textConfig = TextConfiguration()
+        var textConfig = AttrConfiguration()
         textConfig.letterSpacing = .zero
         textConfig.alignment = .center
         textConfig.lineHeight = 18.8
@@ -71,7 +71,7 @@ final class UpperTabBar: UIStackView {
                 textConfig.font = .pretendard.regular(17)
                 textConfig.foregroundColor = .assistive
             }
-            config.attributedTitle = .init(textConfig: textConfig)
+            config.attributedTitle = .init(config: textConfig)
             $0.configuration = config
         }
         return button

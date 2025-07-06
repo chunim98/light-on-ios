@@ -28,7 +28,7 @@ final class SmallEventCardCell: UICollectionViewCell {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.lineHeight = 21

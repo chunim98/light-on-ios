@@ -15,8 +15,8 @@ final class Checkbox: UIButton {
     
     // MARK: Properties
     
-    var titleConfig = TextConfiguration() { didSet {
-        configuration?.attributedTitle = .init(textConfig: titleConfig)
+    var titleConfig = AttrConfiguration() { didSet {
+        configuration?.attributedTitle = .init(config: titleConfig)
     } }
 
     // MARK: Life Cycle
@@ -38,7 +38,7 @@ final class Checkbox: UIButton {
         titleConfig.lineHeight = 23
         
         configuration = UIButton.Configuration.filled()
-        configuration?.attributedTitle = .init(textConfig: titleConfig)
+        configuration?.attributedTitle = .init(config: titleConfig)
         configuration?.baseBackgroundColor = .clear
         configuration?.imagePlacement = .leading
         configuration?.contentInsets = .zero

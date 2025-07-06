@@ -8,8 +8,8 @@
 import UIKit
 
 extension AttributedString {
-    init?(textConfig config: TextConfiguration) {
-        guard let attrStr = NSAttributedString(textConfig: config) else { return nil }
+    init?(config: AttrConfiguration) {
+        guard let attrStr = NSAttributedString(config: config) else { return nil }
         self.init(attrStr)
     }
 }

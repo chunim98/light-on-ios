@@ -40,7 +40,7 @@ final class HashtagPerformanceCell: UITableViewCell {
     }()
     
     private let typeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(10)
         config.foregroundColor = .white
         config.lineHeight = 10
@@ -58,7 +58,7 @@ final class HashtagPerformanceCell: UITableViewCell {
     }()
     
     private let hashtagLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(13)
         config.foregroundColor = .brand
         config.text = "#어쿠스틱" // temp
@@ -66,7 +66,7 @@ final class HashtagPerformanceCell: UITableViewCell {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(15)
         config.foregroundColor = .loBlack
         config.text = "2025 여의도 물빛무대 눕콘" // temp
@@ -74,7 +74,7 @@ final class HashtagPerformanceCell: UITableViewCell {
     }()
     
     private let placeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .assistive
         config.text = "여의도동" // temp
@@ -82,7 +82,7 @@ final class HashtagPerformanceCell: UITableViewCell {
     }()
     
     private let dateLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .assistive
         config.text = "2025.05.01 17:00" // temp

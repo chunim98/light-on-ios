@@ -30,7 +30,7 @@ final class PlaceholderTextView: UITextView {
     // MARK: Components
     
     let placeHolderLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .assistive
         return LOPaddingLabel(

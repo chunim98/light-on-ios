@@ -49,12 +49,12 @@ final class AddressFormButton: UIButton {
 
     /// 타이틀 설정
     func setTitle(selected: String?, normal: String) {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.foregroundColor  = selected == nil ? .assistive : .loBlack
         config.text             = selected == nil ? normal : selected
         config.font = .pretendard.regular(16)
         config.lineHeight = 23
-        configuration?.attributedTitle = .init(textConfig: config)
+        configuration?.attributedTitle = .init(config: config)
     }
 }
 

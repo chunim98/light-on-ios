@@ -23,7 +23,7 @@ class BaseAlertVC: UIViewController {
     }()
     
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(22)
         config.foregroundColor = .loBlack
         config.alignment = .center
@@ -32,7 +32,7 @@ class BaseAlertVC: UIViewController {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(18)
         config.foregroundColor = .caption
         config.paragraphSpacing = 8

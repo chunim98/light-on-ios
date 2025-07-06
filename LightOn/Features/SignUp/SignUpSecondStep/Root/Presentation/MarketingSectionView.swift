@@ -15,7 +15,7 @@ final class MarketingSectionView: UIStackView {
     private let checkboxSecondHStack = UIStackView(spacing: 18, inset: .init(horizontal: 2))
     
     private let marketingHeaderLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.text = "마케팅 정보 수신 (선택)"
@@ -24,7 +24,7 @@ final class MarketingSectionView: UIStackView {
     }()
     
     private let marketingCaptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.text = "* 수신 동의 상태는 개인 설정에서 별도로 변경할 수 있습니다."
         config.font = .pretendard.regular(12)
         config.foregroundColor = .infoText

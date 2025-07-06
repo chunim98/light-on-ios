@@ -44,7 +44,7 @@ final class RegisterPerformanceRowButton: UIButton {
     }()
     
     let _titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(18)
         config.foregroundColor = .loBlack
         config.lineHeight = 24
@@ -52,7 +52,7 @@ final class RegisterPerformanceRowButton: UIButton {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(14)
         config.foregroundColor = .caption
         config.lineHeight = 20

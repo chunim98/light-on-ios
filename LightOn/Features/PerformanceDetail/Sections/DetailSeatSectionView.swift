@@ -12,7 +12,7 @@ final class DetailSeatSectionView: UIStackView {
     // MARK: Components
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "좌석 정보"
@@ -20,7 +20,7 @@ final class DetailSeatSectionView: UIStackView {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.paragraphSpacing = 8

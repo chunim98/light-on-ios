@@ -34,7 +34,7 @@ final class SignUpSecondStepVC: BackButtonVC {
     private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
     
     private let privacyInfoLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.lineHeight = 24

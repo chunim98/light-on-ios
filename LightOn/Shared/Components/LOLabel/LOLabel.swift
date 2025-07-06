@@ -11,12 +11,12 @@ class LOLabel: UILabel {
 
     // MARK: Properties
     
-    var config: TextConfiguration { didSet { setupDefaults() } }
+    var config: AttrConfiguration { didSet { setupDefaults() } }
     private var attrStr: NSMutableAttributedString?
     
     // MARK: Life Cycle
     
-    init(config: TextConfiguration) {
+    init(config: AttrConfiguration) {
         self.config = config
         super.init(frame: .zero)
         setupDefaults()
@@ -29,7 +29,7 @@ class LOLabel: UILabel {
     // MARK: Defaults
     
     private func setupDefaults() {
-        attrStr = NSMutableAttributedString(textConfig: config)
+        attrStr = NSMutableAttributedString(config: config)
         attributedText = attrStr
     }
     

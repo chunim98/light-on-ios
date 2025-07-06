@@ -35,14 +35,14 @@ final class MyPageRowButton: UIButton {
     // MARK: Defaults
     
     private func setupDefaults() {
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.regular(16)
         titleConfig.foregroundColor = .loBlack
         titleConfig.lineHeight = 20
         titleConfig.text = title
         
         var config = Configuration.plain()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.imagePlacement = .trailing
         config.contentInsets = .zero
         config.image = .myPageArrow

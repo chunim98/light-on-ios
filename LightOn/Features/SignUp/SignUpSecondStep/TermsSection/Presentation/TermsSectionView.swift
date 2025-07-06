@@ -30,7 +30,7 @@ final class TermsSectionView: UIStackView {
     private let checkboxFourthHStack = UIStackView(inset: .init(leading: 18))
     
     private let policyHeaderLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.text = "약관 동의"
@@ -64,7 +64,7 @@ final class TermsSectionView: UIStackView {
     }()
     
     let servicePolicyDetailButton = {
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.regular(12)
         titleConfig.foregroundColor = .clickable
         titleConfig.lineHeight = 23
@@ -74,13 +74,13 @@ final class TermsSectionView: UIStackView {
         titleConfig.underlineColor = .clickable
         
         var config = UIButton.Configuration.plain()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.contentInsets = .zero
         return UIButton(configuration: config)
     }()
     
     let privacyPolicyDetailButton = {
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.regular(12)
         titleConfig.foregroundColor = .clickable
         titleConfig.lineHeight = 23
@@ -90,7 +90,7 @@ final class TermsSectionView: UIStackView {
         titleConfig.underlineColor = .clickable
         
         var config = UIButton.Configuration.plain()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.contentInsets = .zero
         return UIButton(configuration: config)
     }()

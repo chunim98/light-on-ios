@@ -35,14 +35,14 @@ final class LinkButton: UIButton {
     // MARK: Public Configuration
     
     func setTitle(title: String, font: UIFont, color: UIColor) {
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.underlineStyle = .single
         titleConfig.underlineColor = color
         titleConfig.foregroundColor = color
         titleConfig.text = title
         titleConfig.font = font
         
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         
         configuration = config
     }

@@ -21,7 +21,7 @@ final class MyPageLogoutInfoView: UIStackView {
     }()
     
     private let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack
         config.paragraphSpacing = 8

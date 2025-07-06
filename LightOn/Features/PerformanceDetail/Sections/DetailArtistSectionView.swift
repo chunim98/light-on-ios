@@ -14,7 +14,7 @@ final class DetailArtistSectionView: UIStackView {
     // MARK: Components
     
     private let nameHStack = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "아티스트 명"
@@ -29,7 +29,7 @@ final class DetailArtistSectionView: UIStackView {
     }()
     
     private let descriptionHStack = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "아티스트 소개"
@@ -45,7 +45,7 @@ final class DetailArtistSectionView: UIStackView {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "아티스트 정보"
@@ -53,7 +53,7 @@ final class DetailArtistSectionView: UIStackView {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack
         config.paragraphSpacing = 8

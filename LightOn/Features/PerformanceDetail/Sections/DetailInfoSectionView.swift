@@ -54,7 +54,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let genreTagLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(14)
         config.foregroundColor = .brand
         config.text = "어쿠스틱" // temp
@@ -70,7 +70,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.lineBreakMode = .byTruncatingTail
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
@@ -79,7 +79,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let dateLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "2025.05.01" // temp
@@ -87,7 +87,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let timeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "17:00" // temp
@@ -95,7 +95,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let placeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "서울 영등포구 여의도동 81-8" // temp
@@ -103,7 +103,7 @@ final class DetailInfoSectionView: UIStackView {
     }()
     
     let priceLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.text = "(유료) 10,000원" // temp

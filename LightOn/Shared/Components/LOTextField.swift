@@ -51,13 +51,13 @@ class LOTextField: UITextField {
     // MARK: Public Configuration
     
     func setPlaceHolder(_ text: String) {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .assistive
         config.lineHeight = 23
         config.text = text
         
-        attributedPlaceholder = .init(textConfig: config)
+        attributedPlaceholder = .init(config: config)
     }
 }
 

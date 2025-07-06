@@ -14,14 +14,14 @@ class BaseForm: UIStackView {
     let titleHStack = UIStackView(spacing: 2, inset: .init(horizontal: 16))
     
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(14)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
     
     let asteriskLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(14)
         config.foregroundColor = .destructive
         config.text = "*"

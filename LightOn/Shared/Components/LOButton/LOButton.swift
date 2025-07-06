@@ -54,7 +54,7 @@ class LOButton: UIButton {
         configurationUpdateHandler = { [weak self] in
             guard let self else { return }
             
-            var titleConfig = TextConfiguration()
+            var titleConfig = AttrConfiguration()
             titleConfig.text = title
             titleConfig.font = font
             
@@ -63,12 +63,12 @@ class LOButton: UIButton {
             if $0.isEnabled {
                 config.baseBackgroundColor = style.backgroundColor
                 config.baseForegroundColor = style.foregroundColor
-                config.attributedTitle = .init(textConfig: titleConfig)
+                config.attributedTitle = .init(config: titleConfig)
                 
             } else {
                 titleConfig.foregroundColor = style.disabledForegroundColor
                 config.background.backgroundColor = style.disabledBackgroundColor
-                config.attributedTitle = .init(textConfig: titleConfig)
+                config.attributedTitle = .init(config: titleConfig)
             }
             
             $0.configuration = config

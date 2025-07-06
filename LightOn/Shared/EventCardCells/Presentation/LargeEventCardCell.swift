@@ -52,28 +52,28 @@ final class LargeEventCardCell: UICollectionViewCell {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(14)
         config.foregroundColor = .loBlack
         return LOLabel(config: config)
     }()
     
     private let dateLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
     
     private let timeLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
     
     private let locationLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
         return LOLabel(config: config)

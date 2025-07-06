@@ -74,12 +74,12 @@ final class LODatePickerHeaderView: UIStackView {
 extension LODatePickerHeaderView {
     /// 날짜 버튼 타이틀 바인딩
     func bindDateHeaderText(_ text: String) {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.semiBold(20)
         config.foregroundColor = .loBlack
         config.lineHeight = 20
         config.text = text
-        dateButton.configuration?.attributedTitle = .init(textConfig: config)
+        dateButton.configuration?.attributedTitle = .init(config: config)
     }
     
     var previousTapPublisher: AnyPublisher<Void, Never> {

@@ -8,7 +8,7 @@
 import UIKit
 
 extension NSAttributedString {
-    convenience init?(textConfig config: TextConfiguration) {
+    convenience init?(config: AttrConfiguration) {
         
         // MARK: Properties
         

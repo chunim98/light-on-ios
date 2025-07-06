@@ -16,7 +16,7 @@ class BaseHomeSectionView: UIStackView {
     private let headerHStack = UIStackView(inset: .init(horizontal: 18))
     
     let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "추천 공연"

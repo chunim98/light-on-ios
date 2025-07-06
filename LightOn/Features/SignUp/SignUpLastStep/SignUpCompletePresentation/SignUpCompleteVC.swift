@@ -30,7 +30,7 @@ final class SignUpCompleteVC: NavigationBarVC {
     }()
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(22)
         config.foregroundColor = .loBlack
         config.text = "회원가입을 축하드립니다!"
@@ -39,7 +39,7 @@ final class SignUpCompleteVC: NavigationBarVC {
     }()
     
     private let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.text = "라이트온과 함께\n즐거운 공연을 즐겨보세요"
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack

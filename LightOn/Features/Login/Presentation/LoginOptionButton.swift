@@ -11,14 +11,14 @@ final class LoginOptionButton: UIButton {
     
     init(title: String) {
         super.init(frame: .zero)
-        var titleConfig = TextConfiguration()
+        var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.semiBold(14)
         titleConfig.foregroundColor = .clickable
         titleConfig.lineHeight = 30
         titleConfig.text = title
         
         var config = UIButton.Configuration.plain()
-        config.attributedTitle = .init(textConfig: titleConfig)
+        config.attributedTitle = .init(config: titleConfig)
         config.contentInsets = .zero
         
         configuration = config

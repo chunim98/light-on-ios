@@ -22,7 +22,7 @@ final class PhoneNumberFormCaptionView: UIStackView {
     }()
     
     private let label = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .brand
         config.text = "인증이 완료되었습니다."

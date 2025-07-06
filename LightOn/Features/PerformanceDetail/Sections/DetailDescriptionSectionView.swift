@@ -27,7 +27,7 @@ final class DetailDescriptionSectionView: UIStackView {
         let iv = UIImageView(image: .performanceDetailNote)
         iv.contentMode = .scaleAspectFit
         
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(16)
         config.foregroundColor = .brand
         config.text = "공연 소개"
@@ -42,7 +42,7 @@ final class DetailDescriptionSectionView: UIStackView {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack
         config.paragraphSpacing = 8

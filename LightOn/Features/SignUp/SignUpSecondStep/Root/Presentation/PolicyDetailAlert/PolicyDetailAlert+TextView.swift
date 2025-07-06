@@ -35,14 +35,14 @@ final class TextView: UITextView {
     
     func setText(_ text: String) {
         // 리스트가 필요하면 NSTextList 살펴볼 것.
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(14)
         config.foregroundColor = .caption
         config.paragraphSpacing = 8
         config.lineHeight = 21
         config.text = text
         
-        attributedText = .init(textConfig: config)
+        attributedText = .init(config: config)
     }
 }
 }

@@ -12,7 +12,7 @@ final class DetailNoticeSectionView: UIStackView {
     // MARK: Components
     
     private let titleLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
         config.text = "입장 시 유의사항"
@@ -20,7 +20,7 @@ final class DetailNoticeSectionView: UIStackView {
     }()
     
     let descriptionLabel = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
         config.paragraphSpacing = 8

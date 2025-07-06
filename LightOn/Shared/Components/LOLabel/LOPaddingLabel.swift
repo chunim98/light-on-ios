@@ -15,7 +15,7 @@ final class LOPaddingLabel: LOLabel {
     
     // MARK: Life Cycle
 
-    init(configuration: TextConfiguration, padding: UIEdgeInsets = .zero) {
+    init(configuration: AttrConfiguration, padding: UIEdgeInsets = .zero) {
         self.padding = padding
         super.init(config: configuration)
     }

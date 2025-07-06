@@ -18,7 +18,7 @@ final class AddressCell: UITableViewCell {
     // MARK: Components
     
     private let label = {
-        var config = TextConfiguration()
+        var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .loBlack
         config.lineHeight = 23
