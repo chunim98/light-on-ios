@@ -42,9 +42,15 @@ final class SignUpSecondStepVC: BackButtonVC {
         return LOLabel(config: config)
     }()
     
-    private let nameForm        = NameForm()
+    private let nameForm = {
+        let form = TextForm()
+        form.textField.setPlaceHolder("이름을 입력해주세요.")
+        form.titleLabel.config.text = "이름"
+        return form
+    }()
+    
     private let phoneNumberForm = PhoneNumberForm()
-    private let addressForm     = AddressForm()
+    private let addressForm = AddressForm()
     
     private let marketingSection = MarketingSectionView()
     private let termsSection = TermsSectionView()
@@ -129,7 +135,7 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     private func setupBindings() {
         let input = SignUpSecondStepVM.Input(
-            name: nameForm.namePublisher,
+            name: nameForm.validTextPublisher,
             phone: phoneNumberForm.phoneNumberPublisher,
             regionCode: addressForm.regionIDPublisher,
             termsAgreed: termsSection.isAllAgreed,

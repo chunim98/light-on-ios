@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
 class TextForm: BaseForm {
-
+    
     // MARK: Components
     
     let textFieldHStack = UIStackView()
@@ -48,4 +50,16 @@ class TextForm: BaseForm {
     // MARK: Public Configuration
     
     func addTrailingView(_ view: UIView) { textFieldHStack.addArrangedSubview(view) }
+}
+
+// MARK: Binders & Publishers
+
+extension TextForm {
+    /// 유효한 텍스트 퍼블리셔 (비어있는 경우 nil)
+    var validTextPublisher: AnyPublisher<String?, Never> {
+        textField.textPublisher
+            .map { $0?.isEmpty == true ? nil : $0 }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
 }
