@@ -1,5 +1,5 @@
 //
-//  PerformanceScheduleButton.swift
+//  ScheduleFormButton.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/6/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PerformanceScheduleButton: UIButton {
+final class ScheduleFormButton: UIButton {
     
     // MARK: Properties
     
@@ -21,9 +21,13 @@ final class PerformanceScheduleButton: UIButton {
     
     // MARK: Components
     
-    private let mainHStack = UIStackView(
-        alignment: .center, inset: .init(horizontal: 18, vertical: 12)
-    )
+    private let mainHStack = {
+        let sv = UIStackView()
+        sv.inset = .init(horizontal: 18, vertical: 12)
+        sv.isUserInteractionEnabled = false
+        sv.alignment = .center
+        return sv
+    }()
     
     let iconView = {
         let iv = UIImageView()
@@ -83,11 +87,11 @@ final class PerformanceScheduleButton: UIButton {
         
         mainHStack.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
-}
-
-extension PerformanceScheduleButton {
+    
+    // MARK: Public Configuration
+    
     /// 버튼 스타일 바인딩
-    func bindStyle(style: PerformanceScheduleButtonStyle) {
+    func setStyle(style: ScheduleFormButtonStyle) {
         arrowView.image = arrowView.image?.withTintColor(style.arrowColor)
         iconView.image = iconView.image?.withTintColor(style.iconColor)
         _titleLabel.config.foregroundColor = style.titleColor

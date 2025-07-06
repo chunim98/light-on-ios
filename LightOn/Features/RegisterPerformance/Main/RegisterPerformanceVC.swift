@@ -43,6 +43,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
+    private let scheduleForm = ScheduleForm()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -69,6 +71,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(performanceInfoTitleLabel)
         contentVStack.addArrangedSubview(LOSpacer(16))
         contentVStack.addArrangedSubview(nameForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(scheduleForm)
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
@@ -79,6 +83,27 @@ final class RegisterPerformanceVC: BackButtonVC {
     private func setupBindings() {
         backgroundTapGesture.tapPublisher
             .sink { [weak self] _ in self?.contentVStack.endEditing(true) }
+            .store(in: &cancellables)
+        
+        scheduleForm.startDateButton.tapPublisher
+            .sink { _ in
+                self.scheduleForm.datePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 464.6 }] // 사전 계산한 모달 높이
+                self.present(self.scheduleForm.datePickerModalVC, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        scheduleForm.startTimeButton.tapPublisher
+            .sink { _ in
+                self.scheduleForm.startTimePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }] // 사전 계산한 모달 높이
+                self.present(self.scheduleForm.startTimePickerModalVC, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        scheduleForm.endTimeButton.tapPublisher
+            .sink { _ in
+                self.scheduleForm.endTimePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }] // 사전 계산한 모달 높이
+                self.present(self.scheduleForm.endTimePickerModalVC, animated: true)
+            }
             .store(in: &cancellables)
     }
 }

@@ -44,7 +44,7 @@ final class LODatePicker: UIStackView {
     private func setupDefaults() {
         inset = .init(horizontal: 18)
         axis = .vertical
-        spacing = 32
+        spacing = 20
     }
     
     // MARK: Layout

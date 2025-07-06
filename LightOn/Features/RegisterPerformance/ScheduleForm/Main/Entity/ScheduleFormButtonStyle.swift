@@ -1,5 +1,5 @@
 //
-//  PerformanceScheduleButtonStyle.swift
+//  ScheduleFormButtonStyle.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/6/25.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct PerformanceScheduleButtonStyle {
+struct ScheduleFormButtonStyle {
     let strokeColor: UIColor
     let iconColor: UIColor
     let titleColor: UIColor
     let arrowColor: UIColor
     
-    static var empty: PerformanceScheduleButtonStyle {
-        PerformanceScheduleButtonStyle(
+    static var idle: ScheduleFormButtonStyle {
+        ScheduleFormButtonStyle(
             strokeColor: .thumbLine,
             iconColor: .clickable,
             titleColor: .assistive,
@@ -22,8 +22,8 @@ struct PerformanceScheduleButtonStyle {
         )
     }
     
-    static var editing: PerformanceScheduleButtonStyle {
-        PerformanceScheduleButtonStyle(
+    static var editing: ScheduleFormButtonStyle {
+        ScheduleFormButtonStyle(
             strokeColor: .brand,
             iconColor: .clickable,
             titleColor: .assistive,
@@ -31,8 +31,8 @@ struct PerformanceScheduleButtonStyle {
         )
     }
     
-    static var filled: PerformanceScheduleButtonStyle {
-        PerformanceScheduleButtonStyle(
+    static var filled: ScheduleFormButtonStyle {
+        ScheduleFormButtonStyle(
             strokeColor: .loBlack,
             iconColor: .loBlack,
             titleColor: .loBlack,

@@ -31,10 +31,11 @@ final class LODatePickerCell: FSCalendarCell {
     
     private let backView = UIView()
     private let selectionView = UIView()
+    
     private let dateLabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        return label
+        var config = AttrConfiguration()
+        config.alignment = .center
+        return LOLabel(config: config)
     }()
     
     // MARK: Life Cycle
@@ -200,24 +201,24 @@ final class LODatePickerCell: FSCalendarCell {
     // MARK: DateLabel Configuration
     
     private func configureDateLabel(day: String, for selection: SelectionType) {
-        dateLabel.text = day
+        dateLabel.config.text = day
         
         switch selection {
         case .single, .start:
-            dateLabel.font = .pretendard.semiBold(18)
-            dateLabel.textColor = .white
+            dateLabel.config.font = .pretendard.semiBold(18)
+            dateLabel.config.foregroundColor = .white
             
         case .end:
-            dateLabel.font = .pretendard.semiBold(18)
-            dateLabel.textColor = .brand
+            dateLabel.config.font = .pretendard.semiBold(18)
+            dateLabel.config.foregroundColor = .brand
             
         case .inRange:
-            dateLabel.font = .pretendard.regular(18)
-            dateLabel.textColor = .caption
+            dateLabel.config.font = .pretendard.regular(18)
+            dateLabel.config.foregroundColor = .caption
             
         default:
-            dateLabel.font = .pretendard.regular(18)
-            dateLabel.textColor = .caption
+            dateLabel.config.font = .pretendard.regular(18)
+            dateLabel.config.foregroundColor = .caption
         }
     }
     
