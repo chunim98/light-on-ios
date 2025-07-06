@@ -44,7 +44,6 @@ final class LODatePickerStyledBodyView: LODatePickerBodyView {
 // MARK: - FSCalendarDataSource
 
 extension LODatePickerStyledBodyView: FSCalendarDataSource {
-    
     /// 커스텀 셀을 구성하기 위한 메서드
     func calendar(
         _ calendar: FSCalendar,

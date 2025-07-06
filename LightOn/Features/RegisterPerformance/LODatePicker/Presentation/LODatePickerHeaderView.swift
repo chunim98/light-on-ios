@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class LODatePickerHeaderView: UIStackView {
@@ -16,14 +17,8 @@ final class LODatePickerHeaderView: UIStackView {
     
     private let dateButton = {
         var config = UIButton.Configuration.plain()
-        config.image = .loDatePickerBottomArrow
-        config.imagePlacement = .trailing
-        config.imagePadding = 4
         config.contentInsets = .zero
-        
-        let button = UIButton(configuration: config)
-        button.contentHorizontalAlignment = .fill
-        return button
+        return UIButton(configuration: config)
     }()
     
     private let previousButton = {
@@ -56,7 +51,7 @@ final class LODatePickerHeaderView: UIStackView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        inset = .init(horizontal: 18, vertical: 4)
+        inset = .init(vertical: 4)
         distribution = .equalSpacing
     }
     
@@ -82,12 +77,14 @@ extension LODatePickerHeaderView {
         dateButton.configuration?.attributedTitle = .init(config: config)
     }
     
+    /// 이전 버튼 탭
     var previousTapPublisher: AnyPublisher<Void, Never> {
-        previousButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
+        previousButton.tapPublisher
     }
     
+    /// 다음 버튼 탭
     var nextTapPublisher: AnyPublisher<Void, Never> {
-        nextButton.tapPublisher.map { _ in }.eraseToAnyPublisher()
+        nextButton.tapPublisher
     }
 }
 

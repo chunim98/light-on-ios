@@ -17,18 +17,12 @@ final class LODatePicker: UIStackView {
     private let vm = LODatePickerVM()
     private var cancaellables = Set<AnyCancellable>()
     
+    // MARK: Outputs
+    
+    private let dateRangeSubject = PassthroughSubject<DateRange, Never>()
+    
     // MARK: Components
     
-    private let datePickerBodyContainer = UIStackView(inset: .init(edges: 18))
-    
-    private let titleLabel = {
-        let label = UILabel()
-        label.font = .pretendard.bold(22)
-        label.textAlignment = .center
-        label.textColor = .brand
-        label.text = "날짜 선택" // temp
-        return label
-    }()
     private let pickerHeaderView = LODatePickerHeaderView()
     private let pickerBodyView = LODatePickerStyledBodyView()
     
@@ -36,8 +30,7 @@ final class LODatePicker: UIStackView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        axis = .vertical
-        spacing = 14
+        setupDefaults()
         setupLayout()
         setupBindings()
     }
@@ -46,15 +39,20 @@ final class LODatePicker: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        inset = .init(horizontal: 18)
+        axis = .vertical
+        spacing = 32
+    }
+    
     // MARK: Layout
-
+    
     private func setupLayout() {
-        addArrangedSubview(titleLabel)
         addArrangedSubview(pickerHeaderView)
-        addArrangedSubview(datePickerBodyContainer)
-        datePickerBodyContainer.addArrangedSubview(pickerBodyView)
-        
-        self.snp.makeConstraints { $0.width.equalTo(366); $0.height.equalTo(400)}
+        addArrangedSubview(pickerBodyView)
+        self.snp.makeConstraints { $0.height.equalTo(318) }
     }
     
     // MARK: Bindig
@@ -75,10 +73,19 @@ final class LODatePicker: UIStackView {
         output.dateHeaderText
             .sink { [weak self] in self?.pickerHeaderView.bindDateHeaderText($0) }
             .store(in: &cancaellables)
-
+        
         output.dateRange
-            .sink { print($0.start?.toSimpleString(), $0.end?.toSimpleString()) }
+            .sink { [weak self] in self?.dateRangeSubject.send($0) }
             .store(in: &cancaellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension LODatePicker {
+    /// 선택한 날짜 범위 퍼블리셔
+    var dateRangePublisher: AnyPublisher<DateRange, Never> {
+        dateRangeSubject.eraseToAnyPublisher()
     }
 }
 
