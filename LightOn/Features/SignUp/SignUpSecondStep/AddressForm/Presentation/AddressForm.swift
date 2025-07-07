@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-final class AddressForm: BaseForm {
+class AddressForm: BaseForm {
     
     // MARK: Properties
     
@@ -29,20 +29,29 @@ final class AddressForm: BaseForm {
         return sv
     }()
     
-    let provinceButton = AddressFormButton()
-    let cityButton = AddressFormButton()
-    
     let provinceTableContainer = {
-        let container = ProvinceTableViewContainer()
-        container.isHidden = true
-        return container
+        let sv = UIStackView()
+        sv.layer.shadowOffset  = .init(width: 0, height: 5)
+        sv.layer.shadowColor = UIColor.black.cgColor
+        sv.layer.shadowOpacity = 0.1
+        sv.layer.shadowRadius  = 15
+        return sv
     }()
     
     let cityTableContainer = {
-        let container = CityTableViewContainer()
-        container.isHidden = true
-        return container
+        let sv = UIStackView()
+        sv.layer.shadowOffset  = .init(width: 0, height: 5)
+        sv.layer.shadowColor = UIColor.black.cgColor
+        sv.layer.shadowOpacity = 0.1
+        sv.layer.shadowRadius  = 15
+        return sv
     }()
+    
+    let provinceButton = AddressFormButton()
+    let cityButton = AddressFormButton()
+    
+    let provinceTableView = ProvinceTableView()
+    let cityTableView = CityTableView()
     
     // MARK: Life Cycle
     
@@ -57,6 +66,17 @@ final class AddressForm: BaseForm {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        // shadowPath로 그림자 렌더링 성능 개선
+        provinceTableContainer.layer.shadowPath = UIBezierPath(
+            rect: provinceTableContainer.bounds
+        ).cgPath
+        cityTableContainer.layer.shadowPath = UIBezierPath(
+            rect: cityTableContainer.bounds
+        ).cgPath
+    }
+    
     // MARK: Defaults
     
     private func setupDefaults() { titleLabel.config.text = "선호 지역" }
@@ -67,14 +87,14 @@ final class AddressForm: BaseForm {
         addArrangedSubview(mainHStack)
         mainHStack.addArrangedSubview(provinceButton)
         mainHStack.addArrangedSubview(cityButton)
+        
+        provinceTableContainer.addArrangedSubview(provinceTableView)
+        cityTableContainer.addArrangedSubview(cityTableView)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let provinceTableView = provinceTableContainer.tableView
-        let cityTableView = cityTableContainer.tableView
-        
         let selectedProvince = provinceTableView.selectedModelPublisher(
             dataSource: provinceTableView.diffableDataSource
         )
@@ -93,11 +113,11 @@ final class AddressForm: BaseForm {
         let output = vm.transform(input)
         
         output.provinces
-            .sink { [weak provinceTableView] in provinceTableView?.setSnapshot(items: $0) }
+            .sink { [weak self] in self?.provinceTableView.setSnapshot(items: $0) }
             .store(in: &cancellables)
         
         output.cities
-            .sink { [weak cityTableView] in cityTableView?.setSnapshot(items: $0) }
+            .sink { [weak self] in self?.cityTableView.setSnapshot(items: $0) }
             .store(in: &cancellables)
         
         output.state
