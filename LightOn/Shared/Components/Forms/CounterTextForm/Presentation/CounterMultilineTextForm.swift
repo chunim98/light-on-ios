@@ -81,9 +81,9 @@ final class CounterMultilineTextForm: NBaseForm {
     
     // MARK: Style
     
-    override func setStyle(status: FormStatus) {
-        super.setStyle(status: status)
-        switch status {
+    override func setStyle(flag: FormStyleFlag) {
+        super.setStyle(flag: flag)
+        switch flag {
         case .empty:
             textView.layer.borderColor = UIColor.thumbLine.cgColor
             byteLabel.config.foregroundColor = .caption
@@ -109,7 +109,7 @@ extension CounterMultilineTextForm {
     /// 상태 바인딩
     private func bindState(state: CounterTextFormState) {
         byteLabel.config.text = "\(state.nowByte)/\(state.maxByte)"
-        setStyle(status: state.style)
+        setStyle(flag: state.styleFlag)
     }
     
     /// 유효한 텍스트 퍼블리셔

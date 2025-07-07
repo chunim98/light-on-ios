@@ -32,24 +32,24 @@ final class LoginForm: NTextForm {
     
     private func setupDefaults() {
         asteriskLabel.isHidden = true
-        setStyle(status: .empty)
+        setStyle(flag: .empty)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
         Publishers.Merge(
-            textField.didBeginEditingPublisher.map { FormStatus.editing },
-            textField.controlEventPublisher(for: .editingDidEnd).map { FormStatus.filled }
+            textField.didBeginEditingPublisher.map { FormStyleFlag.editing },
+            textField.controlEventPublisher(for: .editingDidEnd).map { FormStyleFlag.filled }
         )
-        .sink { [weak self] in self?.setStyle(status: $0) }
+        .sink { [weak self] in self?.setStyle(flag: $0) }
         .store(in: &cancellables)
     }
     
     // MARK: Style
     
-    override func setStyle(status: FormStatus) {
-        switch status {
+    override func setStyle(flag: FormStyleFlag) {
+        switch flag {
         case .empty, .filled, .invalid:
             titleLabel.config.foregroundColor = .infoText
             textField.layer.borderColor = UIColor.thumbLine.cgColor

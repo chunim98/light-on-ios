@@ -13,9 +13,10 @@ protocol FormState {
 
 extension FormState {
     /// 폼 상태에서 스타일 추출
-    var style: FormStatus {
-        isEditing ?
-        isValid ? .editing : .invalid :
-        isEmpty ? .empty : (isValid ? .filled : .invalid)
+    var styleFlag: FormStyleFlag {
+        guard isValid else { return .invalid }
+        if isEditing { return .editing }
+        if isEmpty { return .empty }
+        return .filled
     }
 }

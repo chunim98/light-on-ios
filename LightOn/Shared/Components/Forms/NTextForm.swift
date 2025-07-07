@@ -40,9 +40,9 @@ class NTextForm: NBaseForm {
     
     // MARK: Style
     
-    override func setStyle(status: FormStatus) {
-        super.setStyle(status: status)
-        switch status {
+    override func setStyle(flag: FormStyleFlag) {
+        super.setStyle(flag: flag)
+        switch flag {
         case .empty:    textField.layer.borderColor = UIColor.thumbLine.cgColor
         case .editing:  textField.layer.borderColor = UIColor.brand.cgColor
         case .filled:   textField.layer.borderColor = UIColor.loBlack.cgColor
