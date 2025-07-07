@@ -2,7 +2,7 @@
 //  CounterTextFormVM.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/5/25.
+//  Created by 신정욱 on 7/7/25.
 //
 
 import Foundation
@@ -41,7 +41,8 @@ final class CounterTextFormVM {
     
     func transform(_ input: Input) -> Output {
         let stateSubject = CurrentValueSubject<CounterTextFormState, Never>(.init(
-            text: "", byte: 0, maxByte: maxByte, isEditing: false, style: .empty
+            isEditing: false, isValid: false, isEmpty: true,
+            text: "", maxByte: maxByte
         ))
         
         updateStateUC.execute(
@@ -54,11 +55,7 @@ final class CounterTextFormVM {
         .store(in: &cancellables)
         
         let validText = stateSubject
-            .map {
-                $0.byte <= $0.maxByte ?
-                $0.text.isEmpty ? String?.none : $0.text :
-                String?.none
-            }
+            .map { $0.isValid ? $0.text : nil }
             .removeDuplicates()
             .eraseToAnyPublisher()
         

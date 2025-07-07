@@ -37,7 +37,7 @@ final class RegisterPerformanceVC: BackButtonVC {
     }()
     
     private let nameForm = {
-        let form = CounterMultiLineTextForm(maxByte: 50)
+        let form = CounterMultilineTextForm(maxByte: 50)
         form.textView.setPlaceHolder("공연명을 입력해주세요 (50자 이내)")
         form.titleLabel.config.text = "공연명"
         return form
@@ -45,12 +45,15 @@ final class RegisterPerformanceVC: BackButtonVC {
     
     private let scheduleForm = ScheduleForm()
     
+    private let detailAddressForm = DetailAddressForm()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupOverlayLayout()
         setupBindings()
     }
     
@@ -73,38 +76,92 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(nameForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(scheduleForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(detailAddressForm)
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
+    }
+    
+    private func setupOverlayLayout() {
+        contentVStack.addSubview(detailAddressForm.provinceTableContainer)
+        contentVStack.addSubview(detailAddressForm.cityTableContainer)
+        
+        detailAddressForm.provinceTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(detailAddressForm.provinceButton)
+            $0.height.equalTo(329)
+        }
+        detailAddressForm.cityTableContainer.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(detailAddressForm.cityButton)
+            $0.height.equalTo(329)
+        }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
         backgroundTapGesture.tapPublisher
-            .sink { [weak self] _ in self?.contentVStack.endEditing(true) }
+            .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
         
-        scheduleForm.startDateButton.tapPublisher
-            .sink { _ in
-                self.scheduleForm.datePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 464.6 }] // 사전 계산한 모달 높이
-                self.present(self.scheduleForm.datePickerModalVC, animated: true)
-            }
-            .store(in: &cancellables)
+        Publishers.Merge(
+            scheduleForm.startDateButton.tapPublisher,
+            scheduleForm.endDateButton.tapPublisher
+        )
+        .sink { [weak self] in self?.bindShowDatePickerModal() }
+        .store(in: &cancellables)
         
         scheduleForm.startTimeButton.tapPublisher
-            .sink { _ in
-                self.scheduleForm.startTimePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }] // 사전 계산한 모달 높이
-                self.present(self.scheduleForm.startTimePickerModalVC, animated: true)
-            }
+            .sink { [weak self] in self?.bindShowStartTimePickerModalVC() }
             .store(in: &cancellables)
         
         scheduleForm.endTimeButton.tapPublisher
-            .sink { _ in
-                self.scheduleForm.endTimePickerModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }] // 사전 계산한 모달 높이
-                self.present(self.scheduleForm.endTimePickerModalVC, animated: true)
-            }
+            .sink { [weak self] in self?.bindShowEndTimePickerModalVC() }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension RegisterPerformanceVC {
+    /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
+    private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
+        let provinceTableView = detailAddressForm.provinceTableContainer
+        let cityTableView = detailAddressForm.cityTableContainer
+        let point = gesture.location(in: contentVStack)
+        
+        // 오버레이가 열려있고, 배경을 탭하면 닫기
+        if !provinceTableView.isHidden, !provinceTableView.frame.contains(point) {
+            provinceTableView.isHidden = true
+        }
+        
+        // 오버레이가 열려있고, 배경을 탭하면 닫기
+        if !cityTableView.isHidden, !cityTableView.frame.contains(point) {
+            cityTableView.isHidden = true
+        }
+        
+        view.endEditing(true)   // 키보드 닫기
+    }
+    
+    /// 날짜 피커 모달 표시
+    private func bindShowDatePickerModal() {
+        let vc = scheduleForm.datePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 464.6 }]  // 사전 계산한 모달 높이
+        present(vc, animated: true)
+    }
+    
+    /// 시작 시간 피커 모달 표시
+    private func bindShowStartTimePickerModalVC() {
+        let vc = scheduleForm.startTimePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
+        present(vc, animated: true)
+    }
+    
+    /// 종료 시간 피커 모달 표시
+    private func bindShowEndTimePickerModalVC() {
+        let vc = scheduleForm.endTimePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
+        present(vc, animated: true)
     }
 }
 

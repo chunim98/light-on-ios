@@ -1,8 +1,8 @@
 //
-//  CounterMultiLineTextForm.swift
+//  CounterTextForm.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/5/25.
+//  Created by 신정욱 on 7/7/25.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class CounterMultiLineTextForm: BaseForm {
+final class CounterTextForm: NTextForm {
     
     // MARK: Properties
     
@@ -23,8 +23,6 @@ final class CounterMultiLineTextForm: BaseForm {
     private let validTextSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Components
-    
-    let textView = PlaceholderTextView()
     
     private let byteLabel = {
         var config = AttrConfiguration()
@@ -50,22 +48,21 @@ final class CounterMultiLineTextForm: BaseForm {
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(textView)
         addArrangedSubview(byteLabel)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let text = textView.textPublisher
+        let text = textField.textPublisher
             .compactMap { $0 }
             .removeDuplicates()
             .eraseToAnyPublisher()
         
         let input = CounterTextFormVM.Input(
             text: text,
-            didBeginEditing: textView.didBeginEditingPublisher,
-            didEndEditing: textView.didEndEditingPublisher
+            didBeginEditing: textField.didBeginEditingPublisher,
+            didEndEditing: textField.controlEventPublisher(for: .editingDidEnd)
         )
         
         let output = vm.transform(input)
@@ -77,21 +74,28 @@ final class CounterMultiLineTextForm: BaseForm {
         output.validText
             .sink { [weak self] in self?.validTextSubject.send($0) }
             .store(in: &cancellables)
-        
+    }
+    
+    // MARK: Style
+    
+    override func setStyle(status: FormStatus) {
+        super.setStyle(status: status)
+        switch status {
+        case .empty:    byteLabel.config.foregroundColor = .caption
+        case .editing:  byteLabel.config.foregroundColor = .caption
+        case .filled:   byteLabel.config.foregroundColor = .caption
+        case .invalid:  byteLabel.config.foregroundColor = .destructive
+        }
     }
 }
 
 // MARK: Binders & Publishers
 
-extension CounterMultiLineTextForm {
+extension CounterTextForm {
     /// 상태 바인딩
     private func bindState(state: CounterTextFormState) {
-        // 값
-        byteLabel.config.text = "\(state.byte)/\(state.maxByte)"
-        // 스타일
-        textView.layer.borderColor = state.style.fieldBorderColor.cgColor
-        titleLabel.config.foregroundColor = state.style.titleColor
-        byteLabel.config.foregroundColor = state.style.byteColor
+        byteLabel.config.text = "\(state.nowByte)/\(state.maxByte)"
+        setStyle(status: state.style)
     }
     
     /// 유효한 텍스트 퍼블리셔
@@ -100,12 +104,10 @@ extension CounterMultiLineTextForm {
     }
 }
 
-
 // MARK: - Preview
 
 #Preview {
-    let form = CounterMultiLineTextForm(maxByte: 30)
-    form.titleLabel.config.text = "아무 이름"
-    form.textView.setPlaceHolder("제한 30자")
+    let form = CounterTextForm(maxByte: 20)
+    form.titleLabel.config.text = "타이틀"
     return form
 }
