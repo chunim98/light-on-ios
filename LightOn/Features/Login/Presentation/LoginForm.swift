@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-final class LoginForm: TextForm {
+final class LoginForm: NTextForm {
     
     // MARK: Properties
     
@@ -31,26 +31,32 @@ final class LoginForm: TextForm {
     // MARK: Defaults
     
     private func setupDefaults() {
-        textField.layer.borderColor = UIColor.thumbLine.cgColor
-        titleLabel.config.foregroundColor = .infoText
         asteriskLabel.isHidden = true
+        setStyle(phase: .idle)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        textField.didBeginEditingPublisher
-            .sink { [weak self] _ in
-                self?.titleLabel.config.foregroundColor = .brand
-                self?.textField.layer.borderColor = UIColor.brand.cgColor
-            }
-            .store(in: &cancellables)
-        
-        textField.controlEventPublisher(for: .editingDidEnd)
-            .sink { [weak self] _ in
-                self?.titleLabel.config.foregroundColor = .infoText
-                self?.textField.layer.borderColor = UIColor.thumbLine.cgColor
-            }
-            .store(in: &cancellables)
+        Publishers.Merge(
+            textField.didBeginEditingPublisher.map { FormPhase.focused },
+            textField.controlEventPublisher(for: .editingDidEnd).map { FormPhase.filled }
+        )
+        .sink { [weak self] in self?.setStyle(phase: $0) }
+        .store(in: &cancellables)
+    }
+    
+    // MARK: Style
+    
+    override func setStyle(phase: FormPhase) {
+        switch phase {
+        case .idle, .filled, .error:
+            titleLabel.config.foregroundColor = .infoText
+            textField.layer.borderColor = UIColor.thumbLine.cgColor
+            
+        case .focused:
+            titleLabel.config.foregroundColor = .brand
+            textField.layer.borderColor = UIColor.brand.cgColor
+        }
     }
 }

@@ -1,0 +1,31 @@
+//
+//  CounterTextFormState.swift
+//  LightOn
+//
+//  Created by 신정욱 on 7/7/25.
+//
+
+struct CounterTextFormState: FormState {
+    let isEditing: Bool
+    let isValid: Bool
+    let isEmpty: Bool
+    
+    let text: String
+    let maxByte: Int
+    var nowByte: Int { text.count }
+    
+    func updated(
+        isEditing: Bool? = nil,
+        isValid: Bool? = nil,
+        isEmpty: Bool? = nil,
+        text: String? = nil
+    ) -> CounterTextFormState {
+        .init(
+            isEditing: isEditing ?? self.isEditing,
+            isValid: isValid ?? self.isValid,
+            isEmpty: isEmpty ?? self.isEmpty,
+            text: text ?? self.text,
+            maxByte: self.maxByte
+        )
+    }
+}
