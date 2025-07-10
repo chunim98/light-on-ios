@@ -24,7 +24,7 @@ class NTextForm: NBaseForm {
     }()
     
     // MARK: Life Cycle
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -39,17 +39,5 @@ class NTextForm: NBaseForm {
     private func setupLayout() {
         addArrangedSubview(textFieldHStack)
         textFieldHStack.addArrangedSubview(textField)
-    }
-    
-    // MARK: Style
-    
-    override func setStyle(phase: FormPhase) {
-        super.setStyle(phase: phase)
-        switch phase {
-        case .idle:     textField.layer.borderColor = UIColor.thumbLine.cgColor
-        case .focused:  textField.layer.borderColor = UIColor.brand.cgColor
-        case .filled:   textField.layer.borderColor = UIColor.loBlack.cgColor
-        case .error:    textField.layer.borderColor = UIColor.destructive.cgColor
-        }
     }
 }
