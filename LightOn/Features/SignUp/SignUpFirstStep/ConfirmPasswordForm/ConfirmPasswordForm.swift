@@ -53,9 +53,13 @@ final class ConfirmPasswordForm: SignUpFirstStepBaseForm {
             .removeDuplicates()
             .eraseToAnyPublisher()
         
+        let originPassword = originPasswordSubject
+            .prepend(nil)   // 초기값 제공
+            .eraseToAnyPublisher()
+        
         let input = ConfirmPasswordFormVM.Input(
             confirmPassword: confirmPassword,
-            originPassword: originPasswordSubject.eraseToAnyPublisher()
+            originPassword: originPassword
         )
         
         let output = vm.transform(input)
