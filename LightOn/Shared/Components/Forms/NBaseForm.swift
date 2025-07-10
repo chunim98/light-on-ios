@@ -60,18 +60,6 @@ class NBaseForm: UIStackView {
         titleHStack.addArrangedSubview(asteriskLabel)
         titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }
-    
-    // MARK: Style
-    
-    /// 상태별 스타일 설정
-    func setStyle(flag: FormStyleFlag) {
-        switch flag {
-        case .empty:    titleLabel.config.foregroundColor = .caption
-        case .editing:  titleLabel.config.foregroundColor = .brand
-        case .filled:   titleLabel.config.foregroundColor = .caption
-        case .invalid:  titleLabel.config.foregroundColor = .destructive
-        }
-    }
 }
 
 

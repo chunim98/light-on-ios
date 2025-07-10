@@ -1,11 +1,12 @@
 //
-//  CounterTextFormState.swift
+//  CounterTextFormState 2.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/7/25.
+//  Created by 신정욱 on 7/10/25.
 //
 
-struct CounterTextFormState: FormState {
+
+struct CounterTextFormState {
     let isEditing: Bool
     let isValid: Bool
     let isEmpty: Bool
@@ -27,5 +28,13 @@ struct CounterTextFormState: FormState {
             text: text ?? self.text,
             maxByte: self.maxByte
         )
+    }
+    
+    /// 스타일 맵핑
+    func toStyle() -> CounterTextFormStyle {
+        guard isValid else { return .error }
+        if isEditing { return .focused }
+        if isEmpty { return .idle }
+        return .filled
     }
 }

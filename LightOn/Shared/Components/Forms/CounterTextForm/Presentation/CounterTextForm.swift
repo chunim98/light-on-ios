@@ -75,18 +75,6 @@ final class CounterTextForm: NTextForm {
             .sink { [weak self] in self?.validTextSubject.send($0) }
             .store(in: &cancellables)
     }
-    
-    // MARK: Style
-    
-    override func setStyle(flag: FormStyleFlag) {
-        super.setStyle(flag: flag)
-        switch flag {
-        case .empty:    byteLabel.config.foregroundColor = .caption
-        case .editing:  byteLabel.config.foregroundColor = .caption
-        case .filled:   byteLabel.config.foregroundColor = .caption
-        case .invalid:  byteLabel.config.foregroundColor = .destructive
-        }
-    }
 }
 
 // MARK: Binders & Publishers
@@ -95,7 +83,11 @@ extension CounterTextForm {
     /// 상태 바인딩
     private func bindState(state: CounterTextFormState) {
         byteLabel.config.text = "\(state.nowByte)/\(state.maxByte)"
-        setStyle(flag: state.styleFlag)
+        
+        let style = state.toStyle()
+        textField.layer.borderColor = style.borderColor.cgColor
+        titleLabel.config.foregroundColor = style.titleColor
+        byteLabel.config.foregroundColor = style.byteColor
     }
     
     /// 유효한 텍스트 퍼블리셔

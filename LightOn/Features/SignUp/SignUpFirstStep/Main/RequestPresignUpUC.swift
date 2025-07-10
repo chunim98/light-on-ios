@@ -18,15 +18,16 @@ final class RequestPresignUpUC {
     /// 임시 회원가입 요청 (임시 회원 번호 발급)
     func execute(
         trigger: AnyPublisher<Void, Never>,
-        email: AnyPublisher<EmailState, Never>,
-        pw: AnyPublisher<PWState, Never>
+        state: AnyPublisher<SignUpFirstStepState, Never>
     ) -> AnyPublisher<Int, Never> {
-        let emailPW = Publishers.CombineLatest(email, pw)
-            .map { ($0.0.text, $0.1.text) }
-        
-        return trigger
-            .withLatestFrom(emailPW) { ($1.0, $1.1) }
-            .compactMap { [weak self] in self?.repo.postEmailPW(email: $0.0, pw: $0.1) }
+        trigger
+            .withLatestFrom(state) { _, state in state }
+            .compactMap { [weak self] in
+                guard let email = $0.email, let pw = $0.password
+                else { return AnyPublisher<Int, Never>?.none }
+                
+                return self?.repo.postEmailPW(email: email, pw: pw)
+            }
             .switchToLatest()
             .share()
             .eraseToAnyPublisher()

@@ -35,36 +35,11 @@ final class SignUpFirstStepVC: BackButtonVC {
     
     private let mainVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
     
-    private let emailForm = {
-        let form = SignUpTextForm(isRequired: true)
-        form.textField.setPlaceHolder("이메일 주소를 입력해주세요")
-        form.titleLabel.config.text = "아이디"
-        return form
-    }()
+    private let emailForm = EmailValidationForm()
     
-    private let pwForm = {
-        let form = SignUpTextForm(isRequired: true)
-        form.textField.textContentType = .oneTimeCode // 강력한 비번 생성 방지
-        form.textField.isSecureTextEntry = true
-        form.textField.setPlaceHolder("8-20자리, 영어 대소문자, 숫자, 특수문자 조합")
-        form.titleLabel.config.text = "비밀번호"
-        return form
-    }()
+    private let pwForm = PasswordValidationForm()
     
-    private let confirmForm = {
-        let form = SignUpTextForm(isRequired: true)
-        form.textField.textContentType = .oneTimeCode // 강력한 비번 생성 방지
-        form.textField.isSecureTextEntry = true
-        form.textField.setPlaceHolder("8-20자리, 영어 대소문자, 숫자, 특수문자 조합")
-        form.titleLabel.config.text = "비밀번호 확인"
-        return form
-    }()
-    
-    private let checkDuplicationButton = {
-        let button = LOButton(style: .filled, width: 91)
-        button.setTitle("중복확인", .pretendard.semiBold(16))
-        return button
-    }()
+    private let confirmForm = ConfirmPasswordForm()
     
     private let nextButton = {
         let button = LOButton(style: .filled)
@@ -123,34 +98,16 @@ final class SignUpFirstStepVC: BackButtonVC {
         mainVStack.addArrangedSubview(LOSpacer())
         mainVStack.addArrangedSubview(nextButton)
         
-        emailForm.addTrailingView(LOSpacer(12))
-        emailForm.addTrailingView(checkDuplicationButton)
-        
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        
-        let idText = emailForm.textField.textPublisher
-            .compactMap { $0 }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-        
-        let pwText = pwForm.textField.textPublisher
-            .compactMap { $0 }
-            .eraseToAnyPublisher()
-        
-        let confirmText = confirmForm.textField.textPublisher
-            .compactMap { $0 }
-            .eraseToAnyPublisher()
-        
         let input = SignUpFirstStepVM.Input(
-            emailText: idText,
-            pwText: pwText,
-            confirmText: confirmText,
-            duplicationTap: checkDuplicationButton.tapPublisher,
+            emailText: emailForm.emailPublisher,
+            pwText: pwForm.passwordPublisher,
+            confirmText: confirmForm.confirmPasswordPublisher,
             nextButtonTap: nextButton.tapPublisher
         )
         
@@ -160,25 +117,12 @@ final class SignUpFirstStepVC: BackButtonVC {
             .sink { [weak self] in self?.nextButton.isEnabled = $0 }
             .store(in: &cancellables)
         
-        output.isDuplicationButtonEnabled
-            .sink { [weak self] in self?.checkDuplicationButton.isEnabled = $0 }
-            .store(in: &cancellables)
-        
-        output.emailCaption
-            .sink { [weak self] in self?.emailForm.captionConfigBinder(config: $0) }
-            .store(in: &cancellables)
-        
-        output.pwCaption
-            .sink { [weak self] in self?.pwForm.captionConfigBinder(config: $0) }
-            .store(in: &cancellables)
-        
-        output.confirmCaption
-            .sink { [weak self] in self?.confirmForm.captionConfigBinder(config: $0) }
-            .store(in: &cancellables)
-        
         output.tempUserID
-            .print()
             .sink { [weak self] in self?.tempUserIDSubject.send($0) }
+            .store(in: &cancellables)
+        
+        pwForm.passwordPublisher
+            .sink { [weak self] in self?.confirmForm.bindOriginPassword($0) }
             .store(in: &cancellables)
         
         backgroundTapGesture.tapPublisher

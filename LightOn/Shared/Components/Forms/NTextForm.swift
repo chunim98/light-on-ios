@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
 class NTextForm: NBaseForm {
     
     // MARK: Components
+    
+
+    let textFieldHStack = UIStackView()
     
     let textField = {
         let tf = LOTextField()
@@ -21,6 +26,7 @@ class NTextForm: NBaseForm {
     
     // MARK: Life Cycle
 
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
@@ -33,20 +39,7 @@ class NTextForm: NBaseForm {
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(textField)
-        textField.setContentHuggingPriority(.init(0), for: .horizontal)
-        textField.setContentCompressionResistancePriority(.init(0), for: .horizontal)
-    }
-    
-    // MARK: Style
-    
-    override func setStyle(flag: FormStyleFlag) {
-        super.setStyle(flag: flag)
-        switch flag {
-        case .empty:    textField.layer.borderColor = UIColor.thumbLine.cgColor
-        case .editing:  textField.layer.borderColor = UIColor.brand.cgColor
-        case .filled:   textField.layer.borderColor = UIColor.loBlack.cgColor
-        case .invalid:  textField.layer.borderColor = UIColor.destructive.cgColor
-        }
+        addArrangedSubview(textFieldHStack)
+        textFieldHStack.addArrangedSubview(textField)
     }
 }

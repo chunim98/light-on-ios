@@ -15,10 +15,11 @@ final class SignUpDI {
     // MARK: Methods
     
     func makeSignUpFirstStepVM() -> SignUpFirstStepVM {
-        SignUpFirstStepVM(
-            duplicationStateRepo: DefaultDuplicationStateRepo(),
-            presignUpRepo: DefaultPresignUpRepo()
-        )
+        SignUpFirstStepVM(presignUpRepo: DefaultPresignUpRepo())
+    }
+    
+    func makeEmailValidationFormVM() -> EmailValidationFormVM {
+        EmailValidationFormVM(repo: DefaultCheckEmailDuplicationRepo())
     }
     
     func makePhoneNumberFormVM() -> PhoneNumberFormVM {

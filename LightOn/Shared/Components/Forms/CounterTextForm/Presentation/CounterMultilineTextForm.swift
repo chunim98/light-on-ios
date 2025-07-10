@@ -78,29 +78,6 @@ final class CounterMultilineTextForm: NBaseForm {
             .sink { [weak self] in self?.validTextSubject.send($0) }
             .store(in: &cancellables)
     }
-    
-    // MARK: Style
-    
-    override func setStyle(flag: FormStyleFlag) {
-        super.setStyle(flag: flag)
-        switch flag {
-        case .empty:
-            textView.layer.borderColor = UIColor.thumbLine.cgColor
-            byteLabel.config.foregroundColor = .caption
-            
-        case .editing:
-            textView.layer.borderColor = UIColor.brand.cgColor
-            byteLabel.config.foregroundColor = .caption
-            
-        case .filled:
-            textView.layer.borderColor = UIColor.loBlack.cgColor
-            byteLabel.config.foregroundColor = .caption
-            
-        case .invalid:
-            textView.layer.borderColor = UIColor.destructive.cgColor
-            byteLabel.config.foregroundColor = .destructive
-        }
-    }
 }
 
 // MARK: Binders & Publishers
@@ -109,7 +86,11 @@ extension CounterMultilineTextForm {
     /// 상태 바인딩
     private func bindState(state: CounterTextFormState) {
         byteLabel.config.text = "\(state.nowByte)/\(state.maxByte)"
-        setStyle(flag: state.styleFlag)
+        
+        let style = state.toStyle()
+        textView.layer.borderColor = style.borderColor.cgColor
+        titleLabel.config.foregroundColor = style.titleColor
+        byteLabel.config.foregroundColor = style.byteColor
     }
     
     /// 유효한 텍스트 퍼블리셔

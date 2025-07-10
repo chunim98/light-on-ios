@@ -11,6 +11,17 @@ import Combine
 import CombineCocoa
 
 final class LoginForm: NTextForm {
+
+    // MARK: Struct
+    
+    struct Style {
+        let titleColor: UIColor
+        let borderColor: UIColor
+        
+        static var idle: Self { .init(titleColor: .infoText, borderColor: .thumbLine) }
+        static var focused: Self { .init(titleColor: .brand, borderColor: .brand) }
+        static var filled: Self { .init(titleColor: .loBlack, borderColor: .loBlack) }
+    }
     
     // MARK: Properties
     
@@ -32,31 +43,36 @@ final class LoginForm: NTextForm {
     
     private func setupDefaults() {
         asteriskLabel.isHidden = true
-        setStyle(flag: .empty)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        Publishers.Merge(
-            textField.didBeginEditingPublisher.map { FormStyleFlag.editing },
-            textField.controlEventPublisher(for: .editingDidEnd).map { FormStyleFlag.filled }
-        )
-        .sink { [weak self] in self?.setStyle(flag: $0) }
-        .store(in: &cancellables)
-    }
-    
-    // MARK: Style
-    
-    override func setStyle(flag: FormStyleFlag) {
-        switch flag {
-        case .empty, .filled, .invalid:
-            titleLabel.config.foregroundColor = .infoText
-            textField.layer.borderColor = UIColor.thumbLine.cgColor
-            
-        case .editing:
-            titleLabel.config.foregroundColor = .brand
-            textField.layer.borderColor = UIColor.brand.cgColor
-        }
+        let text = textField.textPublisher
+            .compactMap { $0 }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+        
+        let isFocused = Publishers
+            .Merge(
+                textField.didBeginEditingPublisher.map { true },
+                textField.controlEventPublisher(for: .editingDidEnd).map { false }
+            )
+            .eraseToAnyPublisher()
+        
+        let style = Publishers.CombineLatest(text, isFocused)
+            .map { text, isFocused -> Style in
+                guard !isFocused else { return .focused }
+                return text.isEmpty ? .idle : .filled
+            }
+            .prepend(.idle) // 초기 스타일 할당
+            .eraseToAnyPublisher()
+        
+        style
+            .sink { [weak self] in
+                self?.titleLabel.config.foregroundColor = $0.titleColor
+                self?.textField.layer.borderColor = $0.borderColor.cgColor
+            }
+            .store(in: &cancellables)
     }
 }
