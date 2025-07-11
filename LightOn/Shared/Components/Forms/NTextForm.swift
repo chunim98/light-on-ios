@@ -15,7 +15,6 @@ class NTextForm: NBaseForm {
     
     // MARK: Components
     
-
     let textFieldHStack = UIStackView()
     
     let textField = {
@@ -25,7 +24,6 @@ class NTextForm: NBaseForm {
     }()
     
     // MARK: Life Cycle
-
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -44,7 +44,6 @@ final class RegisterPerformanceVC: BackButtonVC {
     }()
     
     private let scheduleForm = ScheduleForm()
-    
     private let detailAddressForm = DetailAddressForm()
     
     // MARK: Life Cycle
@@ -53,7 +52,6 @@ final class RegisterPerformanceVC: BackButtonVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
-        setupOverlayLayout()
         setupBindings()
     }
     
@@ -78,23 +76,14 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(scheduleForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(detailAddressForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
-    }
-    
-    private func setupOverlayLayout() {
-        contentVStack.addSubview(detailAddressForm.provinceTableContainer)
-        contentVStack.addSubview(detailAddressForm.cityTableContainer)
         
-        detailAddressForm.provinceTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(detailAddressForm.provinceButton)
-            $0.height.equalTo(329)
-        }
-        detailAddressForm.cityTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(detailAddressForm.cityButton)
-            $0.height.equalTo(329)
-        }
+        // 오버레이 뷰 레이아웃
+        detailAddressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
+        detailAddressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
@@ -126,20 +115,8 @@ final class RegisterPerformanceVC: BackButtonVC {
 extension RegisterPerformanceVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        let provinceTableView = detailAddressForm.provinceTableContainer
-        let cityTableView = detailAddressForm.cityTableContainer
-        let point = gesture.location(in: contentVStack)
-        
-        // 오버레이가 열려있고, 배경을 탭하면 닫기
-        if !provinceTableView.isHidden, !provinceTableView.frame.contains(point) {
-            provinceTableView.isHidden = true
-        }
-        
-        // 오버레이가 열려있고, 배경을 탭하면 닫기
-        if !cityTableView.isHidden, !cityTableView.frame.contains(point) {
-            cityTableView.isHidden = true
-        }
-        
+        detailAddressForm.provinceDropdown.bindDismissTable(gesture: gesture)
+        detailAddressForm.cityDropdown.bindDismissTable(gesture: gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     
