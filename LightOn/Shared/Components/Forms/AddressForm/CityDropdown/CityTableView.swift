@@ -37,7 +37,7 @@ final class CityTableView: UITableView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        register(AddressCell.self, forCellReuseIdentifier: AddressCell.id)
+        register(DropdownCell.self, forCellReuseIdentifier: DropdownCell.id)
         separatorStyle = .none
     }
     
@@ -48,9 +48,9 @@ final class CityTableView: UITableView {
             tableView, indexPath, item in
             
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: AddressCell.id,
+                withIdentifier: DropdownCell.id,
                 for: indexPath
-            ) as? AddressCell else { return .init() }
+            ) as? DropdownCell else { return .init() }
             
             cell.configure(text: item.name)
             return cell

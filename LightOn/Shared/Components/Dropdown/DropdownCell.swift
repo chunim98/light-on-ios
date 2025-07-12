@@ -1,5 +1,5 @@
 //
-//  AddressCell.swift
+//  DropdownCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/26/25.
@@ -9,11 +9,11 @@ import UIKit
 
 import SnapKit
 
-final class AddressCell: UITableViewCell {
+final class DropdownCell: UITableViewCell {
     
     // MARK: Properties
     
-    static let id = "AddressCell"
+    static let id = "DropdownCell"
     
     // MARK: Components
     

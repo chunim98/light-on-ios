@@ -1,13 +1,13 @@
 //
-//  ProvinceTableView.swift
+//  GenreTableView.swift
 //  LightOn
 //
-//  Created by 신정욱 on 6/26/25.
+//  Created by 신정욱 on 7/12/25.
 //
 
 import UIKit
 
-final class ProvinceTableView: UITableView {
+final class GenreTableView: UITableView {
     
     // MARK: Enum
     
@@ -15,13 +15,13 @@ final class ProvinceTableView: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, Province>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Province>
+    typealias DataSource = UITableViewDiffableDataSource<Section, City>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, City>
     
     // MARK: Properties
     
     private(set) var diffableDataSource: DataSource?
-
+    
     // MARK: Life Cycle
     
     init() {
@@ -37,7 +37,7 @@ final class ProvinceTableView: UITableView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        register(AddressCell.self, forCellReuseIdentifier: AddressCell.id)
+        register(DropdownCell.self, forCellReuseIdentifier: DropdownCell.id)
         separatorStyle = .none
     }
     
@@ -48,31 +48,21 @@ final class ProvinceTableView: UITableView {
             tableView, indexPath, item in
             
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: AddressCell.id,
+                withIdentifier: DropdownCell.id,
                 for: indexPath
-            ) as? AddressCell else { return .init() }
+            ) as? DropdownCell else { return .init() }
             
-            cell.configure(text: item.rawValue)
+            cell.configure(text: item.name)
             return cell
         }
     }
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [Province]) {
+    func setSnapshot(items: [City]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)
         diffableDataSource?.apply(snapshot)
     }
-}
-
-// MARK: - Preview
-
-#Preview { ProvinceTableView() }
-#Preview {
-    SignUpSecondStepVC(vm: .init(
-        tempUserID: 0,
-        signUpRepo: DefaultSignUpRepo()
-    ))
 }
