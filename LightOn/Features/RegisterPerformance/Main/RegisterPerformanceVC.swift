@@ -19,14 +19,8 @@ final class RegisterPerformanceVC: BackButtonVC {
     
     // MARK: Components
     
-    private let backgroundTapGesture = {
-        let gesture = UITapGestureRecognizer()
-        gesture.cancelsTouchesInView = false
-        return gesture
-    }()
-    
     private let scrollView = UIScrollView()
-    private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
+    private let contentVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
     
     private let performanceInfoTitleLabel = {
         var config = AttrConfiguration()
@@ -65,7 +59,6 @@ final class RegisterPerformanceVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "공연 등록"
-        contentVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
     // MARK: Layout
@@ -95,7 +88,7 @@ final class RegisterPerformanceVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        backgroundTapGesture.tapPublisher
+        contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
         

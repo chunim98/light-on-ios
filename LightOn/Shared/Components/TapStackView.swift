@@ -40,7 +40,7 @@ final class TapStackView: UIStackView {
 
 extension TapStackView {
     /// 탭 제스처 퍼블리셔
-    var tapGesturePublisher: AnyPublisher<UITapGestureRecognizer, Never> {
+    var tapPublisher: AnyPublisher<UITapGestureRecognizer, Never> {
         tapGesture.tapPublisher
     }
 }

@@ -26,13 +26,7 @@ final class LoginVC: NavigationBarVC {
     
     // MARK: Components
     
-    private let backgroundTapGesture = {
-        let gesture = UITapGestureRecognizer()
-        gesture.cancelsTouchesInView = false
-        return gesture
-    }()
-    
-    private let mainVStack = UIStackView(.vertical, alignment: .center)
+    private let mainVStack = TapStackView(.vertical, alignment: .center)
     private let socialButtonHStack = UIStackView(spacing: 10)
     private let optionButtonHStack = UIStackView(spacing: 18)
     
@@ -105,7 +99,6 @@ final class LoginVC: NavigationBarVC {
     private func setupDefaults() {
         navigationBar.rightItemHStack.addArrangedSubview(closeButton)
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
-        mainVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
     // MARK: Layout
@@ -136,7 +129,7 @@ final class LoginVC: NavigationBarVC {
         optionButtonHStack.addArrangedSubview(findMyIDButton)
         optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
         optionButtonHStack.addArrangedSubview(findMyPWButton)
-
+        
         mainVStack.snp.makeConstraints { $0.top.horizontalEdges.equalTo(contentLayoutGuide) }
         idForm.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         pwForm.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
@@ -167,17 +160,13 @@ final class LoginVC: NavigationBarVC {
             .sink { [weak self] in self?.loginCompleteSubject.send($0) }
             .store(in: &cancellables)
         
-        // 화면 빈 공간, 키보드 리턴키 터치하면 키보드 내리기
-        Publishers.Merge3(
-            backgroundTapGesture.tapPublisher.map { _ in },
-            idForm.textField.returnPublisher,
-            pwForm.textField.returnPublisher
-        )
-        .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
-        .store(in: &cancellables)
-        
         signUpButton.tapPublisher
             .sink { [weak self] in self?.bindStartSignUpFlow() }
+            .store(in: &cancellables)
+        
+        // 배경 탭, 키보드 닫기
+        mainVStack.tapPublisher
+            .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
             .store(in: &cancellables)
     }
 }

@@ -27,18 +27,10 @@ final class SignUpFirstStepVC: BackButtonVC {
     
     // MARK: Components
     
-    private let backgroundTapGesture = {
-        let gesture = UITapGestureRecognizer()
-        gesture.cancelsTouchesInView = false
-        return gesture
-    }()
-    
-    private let mainVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
+    private let mainVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
     
     private let emailForm = EmailValidationForm()
-    
     private let pwForm = PasswordValidationForm()
-    
     private let confirmForm = ConfirmPasswordForm()
     
     private let nextButton = {
@@ -78,8 +70,6 @@ final class SignUpFirstStepVC: BackButtonVC {
         navigationBar.titleLabel.config.text = "회원가입"
         navigationBar.rightItemHStack.addArrangedSubview(closeButton)
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(16))
-        
-        mainVStack.addGestureRecognizer(backgroundTapGesture)
         
         backBarButton.isHidden = isInModal
         closeButton.isHidden = !isInModal
@@ -125,7 +115,7 @@ final class SignUpFirstStepVC: BackButtonVC {
             .sink { [weak self] in self?.confirmForm.bindOriginPassword($0) }
             .store(in: &cancellables)
         
-        backgroundTapGesture.tapPublisher
+        mainVStack.tapPublisher
             .sink { [weak self] _ in self?.mainVStack.endEditing(true) }
             .store(in: &cancellables)
     }

@@ -24,14 +24,8 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     // MARK: Components
     
-    private let backgroundTapGesture = {
-        let gesture = UITapGestureRecognizer()
-        gesture.cancelsTouchesInView = false
-        return gesture
-    }()
-    
     private let scrollView = UIScrollView()
-    private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18))
+    private let contentVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
     
     private let privacyInfoLabel = {
         var config = AttrConfiguration()
@@ -89,7 +83,6 @@ final class SignUpSecondStepVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "회원가입"
-        contentVStack.addGestureRecognizer(backgroundTapGesture)
     }
     
     // MARK: Layout
@@ -161,7 +154,7 @@ final class SignUpSecondStepVC: BackButtonVC {
             .store(in: &cancellables)
         
         // 배경을 터치하면, 오버레이 닫기
-        backgroundTapGesture.tapPublisher
+        contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
     }
@@ -194,7 +187,7 @@ extension SignUpSecondStepVC {
         alert.textView.setText("대충 엄청 긴 텍스트") // temp
         alert.modalPresentationStyle = .overFullScreen
         alert.modalTransitionStyle = .crossDissolve
-        present(alert, animated: true)
+        present(alert, animated: true) 
     }
     
     /// 회원가입 완료 이벤트
