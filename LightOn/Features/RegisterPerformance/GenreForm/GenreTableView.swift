@@ -15,8 +15,9 @@ final class GenreTableView: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, City>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, City>
+    // 회원가입/ 선호장르 선택/ GenreCellItem 참조
+    typealias DataSource = UITableViewDiffableDataSource<Section, GenreCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, GenreCellItem>
     
     // MARK: Properties
     
@@ -52,14 +53,14 @@ final class GenreTableView: UITableView {
                 for: indexPath
             ) as? DropdownCell else { return .init() }
             
-            cell.configure(text: item.name)
+            cell.configure(text: item.title)
             return cell
         }
     }
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [City]) {
+    func setSnapshot(items: [GenreCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

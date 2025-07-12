@@ -46,6 +46,15 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
+    private let genreForm = GenreForm()
+    
+    private let descriptionForm = {
+        let form = CounterMultilineTextForm(maxByte: 500)
+        form.textView.setPlaceHolder("공연 소개 내용을 작성해 주세요 (500자 이내)")
+        form.titleLabel.config.text = "공연 소개"
+        return form
+    }()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -76,6 +85,10 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(addressForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(genreForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(descriptionForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
@@ -83,6 +96,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         // 오버레이 뷰 레이아웃
         addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
         addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
+        genreForm.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
@@ -116,6 +130,7 @@ extension RegisterPerformanceVC {
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
         addressForm.provinceDropdown.bindDismissTable(gesture)
         addressForm.cityDropdown.bindDismissTable(gesture)
+        genreForm.bindDismissTable(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     
