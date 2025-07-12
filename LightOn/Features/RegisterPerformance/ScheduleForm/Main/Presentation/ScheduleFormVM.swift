@@ -41,8 +41,7 @@ final class ScheduleFormVM {
             endTimeModalPresented: false,
             dateButtonsStyle: .idle,
             startTimeButtonStyle: .idle,
-            endTimeButtonStyle: .idle,
-            titleStyle: .idle
+            endTimeButtonStyle: .idle
         ))
         
         updateScheduleFormStateUC.execute(

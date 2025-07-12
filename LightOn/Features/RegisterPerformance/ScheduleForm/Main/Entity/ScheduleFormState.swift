@@ -19,9 +19,7 @@ struct ScheduleFormState {
     let dateButtonsStyle: ScheduleFormButtonStyle
     let startTimeButtonStyle: ScheduleFormButtonStyle
     let endTimeButtonStyle: ScheduleFormButtonStyle
-    
-    let titleStyle: ScheduleFormTitleStyle
-    
+        
     func updated(
         dateRange: (Date, Date)?? = nil,
         startTime: String?? = nil,
@@ -31,8 +29,7 @@ struct ScheduleFormState {
         endTimeModalPresented: Bool? = nil,
         dateButtonsStyle: ScheduleFormButtonStyle? = nil,
         startTimeButtonStyle: ScheduleFormButtonStyle? = nil,
-        endTimeButtonStyle: ScheduleFormButtonStyle? = nil,
-        titleStyle: ScheduleFormTitleStyle? = nil
+        endTimeButtonStyle: ScheduleFormButtonStyle? = nil
     ) -> ScheduleFormState {
         ScheduleFormState(
             dateRange: dateRange ?? self.dateRange,
@@ -43,8 +40,7 @@ struct ScheduleFormState {
             endTimeModalPresented: endTimeModalPresented ?? self.endTimeModalPresented,
             dateButtonsStyle: dateButtonsStyle ?? self.dateButtonsStyle,
             startTimeButtonStyle: startTimeButtonStyle ?? self.startTimeButtonStyle,
-            endTimeButtonStyle: endTimeButtonStyle ?? self.endTimeButtonStyle,
-            titleStyle: titleStyle ?? self.titleStyle
+            endTimeButtonStyle: endTimeButtonStyle ?? self.endTimeButtonStyle
         )
     }
 }

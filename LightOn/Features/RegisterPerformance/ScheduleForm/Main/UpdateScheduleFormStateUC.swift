@@ -50,22 +50,13 @@ final class UpdateScheduleFormStateUC {
             // 스타일 업데이트
             $0.updated(
                 dateButtonsStyle: $0.dateModalPresented ?
-                    .editing :
-                    $0.dateRange == nil ? .idle : .filled,
+                    .editing : $0.dateRange == nil ? .idle : .filled,
                 
                 startTimeButtonStyle: $0.startTimeModalPresented ?
-                    .editing :
-                    $0.startTime == nil ? .idle : .filled,
+                    .editing : $0.startTime == nil ? .idle : .filled,
                 
                 endTimeButtonStyle: $0.endTimeModalPresented ?
-                    .editing :
-                    $0.endTime == nil ? .idle : .filled,
-                
-                titleStyle: (
-                    $0.dateModalPresented ||
-                    $0.startTimeModalPresented ||
-                    $0.endTimeModalPresented
-                ) ? .editing : .idle
+                    .editing : $0.endTime == nil ? .idle : .filled
             )
         }
         .eraseToAnyPublisher()

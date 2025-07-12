@@ -174,8 +174,6 @@ extension ScheduleForm {
         endDateButton.setStyle(style: state.dateButtonsStyle)
         startTimeButton.setStyle(style: state.startTimeButtonStyle)
         endTimeButton.setStyle(style: state.endTimeButtonStyle)
-        
-        titleLabel.config.foregroundColor = state.titleStyle.titleColor
     }
     
     /// 시작일 퍼블리셔
