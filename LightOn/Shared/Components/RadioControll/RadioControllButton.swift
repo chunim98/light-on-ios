@@ -1,5 +1,5 @@
 //
-//  RadioComponentButton.swift
+//  RadioControllButton.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/22/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RadioComponentButton: UIButton {
+final class RadioControllButton: UIButton {
     
     // MARK: Properties
     
@@ -63,9 +63,9 @@ final class RadioComponentButton: UIButton {
 
 // MARK: - Preview
 
-#Preview { RadioComponentButton(title: "친구", tag: 0) }
+#Preview { RadioControllButton(title: "친구", tag: 0) }
 #Preview {
-    let button = RadioButton(isRequired: false)
+    let button = RadioControll(isRequired: false)
     button.titles = ["인스타", "네이버 검색", "친구 추천", "추가"]
     return button
 }

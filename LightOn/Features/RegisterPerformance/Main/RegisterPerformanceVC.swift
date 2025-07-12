@@ -55,6 +55,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
+    private let paymentTypeForm = PaymentTypeForm()
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
@@ -88,6 +90,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(genreForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(descriptionForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(paymentTypeForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }

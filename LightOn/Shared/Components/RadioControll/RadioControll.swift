@@ -1,5 +1,5 @@
 //
-//  RadioButton.swift
+//  RadioControll.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/22/25.
@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-final class RadioButton: UIStackView {
+final class RadioControll: UIStackView {
     
     // MARK: Properties
     
@@ -30,7 +30,7 @@ final class RadioButton: UIStackView {
     
     // MARK: Components
     
-    private var buttons = [RadioComponentButton]()
+    private var buttons = [RadioControllButton]()
     
     // MARK: Life Cycle
     
@@ -52,7 +52,7 @@ final class RadioButton: UIStackView {
         spacing = 26
         
         buttons = titles.enumerated().map {
-            RadioComponentButton(title: $1, tag: $0)
+            RadioControllButton(title: $1, tag: $0)
         }
     }
     
@@ -89,7 +89,7 @@ final class RadioButton: UIStackView {
 
 // MARK: Binders & Observable
 
-extension RadioButton {
+extension RadioControll {
     /// 선택한 버튼 인덱스 퍼블리셔
     var selectedIndexPublisher: AnyPublisher<Int, Never> {
         selectedIndexSubject.eraseToAnyPublisher()
@@ -99,7 +99,7 @@ extension RadioButton {
 // MARK: - Preview
 
 #Preview {
-    let button = RadioButton(isRequired: true)
+    let button = RadioControll(isRequired: true)
     button.titles = ["인스타", "친구 추천", "추가"]
     return button
 }
