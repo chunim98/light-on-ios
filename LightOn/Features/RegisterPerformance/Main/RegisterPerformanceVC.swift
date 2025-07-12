@@ -55,7 +55,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
-    private let paymentTypeForm = PaymentTypeForm()
+    private let paymentContainer = PaymentFormContainerView()
     
     // MARK: Life Cycle
     
@@ -91,7 +91,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(descriptionForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(paymentTypeForm)
+        contentVStack.addArrangedSubview(paymentContainer)
         contentVStack.addArrangedSubview(LOSpacer(24))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }

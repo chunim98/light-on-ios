@@ -41,7 +41,6 @@ final class PaymentTypeForm: BaseForm {
     
     private func setupLayout() {
         addArrangedSubview(radioControll)
-        addArrangedSubview(LOSpacer(18))
     }
 }
 
@@ -51,6 +50,8 @@ extension PaymentTypeForm {
     /// 비용 발생 여부 퍼블리셔
     var isPaidPublisher: AnyPublisher<Bool, Never> {
         radioControll.selectedIndexPublisher.map { $0 == 1 }
+            .prepend(false) // 초기값 제공
+            .share()
             .eraseToAnyPublisher()
     }
 }
