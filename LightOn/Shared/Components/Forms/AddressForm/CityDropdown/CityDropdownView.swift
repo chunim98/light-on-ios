@@ -107,7 +107,7 @@ extension CityDropdownView {
     }
     
     /// 테이블 뷰 닫기 바인딩
-    func bindDismissTable(gesture: UITapGestureRecognizer) {
+    func bindDismissTable(_ gesture: UITapGestureRecognizer) {
         // 부모 뷰 기준 포인트 계산
         let point = gesture.location(in: tableContainer.superview)
         

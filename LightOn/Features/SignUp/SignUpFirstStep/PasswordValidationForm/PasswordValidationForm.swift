@@ -68,9 +68,9 @@ extension PasswordValidationForm {
     private func bindState(state: PasswordValidationFormState) {
         captionView.setCaption(state: {
             switch state.format {
-            case .unknown:  return .hidden
-            case .valid:    return .valid("사용 가능한 비밀번호 입니다.")
-            case .invalid:  return .invalid("비밀번호는 영문, 숫자, 특수문자 모두 포함된 8자 이상이어야 합니다.")
+            case .unknown:  .hidden
+            case .valid:    .valid("사용 가능한 비밀번호 입니다.")
+            case .invalid:  .invalid("비밀번호는 영문, 숫자, 특수문자 모두 포함된 8자 이상이어야 합니다.")
             }
         }())
     }

@@ -9,9 +9,8 @@ import UIKit
 import Combine
 
 import CombineCocoa
-import SnapKit
 
-final class CounterMultilineTextForm: NBaseForm {
+final class CounterMultilineTextForm: BaseForm {
     
     // MARK: Properties
     

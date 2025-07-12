@@ -50,7 +50,13 @@ final class SignUpSecondStepVC: BackButtonVC {
     }()
     
     private let phoneNumberForm = PhoneNumberForm()
-    private let addressForm = AddressForm()
+    
+    private let addressForm = {
+        let form = AddressForm()
+        form.titleLabel.config.text = "선호 지역"
+        form.textField.isHidden = true
+        return form
+    }()
     
     private let marketingSection = MarketingSectionView()
     private let termsSection = TermsSectionView()
@@ -76,7 +82,6 @@ final class SignUpSecondStepVC: BackButtonVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
-        setupOverlayLayout()
         setupBindings()
     }
     
@@ -115,27 +120,17 @@ final class SignUpSecondStepVC: BackButtonVC {
             $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
-    }
-    
-    private func setupOverlayLayout() {
-        contentVStack.addSubview(addressForm.provinceTableContainer)
-        contentVStack.addSubview(addressForm.cityTableContainer)
         
-        addressForm.provinceTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(addressForm.provinceButton)
-            $0.height.equalTo(329)
-        }
-        addressForm.cityTableContainer.snp.makeConstraints {
-            $0.top.horizontalEdges.equalTo(addressForm.cityButton)
-            $0.height.equalTo(329)
-        }
+        // 오버레이 뷰 레이아웃
+        addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
+        addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
         let input = SignUpSecondStepVM.Input(
-            name: nameForm.validTextPublisher,
+            name: nameForm.textPublisher,
             phone: phoneNumberForm.phoneNumberPublisher,
             regionCode: addressForm.regionIDPublisher,
             termsAgreed: termsSection.isAllAgreed,
@@ -177,20 +172,8 @@ final class SignUpSecondStepVC: BackButtonVC {
 extension SignUpSecondStepVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        let provinceTableView = addressForm.provinceTableContainer
-        let cityTableView = addressForm.cityTableContainer
-        let point = gesture.location(in: contentVStack)
-        
-        // 오버레이가 열려있고, 배경을 탭하면 닫기
-        if !provinceTableView.isHidden, !provinceTableView.frame.contains(point) {
-            provinceTableView.isHidden = true
-        }
-        
-        // 오버레이가 열려있고, 배경을 탭하면 닫기
-        if !cityTableView.isHidden, !cityTableView.frame.contains(point) {
-            cityTableView.isHidden = true
-        }
-        
+        addressForm.provinceDropdown.bindDismissTable(gesture)
+        addressForm.cityDropdown.bindDismissTable(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     

@@ -2,7 +2,7 @@
 //  CounterTextForm.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/7/25.
+//  Created by 신정욱 on 7/12/25.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class CounterTextForm: NTextForm {
+final class CounterTextForm: BaseForm {
     
     // MARK: Properties
     
@@ -23,6 +23,12 @@ final class CounterTextForm: NTextForm {
     private let validTextSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Components
+    
+    let textField = {
+        let tf = LOTextField()
+        tf.snp.makeConstraints { $0.height.equalTo(47) }
+        return tf
+    }()
     
     private let byteLabel = {
         var config = AttrConfiguration()
@@ -48,6 +54,7 @@ final class CounterTextForm: NTextForm {
     // MARK: Layout
     
     private func setupLayout() {
+        addArrangedSubview(textField)
         addArrangedSubview(byteLabel)
     }
     

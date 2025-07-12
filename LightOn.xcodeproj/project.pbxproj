@@ -51,7 +51,6 @@
 				"Archive/UIControl+Combine.swift",
 				"Archive/UIGestureRecognizer+Combine.swift",
 				Resources/Info.plist,
-				Shared/Components/Forms/CounterTextForm/Presentation/CounterTextForm.swift,
 			);
 			target = 51FA4F5C2DBF68BD0092706E /* LightOn */;
 		};
@@ -71,22 +70,11 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		5113AA952E1FF87400EF8B87 /* Exceptions for "LightOn" folder in "Copy Bundle Resources" phase from "LightOn" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 51FA4F5B2DBF68BD0092706E /* Resources */;
-			membershipExceptions = (
-				Shared/Components/Forms/CounterTextForm/Presentation/CounterTextForm.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51FA4F5F2DBF68BD0092706E /* LightOn */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				51FA4F882DBF68BE0092706E /* Exceptions for "LightOn" folder in "LightOn" target */,
-				5113AA952E1FF87400EF8B87 /* Exceptions for "LightOn" folder in "Copy Bundle Resources" phase from "LightOn" target */,
 				51FA4FA92DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnTests" target */,
 				51FA4FAA2DBF8B540092706E /* Exceptions for "LightOn" folder in "LightOnUITests" target */,
 			);

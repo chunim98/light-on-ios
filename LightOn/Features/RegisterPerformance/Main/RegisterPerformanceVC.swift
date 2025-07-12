@@ -44,7 +44,13 @@ final class RegisterPerformanceVC: BackButtonVC {
     }()
     
     private let scheduleForm = ScheduleForm()
-    private let detailAddressForm = DetailAddressForm()
+    
+    private let addressForm = {
+        let form = AddressForm()
+        form.titleLabel.config.text = "공연 장소"
+        form.textField.setPlaceHolder("상세주소")
+        return form
+    }()
     
     // MARK: Life Cycle
     
@@ -75,15 +81,15 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(scheduleForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(detailAddressForm)
+        contentVStack.addArrangedSubview(addressForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         
         // 오버레이 뷰 레이아웃
-        detailAddressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
-        detailAddressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
+        addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
+        addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
@@ -115,8 +121,8 @@ final class RegisterPerformanceVC: BackButtonVC {
 extension RegisterPerformanceVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        detailAddressForm.provinceDropdown.bindDismissTable(gesture: gesture)
-        detailAddressForm.cityDropdown.bindDismissTable(gesture: gesture)
+        addressForm.provinceDropdown.bindDismissTable(gesture)
+        addressForm.cityDropdown.bindDismissTable(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     

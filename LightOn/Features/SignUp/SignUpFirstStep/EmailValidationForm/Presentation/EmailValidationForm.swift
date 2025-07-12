@@ -88,10 +88,10 @@ extension EmailValidationForm {
     private func bindState(state: EmailValidationFormState) {
         captionView.setCaption(state: {
             switch (state.format, state.duplication) {
-            case (.invalid, _):             return .invalid("올바른 메일주소를 입력하세요.")
-            case (_, .duplicated):          return .invalid("중복된 이메일 주소입니다.")
-            case (.valid, .notDuplicated):  return .valid("사용 가능한 아이디입니다.")
-            default:                        return .hidden
+            case (.invalid, _):             .invalid("올바른 메일주소를 입력하세요.")
+            case (_, .duplicated):          .invalid("중복된 이메일 주소입니다.")
+            case (.valid, .notDuplicated):  .valid("사용 가능한 아이디입니다.")
+            default:                        .hidden
             }
         }())
         checkDuplicationButton.isEnabled = state.format == .valid

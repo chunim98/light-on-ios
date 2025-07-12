@@ -37,19 +37,20 @@ final class LoginVC: NavigationBarVC {
     private let optionButtonHStack = UIStackView(spacing: 18)
     
     private let idForm = {
-        let form = LoginForm()
+        let form = TextForm()
         form.textField.keyboardType = .emailAddress
         form.textField.setPlaceHolder("아이디 (이메일 주소)")
         form.titleLabel.config.text = "아이디"
+        form.asteriskLabel.isHidden = true
         return form
     }()
     
     private let pwForm = {
-        let form = LoginForm()
-        form.textField.textContentType = .oneTimeCode   // 강력한 비번 생성 방지
+        let form = TextForm()
         form.textField.isSecureTextEntry = true
         form.textField.setPlaceHolder("비밀번호")
         form.titleLabel.config.text = "비밀번호"
+        form.asteriskLabel.isHidden = true
         return form
     }()
     
@@ -79,9 +80,9 @@ final class LoginVC: NavigationBarVC {
     private let googleLoginButton = SocialLoginButton(image: .loginSocialGoogle)
     private let appleLoginButton  = SocialLoginButton(image: .loginSocialApple)
     
-    let signUpButton = LoginOptionButton(title: "회원가입")
-    let findMyIDButton = LoginOptionButton(title: "아이디 찾기")
-    let findMyPWButton = LoginOptionButton(title: "비밀번호 찾기")
+    let signUpButton    = LoginOptionButton(title: "회원가입")
+    let findMyIDButton  = LoginOptionButton(title: "아이디 찾기")
+    let findMyPWButton  = LoginOptionButton(title: "비밀번호 찾기")
     
     private let closeButton = {
         var config = UIButton.Configuration.plain()
@@ -157,9 +158,7 @@ final class LoginVC: NavigationBarVC {
             .eraseToAnyPublisher()
         
         let input = LoginVM.Input(
-            email: email,
-            pw: pw,
-            loginTap: loginButton.tapPublisher
+            email: email, pw: pw, loginTap: loginButton.tapPublisher
         )
         
         let output = vm.transform(input)

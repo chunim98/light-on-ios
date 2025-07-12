@@ -38,13 +38,7 @@ final class CityTableView: UITableView {
     
     private func setupDefaults() {
         register(AddressCell.self, forCellReuseIdentifier: AddressCell.id)
-        backgroundColor = .white
         separatorStyle = .none
-        
-        layer.borderColor = UIColor.thumbLine.cgColor
-        layer.borderWidth = 1
-        
-        layer.cornerRadius = 6
     }
     
     // MARK: DiffableDataSource

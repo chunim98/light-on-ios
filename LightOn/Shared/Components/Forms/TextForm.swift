@@ -17,14 +17,13 @@ class TextForm: BaseForm {
     
     let textFieldHStack = UIStackView()
     
-    let textField = LOTintedTextField()
+    let textField = {
+        let tf = LOTintedTextField()
+        tf.snp.makeConstraints { $0.height.equalTo(47) }
+        return tf
+    }()
     
     // MARK: Life Cycle
-    
-    convenience init(isRequired: Bool) {
-        self.init(frame: .zero)
-        asteriskLabel.isHidden = !isRequired
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,25 +39,16 @@ class TextForm: BaseForm {
     private func setupLayout() {
         addArrangedSubview(textFieldHStack)
         textFieldHStack.addArrangedSubview(textField)
-        
-        textField.setContentHuggingPriority(.init(0), for: .horizontal)
-        textField.setContentCompressionResistancePriority(.init(0), for: .horizontal)
-        
-        textField.snp.makeConstraints { $0.height.equalTo(47) }
     }
-    
-    // MARK: Public Configuration
-    
-    func addTrailingView(_ view: UIView) { textFieldHStack.addArrangedSubview(view) }
 }
 
 // MARK: Binders & Publishers
 
 extension TextForm {
-    /// 유효한 텍스트 퍼블리셔 (비어있는 경우 nil)
-    var validTextPublisher: AnyPublisher<String?, Never> {
+    /// 폼 텍스트 퍼블리셔 (비어있는 경우 nil)
+    var textPublisher: AnyPublisher<String?, Never> {
         textField.textPublisher
-            .map { $0?.isEmpty == true ? nil : $0 }
+            .map { $0.flatMap { $0.isEmpty ? nil : $0 } }
             .removeDuplicates()
             .eraseToAnyPublisher()
     }

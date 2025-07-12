@@ -22,7 +22,7 @@ struct CounterTextFormStyle {
     
     static var focused: Self {
         .init(
-            titleColor: .brand,
+            titleColor: .caption,
             borderColor: .brand,
             byteColor: .caption
         )
@@ -30,7 +30,7 @@ struct CounterTextFormStyle {
     
     static var filled: Self {
         .init(
-            titleColor: .loBlack,
+            titleColor: .caption,
             borderColor: .loBlack,
             byteColor: .caption
         )

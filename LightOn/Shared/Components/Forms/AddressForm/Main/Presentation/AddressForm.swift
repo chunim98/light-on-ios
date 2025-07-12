@@ -1,5 +1,5 @@
 //
-//  DetailAddressForm.swift
+//  AddressForm.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/7/25.
@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class DetailAddressForm: TintedTextForm {
+final class AddressForm: TextForm {
     
     // MARK: Properties
     
@@ -32,20 +32,12 @@ final class DetailAddressForm: TintedTextForm {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupDefaults()
         setupLayout()
         setupBindings()
     }
     
     @MainActor required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Defaults
-    
-    private func setupDefaults() {
-        textField.setPlaceHolder("상세주소")
-        titleLabel.config.text = "공연 장소"
     }
     
     // MARK: Layout
@@ -67,7 +59,7 @@ final class DetailAddressForm: TintedTextForm {
 
 // MARK: Binders & Publishers
 
-extension DetailAddressForm {
+extension AddressForm {
     /// 선택한 지역 아이디 퍼블리셔
     var regionIDPublisher: AnyPublisher<Int?, Never> {
         cityDropdown.regionIDPublisher
@@ -75,10 +67,7 @@ extension DetailAddressForm {
     
     /// 상세 주소 텍스트 퍼블리셔
     var detailAddressPublisher: AnyPublisher<String?, Never> {
-        textField.textPublisher
-            .map { $0.flatMap { $0.isEmpty ? nil : $0 } }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
+        textPublisher // 이름만 다르게 랩핑
     }
 }
 

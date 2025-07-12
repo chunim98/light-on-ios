@@ -30,15 +30,21 @@ final class LOTintedTextField: LOTextField {
     // MARK: Bindings
     
     private func setupBindings() {
-        didBeginEditingPublisher
-            .sink { [weak self] _ in
-                self?.layer.borderColor = UIColor.brand.cgColor
-            }
-            .store(in: &cancellables)
+        let text = textPublisher
+            .compactMap { $0 }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
         
-        controlEventPublisher(for: .editingDidEnd)
-            .sink { [weak self] _ in
-                self?.layer.borderColor = UIColor.thumbLine.cgColor
+        let isFocused = Publishers.Merge(
+            didBeginEditingPublisher.map { true },
+            controlEventPublisher(for: .editingDidEnd).map { false }
+        ).eraseToAnyPublisher()
+        
+        Publishers.CombineLatest(text, isFocused)
+            .sink { [weak self] in
+                let color: UIColor
+                color = $1 ? .brand : ($0.isEmpty ? .thumbLine : .loBlack)
+                self?.layer.borderColor = color.cgColor
             }
             .store(in: &cancellables)
     }
