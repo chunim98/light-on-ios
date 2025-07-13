@@ -1,5 +1,5 @@
 //
-//  MediumEventCardView.swift
+//  SpotlightedBaseCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MediumEventCardView: UIStackView {
+final class SpotlightedBaseCell: UIStackView {
     
     // MARK: Components
     
@@ -153,7 +153,7 @@ final class MediumEventCardView: UIStackView {
     
     // MARK: Public Configuration
 
-    func configure(item: MediumEventCardItem?) {
+    func configure(item: SpotlightedCellItem?) {
         thumbnailView.image = item?.thumbnail
         artistLabel.config.text = item?.artist
         titleLabel.config.text = item?.title
@@ -166,5 +166,5 @@ final class MediumEventCardView: UIStackView {
 
 // MARK: - Preview
 
-#Preview { MediumEventCardView() }
+#Preview { SpotlightedBaseCell() }
 #Preview { HomeVC() }

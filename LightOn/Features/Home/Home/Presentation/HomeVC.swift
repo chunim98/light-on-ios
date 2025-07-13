@@ -15,7 +15,7 @@ final class HomeVC: NavigationBarVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-
+    
     // MARK: Components
     
     private let scrollView = UIScrollView()
@@ -36,9 +36,28 @@ final class HomeVC: NavigationBarVC {
     }()
     
     private let bannerPageVC = BannerPageVC()
-    private let recommendSectionView = RecommendSectionView()
-    private let spotlightedSectionView = SpotlightedSectionView()
-    private let popularSectionView = PopularSectionView()
+    
+    private let recommendHeader = {
+        let view = HomeHeaderView()
+        view.titleLabel.config.text = "추천 공연"
+        return view
+    }()
+    
+    private let spotlightedHeader = {
+        let view = HomeHeaderView()
+        view.titleLabel.config.text = "주목할 만한 아티스트 공연"
+        return view
+    }()
+    
+    private let popularHeader = {
+        let view = HomeHeaderView()
+        view.titleLabel.config.text = "현재 인기 있는 공연"
+        return view
+    }()
+    
+    private let recommendCollectionView = RecommendCollectionView()
+    private let spotlightedCollectionView = SpotlightedCollectionView()
+    private let popularCollectionView = PopularCollectionView()
     
     // MARK: Life Cycle
     
@@ -63,19 +82,26 @@ final class HomeVC: NavigationBarVC {
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(9))
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
+        
+        recommendCollectionView.setSnapshot(items: RecommendCellItem.mockItems) // temp
+        spotlightedCollectionView.setSnapshot(items: SpotlightedCellItem.mockItems) // temp
+        popularCollectionView.setSnapshot(items: PopularCellItem.mockItems) // temp
     }
     
     // MARK: Layout
-        
+    
     private func setupLayout() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(bannerPageVC.view)
-        contentVStack.addArrangedSubview(recommendSectionView)
+        contentVStack.addArrangedSubview(recommendHeader)
+        contentVStack.addArrangedSubview(recommendCollectionView)
         contentVStack.addArrangedSubview(LOSpacer(18))
-        contentVStack.addArrangedSubview(spotlightedSectionView)
+        contentVStack.addArrangedSubview(spotlightedHeader)
+        contentVStack.addArrangedSubview(spotlightedCollectionView)
         contentVStack.addArrangedSubview(LOSpacer(18))
-        contentVStack.addArrangedSubview(popularSectionView)
+        contentVStack.addArrangedSubview(popularHeader)
+        contentVStack.addArrangedSubview(popularCollectionView)
         contentVStack.addArrangedSubview(LOSpacer(30))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }

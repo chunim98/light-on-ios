@@ -1,5 +1,5 @@
 //
-//  HomeSectionHeaderView.swift
+//  HomeHeaderView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/13/25.
@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class HomeSectionHeaderView: UIStackView {
+final class HomeHeaderView: UIStackView {
     
     // MARK: Properties
     
@@ -63,4 +63,4 @@ final class HomeSectionHeaderView: UIStackView {
 
 // MARK: - Preview
 
-#Preview { HomeSectionHeaderView() }
+#Preview { HomeHeaderView() }

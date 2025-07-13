@@ -1,5 +1,5 @@
 //
-//  MediumEventCardTableCell.swift
+//  SpotlightedTableCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/7/25.
@@ -9,15 +9,15 @@ import UIKit
 
 import SnapKit
 
-final class MediumEventCardTableCell: UITableViewCell {
+final class SpotlightedTableCell: UITableViewCell {
     
     // MARK: Properties
     
-    static let id = "MediumEventCardTableCell"
+    static let id = "SpotlightedTableCell"
     
     // MARK: Components
     
-    private let mediumEventCardView = MediumEventCardView()
+    private let mediumEventCardView = SpotlightedBaseCell()
     
     // MARK: Life Cycle
     
@@ -44,11 +44,11 @@ final class MediumEventCardTableCell: UITableViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: MediumEventCardItem?) {
+    func configure(item: SpotlightedCellItem?) {
         mediumEventCardView.configure(item: item)
     }
 }
 
 // MARK: - Preview
 
-#Preview { MediumEventCardTableCell() }
+#Preview { SpotlightedTableCell() }

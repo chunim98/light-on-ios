@@ -1,5 +1,5 @@
 //
-//  SmallEventCardCell.swift
+//  RecommendCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -9,22 +9,23 @@ import UIKit
 
 import SnapKit
 
-final class SmallEventCardCell: UICollectionViewCell {
+final class RecommendCell: UICollectionViewCell {
     
     // MARK: Propreties
     
-    static let id = "SmallEventCardCell"
+    static let id = "RecommendCell"
     
     // MARK: Components
     
     private let mainVStack = UIStackView(.vertical, alignment: .center, spacing: 14)
     
     private let thumbnailView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 130/2
-        imageView.clipsToBounds = true
-        return imageView
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 124/2
+        iv.clipsToBounds = true
+        iv.snp.makeConstraints { $0.size.equalTo(124) }
+        return iv
     }()
     
     private let titleLabel = {
@@ -32,7 +33,6 @@ final class SmallEventCardCell: UICollectionViewCell {
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.lineHeight = 21
-        
         let label = LOLabel(config: config)
         label.numberOfLines = 2
         return label
@@ -49,6 +49,11 @@ final class SmallEventCardCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(item: nil)
+    }
+    
     // MARK: Layout
     
     private func setupLayout() {
@@ -57,12 +62,11 @@ final class SmallEventCardCell: UICollectionViewCell {
         mainVStack.addArrangedSubview(titleLabel)
         
         mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
-        thumbnailView.snp.makeConstraints { $0.size.equalTo(130) }
     }
     
     // MARK: Public Configuration
-
-    func configure(item: SmallEventCardItem?) {
+    
+    func configure(item: RecommendCellItem?) {
         thumbnailView.image = item?.thumbnail
         titleLabel.config.text = item?.title
     }
@@ -70,4 +74,4 @@ final class SmallEventCardCell: UICollectionViewCell {
 
 // MARK: - Preview
 
-#Preview(traits: .fixedLayout(width: 130, height: 186)) { SmallEventCardCell() }
+#Preview(traits: .fixedLayout(width: 130, height: 186)) { RecommendCell() }

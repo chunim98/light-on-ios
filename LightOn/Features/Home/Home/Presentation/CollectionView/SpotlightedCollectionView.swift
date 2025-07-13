@@ -1,5 +1,5 @@
 //
-//  SpotlightedSectionCollectionView.swift
+//  SpotlightedCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class SpotlightedSectionCollectionView: UICollectionView {
+import SnapKit
+
+final class SpotlightedCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,18 +17,19 @@ final class SpotlightedSectionCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, MediumEventCardItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MediumEventCardItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, SpotlightedCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SpotlightedCellItem>
     
     // MARK: Properties
     
     private var diffableDataSource: DataSource?
-
+    
     // MARK: Life Cycle
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
         setupDefaults()
+        setupLayout()
         setupDiffableDataSource()
     }
     
@@ -38,8 +41,8 @@ final class SpotlightedSectionCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            MediumEventCardCollectionCell.self,
-            forCellWithReuseIdentifier: MediumEventCardCollectionCell.id
+            SpotlightedCollectionCell.self,
+            forCellWithReuseIdentifier: SpotlightedCollectionCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
@@ -50,6 +53,12 @@ final class SpotlightedSectionCollectionView: UICollectionView {
         )
     }
     
+    // MARK: Layout
+    
+    private func setupLayout() {
+        self.snp.makeConstraints { $0.height.equalTo(120) }
+    }
+    
     // MARK: DiffableDataSource
     
     private func setupDiffableDataSource() {
@@ -57,9 +66,9 @@ final class SpotlightedSectionCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MediumEventCardCollectionCell.id,
+                withReuseIdentifier: SpotlightedCollectionCell.id,
                 for: indexPath
-            ) as? MediumEventCardCollectionCell else { return .init() }
+            ) as? SpotlightedCollectionCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -68,7 +77,7 @@ final class SpotlightedSectionCollectionView: UICollectionView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [MediumEventCardItem]) {
+    func setSnapshot(items: [SpotlightedCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

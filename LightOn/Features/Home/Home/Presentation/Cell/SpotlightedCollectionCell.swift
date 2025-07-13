@@ -1,5 +1,5 @@
 //
-//  MediumEventCardCollectionCell.swift
+//  SpotlightedCollectionCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/7/25.
@@ -9,15 +9,15 @@ import UIKit
 
 import SnapKit
 
-final class MediumEventCardCollectionCell: UICollectionViewCell {
+final class SpotlightedCollectionCell: UICollectionViewCell {
     
     // MARK: Properties
     
-    static let id = "MediumEventCardCollectionCell"
+    static let id = "SpotlightedCollectionCell"
     
     // MARK: Components
     
-    private let mediumEventCardView = MediumEventCardView()
+    private let mediumEventCardView = SpotlightedBaseCell()
     
     // MARK: Life Cycle
     
@@ -44,11 +44,11 @@ final class MediumEventCardCollectionCell: UICollectionViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: MediumEventCardItem?) {
+    func configure(item: SpotlightedCellItem?) {
         mediumEventCardView.configure(item: item)
     }
 }
 
 // MARK: - Preview
 
-#Preview { MediumEventCardCollectionCell() }
+#Preview { SpotlightedCollectionCell() }

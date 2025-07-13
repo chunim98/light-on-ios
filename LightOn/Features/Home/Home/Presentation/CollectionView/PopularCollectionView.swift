@@ -1,5 +1,5 @@
 //
-//  PopularSectionCollectionView.swift
+//  PopularCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class PopularSectionCollectionView: UICollectionView {
+import SnapKit
+
+final class PopularCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,19 +17,20 @@ final class PopularSectionCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias Item = LargeEventCardItem
+    typealias Item = PopularCellItem
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
     // MARK: Properties
     
     private var diffableDataSource: DataSource?
-
+    
     // MARK: Life Cycle
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
         setupDefaults()
+        setupLayout()
         setupDiffableDataSource()
     }
     
@@ -39,8 +42,8 @@ final class PopularSectionCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            LargeEventCardCell.self,
-            forCellWithReuseIdentifier: LargeEventCardCell.id
+            PopularCell.self,
+            forCellWithReuseIdentifier: PopularCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
@@ -51,6 +54,12 @@ final class PopularSectionCollectionView: UICollectionView {
         )
     }
     
+    // MARK: Layout
+    
+    private func setupLayout() {
+        self.snp.makeConstraints { $0.height.equalTo(246.17) }
+    }
+    
     // MARK: DiffableDataSource
     
     private func setupDiffableDataSource() {
@@ -58,9 +67,9 @@ final class PopularSectionCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: LargeEventCardCell.id,
+                withReuseIdentifier: PopularCell.id,
                 for: indexPath
-            ) as? LargeEventCardCell else { return .init() }
+            ) as? PopularCell else { return .init() }
             
             cell.configure(item: item)
             return cell

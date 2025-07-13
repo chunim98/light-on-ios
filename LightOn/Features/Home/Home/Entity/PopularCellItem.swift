@@ -1,5 +1,5 @@
 //
-//  LargeEventCardItem.swift
+//  PopularCellItem.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-struct LargeEventCardItem: Hashable {
+struct PopularCellItem: Hashable {
     let thumbnail: UIImage
     let title: String
     let date: String
     let time: String
     let location: String
     
-    static let mockItems: [LargeEventCardItem] = [
+    static let mockItems: [PopularCellItem] = [
         .init(
             thumbnail: .debugBusking,
             title: "2025 서울 봄 버스킹 페스티벌",

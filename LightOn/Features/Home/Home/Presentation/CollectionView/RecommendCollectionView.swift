@@ -1,5 +1,5 @@
 //
-//  RecommendSectionCollectionView.swift
+//  RecommendCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class RecommendSectionCollectionView: UICollectionView {
+import SnapKit
+
+final class RecommendCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -15,18 +17,19 @@ final class RecommendSectionCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, SmallEventCardItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SmallEventCardItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, RecommendCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RecommendCellItem>
     
     // MARK: Properties
     
     private var diffableDataSource: DataSource?
-
+    
     // MARK: Life Cycle
     
     init() {
         super.init(frame: .zero, collectionViewLayout: .init())
         setupDefaults()
+        setupLayout()
         setupDiffableDataSource()
     }
     
@@ -38,16 +41,22 @@ final class RecommendSectionCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            SmallEventCardCell.self,
-            forCellWithReuseIdentifier: SmallEventCardCell.id
+            RecommendCell.self,
+            forCellWithReuseIdentifier: RecommendCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
         setFixedLayout(
             fixedSize: CGSize(width: 130, height: 186),
-            spacing: 16,
+            spacing: 10,
             sectionInset: .init(horizontal: 18, vertical: 10)
         )
+    }
+    
+    // MARK: Layout
+    
+    private func setupLayout() {
+        self.snp.makeConstraints { $0.height.equalTo(206) }
     }
     
     // MARK: DiffableDataSource
@@ -57,9 +66,9 @@ final class RecommendSectionCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SmallEventCardCell.id,
+                withReuseIdentifier: RecommendCell.id,
                 for: indexPath
-            ) as? SmallEventCardCell else { return .init() }
+            ) as? RecommendCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -68,7 +77,7 @@ final class RecommendSectionCollectionView: UICollectionView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [SmallEventCardItem]) {
+    func setSnapshot(items: [RecommendCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

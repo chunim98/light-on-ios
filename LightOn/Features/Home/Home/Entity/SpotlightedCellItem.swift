@@ -1,5 +1,5 @@
 //
-//  MediumEventCardItem.swift
+//  SpotlightedCellItem.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct MediumEventCardItem: Hashable {
+struct SpotlightedCellItem: Hashable {
     let thumbnail: UIImage
     let artist: String
     let title: String
@@ -16,7 +16,7 @@ struct MediumEventCardItem: Hashable {
     let time: String
     let location: String
     
-    static let mockItems: [MediumEventCardItem] = [
+    static let mockItems: [SpotlightedCellItem] = [
         .init(
             thumbnail: .debugBusking2,
             artist: "라이트온",

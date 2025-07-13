@@ -1,5 +1,5 @@
 //
-//  LargeEventCardCell.swift
+//  PopularCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/7/25.
@@ -9,11 +9,11 @@ import UIKit
 
 import SnapKit
 
-final class LargeEventCardCell: UICollectionViewCell {
+final class PopularCell: UICollectionViewCell {
     
     // MARK: Properties
     
-    static let id = "LargeEventCardCell"
+    static let id = "PopularCell"
     
     // MARK: Components
     
@@ -127,7 +127,7 @@ final class LargeEventCardCell: UICollectionViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: LargeEventCardItem?) {
+    func configure(item: PopularCellItem?) {
         thumbnailView.image = item?.thumbnail
         titleLabel.config.text = item?.title
         dateLabel.config.text = item?.date
@@ -138,5 +138,5 @@ final class LargeEventCardCell: UICollectionViewCell {
 
 // MARK: - Preview
 
-#Preview { LargeEventCardCell() }
+#Preview { PopularCell() }
 #Preview { HomeVC() }
