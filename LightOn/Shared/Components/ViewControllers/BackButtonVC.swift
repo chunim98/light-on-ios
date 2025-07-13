@@ -11,14 +11,14 @@ import Combine
 import CombineCocoa
 
 class BackButtonVC: BackableVC {
-
+    
     // MARK: Components
     
     let backBarButton = {
         var config = UIButton.Configuration.plain()
-        config.contentInsets = .init(vertical: 8)
         config.image = .backBarButtonArrow
-        return UIButton(configuration: config)
+        config.contentInsets = .zero
+        return TouchInsetButton(configuration: config)
     }()
     
     // MARK: Life Cycle

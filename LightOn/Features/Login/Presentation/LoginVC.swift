@@ -82,7 +82,7 @@ final class LoginVC: NavigationBarVC {
         var config = UIButton.Configuration.plain()
         config.image = .selectLikingCross
         config.contentInsets = .zero
-        return UIButton(configuration: config)
+        return TouchInsetButton(configuration: config)
     }()
     
     // MARK: Life Cycle
