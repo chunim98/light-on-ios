@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct GenreCellItem: Hashable {
+struct GenreCellItem: DropdownCellItem {
     let id: Int
     let title: String
     let image: UIImage

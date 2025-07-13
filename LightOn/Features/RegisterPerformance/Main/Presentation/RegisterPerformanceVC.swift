@@ -100,7 +100,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         // 오버레이 뷰 레이아웃
         addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
         addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
-        genreForm.setupOverlayLayout(superView: contentVStack)
+        genreForm.dropdown.setupOverlayLayout(superView: contentVStack)
+        paymentContainer.accountForm.bankDropdown.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
@@ -134,7 +135,8 @@ extension RegisterPerformanceVC {
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
         addressForm.provinceDropdown.bindDismissTable(gesture)
         addressForm.cityDropdown.bindDismissTable(gesture)
-        genreForm.bindDismissTable(gesture)
+        genreForm.dropdown.dismiss(gesture)
+        paymentContainer.accountForm.bankDropdown.dismiss(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     

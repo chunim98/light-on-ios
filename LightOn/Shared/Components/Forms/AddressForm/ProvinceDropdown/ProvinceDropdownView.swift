@@ -30,7 +30,7 @@ final class ProvinceDropdownView: UIStackView {
     // MARK: Components
     
     let button = DropdownButton(defaultTitle: "도/시/군")
-    let tableContainer = TableContainerView()
+    let tableContainer = DropdownTableContainerView()
     let tableView = ProvinceTableView()
     
     // MARK: Life Cycle

@@ -1,5 +1,5 @@
 //
-//  TableContainerView.swift
+//  DropdownTableContainerView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/11/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TableContainerView: UIStackView {
+final class DropdownTableContainerView: UIStackView {
     
     // MARK: Life Cycle
     

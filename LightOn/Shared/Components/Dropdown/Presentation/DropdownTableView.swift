@@ -1,13 +1,13 @@
 //
-//  GenreTableView.swift
+//  DropdownTableView.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/12/25.
+//  Created by 신정욱 on 7/13/25.
 //
 
 import UIKit
 
-final class GenreTableView: UITableView {
+final class DropdownTableView<Item: DropdownCellItem>: UITableView {
     
     // MARK: Enum
     
@@ -15,9 +15,8 @@ final class GenreTableView: UITableView {
     
     // MARK: Typealias
     
-    // 회원가입/ 선호장르 선택/ GenreCellItem 참조
-    typealias DataSource = UITableViewDiffableDataSource<Section, GenreCellItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, GenreCellItem>
+    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
     // MARK: Properties
     
@@ -60,7 +59,7 @@ final class GenreTableView: UITableView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [GenreCellItem]) {
+    func setSnapshot(items: [Item]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

@@ -26,6 +26,8 @@ final class PaymentFormContainerView: UIStackView {
         return form
     }()
     
+    let accountForm = AccountForm()
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -51,6 +53,7 @@ final class PaymentFormContainerView: UIStackView {
     private func setupLayout() {
         addArrangedSubview(paymentTypeForm)
         addArrangedSubview(priceForm)
+        addArrangedSubview(accountForm)
     }
     
     // MARK: Bindings
@@ -59,6 +62,7 @@ final class PaymentFormContainerView: UIStackView {
         paymentTypeForm.isPaidPublisher
             .sink { [weak self] in
                 self?.priceForm.isHidden = !$0
+                self?.accountForm.isHidden = !$0
             }
             .store(in: &cancellables)
     }

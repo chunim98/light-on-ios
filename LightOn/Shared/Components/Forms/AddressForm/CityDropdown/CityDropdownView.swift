@@ -32,7 +32,7 @@ final class CityDropdownView: UIStackView {
     // MARK: Components
     
     let button = DropdownButton(defaultTitle: "읍/면/동")
-    let tableContainer = TableContainerView()
+    let tableContainer = DropdownTableContainerView()
     let tableView = CityTableView()
     
     // MARK: Life Cycle
