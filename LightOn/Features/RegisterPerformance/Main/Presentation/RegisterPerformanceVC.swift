@@ -30,6 +30,14 @@ final class RegisterPerformanceVC: BackButtonVC {
         return LOLabel(config: config)
     }()
     
+    private let atristInfoTitleLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.semiBold(16)
+        config.foregroundColor = .loBlack
+        config.text = "아티스트 정보"
+        return LOLabel(config: config)
+    }()
+    
     private let nameForm = {
         let form = CounterMultilineTextForm(maxByte: 50)
         form.textView.setPlaceHolder("공연명을 입력해주세요 (50자 이내)")
@@ -56,6 +64,20 @@ final class RegisterPerformanceVC: BackButtonVC {
     }()
     
     private let paymentContainer = PaymentFormContainerView()
+    
+    private let artistNameForm = {
+        let form = CounterTextForm(maxByte: 20)
+        form.textField.setPlaceHolder("아티스트명을 입력해주세요 (20자 이내)")
+        form.titleLabel.config.text = "아티스트명"
+        return form
+    }()
+    
+    private let artistDescriptionForm = {
+        let form = CounterMultilineTextForm(maxByte: 200)
+        form.textView.setPlaceHolder("아티스트 소개글을 입력해주세요 (200자 이내)")
+        form.titleLabel.config.text = "아티스트 소개"
+        return form
+    }()
     
     // MARK: Life Cycle
     
@@ -93,6 +115,12 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(paymentContainer)
         contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(atristInfoTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(artistNameForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(artistDescriptionForm)
+        contentVStack.addArrangedSubview(LOSpacer(20))
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
