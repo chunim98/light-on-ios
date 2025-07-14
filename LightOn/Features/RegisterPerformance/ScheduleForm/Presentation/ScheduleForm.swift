@@ -144,7 +144,10 @@ final class ScheduleForm: BaseForm {
         let output = vm.transform(input)
         
         output.state
-            .sink { [weak self] in self?.bindState(state: $0) }
+            .sink { [weak self] in
+                self?.stateSubject.send($0)
+                self?.bindState(state: $0)
+            }
             .store(in: &cancellables)
     }
 }
@@ -179,7 +182,7 @@ extension ScheduleForm {
     /// 시작일 퍼블리셔
     var startDatePublisher: AnyPublisher<String?, Never> {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.dateFormat = "yyyy-MM-dd"
         
         return stateSubject.map {
             guard let startDate = $0.dateRange?.0 else { return nil }
@@ -191,7 +194,7 @@ extension ScheduleForm {
     /// 종료일 퍼블리셔
     var endDatePublisher: AnyPublisher<String?, Never> {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.dateFormat = "yyyy-MM-dd"
         
         return stateSubject.map {
             guard let endDate = $0.dateRange?.1 else { return nil }

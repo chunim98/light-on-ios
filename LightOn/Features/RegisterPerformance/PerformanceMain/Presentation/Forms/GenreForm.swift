@@ -43,8 +43,8 @@ final class GenreForm: BaseForm {
 
 extension GenreForm {
     /// 선택한 장르 아이디 퍼블리셔
-    var genreIDPublisher: AnyPublisher<Int?, Never> {
-        dropdown.selectedItemPublisher.map { $0?.id }
+    var genrePublisher: AnyPublisher<[String], Never> {
+        dropdown.selectedItemPublisher.map { $0.map { [$0.title] } ?? [] }
             .removeDuplicates()
             .eraseToAnyPublisher()
     }

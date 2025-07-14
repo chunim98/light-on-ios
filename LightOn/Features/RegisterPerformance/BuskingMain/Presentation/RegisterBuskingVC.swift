@@ -1,8 +1,8 @@
 //
-//  RegisterPerformanceVC.swift
+//  RegisterBuskingVC.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/4/25.
+//  Created by 신정욱 on 7/14/25.
 //
 
 import UIKit
@@ -11,16 +11,23 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class RegisterPerformanceVC: BackButtonVC {
+final class RegisterBuskingVC: BackButtonVC {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = RegisterBuskingVM()
     
     // MARK: Components
     
-    private let scrollView = UIScrollView()
+    private let scrollView = ResponsiveScrollView()
     private let contentVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
+    
+    private let confirmButton = {
+        let button = LOButton(style: .filled)
+        button.setTitle("등록하기", .pretendard.bold(16))
+        return button
+    }()
     
     private let performanceInfoTitleLabel = {
         var config = AttrConfiguration()
@@ -35,6 +42,14 @@ final class RegisterPerformanceVC: BackButtonVC {
         config.font = .pretendard.semiBold(16)
         config.foregroundColor = .loBlack
         config.text = "아티스트 정보"
+        return LOLabel(config: config)
+    }()
+    
+    private let noticeTitleLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.semiBold(16)
+        config.foregroundColor = .loBlack
+        config.text = "입장 시 유의사항"
         return LOLabel(config: config)
     }()
     
@@ -63,7 +78,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
-    private let paymentContainer = PaymentFormContainerView()
+    private let posterUploadForm = PosterUploadForm()
     
     private let artistNameForm = {
         let form = CounterTextForm(maxByte: 20)
@@ -78,6 +93,15 @@ final class RegisterPerformanceVC: BackButtonVC {
         form.titleLabel.config.text = "아티스트 소개"
         return form
     }()
+    
+    private let noticeForm = {
+        let form = TextForm()
+        form.textField.setPlaceHolder("ex. 슬리퍼, 운동복, 등산복 입장 불가")
+        form.titleLabel.config.text = "공연 유의사항"
+        return form
+    }()
+    
+    private let documentUploadForm = DocumentUploadForm()
     
     // MARK: Life Cycle
     
@@ -113,7 +137,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(descriptionForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(paymentContainer)
+        contentVStack.addArrangedSubview(posterUploadForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(atristInfoTitleLabel)
         contentVStack.addArrangedSubview(LOSpacer(16))
@@ -121,6 +145,13 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(artistDescriptionForm)
         contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(noticeTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(noticeForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(documentUploadForm)
+        contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(confirmButton)
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
@@ -129,12 +160,52 @@ final class RegisterPerformanceVC: BackButtonVC {
         addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
         addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
         genreForm.dropdown.setupOverlayLayout(superView: contentVStack)
-        paymentContainer.accountForm.bankDropdown.setupOverlayLayout(superView: contentVStack)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = RegisterBuskingVM.Input(
+            name: nameForm.validTextPublisher,
+            description: descriptionForm.validTextPublisher,
+            regionID: addressForm.regionIDPublisher,
+            detailAddress: addressForm.detailAddressPublisher,
+            notice: noticeForm.textPublisher,
+            genre: genreForm.genrePublisher,
+            posterPath: Empty<String?, Never>().eraseToAnyPublisher(),
+            startDate: scheduleForm.startDatePublisher,
+            endDate: scheduleForm.endDatePublisher,
+            startTime: scheduleForm.startTimePublisher,
+            endTime: scheduleForm.endTimePublisher,
+            documentPath: Empty<String?, Never>().eraseToAnyPublisher(),
+            artistName: artistNameForm.validTextPublisher,
+            artistDescription: artistDescriptionForm.validTextPublisher
+        )
+        
+        let output = vm.transform(input)
+        
+        output.info
+            .sink {
+                print("""
+                -------------------
+                name             = \($0.name ?? "nil")
+                description      = \($0.description ?? "nil")
+                regionID         = \($0.regionID?.description ?? "nil")
+                detailAddress    = \($0.detailAddress ?? "nil")
+                notice           = \($0.notice ?? "nil")
+                genre            = \($0.genre)
+                posterPath       = \($0.posterPath ?? "nil")
+                startDate        = \($0.startDate ?? "nil")
+                endDate          = \($0.endDate ?? "nil")
+                startTime        = \($0.startTime ?? "nil")
+                endTime          = \($0.endTime ?? "nil")
+                documentPath     = \($0.documentPath ?? "nil")
+                artistName       = \($0.artistName ?? "nil")
+                artistDescription= \($0.artistDescription ?? "nil")
+                """)
+            }
+            .store(in: &cancellables)
+        
         contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
@@ -158,13 +229,12 @@ final class RegisterPerformanceVC: BackButtonVC {
 
 // MARK: Binders & Publishers
 
-extension RegisterPerformanceVC {
+extension RegisterBuskingVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
         addressForm.provinceDropdown.bindDismissTable(gesture)
         addressForm.cityDropdown.bindDismissTable(gesture)
         genreForm.dropdown.dismiss(gesture)
-        paymentContainer.accountForm.bankDropdown.dismiss(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     
@@ -192,4 +262,4 @@ extension RegisterPerformanceVC {
 
 // MARK: - Preview
 
-#Preview { RegisterPerformanceVC() }
+#Preview { RegisterBuskingVC() }

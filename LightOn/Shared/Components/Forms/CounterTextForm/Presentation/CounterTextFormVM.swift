@@ -55,7 +55,7 @@ final class CounterTextFormVM {
         .store(in: &cancellables)
         
         let validText = stateSubject
-            .map { $0.isValid ? $0.text : nil }
+            .map { $0.isValid && !$0.isEmpty ? $0.text : nil }
             .removeDuplicates()
             .eraseToAnyPublisher()
         

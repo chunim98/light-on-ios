@@ -19,6 +19,8 @@ final class SeatFormContainerView: UIStackView {
     
     // MARK: Components
     
+    private let checkboxHStack = UIStackView(spacing: 18)
+    
     private let titleLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
@@ -33,6 +35,24 @@ final class SeatFormContainerView: UIStackView {
         form.textField.setPlaceHolder("예매 가능한 좌석수를 입력해주세요")
         form.titleLabel.config.text = "좌석수"
         return form
+    }()
+    
+    private let standingCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "스탠딩석"
+        return button
+    }()
+    
+    private let freestyleCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "자율좌석"
+        return button
+    }()
+    
+    private let assignedCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "지정좌석"
+        return button
     }()
     
     // MARK: Life Cycle
@@ -52,24 +72,23 @@ final class SeatFormContainerView: UIStackView {
     private func setupDefaults() {
         inset = .init(vertical: 20)
         axis = .vertical
+        spacing = 16
     }
     
     // MARK: Layout
     
     private func setupLayout() {
         addArrangedSubview(titleLabel)
-        addArrangedSubview(LOSpacer(16))
+        addArrangedSubview(seatCountForm)
+        addArrangedSubview(checkboxHStack)
         
-        
-        
+        checkboxHStack.addArrangedSubview(standingCheckbox)
+        checkboxHStack.addArrangedSubview(freestyleCheckbox)
+        checkboxHStack.addArrangedSubview(assignedCheckbox)
+        checkboxHStack.addArrangedSubview(LOSpacer())
     }
-    
-    // MARK: Bindings
-    
-    private func setupBindings() {}
-    
-    // MARK: Public Configuration
-    
-    // MARK: Binders & Publishers
-
 }
+
+// MARK: - Preview
+
+#Preview { SeatFormContainerView() }

@@ -60,9 +60,13 @@ final class PaymentFormContainerView: UIStackView {
     
     private func setupBindings() {
         paymentTypeForm.isPaidPublisher
-            .sink { [weak self] in
-                self?.priceForm.isHidden = !$0
-                self?.accountForm.isHidden = !$0
+            .sink { [weak self] isPaid in
+                guard let self else { return }
+                UIView.animate(withDuration: 0.25) {
+                    self.priceForm.isHidden = !isPaid
+                    self.accountForm.isHidden = !isPaid
+                    self.superview?.layoutIfNeeded()
+                }
             }
             .store(in: &cancellables)
     }
