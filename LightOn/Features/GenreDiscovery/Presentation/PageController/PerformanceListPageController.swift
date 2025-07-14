@@ -26,6 +26,11 @@ final class PerformanceListPageController: UIPageViewController {
     
     private let pageIndexSubject = PassthroughSubject<Int, Never>()
     
+    // MARK: Components
+    
+    let popularListVC = PopularListVC()
+    let recommendListVC = RecommendListVC()
+    
     // MARK: Life Cycle
     
     init() { super.init(transitionStyle: .scroll, navigationOrientation: .horizontal) }
@@ -42,7 +47,7 @@ final class PerformanceListPageController: UIPageViewController {
     // MARK: Defaults
     
     private func setupDefaults() {
-        pages = [PerformanceListVC(), PerformanceListVC()]
+        pages = [popularListVC, recommendListVC]
         setViewControllers([pages[0]], direction: .forward, animated: true)
         
         dataSource = self

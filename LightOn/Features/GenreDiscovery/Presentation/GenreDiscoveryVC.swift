@@ -22,7 +22,6 @@ final class GenreDiscoveryVC: NavigationBarVC {
     private let mainVStack = UIStackView(.vertical)
     
     private let upperTabBar = UpperTabBar()
-    private let genreTagsView = UIHostingController(rootView: GenreTagsView(vm: .init()))
     private let pageVC = PerformanceListPageController()
     
     // MARK: Life Cycle
@@ -45,9 +44,6 @@ final class GenreDiscoveryVC: NavigationBarVC {
     private func setupLayout() {
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(upperTabBar)
-        mainVStack.addArrangedSubview(LOSpacer(20))
-        mainVStack.addArrangedSubview(genreTagsView.view)
-        mainVStack.addArrangedSubview(LOSpacer(4))
         mainVStack.addArrangedSubview(pageVC.view)
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
     }
@@ -63,7 +59,7 @@ final class GenreDiscoveryVC: NavigationBarVC {
             .sink { [weak self] in self?.upperTabBar.selectedIndexBinder(index: $0) }
             .store(in: &cancellables)
         
-        genreTagsView.rootView.selectedIndexPublisher
+        pageVC.popularListVC.tagsView.rootView.selectedIndexPublisher
             .sink { print("genreTagsView", $0) }
             .store(in: &cancellables)
     }
