@@ -17,4 +17,8 @@ final class GenreDiscoveryDI {
     func makePopularListVM() -> PopularListVM {
         PopularListVM(repo: DefaultGenreDiscoveryRepo())
     }
+    
+    func makeRecommendListVM() -> RecommendListVM {
+        RecommendListVM(repo: DefaultGenreDiscoveryRepo())
+    }
 }

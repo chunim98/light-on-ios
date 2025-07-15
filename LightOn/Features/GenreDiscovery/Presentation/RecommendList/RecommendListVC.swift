@@ -15,10 +15,15 @@ final class RecommendListVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = GenreDiscoveryDI.shared.makeRecommendListVM()
+    
+    // MARK: Inputs
+    
+    private let refreshEventSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
-    private let performanceTableView = HashtagPerformanceTableView()
+    private let tableView = HashtagPerformanceTableView()
     
     // MARK: Life Cycle
     
@@ -28,6 +33,11 @@ final class RecommendListVC: UIViewController {
         setupBindings()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshEventSubject.send(())    // 테이블 뷰 데이터 갱신
+    }
+    
     // MARK: Defaults
     
     private func setupDefaults() {}
@@ -35,16 +45,26 @@ final class RecommendListVC: UIViewController {
     // MARK: Layout
     
     private func setupLayout() {
-        view.addSubview(performanceTableView)
-        performanceTableView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-//        Just(HashtagPerformanceCellItem.mocks)
-//            .sink { [weak self] in self?.performanceTableView.setSnapshot(items: $0) }
-//            .store(in: &cancellables)
+        let selectedPerformance = tableView.selectedModelPublisher(
+            dataSource: tableView.diffableDataSource
+        )
+        
+        let input = RecommendListVM.Input(
+            refreshEvent: refreshEventSubject.eraseToAnyPublisher()
+        )
+        
+        let output = vm.transform(input)
+        
+        output.recommendeds
+            .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
     }
 }
 
