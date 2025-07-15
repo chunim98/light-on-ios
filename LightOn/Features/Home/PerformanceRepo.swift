@@ -37,7 +37,7 @@ final class DefaultPerformanceRepo: PerformanceRepo {
         Future { promise in
             
             APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/popular",
+                endPoint: "/api/members/performances/recommend",
                 tokenIncluded: false,
                 decodeType: PerformancesResDTO.self
             ) {

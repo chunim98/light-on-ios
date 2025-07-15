@@ -12,12 +12,9 @@ final class GenreTagsVM: ObservableObject {
     // MARK: State & Intent
     
     struct State {
-        var items = {
-            let genres = [Genre(id: -1, name: "전체")] + Genre.items
-            return genres.map { GenreTagItem(tag: $0.id, title: $0.name, isSelected: false) }
-        }()
-            
+        var items: [GenreTagItem]
     }
+    
     enum Intent {
         /// 버튼을 탭하면 선택한 인덱스 방출
         case buttonTap(Int)
@@ -25,7 +22,20 @@ final class GenreTagsVM: ObservableObject {
     
     // MARK: Properties
     
-    @Published private(set) var state = State()
+    @Published private(set) var state: State = {
+        let items = [.init(
+            tag: -1,
+            title: "전체",
+            isSelected: true
+        )] + Genre.items.map { GenreTagItem(
+            tag: $0.id,
+            title: $0.name,
+            isSelected: false
+        ) }
+        
+        return State(items: items)
+    }()
+    
     let intent = PassthroughSubject<Intent, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -33,7 +43,6 @@ final class GenreTagsVM: ObservableObject {
     
     init() {
         intent
-            .prepend(.buttonTap(-1))    // 초기값 할당
             .sink { [weak self] in self?.process($0) }
             .store(in: &cancellables)
     }
@@ -43,7 +52,9 @@ final class GenreTagsVM: ObservableObject {
     private func process(_ intent: Intent) {
         switch intent {
         case .buttonTap(let tag):
-            state.items = state.items.map { $0.updated(isSelected: $0.tag == tag) }
+            state.items = state.items.map {
+                $0.updated(isSelected: $0.tag == tag)
+            }
         }
     }
 }

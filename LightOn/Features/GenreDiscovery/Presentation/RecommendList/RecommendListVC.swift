@@ -42,9 +42,9 @@ final class RecommendListVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        Just(HashtagPerformanceCellItem.mocks)
-            .sink { [weak self] in self?.performanceTableView.setSnapshot(items: $0) }
-            .store(in: &cancellables)
+//        Just(HashtagPerformanceCellItem.mocks)
+//            .sink { [weak self] in self?.performanceTableView.setSnapshot(items: $0) }
+//            .store(in: &cancellables)
     }
 }
 

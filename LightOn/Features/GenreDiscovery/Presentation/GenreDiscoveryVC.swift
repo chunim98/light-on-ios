@@ -58,10 +58,6 @@ final class GenreDiscoveryVC: NavigationBarVC {
         pageVC.pageIndexPublisher
             .sink { [weak self] in self?.upperTabBar.selectedIndexBinder(index: $0) }
             .store(in: &cancellables)
-        
-        pageVC.popularListVC.tagsView.rootView.selectedIndexPublisher
-            .sink { print("genreTagsView", $0) }
-            .store(in: &cancellables)
     }
 }
 

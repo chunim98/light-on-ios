@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 
 final class HashtagPerformanceCell: UITableViewCell {
@@ -147,9 +148,12 @@ final class HashtagPerformanceCell: UITableViewCell {
     // MARK: Public Configuration
     
     func configure(item: HashtagPerformanceCellItem?) {
-        // item?.thumbnailPath 는 나중에 킹피셔 넣으면..?
+        let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
+        thumbnailView.kf.indicatorType = .activity
+        thumbnailView.kf.setImage(with: thumbnailURL)
+        
         typeLabel.isHidden = item?.typeLabelHidden ?? true
-        hashtagLabel.config.text = item?.hashtag
+        hashtagLabel.config.text = "#" + (item?.hashtag ?? "")
         titleLabel.config.text = item?.title
         placeLabel.config.text = item?.place
         dateLabel.config.text = item?.date

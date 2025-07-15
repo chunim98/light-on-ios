@@ -21,12 +21,15 @@ struct PerformancesResDTO: Decodable {
         let regionName: String
         
         func toPopular() -> PopularCellItem {
-            PopularCellItem(
+            let startDate = startDate.replacingOccurrences(of: "-", with: ".")
+            let startTime = startTime.prefix(5)
+            
+            return PopularCellItem(
                 performanceID: id,
                 thumbnailPath: thumbnailImageUrl,
                 title: title,
                 date: startDate,
-                time: startTime,
+                time: String(startTime),
                 location: regionName
             )
         }
@@ -36,6 +39,22 @@ struct PerformancesResDTO: Decodable {
                 performanceID: id,
                 thumbnailPath: thumbnailImageUrl,
                 title: title
+            )
+        }
+        
+        /// GenreDiscovery에서 사용됨
+        func toHashtag() -> HashtagPerformanceCellItem {
+            let startDate = startDate.replacingOccurrences(of: "-", with: ".")
+            let startTime = startTime.prefix(5)
+            
+            return HashtagPerformanceCellItem(
+                id: id,
+                thumbnailPath: thumbnailImageUrl,
+                typeLabelHidden: isPaid,
+                hashtag: genres.first ?? "알 수 없는 장르",
+                title: title,
+                place: regionName,
+                date: "\(startDate) \(startTime)"
             )
         }
     }

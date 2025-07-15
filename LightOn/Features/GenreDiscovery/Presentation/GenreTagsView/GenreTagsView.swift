@@ -56,13 +56,11 @@ struct GenreTagsView: View {
 // MARK: Binders & Publishers
 
 extension GenreTagsView {
-    /// 선택된 태그 인덱스 퍼블리셔
-    var selectedIndexPublisher: AnyPublisher<Int, Never> {
-        vm.intent.compactMap {
-            guard case .buttonTap(let tag) = $0 else { return nil }
-            return tag
-        }
-        .eraseToAnyPublisher()
+    /// 선택된 장르 퍼블리셔
+    var selectedGenrePublisher: AnyPublisher<String, Never> {
+        vm.$state
+            .compactMap { $0.items.first(where: { $0.isSelected })?.title }
+            .eraseToAnyPublisher()
     }
 }
 

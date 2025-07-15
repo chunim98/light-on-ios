@@ -16,6 +16,11 @@ final class PopularListVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = GenreDiscoveryDI.shared.makePopularListVM()
+    
+    // MARK: Inputs
+    
+    private let refreshEventSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -30,6 +35,11 @@ final class PopularListVC: UIViewController {
         super.viewDidLoad()
         setupLayout()
         setupBindings()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshEventSubject.send(())    // 테이블 뷰 데이터 갱신
     }
     
     // MARK: Defaults
@@ -50,7 +60,18 @@ final class PopularListVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        Just(HashtagPerformanceCellItem.mocks)
+        let selectedPerformance = tableView.selectedModelPublisher(
+            dataSource: tableView.diffableDataSource
+        )
+        
+        let input = PopularListVM.Input(
+            refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
+            genreFilter: tagsView.rootView.selectedGenrePublisher
+        )
+        
+        let output = vm.transform(input)
+        
+        output.populars
             .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
             .store(in: &cancellables)
     }
