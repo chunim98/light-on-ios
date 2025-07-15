@@ -15,6 +15,11 @@ final class HomeVC: NavigationBarVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = HomeDI.shared.makeHomeVM()
+    
+    // MARK: Inputs
+    
+    private let refreshEventSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -68,6 +73,11 @@ final class HomeVC: NavigationBarVC {
         setupLayout()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshEventSubject.send(())    // 뷰가 보여질 때마다 공연 목록 갱신
+    }
+    
     // MARK: Defaults
     
     private func setupDefaults() {
@@ -83,9 +93,7 @@ final class HomeVC: NavigationBarVC {
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
         
-        recommendCollectionView.setSnapshot(items: RecommendCellItem.mockItems) // temp
         spotlightedCollectionView.setSnapshot(items: SpotlightedCellItem.mockItems) // temp
-        popularCollectionView.setSnapshot(items: PopularCellItem.mockItems) // temp
     }
     
     // MARK: Layout
@@ -112,6 +120,17 @@ final class HomeVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = HomeVM.Input(refreshEvent: refreshEventSubject.eraseToAnyPublisher())
+        let output = vm.transform(input)
+        
+        output.populars
+            .sink { [weak self] in self?.popularCollectionView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        output.recommendeds
+            .sink { [weak self] in self?.recommendCollectionView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
         notificationBarButton.tapPublisher
             .sink { [weak self] _ in
                 let vc = NotificationVC()

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		51381F302DD471520073EE9F /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 51381F2F2DD471520073EE9F /* FSCalendar */; };
+		515410C72E265C0000B5E733 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 515410C62E265C0000B5E733 /* Kingfisher */; };
 		517BC4692DE737AF0037D89E /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 517BC4682DE737AF0037D89E /* CombineCocoa */; };
 		51FA4FA02DBF88BA0092706E /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4F9F2DBF88BA0092706E /* KakaoSDK */; };
 		51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 51FA4FB22DBF986B0092706E /* SnapKit */; };
@@ -102,6 +103,7 @@
 				51381F302DD471520073EE9F /* FSCalendar in Frameworks */,
 				517BC4692DE737AF0037D89E /* CombineCocoa in Frameworks */,
 				51FA4FB32DBF986B0092706E /* SnapKit in Frameworks */,
+				515410C72E265C0000B5E733 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +168,7 @@
 				51FA4FB22DBF986B0092706E /* SnapKit */,
 				51381F2F2DD471520073EE9F /* FSCalendar */,
 				517BC4682DE737AF0037D89E /* CombineCocoa */,
+				515410C62E265C0000B5E733 /* Kingfisher */,
 			);
 			productName = LightOn;
 			productReference = 51FA4F5D2DBF68BD0092706E /* LightOn.app */;
@@ -254,6 +257,7 @@
 				51FA4FB12DBF986B0092706E /* XCRemoteSwiftPackageReference "SnapKit" */,
 				51381F2E2DD471520073EE9F /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				517BC4672DE737AF0037D89E /* XCRemoteSwiftPackageReference "CombineCocoa" */,
+				515410C52E265C0000B5E733 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 51FA4F5E2DBF68BD0092706E /* Products */;
@@ -660,6 +664,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		515410C52E265C0000B5E733 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
 		517BC4672DE737AF0037D89E /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa.git";
@@ -691,6 +703,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 51381F2E2DD471520073EE9F /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		515410C62E265C0000B5E733 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 515410C52E265C0000B5E733 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		517BC4682DE737AF0037D89E /* CombineCocoa */ = {
 			isa = XCSwiftPackageProductDependency;

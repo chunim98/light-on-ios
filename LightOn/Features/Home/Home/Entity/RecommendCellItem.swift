@@ -8,13 +8,14 @@
 import UIKit
 
 struct RecommendCellItem: Hashable {
-    let thumbnail: UIImage
+    let performanceID: Int
+    let thumbnailPath: String?
     let title: String
-    
+
     static let mockItems: [RecommendCellItem] = [
-        .init(thumbnail: .debugBusking, title: "[홍대] Light ON 홀리데이 버스킹"),
-        .init(thumbnail: .debugBusking2, title: "[잠실] Light ON 홀리데이 버스킹"),
-        .init(thumbnail: .debugBusking, title: "[여의도] Light ON 홀리데이 버스킹"),
-        .init(thumbnail: .debugBusking2, title: "[우리집] Light ON 홀리몰리 버스킹")
+        .init(performanceID: 0, thumbnailPath: nil, title: "[홍대] Light ON 홀리데이 버스킹"),
+        .init(performanceID: 0, thumbnailPath: nil, title: "[잠실] Light ON 홀리데이 버스킹"),
+        .init(performanceID: 0, thumbnailPath: nil, title: "[여의도] Light ON 홀리데이 버스킹"),
+        .init(performanceID: 0, thumbnailPath: nil, title: "[우리집] Light ON 홀리몰리 버스킹")
     ]
 }

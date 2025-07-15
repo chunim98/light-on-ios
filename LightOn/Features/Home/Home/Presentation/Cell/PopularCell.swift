@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 
 final class PopularCell: UICollectionViewCell {
@@ -126,9 +127,12 @@ final class PopularCell: UICollectionViewCell {
     }
     
     // MARK: Public Configuration
-
+    
     func configure(item: PopularCellItem?) {
-        thumbnailView.image = item?.thumbnail
+        let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
+        thumbnailView.kf.indicatorType = .activity
+        thumbnailView.kf.setImage(with: thumbnailURL)
+        
         titleLabel.config.text = item?.title
         dateLabel.config.text = item?.date
         timeLabel.config.text = item?.time

@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 
 final class RecommendCell: UICollectionViewCell {
@@ -67,7 +68,10 @@ final class RecommendCell: UICollectionViewCell {
     // MARK: Public Configuration
     
     func configure(item: RecommendCellItem?) {
-        thumbnailView.image = item?.thumbnail
+        let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
+        thumbnailView.kf.indicatorType = .activity
+        thumbnailView.kf.setImage(with: thumbnailURL)
+
         titleLabel.config.text = item?.title
     }
 }

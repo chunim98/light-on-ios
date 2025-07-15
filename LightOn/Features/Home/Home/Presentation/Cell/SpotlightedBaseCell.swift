@@ -7,6 +7,7 @@
 
 import UIKit
 
+import Kingfisher
 import SnapKit
 
 final class SpotlightedBaseCell: UIStackView {
@@ -154,7 +155,10 @@ final class SpotlightedBaseCell: UIStackView {
     // MARK: Public Configuration
 
     func configure(item: SpotlightedCellItem?) {
-        thumbnailView.image = item?.thumbnail
+        let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
+        thumbnailView.kf.indicatorType = .activity
+        thumbnailView.kf.setImage(with: thumbnailURL)
+
         artistLabel.config.text = item?.artist
         titleLabel.config.text = item?.title
         genreLabel.config.text = item?.genre
