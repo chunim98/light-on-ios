@@ -17,10 +17,13 @@ final class RegisterPerformanceVC: BackButtonVC {
     
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: Components
+    // MARK: Containers
     
-    private let scrollView = UIScrollView()
+    private let scrollView = ResponsiveScrollView()
     private let contentVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
+    private let checkboxHStack = UIStackView(spacing: 18)
+    
+    // MARK: Labels
     
     private let performanceInfoTitleLabel = {
         var config = AttrConfiguration()
@@ -38,6 +41,14 @@ final class RegisterPerformanceVC: BackButtonVC {
         return LOLabel(config: config)
     }()
     
+    private let seatTitleLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.semiBold(16)
+        config.foregroundColor = .loBlack
+        config.text = "좌석 정보"
+        return LOLabel(config: config)
+    }()
+    
     private let noticeTitleLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.semiBold(16)
@@ -45,6 +56,8 @@ final class RegisterPerformanceVC: BackButtonVC {
         config.text = "입장 시 유의사항"
         return LOLabel(config: config)
     }()
+    
+    // MARK: Forms
     
     private let nameForm = {
         let form = CounterMultilineTextForm(maxByte: 50)
@@ -89,7 +102,13 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
-    private let seatContainer = SeatFormContainerView()
+    private let seatCountForm = {
+        let form = TextForm()
+        form.textField.keyboardType = .numberPad
+        form.textField.setPlaceHolder("예매 가능한 좌석수를 입력해주세요")
+        form.titleLabel.config.text = "좌석수"
+        return form
+    }()
     
     private let noticeForm = {
         let form = TextForm()
@@ -99,6 +118,32 @@ final class RegisterPerformanceVC: BackButtonVC {
     }()
     
     private let documentUploadForm = DocumentUploadForm()
+    
+    // MARK: Buttons
+    
+    private let confirmButton = {
+        let button = LOButton(style: .filled)
+        button.setTitle("등록하기", .pretendard.bold(16))
+        return button
+    }()
+    
+    private let standingCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "스탠딩석"
+        return button
+    }()
+    
+    private let freestyleCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "자율좌석"
+        return button
+    }()
+    
+    private let assignedCheckbox = {
+        let button = Checkbox()
+        button.titleConfig.text = "지정좌석"
+        return button
+    }()
     
     // MARK: Life Cycle
     
@@ -144,15 +189,24 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(artistDescriptionForm)
         contentVStack.addArrangedSubview(LOSpacer(20))
-        contentVStack.addArrangedSubview(seatContainer)
+        contentVStack.addArrangedSubview(seatTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(seatCountForm)
         contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(checkboxHStack)
+        contentVStack.addArrangedSubview(LOSpacer(40))
         contentVStack.addArrangedSubview(noticeTitleLabel)
         contentVStack.addArrangedSubview(LOSpacer(16))
         contentVStack.addArrangedSubview(noticeForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(documentUploadForm)
         contentVStack.addArrangedSubview(LOSpacer(20))
-
+        contentVStack.addArrangedSubview(confirmButton)
+        
+        checkboxHStack.addArrangedSubview(standingCheckbox)
+        checkboxHStack.addArrangedSubview(freestyleCheckbox)
+        checkboxHStack.addArrangedSubview(assignedCheckbox)
+        checkboxHStack.addArrangedSubview(LOSpacer())
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }

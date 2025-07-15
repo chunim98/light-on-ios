@@ -27,15 +27,16 @@ final class RegisterBuskingVM {
         let documentPath: AnyPublisher<String?, Never>
         let artistName: AnyPublisher<String?, Never>
         let artistDescription: AnyPublisher<String?, Never>
+        let alertConfirmTap: AnyPublisher<Void, Never>
     }
     struct Output {
+        /// 입력값 상태
         let info: AnyPublisher<RegisterBuskingInfo, Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    
     
     // MARK: Event Handling
     

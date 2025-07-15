@@ -18,16 +18,24 @@ final class RegisterBuskingVC: BackButtonVC {
     private var cancellables = Set<AnyCancellable>()
     private let vm = RegisterBuskingVM()
     
-    // MARK: Components
+    // MARK: Alerts
+    
+    private let confirmAlert = RegisterBuskingConfirmAlertVC()
+    
+    // MARK: Containers
     
     private let scrollView = ResponsiveScrollView()
     private let contentVStack = TapStackView(.vertical, inset: .init(horizontal: 18))
+    
+    // MARK: Buttons
     
     private let confirmButton = {
         let button = LOButton(style: .filled)
         button.setTitle("등록하기", .pretendard.bold(16))
         return button
     }()
+    
+    // MARK: Labels
     
     private let performanceInfoTitleLabel = {
         var config = AttrConfiguration()
@@ -52,6 +60,8 @@ final class RegisterBuskingVC: BackButtonVC {
         config.text = "입장 시 유의사항"
         return LOLabel(config: config)
     }()
+    
+    // MARK: Forms
     
     private let nameForm = {
         let form = CounterMultilineTextForm(maxByte: 50)
@@ -121,37 +131,40 @@ final class RegisterBuskingVC: BackButtonVC {
     // MARK: Layout
     
     private func setupLayout() {
+        let contentVStackSubViews = [
+            LOSpacer(20),
+            performanceInfoTitleLabel,
+            LOSpacer(16),
+            nameForm,
+            LOSpacer(24),
+            scheduleForm,
+            LOSpacer(24),
+            addressForm,
+            LOSpacer(24),
+            genreForm,
+            LOSpacer(24),
+            descriptionForm,
+            LOSpacer(24),
+            posterUploadForm,
+            LOSpacer(24),
+            atristInfoTitleLabel,
+            LOSpacer(16),
+            artistNameForm,
+            LOSpacer(24),
+            artistDescriptionForm,
+            LOSpacer(20),
+            noticeTitleLabel,
+            LOSpacer(16),
+            noticeForm,
+            LOSpacer(24),
+            documentUploadForm,
+            LOSpacer(20),
+            confirmButton
+        ]
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
-        
-        contentVStack.addArrangedSubview(LOSpacer(20))
-        contentVStack.addArrangedSubview(performanceInfoTitleLabel)
-        contentVStack.addArrangedSubview(LOSpacer(16))
-        contentVStack.addArrangedSubview(nameForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(scheduleForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(addressForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(genreForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(descriptionForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(posterUploadForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(atristInfoTitleLabel)
-        contentVStack.addArrangedSubview(LOSpacer(16))
-        contentVStack.addArrangedSubview(artistNameForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(artistDescriptionForm)
-        contentVStack.addArrangedSubview(LOSpacer(20))
-        contentVStack.addArrangedSubview(noticeTitleLabel)
-        contentVStack.addArrangedSubview(LOSpacer(16))
-        contentVStack.addArrangedSubview(noticeForm)
-        contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(documentUploadForm)
-        contentVStack.addArrangedSubview(LOSpacer(20))
-        contentVStack.addArrangedSubview(confirmButton)
+        contentVStackSubViews.forEach { contentVStack.addArrangedSubview($0) }
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
@@ -166,27 +179,27 @@ final class RegisterBuskingVC: BackButtonVC {
     
     private func setupBindings() {
         let input = RegisterBuskingVM.Input(
-            name: nameForm.validTextPublisher,
-            description: descriptionForm.validTextPublisher,
-            regionID: addressForm.regionIDPublisher,
-            detailAddress: addressForm.detailAddressPublisher,
-            notice: noticeForm.textPublisher,
-            genre: genreForm.genrePublisher,
-            posterPath: Empty<String?, Never>().eraseToAnyPublisher(),
-            startDate: scheduleForm.startDatePublisher,
-            endDate: scheduleForm.endDatePublisher,
-            startTime: scheduleForm.startTimePublisher,
-            endTime: scheduleForm.endTimePublisher,
-            documentPath: Empty<String?, Never>().eraseToAnyPublisher(),
-            artistName: artistNameForm.validTextPublisher,
-            artistDescription: artistDescriptionForm.validTextPublisher
+            name:               nameForm.validTextPublisher,
+            description:        descriptionForm.validTextPublisher,
+            regionID:           addressForm.regionIDPublisher,
+            detailAddress:      addressForm.detailAddressPublisher,
+            notice:             noticeForm.textPublisher,
+            genre:              genreForm.genrePublisher,
+            posterPath:         Empty<String?, Never>().eraseToAnyPublisher(),
+            startDate:          scheduleForm.startDatePublisher,
+            endDate:            scheduleForm.endDatePublisher,
+            startTime:          scheduleForm.startTimePublisher,
+            endTime:            scheduleForm.endTimePublisher,
+            documentPath:       Empty<String?, Never>().eraseToAnyPublisher(),
+            artistName:         artistNameForm.validTextPublisher,
+            artistDescription:  artistDescriptionForm.validTextPublisher,
+            alertConfirmTap:    confirmAlert.acceptButton.tapPublisher
         )
         
         let output = vm.transform(input)
         
         output.info
-            .sink {
-                print("""
+            .sink { print("""
                 -------------------
                 name             = \($0.name ?? "nil")
                 description      = \($0.description ?? "nil")
@@ -202,20 +215,20 @@ final class RegisterBuskingVC: BackButtonVC {
                 documentPath     = \($0.documentPath ?? "nil")
                 artistName       = \($0.artistName ?? "nil")
                 artistDescription= \($0.artistDescription ?? "nil")
-                """)
-            }
+                """) }
             .store(in: &cancellables)
         
         contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
         
-        Publishers.Merge(
-            scheduleForm.startDateButton.tapPublisher,
-            scheduleForm.endDateButton.tapPublisher
-        )
-        .sink { [weak self] in self?.bindShowDatePickerModal() }
-        .store(in: &cancellables)
+        Publishers
+            .Merge(
+                scheduleForm.startDateButton.tapPublisher,
+                scheduleForm.endDateButton.tapPublisher
+            )
+            .sink { [weak self] in self?.bindShowDatePickerModal() }
+            .store(in: &cancellables)
         
         scheduleForm.startTimeButton.tapPublisher
             .sink { [weak self] in self?.bindShowStartTimePickerModalVC() }
@@ -223,6 +236,10 @@ final class RegisterBuskingVC: BackButtonVC {
         
         scheduleForm.endTimeButton.tapPublisher
             .sink { [weak self] in self?.bindShowEndTimePickerModalVC() }
+            .store(in: &cancellables)
+        
+        confirmButton.tapPublisher
+            .sink { [weak self] in self?.bindShowConfirmAlert() }
             .store(in: &cancellables)
     }
 }
@@ -257,6 +274,13 @@ extension RegisterBuskingVC {
         let vc = scheduleForm.endTimePickerModalVC
         vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
         present(vc, animated: true)
+    }
+    
+    /// 등록 확인 얼럿 표시
+    private func bindShowConfirmAlert() {
+        confirmAlert.modalPresentationStyle = .overFullScreen
+        confirmAlert.modalTransitionStyle = .crossDissolve
+        present(confirmAlert, animated: true)
     }
 }
 
