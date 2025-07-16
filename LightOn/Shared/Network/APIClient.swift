@@ -93,6 +93,8 @@ final class APIClient {
         errorHandler: ((APIErrorDTO) -> Void)?
     ) {
         
+        request.cURLDescription { print("APIClient: 리퀘스트 상세 로그\n\($0)") }
+        
         request.responseDecodable(
             of: APIResultObjectDTO<ResponseDTO>.self
         ) { response in

@@ -11,7 +11,11 @@ final class AppCoordinatorBus {
     
     // MARK: Enum
     
-    enum NavigationEvent { case login, signUp }
+    enum NavigationEvent {
+        case login
+        case signUp
+        case performanceDetail(id: Int)
+    }
     
     // MARK: Singleton
     

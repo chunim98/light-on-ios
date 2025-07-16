@@ -14,6 +14,7 @@ final class HomeVM {
     
     struct Input {
         let refreshEvent: AnyPublisher<Void, Never>
+        let selectedPerformanceID: AnyPublisher<Int, Never>
     }
     struct Output {
         /// 인기 공연 배열들
@@ -44,6 +45,14 @@ final class HomeVM {
         let recommendeds = getPerformancesUC.getRecommendeds(
             trigger: input.refreshEvent
         )
+        
+        input.selectedPerformanceID
+            .sink {
+                AppCoordinatorBus.shared
+                    .navigationEventSubject
+                    .send(.performanceDetail(id: $0))
+            }
+            .store(in: &cancellables)
         
         return Output(populars: populars, recommendeds: recommendeds)
     }

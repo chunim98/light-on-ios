@@ -23,7 +23,7 @@ final class PopularCollectionView: UICollectionView {
     
     // MARK: Properties
     
-    private var diffableDataSource: DataSource?
+    private(set) var diffableDataSource: DataSource?
     
     // MARK: Life Cycle
     

@@ -31,8 +31,15 @@ final class AppCoordinator: Coordinator {
         navigationEvent
             .sink { [weak self] event in
                 switch event {
-                case .login: self?.showLoginVC()
-                case .signUp: self?.startSignUpFlow()
+                case .login:
+                    self?.showLoginVC()
+                    
+                case .signUp:
+                    self?.startSignUpFlow()
+                    
+                case .performanceDetail(id: let id):
+                    self?.showPerformanceDetailVC(id: id)
+                    
                 }
             }
             .store(in: &cancellables)
@@ -69,6 +76,18 @@ final class AppCoordinator: Coordinator {
         let coord = SignUpFlowCoordinator(navigation: flowNav, isInModal: true)
         store(child: coord)
         coord.start()
+    }
+    
+    private func showPerformanceDetailVC(id: Int) {
+        let vm = PerformanceDetailDI.shared.makePerformanceDetailVM(performanceID: id)
+        let vc = PerformanceDetailVC(vm: vm)
+        
+        // 뒤로가기 버튼 탭, 화면 닫기
+        vc.backTapPublisher
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        navigation.pushViewController(vc, animated: true)
     }
     
     deinit { print("AppCoordinator deinit") }

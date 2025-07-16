@@ -120,7 +120,30 @@ final class HomeVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = HomeVM.Input(refreshEvent: refreshEventSubject.eraseToAnyPublisher())
+        let selectedRecommend = recommendCollectionView
+            .selectedModelPublisher(dataSource: recommendCollectionView.diffableDataSource)
+            .map { $0.performanceID }
+            .eraseToAnyPublisher()
+        
+        let selectedSpotlighted = spotlightedCollectionView
+            .selectedModelPublisher(dataSource: spotlightedCollectionView.diffableDataSource)
+            .map { $0.performanceID }
+            .eraseToAnyPublisher()
+        
+        let selectedPopular = popularCollectionView
+            .selectedModelPublisher(dataSource: popularCollectionView.diffableDataSource)
+            .map { $0.performanceID }
+            .eraseToAnyPublisher()
+        
+        /// 선택한 공연 ID
+        let selectedPerformanceID = Publishers.MergeMany(
+            selectedRecommend, selectedSpotlighted, selectedPopular
+        ).eraseToAnyPublisher()
+        
+        let input = HomeVM.Input(
+            refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
+            selectedPerformanceID: selectedPerformanceID
+        )
         let output = vm.transform(input)
         
         output.populars

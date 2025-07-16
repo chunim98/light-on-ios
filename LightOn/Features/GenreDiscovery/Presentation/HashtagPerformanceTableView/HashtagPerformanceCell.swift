@@ -45,6 +45,7 @@ final class HashtagPerformanceCell: UITableViewCell {
         config.font = .pretendard.semiBold(10)
         config.foregroundColor = .white
         config.lineHeight = 10
+        config.text = "무료공연"
         
         let label = LOPaddingLabel(
             configuration: config,
