@@ -14,7 +14,7 @@ final class APITokenInterceptor: RequestInterceptor {
     // MARK: Repository
     
     private let keychain = TokenKeychain.shared
-
+    
     // MARK: RequestInterceptor Methods
     
     /// 서버로 리퀘스트가 나가기 전 호출됨
@@ -23,8 +23,6 @@ final class APITokenInterceptor: RequestInterceptor {
         for session: Session,
         completion: @escaping (Result<URLRequest, Error>) -> Void
     ) {
-        print("어댑터 접근")
-        
         let access = keychain.load(.access) ?? ""
         var urlRequest = urlRequest
         
@@ -32,7 +30,7 @@ final class APITokenInterceptor: RequestInterceptor {
         urlRequest.headers.add(.authorization(bearerToken: access))
         completion(.success(urlRequest))
     }
-
+    
     /// 예외 발생으로, 재시도를 시도할 때 호출됨
     func retry(
         _ request: Request,
@@ -47,40 +45,13 @@ final class APITokenInterceptor: RequestInterceptor {
         
         print("APIInterceptor: 토큰 재발급 시도중...")
         
-        reissueToken {
+        APIClient.shared.reissueToken {
             print("APIInterceptor: 토큰 재발급 성공, 통신 재시도")
-            completion(.retry)
+            completion(.retryWithDelay(1))
             
         } errorHandler: {
             print("APIInterceptor: 토큰 재발급 실패, 통신 재시도 포기")
             completion(.doNotRetry)
-        }
-    }
-    
-    // MARK: Private Helper
-    
-    /// 토큰 재발급
-    private func reissueToken(
-        completion: @escaping () -> Void,
-        errorHandler: (() -> Void)? = nil
-    ) {
-        guard let refreshToken = TokenKeychain.shared.load(.refresh)
-        else { errorHandler?(); return }
-        
-        APIClient.shared.requestPost(
-            endPoint: "/api/auth/token/refresh",
-            parameters: Optional<EmptyDTO>.none,            // 파라미터 없음
-            headers: ["Refresh-Token": refreshToken],
-            tokenIncluded: false,                           // 인터셉터 없음
-            decodeType: TokenResponseDTO.self
-        ) {
-            TokenKeychain.shared.save(.access, token: $0.accessToken)
-            TokenKeychain.shared.save(.refresh, token: $0.refreshToken)
-            completion()
-            
-        } errorHandler: { _ in
-            print(#function, "토큰 재발급 실패")
-            errorHandler?()
         }
     }
 }

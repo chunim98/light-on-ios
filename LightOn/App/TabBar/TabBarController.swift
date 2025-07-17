@@ -44,8 +44,7 @@ final class TabBarController: TabController {
                 return vc
             }()),
             UINavigationController(rootViewController: {
-                let vc = NavigationBarVC()
-                vc.tabBar = self
+                let vc = PerformanceMapVC()
                 return vc
             }()),
             UINavigationController(rootViewController: {

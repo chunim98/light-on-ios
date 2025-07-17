@@ -17,11 +17,14 @@ final class APIClient {
     private init() {}
     
     // MARK: Properties
-
+    
     private let rootURL = APIConstants.lightOnRootURL
     
+    /// 토큰 재발급 요청 횟수 (재발급 루프 방지)
+    private var reissueCount = 0
+    
     // MARK: Mathods
-
+    
     /// GET 요청 수행
     func requestGet<ResponseDTO: Decodable>(
         endPoint: String,
@@ -32,7 +35,7 @@ final class APIClient {
         errorHandler: ((APIErrorDTO) -> Void)? = nil
     ) {
         let interceptor = tokenIncluded ? APITokenInterceptor() : nil
-
+        
         // 네트워크 통신 시작
         let request = AF.request(
             rootURL + endPoint,
@@ -41,7 +44,7 @@ final class APIClient {
             encoding: URLEncoding.default, // URL로 쿼리
             interceptor: interceptor
         )
-
+        
         // 통신 결과 처리
         decodeResponse(
             request: request,
@@ -50,7 +53,7 @@ final class APIClient {
             errorHandler: errorHandler
         )
     }
-
+    
     /// POST 요청 수행
     func requestPost<
         Parameters: Encodable & Sendable,
@@ -75,7 +78,7 @@ final class APIClient {
             headers: headers,
             interceptor: interceptor
         )
-
+        
         // 통신 결과 처리
         decodeResponse(
             request: request,
@@ -92,8 +95,17 @@ final class APIClient {
         completion: @escaping (ResponseDTO) -> Void,
         errorHandler: ((APIErrorDTO) -> Void)?
     ) {
+#if DEBUG
+        request.cURLDescription {
+            print("\nAPIClient: 요청 상세 ===============================\n\($0)\n")
+        }
         
-        request.cURLDescription { print("APIClient: 리퀘스트 상세 로그\n\($0)") }
+        request.responseData {
+            guard let data = $0.data, let rawString = String(data: data, encoding: .utf8)
+            else { return }
+            print("\nAPIClient: 응답 상세 ===============================\n\(rawString)\n")
+        }
+#endif
         
         request.responseDecodable(
             of: APIResultObjectDTO<ResponseDTO>.self
@@ -131,8 +143,12 @@ final class APIClient {
         guard let refreshToken = TokenKeychain.shared.load(.refresh)
         else { errorHandler?(); return }
         
+        guard reissueCount <= 10
+        else { print("APIClient: 토큰 재발급 횟수 초과"); errorHandler?(); return }
+        reissueCount += 1
+        
         APIClient.shared.requestPost(
-            endPoint: "/api/auth/token/refresh ",
+            endPoint: "/api/auth/token/refresh",
             parameters: Optional<EmptyDTO>.none,            // 파라미터 없음
             headers: ["Refresh-Token": refreshToken],
             tokenIncluded: false,                           // 인터셉터 없음
@@ -143,7 +159,7 @@ final class APIClient {
             completion()
             
         } errorHandler: { _ in
-            print(#function, "토큰 재발급 실패")
+            print("APIClient: 토큰 재발급 실패")
             errorHandler?()
         }
     }
