@@ -23,7 +23,7 @@ final class MapListModalView: MapGrabberModalView {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(19)
         config.foregroundColor = .loBlack
-        config.text = "홍대 놀이터" // temp
+        config.text = "위치 조회 중.."
         return LOPaddingLabel(
             configuration: config,
             padding: .init(top: 12, bottom: 8)
@@ -56,4 +56,13 @@ final class MapListModalView: MapGrabberModalView {
     // MARK: Bindings
     
     private func setupBindings() {}
+}
+
+// MARK: Binders & Publishers
+
+extension MapListModalView {
+    /// 타이틀 텍스트 바인딩
+    func bindTitle(_ title: String?) {
+        titleLabel.config.text = title ?? "위치 조회 중.."
+    }
 }

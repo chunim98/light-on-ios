@@ -58,6 +58,10 @@ final class PerformanceMapVC: UIViewController {
                 longitude: $0.longitude
             ) }
             .store(in: &cancellables)
+        
+        mapView.dongNamePublisher
+            .sink { [weak self] in self?.listModal.bindTitle($0) }
+            .store(in: &cancellables)
     }
     
     // MARK: Public Configuration

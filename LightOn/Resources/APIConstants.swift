@@ -8,5 +8,7 @@
 import Foundation
 
 struct APIConstants {
-    static let lightOnRootURL = Bundle.main.infoDictionary?["LightOnRootURL"] as! String
+    static let lightOnRootURL       = Bundle.main.infoDictionary?["LightOnRootURL"] as! String
+    static let naverMapClientID     = Bundle.main.infoDictionary?["NMFNcpKeyId"] as! String
+    static let naverMapClientSecret = Bundle.main.infoDictionary?["NMFNcpKey"] as! String
 }
