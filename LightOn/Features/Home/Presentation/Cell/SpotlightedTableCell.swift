@@ -23,6 +23,7 @@ final class SpotlightedTableCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupDefaults()
         setupLayout()
     }
     
@@ -35,11 +36,19 @@ final class SpotlightedTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Defaults
+    
+    private func setupDefaults() { selectionStyle = .none }
+    
     // MARK: Layout
     
     private func setupLayout() {
         contentView.addSubview(mediumEventCardView)
-        mediumEventCardView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        mediumEventCardView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(
+                UIEdgeInsets(bottom: 10) + UIEdgeInsets(horizontal: 18)
+            )
+        }
     }
     
     // MARK: Public Configuration

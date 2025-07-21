@@ -17,4 +17,8 @@ final class PerformanceMapDI {
     func makeNaverMapVM() -> NaverMapVM {
         NaverMapVM(repo: DefaultReverseGeocodingRepo())
     }
+    
+    func makePerformanceMapVM() -> PerformanceMapVM {
+        PerformanceMapVM(repo: TestPerformanceMapRepo())
+    }
 }

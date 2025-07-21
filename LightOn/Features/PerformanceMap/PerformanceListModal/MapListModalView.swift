@@ -30,6 +30,8 @@ final class MapListModalView: MapGrabberModalView {
         )
     }()
     
+    let mapTableView = MapTableView()
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -50,6 +52,7 @@ final class MapListModalView: MapGrabberModalView {
     // MARK: Layout
     
     private func setupLayout() {
+        contentView.addArrangedSubview(mapTableView)
         grabberHeaderVStack.addArrangedSubview(titleLabel)
     }
     

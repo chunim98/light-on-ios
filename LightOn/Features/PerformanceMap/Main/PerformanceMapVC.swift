@@ -16,6 +16,7 @@ final class PerformanceMapVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = PerformanceMapDI.shared.makePerformanceMapVM()
     
     // MARK: Components
     
@@ -51,6 +52,20 @@ final class PerformanceMapVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = PerformanceMapVM.Input(
+            cameraLocation: mapView.cameraLocationPublisher
+        )
+        
+        let output = vm.transform(input)
+        
+        output.cellItems
+            .sink { [weak self] in self?.listModal.mapTableView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        output.markerInfoArr
+            .sink { [weak self] in self?.mapView.markersBuilder.setMakers($0) }
+            .store(in: &cancellables)
+        
         // 최초 1회 현재 위치로 카메라 이동
         mapView.locationManager.locationPublisher.first()
             .sink { [weak self] in self?.mapView.setCamera(

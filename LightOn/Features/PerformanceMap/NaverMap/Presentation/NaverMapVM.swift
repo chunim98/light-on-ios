@@ -27,6 +27,8 @@ final class NaverMapVM {
     
     private let getDongNameUC: GetDongNameUC
     
+    // MARK: Initializer
+    
     init(repo: ReverseGeocodingRepo) {
         self.getDongNameUC = .init(repo: repo)
     }

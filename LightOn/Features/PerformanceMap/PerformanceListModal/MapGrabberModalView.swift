@@ -59,7 +59,6 @@ class MapGrabberModalView: MapBaseModalView {
     
     private func setupLayout() {
         contentView.addArrangedSubview(grabberHeaderVStack)
-        contentView.addArrangedSubview(LOSpacer())
         self.snp.makeConstraints {
             heightConstraint = $0.height.equalTo(250).constraint
         }
