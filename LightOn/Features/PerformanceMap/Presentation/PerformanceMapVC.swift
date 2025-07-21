@@ -20,6 +20,7 @@ final class PerformanceMapVC: UIViewController {
     // MARK: Components
     
     private let mapView = NaverMapView()
+    private let listModal = MapListModalView()
     
     // MARK: Life Cycle
     
@@ -41,7 +42,10 @@ final class PerformanceMapVC: UIViewController {
     
     private func setupLayout() {
         view.addSubview(mapView)
+        view.addSubview(listModal)
+        
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        listModal.snp.makeConstraints { $0.bottom.horizontalEdges.equalToSuperview() }
     }
     
     // MARK: Bindings
@@ -61,3 +65,8 @@ final class PerformanceMapVC: UIViewController {
     // MARK: Binders & Publishers
     
 }
+
+// MARK: - Preview
+
+#Preview { PerformanceMapVC() }
+#Preview { TabBarController() }
