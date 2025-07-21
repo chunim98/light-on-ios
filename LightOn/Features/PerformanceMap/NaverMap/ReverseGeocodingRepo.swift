@@ -51,6 +51,7 @@ final class DefaultReverseGeocodingRepo: ReverseGeocodingRepo {
                     let statusCode = response.response?.statusCode ?? -1
                     
                     if (200..<300).contains(statusCode) {
+                        print("리버스 지오코딩 완료")
                         promise(.success(dto.getDongName()))
                         
                     } else {

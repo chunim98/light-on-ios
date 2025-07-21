@@ -28,6 +28,7 @@ final class NaverMapView: NMFNaverMapView {
     
     // MARK: Outputs
     
+    private let cameraLocationSubject = PassthroughSubject<CLLocationCoordinate2D, Never>()
     private let dongNameSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Life Cycle
@@ -46,14 +47,25 @@ final class NaverMapView: NMFNaverMapView {
     
     private func setupDefaults() {
         mapView.addCameraDelegate(delegate: self)   // 카메라 변경 이벤트 델리게이트
+        mapView.extent = NMGLatLngBounds(           // 카메라 영역 한반도 인근으로 제한
+            southWestLat: 31.43,
+            southWestLng: 122.37,
+            northEastLat: 44.35,
+            northEastLng: 132
+        )
+        mapView.maxZoomLevel = 18.0                 // 최대 줌 레벨 제한
+        mapView.minZoomLevel = 6.0                  // 최소 줌 레벨 제한
         mapView.positionMode = .normal              // 위치 추적 설정
         showLocationButton = true                   // 현위치 버튼 표시 여부
         showZoomControls = false                    // 줌 버튼 표시 여부
+        
+        mapView.contentInset = .init(bottom: 250)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
+        /// 현재 카메라 좌표
         let cameraLocation = cameraDidChangeSubject
             .debounce(for: 1.0, scheduler: RunLoop.main)
             .compactMap { [weak self] in self?.mapView.cameraPosition.target }
@@ -65,6 +77,10 @@ final class NaverMapView: NMFNaverMapView {
         
         output.dongName
             .sink { [weak self] in self?.dongNameSubject.send($0) }
+            .store(in: &cancellables)
+        
+        cameraLocation
+            .sink { [weak self] in self?.cameraLocationSubject.send($0) }
             .store(in: &cancellables)
     }
     
@@ -87,12 +103,12 @@ final class NaverMapView: NMFNaverMapView {
 // MARK: Binders & Publishers
 
 extension NaverMapView {
-    /// 카메라 이동 종료 퍼블리셔
-    var cameraDidChangePublisher: AnyPublisher<Void, Never> {
-        cameraDidChangeSubject.eraseToAnyPublisher()
+    /// 카메라 좌표 퍼블리셔
+    var cameraLocationPublisher: AnyPublisher<CLLocationCoordinate2D, Never> {
+        cameraLocationSubject.eraseToAnyPublisher()
     }
     
-    /// 카메라 좌표 기준 동 이름 퍼블리셔
+    /// 카메라 좌표 기준, 동 이름 퍼블리셔
     var dongNamePublisher: AnyPublisher<String?, Never> {
         dongNameSubject.eraseToAnyPublisher()
     }
