@@ -1,15 +1,15 @@
 //
-//  NaverMapVM.swift
+//  MapListModalVM.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/21/25.
+//  Created by 신정욱 on 7/22/25.
 //
 
 import Foundation
 import CoreLocation
 import Combine
 
-final class NaverMapVM {
+final class MapListModalVM {
     
     // MARK: Input & Ouput
     
@@ -24,7 +24,6 @@ final class NaverMapVM {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    
     private let getDongNameUC: GetDongNameUC
     
     // MARK: Initializer

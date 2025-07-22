@@ -14,8 +14,8 @@ final class PerformanceMapDI {
     
     // MARK: Methods
     
-    func makeNaverMapVM() -> NaverMapVM {
-        NaverMapVM(repo: DefaultReverseGeocodingRepo())
+    func makeMapListModalVM() -> MapListModalVM {
+        MapListModalVM(repo: DefaultReverseGeocodingRepo())
     }
     
     func makePerformanceMapVM() -> PerformanceMapVM {

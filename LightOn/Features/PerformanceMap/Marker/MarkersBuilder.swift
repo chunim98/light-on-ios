@@ -28,7 +28,7 @@ final class MarkersBuilder {
     
     // MARK: Life Cycle
     
-    init(mapView: NMFMapView?) {
+    init(_ mapView: NMFMapView?) {
         self.mapView = mapView
         setupBindings()
     }
@@ -62,6 +62,11 @@ final class MarkersBuilder {
 // MARK: Binders & Publishers
 
 extension MarkersBuilder {
+    /// 마커 선택 바인딩
+    func bindSelectMarker(_ info: MarkerInfo) {
+        selectedMarkerSubject.send(info)
+    }
+    
     /// 선택된 마커 정보 퍼블리셔
     var selectedMarkerPublisher: AnyPublisher<MarkerInfo, Never> {
         selectedMarkerSubject.removeDuplicates().eraseToAnyPublisher()

@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import CoreLocation
 
 import CombineCocoa
 import SnapKit
@@ -16,6 +17,11 @@ final class MapListModalView: MapGrabberModalView {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = PerformanceMapDI.shared.makeMapListModalVM()
+    
+    // MARK: Inputs
+    
+    private let cameraLocationSubject = PassthroughSubject<CLLocationCoordinate2D, Never>()
     
     // MARK: Components
     
@@ -58,14 +64,26 @@ final class MapListModalView: MapGrabberModalView {
     
     // MARK: Bindings
     
-    private func setupBindings() {}
+    private func setupBindings() {
+        let input = MapListModalVM.Input(
+            cameraLocation: cameraLocationSubject.eraseToAnyPublisher()
+        )
+        
+        let output = vm.transform(input)
+        
+        output.dongName
+            .sink { [weak self] in
+                self?.titleLabel.config.text = $0 ?? "위치 조회 중.."
+            }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: Binders & Publishers
 
 extension MapListModalView {
-    /// 타이틀 텍스트 바인딩
-    func bindTitle(_ title: String?) {
-        titleLabel.config.text = title ?? "위치 조회 중.."
+    /// 지오코딩 좌표 바인딩
+    func bindGeocodingCoord(_ coord: CLLocationCoordinate2D) {
+        cameraLocationSubject.send(coord)
     }
 }

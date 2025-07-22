@@ -21,7 +21,7 @@ final class LocationManager: CLLocationManager {
     
     // MARK: Outputs
     
-    private let locationSubject = PassthroughSubject<CLLocationCoordinate2D, Never>()
+    private let currentCoordSubject = PassthroughSubject<CLLocationCoordinate2D, Never>()
     
     // MARK: Life Cycle
     
@@ -66,9 +66,9 @@ extension LocationManager {
         }
     }
     
-    /// 위치 퍼블리셔 (지속 업데이트 됨)
-    var locationPublisher: AnyPublisher<CLLocationCoordinate2D, Never> {
-        locationSubject.eraseToAnyPublisher()
+    /// 현재 좌표 퍼블리셔 (지속 업데이트 됨)
+    var currentCoordPublisher: AnyPublisher<CLLocationCoordinate2D, Never> {
+        currentCoordSubject.eraseToAnyPublisher()
     }
 }
 
@@ -88,7 +88,7 @@ extension LocationManager: CLLocationManagerDelegate {
         _ manager: CLLocationManager,
         didUpdateLocations locations: [CLLocation]
     ) {
-        guard let location = manager.location?.coordinate else { return }
-        locationSubject.send(location)
+        guard let coord = manager.location?.coordinate else { return }
+        currentCoordSubject.send(coord)
     }
 }
