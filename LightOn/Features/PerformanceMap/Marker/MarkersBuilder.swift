@@ -70,7 +70,7 @@ extension MarkersBuilder {
     
     /// 선택된 마커 정보 퍼블리셔
     var selectedMarkerPublisher: AnyPublisher<MarkerInfo, Never> {
-        selectedMarkerSubject.removeDuplicates().eraseToAnyPublisher()
+        selectedMarkerSubject.eraseToAnyPublisher()
     }
 }
 

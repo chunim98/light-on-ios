@@ -60,7 +60,7 @@ class MapGrabberModalView: MapBaseModalView {
     private func setupLayout() {
         contentView.addArrangedSubview(grabberHeaderVStack)
         self.snp.makeConstraints {
-            heightConstraint = $0.height.equalTo(250).constraint
+            heightConstraint = $0.height.equalTo(270).constraint
         }
     }
     
@@ -82,7 +82,7 @@ extension MapGrabberModalView {
         let changeY = gesture.translation(in: grabberHeaderVStack).y    // y축 이동한 거리
         gesture.setTranslation(.zero, in: grabberHeaderVStack)          // 0 초기화로 바뀐 값만 추출
         
-        let height = (frame.height - changeY).clamped(250...500)        // 높이의 범위 제한
+        let height = (frame.height - changeY).clamped(270...500)        // 높이의 범위 제한
         heightConstraint?.update(offset: height)                        // 뷰 높이 실시간 변경
         
         guard gesture.state == .ended else { return }                   // 제스처가 끝났을 때만 아래 코드 실행
@@ -91,10 +91,10 @@ extension MapGrabberModalView {
         // 초당 500픽셀 이동할 정도?
         if abs(velocityY) > 500 {
             // 속도가 빠르면 가속도 기반으로 스냅
-            snapHeight = velocityY > 0 ? 250 : 500                      // 마이너스: 내리기, 플러스: 올리기
+            snapHeight = velocityY > 0 ? 270 : 500                      // 마이너스: 내리기, 플러스: 올리기
         } else {
             // 느리면 현재 높이 기준으로 스냅
-            snapHeight = height < 375 ? 250 : 500
+            snapHeight = height < 385 ? 270 : 500
         }
         
         UIView.animate(

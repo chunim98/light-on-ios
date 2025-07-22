@@ -56,9 +56,16 @@ final class PerformanceMapVC: UIViewController {
         setupBindings()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        mapView.addContentInset(.init(top: view.safeAreaInsets.top))    // 지도 상단 패딩 추가
+    }
+    
     // MARK: Defaults
     
-    private func setupDefaults() {}
+    private func setupDefaults() {
+        navigationController?.navigationBar.isHidden = true
+    }
     
     // MARK: Layout
     
@@ -70,14 +77,18 @@ final class PerformanceMapVC: UIViewController {
         
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
         listModal.snp.makeConstraints {
-            listModalBottmConstraint = $0.bottom.equalToSuperview().constraint
             $0.horizontalEdges.equalToSuperview()
+            listModalBottmConstraint = $0.bottom.equalToSuperview()
+                .constraint
         }
         summaryModal.snp.makeConstraints {
-            summaryModalBottmConstraint = $0.bottom.equalToSuperview().constraint
             $0.horizontalEdges.equalToSuperview()
+            summaryModalBottmConstraint = $0.bottom.equalToSuperview()
+                .inset(-280).constraint // 초기에는 아래로 숨김
         }
-        refreshButton.snp.makeConstraints { $0.top.centerX.equalTo(view.safeAreaLayoutGuide) }
+        refreshButton.snp.makeConstraints {
+            $0.top.centerX.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     // MARK: Bindings
@@ -98,11 +109,27 @@ final class PerformanceMapVC: UIViewController {
             dataSource: listModal.mapTableView.diffableDataSource
         )
         
-        /// 선택한 공연 (선택한 마커)
-        let selectedPerformanceID = Publishers.Merge(
-            markersBuilder.selectedMarkerPublisher.map { Int?.some($0.performaceID) },
-            mapView.mapTapPublisher.map { Int?.none }   // 지도 배경 탭하면 선택 해제
-        ).eraseToAnyPublisher()
+        /// 선택한 마커의 공연 ID
+        let selectedMarkerID = markersBuilder.selectedMarkerPublisher
+            .print()
+            .map { Int?.some($0.performaceID) }
+        
+        /// 선택 해제 트리거들 (지도 탭, 뒤로가기 버튼)
+        let deselectTrigger = Publishers
+            .Merge3(
+                mapView.mapTapPublisher,
+                summaryModal.backButton.tapPublisher,
+                refreshButton.tapPublisher
+            )
+            .map { Int?.none }
+        
+        /// 선택된 공연 ID (마커 선택 & 해제)
+        let selectedPerformanceID = Publishers
+            .Merge(
+                selectedMarkerID,
+                deselectTrigger
+            )
+            .eraseToAnyPublisher()
         
         let input = PerformanceMapVM.Input(
             initialCoord: initialCoord,
@@ -133,7 +160,7 @@ final class PerformanceMapVC: UIViewController {
         output.selectedPerformance
             .sink { [weak self] in
                 self?.markersBuilder.bindDeselectAll(with: $0)
-                self?.summaryModal.configure(with: $0)
+                self?.summaryModal.bindPerfomanceInfo($0)
                 self?.bindModalHidden($0)
             }
             .store(in: &cancellables)

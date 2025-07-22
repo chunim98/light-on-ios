@@ -49,7 +49,7 @@ final class NaverMapView: NMFNaverMapView {
         mapView.positionMode = .normal              // 위치 추적 설정
         showLocationButton = true                   // 현위치 버튼 표시 여부
         showZoomControls = false                    // 줌 버튼 표시 여부
-        mapView.contentInset = .init(bottom: 250)   // 하단 콘텐츠 인셋
+        mapView.contentInset = .init(bottom: 270)   // 하단 콘텐츠 인셋
     }
     
     // MARK: Public Configuration
@@ -62,6 +62,11 @@ final class NaverMapView: NMFNaverMapView {
         update.animationDuration = 1.0
         update.animation = .fly
         mapView.moveCamera(update)
+    }
+    
+    /// 콘텐츠 패딩 추가
+    func addContentInset(_ inset: UIEdgeInsets) {
+        mapView.contentInset = mapView.contentInset + inset
     }
 }
 

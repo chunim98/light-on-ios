@@ -17,6 +17,10 @@ final class MapSummaryModalView: MapBaseModalView {
     
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: Inputs
+    
+    private var selectedIDSubject = PassthroughSubject<Int, Never>()
+    
     // MARK: Containers
     
     private let mainVStack      = UIStackView(.vertical, inset: .init(horizontal: 18))
@@ -47,14 +51,18 @@ final class MapSummaryModalView: MapBaseModalView {
         var config = UIButton.Configuration.plain()
         config.image = .mapArrowLeft
         config.contentInsets = .zero
-        return TouchInsetButton(configuration: config)
+        let button = TouchInsetButton(configuration: config)
+        button.touchAreaInset = .init(edges: 16)
+        return button
     }()
     
     let shareButton = {
         var config = UIButton.Configuration.plain()
         config.image = .mapShare
         config.contentInsets = .zero
-        return TouchInsetButton(configuration: config)
+        let button = TouchInsetButton(configuration: config)
+        button.touchAreaInset = .init(edges: 16)
+        return button
     }()
     
     let showDetailButton = {
@@ -159,11 +167,15 @@ final class MapSummaryModalView: MapBaseModalView {
         
         showDetailHStack.addArrangedSubview(showDetailButton)
     }
-    
-    // MARK: Public Configuration
-    
-    func configure(with info: GeoPerformanceInfo?) {
+}
+
+// MARK: Binders & Publishers
+
+extension MapSummaryModalView {
+    /// 공연 정보로 모달 구성
+    func bindPerfomanceInfo(_ info: GeoPerformanceInfo?) {
         guard let info else { return }
+        selectedIDSubject.send(info.id)
         genreTagLabel.config.text   = info.genre
         titleLabel.config.text      = info.title
         dateLabel.config.text       = info.date
