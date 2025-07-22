@@ -13,12 +13,12 @@ final class MoveCameraUC {
     func execute(
         initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
         selectedCell: AnyPublisher<SpotlightedCellItem, Never>,
-        performances: AnyPublisher<[PerformanceMapInfo], Never>
+        performances: AnyPublisher<[GeoPerformanceInfo], Never>
     ) -> AnyPublisher<CLLocationCoordinate2D, Never> {
         /// 선택한 공연의 좌표
         let selectedCellCoord = selectedCell
             .withLatestFrom(performances) { cellItem, performances in
-                performances.first { cellItem.performanceID == $0.performanceID }
+                performances.first { cellItem.performanceID == $0.id }
             }
             .compactMap {
                 $0.map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }

@@ -1,12 +1,12 @@
 //
-//  PerformanceMapInfo.swift
+//  GeoPerformanceInfo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/22/25.
 //
 
-struct PerformanceMapInfo {
-    let performanceID: Int
+struct GeoPerformanceInfo {
+    let id: Int
     let thumbnailPath: String?
     let artist: String
     let title: String
@@ -19,7 +19,7 @@ struct PerformanceMapInfo {
     
     func toCellItem() -> SpotlightedCellItem  {
         SpotlightedCellItem(
-            performanceID: performanceID,
+            performanceID: id,
             thumbnailPath: thumbnailPath,
             artist: artist,
             title: title,
@@ -32,7 +32,7 @@ struct PerformanceMapInfo {
     
     func toMarkerInfo() -> MarkerInfo {
         MarkerInfo(
-            performaceID: performanceID,
+            performaceID: id,
             latitude: latitude,
             longitude: longitude
         )

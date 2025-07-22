@@ -1,12 +1,12 @@
 //
-//  PerformanceMapListResDTO.swift
+//  GeoPerformanceListResDTO.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/21/25.
 //
 
 
-struct PerformanceMapListResDTO: Decodable {
+struct GeoPerformanceListResDTO: Decodable {
     let performanceMapList: [PerformanceMap]
     
     struct PerformanceMap: Decodable {
@@ -18,12 +18,12 @@ struct PerformanceMapListResDTO: Decodable {
         let startDate: String
         let endDate: String
         
-        func toDomain() -> PerformanceMapInfo {
+        func toDomain() -> GeoPerformanceInfo {
             let date = startDate.replacingOccurrences(of: "-", with: ".")
 //            let startTime = startTime.prefix(5)
 
-            return PerformanceMapInfo(
-                performanceID: id,
+            return GeoPerformanceInfo(
+                id: id,
                 thumbnailPath: posterUrl,
                 artist: "임시 아티스트",
                 title: title,

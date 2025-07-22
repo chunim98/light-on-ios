@@ -162,7 +162,7 @@ final class MapSummaryModalView: MapBaseModalView {
     
     // MARK: Public Configuration
     
-    func configure(with info: PerformanceMapInfo?) {
+    func configure(with info: GeoPerformanceInfo?) {
         guard let info else { return }
         genreTagLabel.config.text   = info.genre
         titleLabel.config.text      = info.title

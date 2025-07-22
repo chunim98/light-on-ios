@@ -1,5 +1,5 @@
 //
-//  PerformanceMapRepo.swift
+//  GeoPerformanceRepo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/21/25.
@@ -8,21 +8,21 @@
 import Combine
 import CoreLocation
 
-protocol PerformanceMapRepo {
+protocol GeoPerformanceRepo {
     /// 좌표와 반경으로 공연맵 조회
-    func getPerformances(
+    func getGeoPerformanceInfo(
         coord: CLLocationCoordinate2D,
         radius: Double
-    ) -> AnyPublisher<[PerformanceMapInfo], Never>
+    ) -> AnyPublisher<[GeoPerformanceInfo], Never>
 }
 
 // MARK: - Default
 
-final class DefaultPerformanceMapRepo: PerformanceMapRepo {
-    func getPerformances(
+final class DefaultGeoPerformanceRepo: GeoPerformanceRepo {
+    func getGeoPerformanceInfo(
         coord: CLLocationCoordinate2D,
         radius: Double
-    ) -> AnyPublisher<[PerformanceMapInfo], Never> {
+    ) -> AnyPublisher<[GeoPerformanceInfo], Never> {
         Future { proimse in
             
             APIClient.shared.requestGet(
@@ -32,7 +32,7 @@ final class DefaultPerformanceMapRepo: PerformanceMapRepo {
                     "longitude": coord.longitude,
                     "radius": radius
                 ],
-                decodeType: PerformanceMapListResDTO.self
+                decodeType: GeoPerformanceListResDTO.self
             ) {
                 print("공연맵 조회 완료")
                 proimse(.success($0.performanceMapList.map { $0.toDomain() }))
@@ -45,14 +45,14 @@ final class DefaultPerformanceMapRepo: PerformanceMapRepo {
 
 // MARK: - Test
 
-final class TestPerformanceMapRepo: PerformanceMapRepo {
-    func getPerformances(
+final class TestPerformanceMapRepo: GeoPerformanceRepo {
+    func getGeoPerformanceInfo(
         coord: CLLocationCoordinate2D,
         radius: Double
-    ) -> AnyPublisher<[PerformanceMapInfo], Never> {
+    ) -> AnyPublisher<[GeoPerformanceInfo], Never> {
         Just([
             .init(
-                performanceID: 1,
+                id: 1,
                 thumbnailPath: "https://example.com/thumbs/1.jpg",
                 artist: "아티스트1",
                 title: "[강남] 버스킹 페스티벌 1",
@@ -64,7 +64,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.021321
             ),
             .init(
-                performanceID: 2,
+                id: 2,
                 thumbnailPath: "https://example.com/thumbs/2.jpg",
                 artist: "아티스트2",
                 title: "[강남] 버스킹 페스티벌 2",
@@ -76,7 +76,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.035441
             ),
             .init(
-                performanceID: 3,
+                id: 3,
                 thumbnailPath: "https://example.com/thumbs/3.jpg",
                 artist: "아티스트3",
                 title: "[강남] 버스킹 페스티벌 3",
@@ -88,7 +88,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.029321
             ),
             .init(
-                performanceID: 4,
+                id: 4,
                 thumbnailPath: "https://example.com/thumbs/4.jpg",
                 artist: "아티스트4",
                 title: "[강남] 버스킹 페스티벌 4",
@@ -100,7 +100,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.020154
             ),
             .init(
-                performanceID: 5,
+                id: 5,
                 thumbnailPath: "https://example.com/thumbs/5.jpg",
                 artist: "아티스트5",
                 title: "[강남] 버스킹 페스티벌 5",
@@ -112,7 +112,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.041921
             ),
             .init(
-                performanceID: 6,
+                id: 6,
                 thumbnailPath: "https://example.com/thumbs/6.jpg",
                 artist: "아티스트6",
                 title: "[강남] 버스킹 페스티벌 6",
@@ -124,7 +124,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.045633
             ),
             .init(
-                performanceID: 7,
+                id: 7,
                 thumbnailPath: "https://example.com/thumbs/7.jpg",
                 artist: "아티스트7",
                 title: "[강남] 버스킹 페스티벌 7",
@@ -136,7 +136,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.060451
             ),
             .init(
-                performanceID: 8,
+                id: 8,
                 thumbnailPath: "https://example.com/thumbs/8.jpg",
                 artist: "아티스트8",
                 title: "[강남] 버스킹 페스티벌 8",
@@ -148,7 +148,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.107514
             ),
             .init(
-                performanceID: 9,
+                id: 9,
                 thumbnailPath: "https://example.com/thumbs/9.jpg",
                 artist: "아티스트9",
                 title: "[강남] 버스킹 페스티벌 9",
@@ -160,7 +160,7 @@ final class TestPerformanceMapRepo: PerformanceMapRepo {
                 longitude: 127.097154
             ),
             .init(
-                performanceID: 10,
+                id: 10,
                 thumbnailPath: "https://example.com/thumbs/10.jpg",
                 artist: "아티스트10",
                 title: "[강남] 버스킹 페스티벌 10",

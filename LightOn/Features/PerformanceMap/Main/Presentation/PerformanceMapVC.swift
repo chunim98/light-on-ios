@@ -98,10 +98,10 @@ final class PerformanceMapVC: UIViewController {
             dataSource: listModal.mapTableView.diffableDataSource
         )
         
-        /// 선택한 마커 (선택한 공연)
-        let selectedMarker = Publishers.Merge(
-            markersBuilder.selectedMarkerPublisher.map { MarkerInfo?.some($0) },
-            mapView.mapTapPublisher.map { MarkerInfo?.none }    // 지도 배경 탭하면 선택 해제
+        /// 선택한 공연 (선택한 마커)
+        let selectedPerformanceID = Publishers.Merge(
+            markersBuilder.selectedMarkerPublisher.map { Int?.some($0.performaceID) },
+            mapView.mapTapPublisher.map { Int?.none }   // 지도 배경 탭하면 선택 해제
         ).eraseToAnyPublisher()
         
         let input = PerformanceMapVM.Input(
@@ -109,7 +109,7 @@ final class PerformanceMapVC: UIViewController {
             refreshCoord: refreshCoord,
             cameraChanged: mapView.cameraDidChangePublisher,
             selectedCellItem: selectedCellItem,
-            selectedMarker: selectedMarker
+            selectedID: selectedPerformanceID
         )
         
         let output = vm.transform(input)
@@ -148,7 +148,7 @@ final class PerformanceMapVC: UIViewController {
 
 extension PerformanceMapVC {
     /// 모달 표시 여부 바인딩
-    private func bindModalHidden(_ info: PerformanceMapInfo?) {
+    private func bindModalHidden(_ info: GeoPerformanceInfo?) {
         // 내부는 즉시 레이아웃 갱신 (애니메이션 전파 막기)
         UIView.performWithoutAnimation {
             summaryModal.contentView.layoutIfNeeded()

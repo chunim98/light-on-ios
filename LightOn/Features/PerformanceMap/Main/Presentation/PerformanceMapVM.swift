@@ -18,7 +18,7 @@ final class PerformanceMapVM {
         let refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         let cameraChanged: AnyPublisher<NMFMapChangedReason, Never>
         let selectedCellItem: AnyPublisher<SpotlightedCellItem, Never>
-        let selectedMarker: AnyPublisher<MarkerInfo?, Never>
+        let selectedID: AnyPublisher<Int?, Never>
     }
     struct Output {
         /// 위치 기반 공연정보 테이블 셀들
@@ -30,7 +30,7 @@ final class PerformanceMapVM {
         /// 카메라를 이동시킬 좌표
         let cameraTargetCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         /// 선택한 공연
-        let selectedPerformance: AnyPublisher<PerformanceMapInfo?, Never>
+        let selectedPerformance: AnyPublisher<GeoPerformanceInfo?, Never>
         /// 뷰 상태
         let viewState: AnyPublisher<PerformanceMapState, Never>
     }
@@ -38,36 +38,36 @@ final class PerformanceMapVM {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let getPerformanceMapListUC: GetPerformanceMapListUC
-    private let getMapSummaryUC = GetMapSummaryUC()
+    private let getGeoPerformanceInfoUC: GetGeoPerformanceInfoUC
+    private let getGeoPerformanceSummaryUC = GetGeoPerformanceSummaryUC()
     private let moveCameraUC = MoveCameraUC()
     
     // MARK: Initializer
     
-    init(repo: any PerformanceMapRepo) {
-        self.getPerformanceMapListUC = .init(repo: repo)
+    init(repo: any GeoPerformanceRepo) {
+        self.getGeoPerformanceInfoUC = .init(repo: repo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
+        /// 뷰 상태 서브젝트
         let viewStateSubject = CurrentValueSubject<PerformanceMapState, Never>(.init(
             refreshButtonHidden: true
         ))
         
         /// 좌표 기반 공연 정보
-        let performances = getPerformanceMapListUC.execute(
+        let performanceInfoArr = getGeoPerformanceInfoUC.execute(
             initialCoord: input.initialCoord,
             refreshCoord: input.refreshCoord
         )
         
         /// 테이블 뷰 데이터 가공
-        let cellItems = performances
+        let cellItems = performanceInfoArr
             .map { $0.map { $0.toCellItem() } }
             .eraseToAnyPublisher()
         
-        /// 마커 데이터 가공
-        let markerInfoArr = performances
+        let markerInfoArr = performanceInfoArr
             .map { $0.map { $0.toMarkerInfo() } }
             .eraseToAnyPublisher()
         
@@ -80,7 +80,7 @@ final class PerformanceMapVM {
         let cameraTargetCoord = moveCameraUC.execute(
             initialCoord: input.initialCoord,
             selectedCell: input.selectedCellItem,
-            performances: performances
+            performances: performanceInfoArr
         )
         
         /// 카메라 위치 변경 (사용자 상호작용만 필터)
@@ -89,15 +89,15 @@ final class PerformanceMapVM {
             .eraseToAnyPublisher()
         
         /// 선택한 공연
-        let selectedPerformance = getMapSummaryUC.execute(
-            selectedMarker: input.selectedMarker,
-            performances: performances
+        let selectedPerformance = getGeoPerformanceSummaryUC.execute(
+            selectedID: input.selectedID,
+            performances: performanceInfoArr
         )
         
         // 뷰 상태 갱신
         [
-            cameraChanged.sink  { _ in viewStateSubject.value.refreshButtonHidden = false },
-            performances.sink   { _ in viewStateSubject.value.refreshButtonHidden = true },
+            cameraChanged.sink      { _ in viewStateSubject.value.refreshButtonHidden = false },
+            performanceInfoArr.sink { _ in viewStateSubject.value.refreshButtonHidden = true },
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(

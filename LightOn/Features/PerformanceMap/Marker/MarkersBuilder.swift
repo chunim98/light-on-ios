@@ -63,7 +63,7 @@ final class MarkersBuilder {
 
 extension MarkersBuilder {
     /// 마커 선택 해제 바인딩
-    func bindDeselectAll(with info: PerformanceMapInfo?) {
+    func bindDeselectAll(with info: GeoPerformanceInfo?) {
         guard info == nil else { return }
         markers.forEach { $0.state = .idle }
     }
