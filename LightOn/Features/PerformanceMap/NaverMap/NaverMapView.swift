@@ -44,7 +44,7 @@ final class NaverMapView: NMFNaverMapView {
             northEastLat: 44.35,
             northEastLng: 132
         )
-        mapView.maxZoomLevel = 15.0                 // 최대 줌 레벨 제한
+        mapView.maxZoomLevel = 16.0                 // 최대 줌 레벨 제한
         mapView.minZoomLevel = 6.0                  // 최소 줌 레벨 제한
         mapView.positionMode = .normal              // 위치 추적 설정
         showLocationButton = true                   // 현위치 버튼 표시 여부

@@ -32,6 +32,7 @@ final class DefaultGeoPerformanceRepo: GeoPerformanceRepo {
                     "longitude": coord.longitude,
                     "radius": radius
                 ],
+                tokenIncluded: false,
                 decodeType: GeoPerformanceListResDTO.self
             ) {
                 print("공연맵 조회 완료")

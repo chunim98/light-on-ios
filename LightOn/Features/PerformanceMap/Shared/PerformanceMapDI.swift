@@ -19,6 +19,6 @@ final class PerformanceMapDI {
     }
     
     func makePerformanceMapVM() -> PerformanceMapVM {
-        PerformanceMapVM(repo: TestPerformanceMapRepo())
+        PerformanceMapVM(repo: DefaultGeoPerformanceRepo())
     }
 }

@@ -13,24 +13,29 @@ struct GeoPerformanceListResDTO: Decodable {
         let id: Int
         let posterUrl: String
         let title: String
+        let artistNames: [String]
         let latitude: Double
         let longitude: Double
         let startDate: String
+        let startTime: String
         let endDate: String
+        let endTime: String
+        let address: String
+        let genres: [String]
         
         func toDomain() -> GeoPerformanceInfo {
             let date = startDate.replacingOccurrences(of: "-", with: ".")
-//            let startTime = startTime.prefix(5)
+            let time = startTime.prefix(5)
 
             return GeoPerformanceInfo(
                 id: id,
                 thumbnailPath: posterUrl,
-                artist: "임시 아티스트",
+                artist: artistNames.first ?? "알 수 없는 아티스트",
                 title: title,
-                genre: "임시 장르",
+                genre: genres.first ?? "알 수 없는 장르",
                 date: date,
-                time: "00:00",
-                location: "임시 주소",
+                time: String(time),
+                location: address,
                 latitude: latitude,
                 longitude: longitude
             )
