@@ -62,9 +62,10 @@ final class MarkersBuilder {
 // MARK: Binders & Publishers
 
 extension MarkersBuilder {
-    /// 마커 선택 바인딩
-    func bindSelectMarker(_ info: MarkerInfo) {
-        selectedMarkerSubject.send(info)
+    /// 마커 선택 해제 바인딩
+    func bindDeselectAll(with info: PerformanceMapInfo?) {
+        guard info == nil else { return }
+        markers.forEach { $0.state = .idle }
     }
     
     /// 선택된 마커 정보 퍼블리셔

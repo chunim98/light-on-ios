@@ -19,6 +19,8 @@ final class NaverMapView: NMFNaverMapView {
     
     /// 카메라 이동 이벤트(원인) 서브젝트
     private let cameraDidChangeSubject = PassthroughSubject<NMFMapChangedReason, Never>()
+    /// 지도 탭 서브젝트
+    private let didTapMapSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Life Cycle
     
@@ -34,6 +36,7 @@ final class NaverMapView: NMFNaverMapView {
     // MARK: Defaults
     
     private func setupDefaults() {
+        mapView.touchDelegate = self                // 지도 터치 이벤트 델리게이트
         mapView.addCameraDelegate(delegate: self)   // 카메라 변경 이벤트 델리게이트
         mapView.extent = NMGLatLngBounds(           // 카메라 영역 한반도 인근으로 제한
             southWestLat: 31.43,
@@ -77,6 +80,11 @@ extension NaverMapView {
             .map { CLLocationCoordinate2D(latitude: $0.lat, longitude: $0.lng) }
             .eraseToAnyPublisher()
     }
+    
+    /// 지도 탭 퍼블리셔
+    var mapTapPublisher: AnyPublisher<Void, Never> {
+        didTapMapSubject.eraseToAnyPublisher()
+    }
 }
 
 // MARK: - NMFMapViewCameraDelegate
@@ -90,6 +98,19 @@ extension NaverMapView: NMFMapViewCameraDelegate {
     ) {
         guard let reason = NMFMapChangedReason(rawValue: reason) else { return }
         cameraDidChangeSubject.send(reason)
+    }
+}
+
+// MARK: - NMFMapViewTouchDelegate
+
+extension NaverMapView: NMFMapViewTouchDelegate {
+    /// 지도가 탭되면 호출되는 콜백 메서드
+    func mapView(
+        _ mapView: NMFMapView,
+        didTapMap latlng: NMGLatLng,
+        point: CGPoint
+    ) {
+        didTapMapSubject.send(())
     }
 }
 

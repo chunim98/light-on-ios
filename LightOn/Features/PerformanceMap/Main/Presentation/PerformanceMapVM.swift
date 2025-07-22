@@ -18,6 +18,7 @@ final class PerformanceMapVM {
         let refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         let cameraChanged: AnyPublisher<NMFMapChangedReason, Never>
         let selectedCellItem: AnyPublisher<SpotlightedCellItem, Never>
+        let selectedMarker: AnyPublisher<MarkerInfo?, Never>
     }
     struct Output {
         /// 위치 기반 공연정보 테이블 셀들
@@ -28,6 +29,8 @@ final class PerformanceMapVM {
         let reverseGeocodingCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         /// 카메라를 이동시킬 좌표
         let cameraTargetCoord: AnyPublisher<CLLocationCoordinate2D, Never>
+        /// 선택한 공연
+        let selectedPerformance: AnyPublisher<PerformanceMapInfo?, Never>
         /// 뷰 상태
         let viewState: AnyPublisher<PerformanceMapState, Never>
     }
@@ -36,6 +39,7 @@ final class PerformanceMapVM {
     
     private var cancellables = Set<AnyCancellable>()
     private let getPerformanceMapListUC: GetPerformanceMapListUC
+    private let getMapSummaryUC = GetMapSummaryUC()
     private let moveCameraUC = MoveCameraUC()
     
     // MARK: Initializer
@@ -84,10 +88,16 @@ final class PerformanceMapVM {
             .filter { $0 == .gesture }
             .eraseToAnyPublisher()
         
+        /// 선택한 공연
+        let selectedPerformance = getMapSummaryUC.execute(
+            selectedMarker: input.selectedMarker,
+            performances: performances
+        )
+        
         // 뷰 상태 갱신
         [
             cameraChanged.sink  { _ in viewStateSubject.value.refreshButtonHidden = false },
-            performances.sink   { _ in viewStateSubject.value.refreshButtonHidden = true }
+            performances.sink   { _ in viewStateSubject.value.refreshButtonHidden = true },
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(
@@ -95,6 +105,7 @@ final class PerformanceMapVM {
             markerInfoArr: markerInfoArr,
             reverseGeocodingCoord: reverseGeocodingCoord,
             cameraTargetCoord: cameraTargetCoord,
+            selectedPerformance: selectedPerformance,
             viewState: viewStateSubject.eraseToAnyPublisher()
         )
     }

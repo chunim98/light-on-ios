@@ -18,11 +18,15 @@ final class PerformanceMapVC: UIViewController {
     private var cancellables = Set<AnyCancellable>()
     private let vm = PerformanceMapDI.shared.makePerformanceMapVM()
     
+    private var summaryModalBottmConstraint: Constraint?
+    private var listModalBottmConstraint: Constraint?
+    
     // MARK: Components
     
     private lazy var markersBuilder = MarkersBuilder(mapView.mapView)
     private lazy var locationManager = LocationManager()
     
+    private let summaryModal = MapSummaryModalView()
     private let listModal = MapListModalView()
     private let mapView = NaverMapView()
     
@@ -61,21 +65,24 @@ final class PerformanceMapVC: UIViewController {
     private func setupLayout() {
         view.addSubview(mapView)
         view.addSubview(listModal)
+        view.addSubview(summaryModal)
         view.addSubview(refreshButton)
         
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        listModal.snp.makeConstraints { $0.bottom.horizontalEdges.equalToSuperview() }
+        listModal.snp.makeConstraints {
+            listModalBottmConstraint = $0.bottom.equalToSuperview().constraint
+            $0.horizontalEdges.equalToSuperview()
+        }
+        summaryModal.snp.makeConstraints {
+            summaryModalBottmConstraint = $0.bottom.equalToSuperview().constraint
+            $0.horizontalEdges.equalToSuperview()
+        }
         refreshButton.snp.makeConstraints { $0.top.centerX.equalTo(view.safeAreaLayoutGuide) }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let selectedMarker = markersBuilder.selectedMarkerPublisher
-        let selectedCellItem = listModal.mapTableView.selectedModelPublisher(
-            dataSource: listModal.mapTableView.diffableDataSource
-        )
-        
         /// 최초 실행 좌표 (현재 위치)
         let initialCoord = locationManager.currentCoordPublisher
             .first().append(Empty())    // 종료 없이 1회만 방출
@@ -86,11 +93,23 @@ final class PerformanceMapVC: UIViewController {
             .withLatestFrom(mapView.cameraCoordPublisher) { _, coord in coord }
             .eraseToAnyPublisher()
         
+        /// 선택한 테이블 셀 (마커로 카메라 이동)
+        let selectedCellItem = listModal.mapTableView.selectedModelPublisher(
+            dataSource: listModal.mapTableView.diffableDataSource
+        )
+        
+        /// 선택한 마커 (선택한 공연)
+        let selectedMarker = Publishers.Merge(
+            markersBuilder.selectedMarkerPublisher.map { MarkerInfo?.some($0) },
+            mapView.mapTapPublisher.map { MarkerInfo?.none }    // 지도 배경 탭하면 선택 해제
+        ).eraseToAnyPublisher()
+        
         let input = PerformanceMapVM.Input(
             initialCoord: initialCoord,
             refreshCoord: refreshCoord,
             cameraChanged: mapView.cameraDidChangePublisher,
-            selectedCellItem: selectedCellItem
+            selectedCellItem: selectedCellItem,
+            selectedMarker: selectedMarker
         )
         
         let output = vm.transform(input)
@@ -111,11 +130,46 @@ final class PerformanceMapVC: UIViewController {
             .sink { [weak self] in self?.mapView.setCamera($0) }
             .store(in: &cancellables)
         
-        output.viewState
+        output.selectedPerformance
             .sink { [weak self] in
-                self?.refreshButton.isHidden = $0.refreshButtonHidden
+                self?.markersBuilder.bindDeselectAll(with: $0)
+                self?.summaryModal.configure(with: $0)
+                self?.bindModalHidden($0)
             }
             .store(in: &cancellables)
+        
+        output.viewState
+            .sink { [weak self] in self?.bindViewState($0) }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension PerformanceMapVC {
+    /// 모달 표시 여부 바인딩
+    private func bindModalHidden(_ info: PerformanceMapInfo?) {
+        // 내부는 즉시 레이아웃 갱신 (애니메이션 전파 막기)
+        UIView.performWithoutAnimation {
+            summaryModal.contentView.layoutIfNeeded()
+        }
+        
+        // 이제 바깥쪽 constraint만 애니메이션
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else { return }
+            
+            let summaryInset    = info == nil ? -summaryModal.frame.height : 0
+            let listInset       = info != nil ? -listModal.frame.height : 0
+            
+            summaryModalBottmConstraint?.update(inset: summaryInset)
+            listModalBottmConstraint?.update(inset: listInset)
+            view.layoutIfNeeded()
+        }
+    }
+    
+    /// 뷰 상태 바인딩
+    private func bindViewState(_ state: PerformanceMapState) {
+        refreshButton.isHidden = state.refreshButtonHidden
     }
 }
 
