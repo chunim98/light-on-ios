@@ -77,7 +77,6 @@ final class MapSummaryModalView: MapBaseModalView {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(14)
         config.foregroundColor = .brand
-        config.text = "어쿠스틱" // temp
         let label = LOPaddingLabel(
             configuration: config,
             padding: .init(horizontal: 8, vertical: 4)
@@ -93,7 +92,6 @@ final class MapSummaryModalView: MapBaseModalView {
         config.lineBreakMode = .byTruncatingTail
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
-        config.text = "[여의도] Light ON 홀리데이 버스킹버스킹" // temp
         return LOLabel(config: config)
     }()
     
@@ -101,7 +99,6 @@ final class MapSummaryModalView: MapBaseModalView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "2025.05.01" // temp
         return LOLabel(config: config)
     }()
     
@@ -109,7 +106,6 @@ final class MapSummaryModalView: MapBaseModalView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "17:00" // temp
         return LOLabel(config: config)
     }()
     
@@ -117,7 +113,6 @@ final class MapSummaryModalView: MapBaseModalView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "서울 영등포구 여의도동 81-8" // temp
         return LOLabel(config: config)
     }()
     
@@ -126,6 +121,7 @@ final class MapSummaryModalView: MapBaseModalView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        setupBindings()
     }
     
     required init(coder: NSCoder) {
@@ -166,6 +162,22 @@ final class MapSummaryModalView: MapBaseModalView {
         placeHStack.addArrangedSubview(LOSpacer())
         
         showDetailHStack.addArrangedSubview(showDetailButton)
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        /// 선택한 공연 ID
+        let selectedID = selectedIDSubject.eraseToAnyPublisher()
+        
+        // 선택한 공연의 상세 페이지로 이동
+        showDetailButton.tapPublisher
+            .withLatestFrom(selectedID) { _, id in id }
+            .sink {
+                AppCoordinatorBus.shared.navigationEventSubject
+                    .send(.performanceDetail(id: $0))
+            }
+            .store(in: &cancellables)
     }
 }
 
