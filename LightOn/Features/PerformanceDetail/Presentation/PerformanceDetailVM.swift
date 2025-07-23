@@ -13,10 +13,13 @@ final class PerformanceDetailVM {
     // MARK: Input & Ouput
     
     struct Input {
+        let applyTap: AnyPublisher<Void, Never>
     }
     struct Output {
         /// 공연 상세 정보
         let detailInfo: AnyPublisher<PerformanceDetailInfo, Never>
+        /// 공연 신청 이벤트
+        let applyEvent: AnyPublisher<PerformanceDetailInfo, Never>
     }
     
     // MARK: Properties
@@ -41,6 +44,10 @@ final class PerformanceDetailVM {
             .share()
             .eraseToAnyPublisher()
         
-        return Output(detailInfo: detailInfo)
+        let applyEvent = input.applyTap
+            .withLatestFrom(detailInfo) { _, info in info }
+            .eraseToAnyPublisher()
+        
+        return Output(detailInfo: detailInfo, applyEvent: applyEvent)
     }
 }

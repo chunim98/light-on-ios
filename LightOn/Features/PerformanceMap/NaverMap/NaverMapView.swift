@@ -66,7 +66,7 @@ final class NaverMapView: NMFNaverMapView {
     
     /// 콘텐츠 패딩 추가
     func addContentInset(_ inset: UIEdgeInsets) {
-        mapView.contentInset = mapView.contentInset + inset
+        mapView.contentInset = .init(bottom: 270) + inset
     }
 }
 

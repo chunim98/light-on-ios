@@ -8,6 +8,8 @@
 import UIKit
 import Combine
 
+import CombineCocoa
+
 class PerformanceDetailBaseModalVC: ModalVC {
     
     // MARK: Properties
@@ -27,12 +29,21 @@ class PerformanceDetailBaseModalVC: ModalVC {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(18)
         config.foregroundColor = .caption
+        config.paragraphSpacing = 8
         config.alignment = .center
-        return LOLabel(config: config)
+        config.lineHeight = 24
+        let label = LOLabel(config: config)
+        label.numberOfLines = .max
+        return label
     }()
     
     let acceptButton = LOButton(style: .filled)
-    let cancelButton = LOButton(style: .bordered)
+    
+    let cancelButton = {
+        let button = LOButton(style: .bordered)
+        button.setTitle("취소", .pretendard.regular(16))
+        return button
+    }()
     
     // MARK: Life Cycle
     
@@ -49,9 +60,27 @@ class PerformanceDetailBaseModalVC: ModalVC {
     // MARK: Layout
     
     private func setupLayout() {
+        contentVStack.addArrangedSubview(LOSpacer(8))
         contentVStack.addArrangedSubview(descriptionLabel)
+        contentVStack.addArrangedSubview(LOSpacer(28))
         contentVStack.addArrangedSubview(buttonsHStack)
+        contentVStack.addArrangedSubview(LOSpacer(28))
+        
         buttonsHStack.addArrangedSubview(cancelButton)
         buttonsHStack.addArrangedSubview(acceptButton)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension PerformanceDetailBaseModalVC {
+    // 확인(승인) 버튼 탭 퍼블리셔
+    var acceptTapPublisher: AnyPublisher<Void, Never> {
+        acceptButton.tapPublisher
+    }
+    
+    // 취소 버튼 탭 퍼블리셔
+    var cancelTapPublisher: AnyPublisher<Void, Never> {
+        cancelButton.tapPublisher
     }
 }

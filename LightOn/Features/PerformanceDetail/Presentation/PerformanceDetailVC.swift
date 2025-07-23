@@ -18,8 +18,9 @@ final class PerformanceDetailVC: BackButtonVC {
     
     private var cancellables = Set<AnyCancellable>()
     private let vm: PerformanceDetailVM
+    private var applyFlowCoord: PerformanceApplyFlowCoordinator?
     
-    // MARK: Components
+    // MARK: Containers
     
     private let mainVStack = UIStackView(.vertical)
     private let scrollView = UIScrollView()
@@ -32,6 +33,8 @@ final class PerformanceDetailVC: BackButtonVC {
         return sv
     }()
     
+    // MARK: Sections
+    
     private let imageView           = DetailImageView()
     private let infoSection         = DetailInfoSectionView()
     private let descriptionSection  = DetailDescriptionSectionView()
@@ -39,12 +42,17 @@ final class PerformanceDetailVC: BackButtonVC {
     private let seatSection         = DetailSeatSectionView()
     private let noticeSection       = DetailNoticeSectionView()
     
+    // MARK: Buttons
+    
     private let likeButton = LikeButton()
-    private let applicationButton = {
+    
+    private let applyButton = {
         let button = LOButton(style: .filled, height: 48)
         button.setTitle("신청하기", .pretendard.bold(16))
         return button
     }()
+    
+    // MARK: etc
     
     private let balloonView = {
         let view = TipBalloonView()
@@ -87,7 +95,7 @@ final class PerformanceDetailVC: BackButtonVC {
         
         scrollView.addSubview(contentVStack)
         buttonsHStack.addArrangedSubview(likeButton)
-        buttonsHStack.addArrangedSubview(applicationButton)
+        buttonsHStack.addArrangedSubview(applyButton)
         
         contentVStack.addArrangedSubview(imageView)
         contentVStack.addArrangedSubview(infoSection)
@@ -105,22 +113,31 @@ final class PerformanceDetailVC: BackButtonVC {
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         imageView.snp.makeConstraints { $0.size.equalTo(scrollView.snp.width) }
         balloonView.snp.makeConstraints {
-            $0.bottom.equalTo(applicationButton.snp.top).offset(-17)
-            $0.centerX.equalTo(applicationButton)
+            $0.bottom.equalTo(applyButton.snp.top).offset(-17)
+            $0.centerX.equalTo(applyButton)
         }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = PerformanceDetailVM.Input()
+        let input = PerformanceDetailVM.Input(
+            applyTap: applyButton.tapPublisher
+        )
+        
         let output = vm.transform(input)
         
         output.detailInfo
             .sink { [weak self] in self?.bindDetailInfo($0) }
             .store(in: &cancellables)
+        
+        output.applyEvent
+            .sink { [weak self] in self?.bindStartApplyFlow($0) }
+            .store(in: &cancellables)
     }
 }
+
+// MARK: Binders & Publishers
 
 extension PerformanceDetailVC {
     /// 공연 상세정보 값 바인딩
@@ -151,6 +168,14 @@ extension PerformanceDetailVC {
         noticeSection.descriptionLabel.config.text  = info.noticeDescription
         // 팁 풍선 표시여부
         balloonView.isHidden                        = info.isPaid
+    }
+    
+    /// 공연 신청 흐름 시작 바인딩
+    private func bindStartApplyFlow(_ info: PerformanceDetailInfo) {
+        applyFlowCoord = .init(navigation: navigationController!)
+        info.isPaid // 유료, 무료 여부에 따라 다른 모달 표시
+        ? applyFlowCoord?.showPaidEntryModalVC()
+        : applyFlowCoord?.showFreeApplyModalVC()
     }
 }
 
