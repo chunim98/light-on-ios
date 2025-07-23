@@ -17,12 +17,12 @@ final class PerformanceMapVM {
         let initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         let refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         let cameraChanged: AnyPublisher<NMFMapChangedReason, Never>
-        let selectedCellItem: AnyPublisher<SpotlightedCellItem, Never>
+        let selectedCellItem: AnyPublisher<MediumPerformanceCellItem, Never>
         let selectedID: AnyPublisher<Int?, Never>
     }
     struct Output {
         /// 위치 기반 공연정보 테이블 셀들
-        let cellItems: AnyPublisher<[SpotlightedCellItem], Never>
+        let cellItems: AnyPublisher<[MediumPerformanceCellItem], Never>
         /// 위치 기반 공연정보 마커들
         let markerInfoArr: AnyPublisher<[MarkerInfo], Never>
         /// 리버스 지오코딩 좌표 (타이틀 갱신)

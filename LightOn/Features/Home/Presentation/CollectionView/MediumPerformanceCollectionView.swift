@@ -1,5 +1,5 @@
 //
-//  SpotlightedCollectionView.swift
+//  MediumPerformanceCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class SpotlightedCollectionView: UICollectionView {
+final class MediumPerformanceCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -17,8 +17,8 @@ final class SpotlightedCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, SpotlightedCellItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SpotlightedCellItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, MediumPerformanceCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MediumPerformanceCellItem>
     
     // MARK: Properties
     
@@ -41,8 +41,8 @@ final class SpotlightedCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            SpotlightedCollectionCell.self,
-            forCellWithReuseIdentifier: SpotlightedCollectionCell.id
+            MediumPerformanceCollectionCell.self,
+            forCellWithReuseIdentifier: MediumPerformanceCollectionCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
@@ -66,9 +66,9 @@ final class SpotlightedCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SpotlightedCollectionCell.id,
+                withReuseIdentifier: MediumPerformanceCollectionCell.id,
                 for: indexPath
-            ) as? SpotlightedCollectionCell else { return .init() }
+            ) as? MediumPerformanceCollectionCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -77,7 +77,7 @@ final class SpotlightedCollectionView: UICollectionView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [SpotlightedCellItem]) {
+    func setSnapshot(items: [MediumPerformanceCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

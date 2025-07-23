@@ -1,8 +1,8 @@
 //
-//  PopularCell.swift
+//  MediumPerformanceBaseCell.swift
 //  LightOn
 //
-//  Created by 신정욱 on 5/7/25.
+//  Created by 신정욱 on 5/5/25.
 //
 
 import UIKit
@@ -10,16 +10,12 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class PopularCell: UICollectionViewCell {
-    
-    // MARK: Properties
-    
-    static let id = "PopularCell"
+final class MediumPerformanceBaseCell: UIStackView {
     
     // MARK: Components
     
-    private let mainVStack = UIStackView(.vertical, spacing: 14)
-    private let detailsVStack = UIStackView(.vertical, inset: .init(horizontal: 2))
+    private let detailVStack = UIStackView(.vertical)
+    private let titleGenreHStack = UIStackView(spacing: 4)
     
     private let dateTimeHStack = {
         let iv = UIImageView(image: .eventCardCellClock)
@@ -42,21 +38,40 @@ final class PopularCell: UICollectionViewCell {
         sv.addArrangedSubview(iv)
         return sv
     }()
-    
+
     private let thumbnailView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = .xD9D9D9
-        iv.layer.cornerRadius = 5
-        iv.clipsToBounds = true
-        return iv
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 4
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    private let artistLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .caption
+        return LOLabel(config: config)
     }()
     
     private let titleLabel = {
         var config = AttrConfiguration()
-        config.font = .pretendard.bold(14)
+        config.font = .pretendard.semiBold(12)
         config.foregroundColor = .loBlack
         return LOLabel(config: config)
+    }()
+    
+    private let genreLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.bold(8)
+        config.foregroundColor = .brand
+        
+        let padding = UIEdgeInsets(horizontal: 4, vertical: 2)
+        let label = LOPaddingLabel(configuration: config, padding: padding)
+        label.backgroundColor = .xF5F0FF
+        label.layer.cornerRadius = 2
+        label.clipsToBounds = true
+        return label
     }()
     
     private let dateLabel = {
@@ -65,7 +80,7 @@ final class PopularCell: UICollectionViewCell {
         config.foregroundColor = .caption
         return LOLabel(config: config)
     }()
-    
+        
     private let timeLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
@@ -84,30 +99,43 @@ final class PopularCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupDefaults()
         setupLayout()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        configure(item: nil)
-    }
-    
-    required init?(coder: NSCoder) {
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: Defaults
+    
+    private func setupDefaults() {
+        layer.borderColor = UIColor.disable.cgColor
+        layer.borderWidth = 1
+        layer.cornerRadius = 5
+        clipsToBounds = true
+        inset = .init(edges: 12)
+        alignment = .center
+        spacing = 12
     }
     
     // MARK: Layout
     
     private func setupLayout() {
-        contentView.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(thumbnailView)
-        mainVStack.addArrangedSubview(detailsVStack)
-        
-        detailsVStack.addArrangedSubview(titleLabel)
-        detailsVStack.addArrangedSubview(LOSpacer(8))
-        detailsVStack.addArrangedSubview(dateTimeHStack)
-        detailsVStack.addArrangedSubview(LOSpacer(5))
-        detailsVStack.addArrangedSubview(locationHStack)
+        addArrangedSubview(thumbnailView)
+        addArrangedSubview(detailVStack)
+
+        detailVStack.addArrangedSubview(artistLabel)
+        detailVStack.addArrangedSubview(LOSpacer(5))
+        detailVStack.addArrangedSubview(titleGenreHStack)
+        detailVStack.addArrangedSubview(LOSpacer(8))
+        detailVStack.addArrangedSubview(dateTimeHStack)
+        detailVStack.addArrangedSubview(LOSpacer(5))
+        detailVStack.addArrangedSubview(locationHStack)
+
+        titleGenreHStack.addArrangedSubview(titleLabel)
+        titleGenreHStack.addArrangedSubview(genreLabel)
+        titleGenreHStack.addArrangedSubview(LOSpacer())
         
         dateTimeHStack.addArrangedSubview(dateLabel)
         dateTimeHStack.addArrangedSubview(LODivider(
@@ -119,21 +147,21 @@ final class PopularCell: UICollectionViewCell {
         locationHStack.addArrangedSubview(locationLabel)
         locationHStack.addArrangedSubview(LOSpacer())
         
-        mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
-        thumbnailView.snp.makeConstraints {
-            $0.width.equalTo(278)
-            $0.height.equalTo(158)
-        }
+        genreLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        thumbnailView.snp.makeConstraints { $0.size.equalTo(80) }
     }
     
     // MARK: Public Configuration
-    
-    func configure(item: PopularCellItem?) {
+
+    func configure(item: MediumPerformanceCellItem?) {
         let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
         thumbnailView.kf.indicatorType = .activity
         thumbnailView.kf.setImage(with: thumbnailURL)
-        
+
+        artistLabel.config.text = item?.artist
         titleLabel.config.text = item?.title
+        genreLabel.config.text = item?.genre
         dateLabel.config.text = item?.date
         timeLabel.config.text = item?.time
         locationLabel.config.text = item?.location
@@ -142,5 +170,5 @@ final class PopularCell: UICollectionViewCell {
 
 // MARK: - Preview
 
-#Preview { PopularCell() }
+#Preview { MediumPerformanceBaseCell() }
 #Preview { HomeVC() }

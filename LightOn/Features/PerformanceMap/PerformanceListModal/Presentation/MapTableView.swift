@@ -15,8 +15,8 @@ final class MapTableView: UITableView {
     
     // MARK: Typealias
     
-    typealias DataSource = UITableViewDiffableDataSource<Section, SpotlightedCellItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SpotlightedCellItem>
+    typealias DataSource = UITableViewDiffableDataSource<Section, MediumPerformanceCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MediumPerformanceCellItem>
     
     // MARK: Properties
     
@@ -37,7 +37,7 @@ final class MapTableView: UITableView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        register(SpotlightedTableCell.self, forCellReuseIdentifier: SpotlightedTableCell.id)
+        register(MediumPerformanceTableCell.self, forCellReuseIdentifier: MediumPerformanceTableCell.id)
         contentInset = .init(top: 8)
         backgroundColor = .clear
         separatorStyle = .none
@@ -50,9 +50,9 @@ final class MapTableView: UITableView {
             tableView, indexPath, item in
             
             guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: SpotlightedTableCell.id,
+                withIdentifier: MediumPerformanceTableCell.id,
                 for: indexPath
-            ) as? SpotlightedTableCell else { return .init() }
+            ) as? MediumPerformanceTableCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -61,7 +61,7 @@ final class MapTableView: UITableView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [SpotlightedCellItem]) {
+    func setSnapshot(items: [MediumPerformanceCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

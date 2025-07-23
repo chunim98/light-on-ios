@@ -12,7 +12,7 @@ final class MoveCameraUC {
     /// 카메라를 이동 시킬 좌표 계산
     func execute(
         initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
-        selectedCell: AnyPublisher<SpotlightedCellItem, Never>,
+        selectedCell: AnyPublisher<MediumPerformanceCellItem, Never>,
         performances: AnyPublisher<[GeoPerformanceInfo], Never>
     ) -> AnyPublisher<CLLocationCoordinate2D, Never> {
         /// 선택한 공연의 좌표

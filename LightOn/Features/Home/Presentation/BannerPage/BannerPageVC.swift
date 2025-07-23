@@ -17,14 +17,11 @@ final class BannerPageVC: UIPageViewController {
     private var cancellables = Set<AnyCancellable>()
     
     private var pages = [UIViewController]()
-    private var currentIndex: Int {
-        guard let vc = viewControllers?.first else { return 0 }
-        return pages.firstIndex(of: vc) ?? 0
-    }
+    private var currentIndex: Int? { viewControllers?.first.flatMap { pages.firstIndex(of: $0) } }
     
     // MARK: Components
     
-    private let pageControl = PageControl()
+    private let pageControl = BannerPageControl()
 
     // MARK: Life Cycle
     
@@ -44,12 +41,6 @@ final class BannerPageVC: UIPageViewController {
     // MARK: Defaults
     
     private func setupDefaults() {
-        pages = BannerItem.mockItems.map { BannerVC(item: $0) } // temp
-        setViewControllers([pages[0]], direction: .forward, animated: true)
-        
-        pageControl.numberOfPages = pages.count
-        pageControl.currentPage = 0
-        
         dataSource = self
         delegate = self
     }
@@ -68,7 +59,7 @@ final class BannerPageVC: UIPageViewController {
     
     private func setupBindings() {
         pageControl.pageIndexPublisher
-            .sink { [weak self] in self?.pageIndexBidner(index: $0) }
+            .sink { [weak self] in self?.bindPageIndex($0) }
             .store(in: &cancellables)
     }
 }
@@ -76,12 +67,31 @@ final class BannerPageVC: UIPageViewController {
 // MARK: Binders & Publishers
 
 extension BannerPageVC {
-    private func pageIndexBidner(index: Int) {
+    /// 페이지 컨트롤의 인덱스 바인딩
+    private func bindPageIndex(_ index: Int) {
+        guard let currentIndex else { return }
         // 이전 페이지 인덱스에 따라, 전환 애니메이션 방향을 다르게 설정
-        let direction: UIPageViewController.NavigationDirection =
-        currentIndex < index ? .forward : .reverse
-        
+        let direction: UIPageViewController.NavigationDirection
+        direction = currentIndex < index ? .forward : .reverse
         setViewControllers([pages[index]], direction: direction, animated: true)
+    }
+    
+    /// 베너 데이터 바인딩
+    func bindBannerItems(_ items: [PerformanceBannerItem]) {
+        guard !items.isEmpty else { return }
+        // 배너 생성 및 초기화
+        pages = items.map { BannerVC(item: $0) }
+        setViewControllers([pages[0]], direction: .forward, animated: true)
+        // 페이지 컨트롤 초기화
+        pageControl.numberOfPages = pages.count
+        pageControl.currentPage = 0
+        pageControl.setNeedsDisplay()   // 반투명 배경 강제 렌더링
+    }
+    
+    /// 선택한 공연 아이디 퍼블리셔
+    var selectedIDPublisher: AnyPublisher<Int, Never> {
+        let ids = pages.map { ($0 as! BannerVC).tapWithIDPublsisher }
+        return Publishers.MergeMany(ids).eraseToAnyPublisher()
     }
 }
 
@@ -95,39 +105,37 @@ extension BannerPageVC: UIPageViewControllerDelegate {
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
-        if completed { pageControl.currentPage = currentIndex }
+        guard let currentIndex, completed else { return }
+        pageControl.currentPage = currentIndex
     }
 }
 
 // MARK: - UIPageViewControllerDataSource
 
 extension BannerPageVC: UIPageViewControllerDataSource {
-    /// 좌우 스와이프 할 때 어떤 페이지를 보여줄지에 관한 메서드
+    /// 좌우 스와이프 할 때 보여줄 이전 페이지 (무한 순환)
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerBefore viewController: UIViewController
     ) -> UIViewController? {
-        guard
-            let currentIndex = pages.firstIndex(of: viewController),
-            currentIndex > 0
-        else { return nil }
+        guard let currentIndex, pages.count > 1 else { return nil }
         
-        return pages[currentIndex-1]
+        let previousIndex = (currentIndex-1 + pages.count) % pages.count
+        return pages[previousIndex]
     }
     
-    /// 좌우 스와이프 할 때 어떤 페이지를 보여줄지에 관한 메서드
+    /// 좌우 스와이프 할 때 보여줄 다음 페이지 (무한 순환)
     func pageViewController(
         _ pageViewController: UIPageViewController,
         viewControllerAfter viewController: UIViewController
     ) -> UIViewController? {
-        guard
-            let currentIndex = pages.firstIndex(of: viewController),
-            currentIndex < (pages.count-1)
-        else { return nil }
+        guard let currentIndex, pages.count > 1 else { return nil }
         
-        return pages[currentIndex+1]
+        let nextIndex = (currentIndex+1) % pages.count
+        return pages[nextIndex]
     }
 }
+
 
 // MARK: - Preview
 

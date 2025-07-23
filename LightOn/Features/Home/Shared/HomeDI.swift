@@ -15,6 +15,9 @@ final class HomeDI {
     // MARK: Methods
     
     func makeHomeVM() -> HomeVM {
-        HomeVM(repo: DefaultPerformanceRepo())
+        HomeVM(
+            bannerRepo: DefaultPerformanceBannerRepo(),
+            perfRepo: DefaultPerformanceRepo()
+        )
     }
 }

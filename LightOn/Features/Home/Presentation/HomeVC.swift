@@ -42,11 +42,8 @@ final class HomeVC: NavigationBarVC {
     
     private let bannerPageVC = BannerPageVC()
     
-    private let recommendHeader = {
-        let view = HomeHeaderView()
-        view.titleLabel.config.text = "추천 공연"
-        return view
-    }()
+    // 로그인 상태에 따라 타이틀 바인딩됨
+    private let recentRecommendHeader = HomeHeaderView()
     
     private let spotlightedHeader = {
         let view = HomeHeaderView()
@@ -60,9 +57,9 @@ final class HomeVC: NavigationBarVC {
         return view
     }()
     
-    private let recommendCollectionView = RecommendCollectionView()
-    private let spotlightedCollectionView = SpotlightedCollectionView()
-    private let popularCollectionView = PopularCollectionView()
+    private let recentRecommendCollectionView = SmallPerformanceCollectionView()
+    private let spotlightedCollectionView = MediumPerformanceCollectionView()
+    private let popularCollectionView = LargePerformanceCollectionView()
     
     // MARK: Life Cycle
     
@@ -92,8 +89,6 @@ final class HomeVC: NavigationBarVC {
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(9))
         navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
         navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
-        
-        spotlightedCollectionView.setSnapshot(items: SpotlightedCellItem.mockItems) // temp
     }
     
     // MARK: Layout
@@ -102,8 +97,8 @@ final class HomeVC: NavigationBarVC {
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(bannerPageVC.view)
-        contentVStack.addArrangedSubview(recommendHeader)
-        contentVStack.addArrangedSubview(recommendCollectionView)
+        contentVStack.addArrangedSubview(recentRecommendHeader)
+        contentVStack.addArrangedSubview(recentRecommendCollectionView)
         contentVStack.addArrangedSubview(LOSpacer(18))
         contentVStack.addArrangedSubview(spotlightedHeader)
         contentVStack.addArrangedSubview(spotlightedCollectionView)
@@ -120,8 +115,8 @@ final class HomeVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let selectedRecommend = recommendCollectionView
-            .selectedModelPublisher(dataSource: recommendCollectionView.diffableDataSource)
+        let selectedRecentRecommend = recentRecommendCollectionView
+            .selectedModelPublisher(dataSource: recentRecommendCollectionView.diffableDataSource)
             .map { $0.performanceID }
             .eraseToAnyPublisher()
         
@@ -137,23 +132,40 @@ final class HomeVC: NavigationBarVC {
         
         /// 선택한 공연 ID
         let selectedPerformanceID = Publishers.MergeMany(
-            selectedRecommend, selectedSpotlighted, selectedPopular
+            bannerPageVC.selectedIDPublisher,
+            selectedRecentRecommend,
+            selectedSpotlighted,
+            selectedPopular
         ).eraseToAnyPublisher()
         
         let input = HomeVM.Input(
             refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
             selectedPerformanceID: selectedPerformanceID
         )
+        
         let output = vm.transform(input)
         
+        output.banners
+            .sink { [weak self] in self?.bannerPageVC.bindBannerItems($0) }
+            .store(in: &cancellables)
+        
         output.populars
-            .sink { [weak self] in self?.popularCollectionView.setSnapshot(items: $0) }
+            .sink { [weak self] in self?.popularCollectionView.setSnapshot(items: Array(Set($0))) } // temp
             .store(in: &cancellables)
         
-        output.recommendeds
-            .sink { [weak self] in self?.recommendCollectionView.setSnapshot(items: $0) }
+        output.spotlighteds
+            .sink { [weak self] in self?.spotlightedCollectionView.setSnapshot(items: $0) }
             .store(in: &cancellables)
         
+        output.recentRecommendeds
+            .sink { [weak self] in self?.recentRecommendCollectionView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        output.recentRecommendedTitle
+            .sink { [weak self] in self?.recentRecommendHeader.titleLabel.config.text = $0 }
+            .store(in: &cancellables)
+        
+        // [임시] 알림 화면 이동
         notificationBarButton.tapPublisher
             .sink { [weak self] _ in
                 let vc = NotificationVC()

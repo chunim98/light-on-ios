@@ -1,5 +1,5 @@
 //
-//  RecommendCollectionView.swift
+//  SmallPerformanceCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class RecommendCollectionView: UICollectionView {
+final class SmallPerformanceCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -17,8 +17,8 @@ final class RecommendCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, RecommendCellItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, RecommendCellItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, SmallPerformanceCellItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SmallPerformanceCellItem>
     
     // MARK: Properties
     
@@ -41,8 +41,8 @@ final class RecommendCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            RecommendCell.self,
-            forCellWithReuseIdentifier: RecommendCell.id
+            SmallPerformanceCell.self,
+            forCellWithReuseIdentifier: SmallPerformanceCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
@@ -66,9 +66,9 @@ final class RecommendCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RecommendCell.id,
+                withReuseIdentifier: SmallPerformanceCell.id,
                 for: indexPath
-            ) as? RecommendCell else { return .init() }
+            ) as? SmallPerformanceCell else { return .init() }
             
             cell.configure(item: item)
             return cell
@@ -77,7 +77,7 @@ final class RecommendCollectionView: UICollectionView {
     
     // MARK: Public Configuration
     
-    func setSnapshot(items: [RecommendCellItem]) {
+    func setSnapshot(items: [SmallPerformanceCellItem]) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(items, toSection: .main)

@@ -1,5 +1,5 @@
 //
-//  RecommendCell.swift
+//  SmallPerformanceCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/5/25.
@@ -10,11 +10,11 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-final class RecommendCell: UICollectionViewCell {
+final class SmallPerformanceCell: UICollectionViewCell {
     
     // MARK: Propreties
     
-    static let id = "RecommendCell"
+    static let id = "SmallPerformanceCell"
     
     // MARK: Components
     
@@ -67,7 +67,7 @@ final class RecommendCell: UICollectionViewCell {
     
     // MARK: Public Configuration
     
-    func configure(item: RecommendCellItem?) {
+    func configure(item: SmallPerformanceCellItem?) {
         let thumbnailURL = URL(string: item?.thumbnailPath ?? "")
         thumbnailView.kf.indicatorType = .activity
         thumbnailView.kf.setImage(with: thumbnailURL)
@@ -78,4 +78,4 @@ final class RecommendCell: UICollectionViewCell {
 
 // MARK: - Preview
 
-#Preview(traits: .fixedLayout(width: 130, height: 186)) { RecommendCell() }
+#Preview(traits: .fixedLayout(width: 130, height: 186)) { SmallPerformanceCell() }

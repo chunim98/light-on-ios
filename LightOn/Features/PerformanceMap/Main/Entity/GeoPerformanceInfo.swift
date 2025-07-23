@@ -17,8 +17,8 @@ struct GeoPerformanceInfo {
     let latitude: Double
     let longitude: Double
     
-    func toCellItem() -> SpotlightedCellItem  {
-        SpotlightedCellItem(
+    func toCellItem() -> MediumPerformanceCellItem  {
+        MediumPerformanceCellItem(
             performanceID: id,
             thumbnailPath: thumbnailPath,
             artist: artist,

@@ -1,5 +1,5 @@
 //
-//  PopularCollectionView.swift
+//  LargePerformanceCollectionView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/12/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PopularCollectionView: UICollectionView {
+final class LargePerformanceCollectionView: UICollectionView {
     
     // MARK: Enum
     
@@ -17,7 +17,7 @@ final class PopularCollectionView: UICollectionView {
     
     // MARK: Typealias
     
-    typealias Item = PopularCellItem
+    typealias Item = LargePerformanceCellItem
     typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     
@@ -42,8 +42,8 @@ final class PopularCollectionView: UICollectionView {
     
     private func setupDefaults() {
         register(
-            PopularCell.self,
-            forCellWithReuseIdentifier: PopularCell.id
+            LargePerformanceCell.self,
+            forCellWithReuseIdentifier: LargePerformanceCell.id
         )
         showsHorizontalScrollIndicator = false
         backgroundColor = .clear
@@ -67,9 +67,9 @@ final class PopularCollectionView: UICollectionView {
             collectionView, indexPath, item in
             
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: PopularCell.id,
+                withReuseIdentifier: LargePerformanceCell.id,
                 for: indexPath
-            ) as? PopularCell else { return .init() }
+            ) as? LargePerformanceCell else { return .init() }
             
             cell.configure(item: item)
             return cell

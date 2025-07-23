@@ -1,5 +1,5 @@
 //
-//  SpotlightedTableCell.swift
+//  MediumPerformanceTableCell.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/7/25.
@@ -9,15 +9,15 @@ import UIKit
 
 import SnapKit
 
-final class SpotlightedTableCell: UITableViewCell {
+final class MediumPerformanceTableCell: UITableViewCell {
     
     // MARK: Properties
     
-    static let id = "SpotlightedTableCell"
+    static let id = "MediumPerformanceTableCell"
     
     // MARK: Components
     
-    private let mediumEventCardView = SpotlightedBaseCell()
+    private let mediumEventCardView = MediumPerformanceBaseCell()
     
     // MARK: Life Cycle
     
@@ -53,11 +53,11 @@ final class SpotlightedTableCell: UITableViewCell {
     
     // MARK: Public Configuration
 
-    func configure(item: SpotlightedCellItem?) {
+    func configure(item: MediumPerformanceCellItem?) {
         mediumEventCardView.configure(item: item)
     }
 }
 
 // MARK: - Preview
 
-#Preview { SpotlightedTableCell() }
+#Preview { MediumPerformanceTableCell() }

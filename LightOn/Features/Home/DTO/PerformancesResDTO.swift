@@ -19,12 +19,13 @@ struct PerformancesResDTO: Decodable {
         let startTime: String  // HH:mm:ss
         let isPaid: Bool
         let regionName: String
+        let artistName: String
         
-        func toPopular() -> PopularCellItem {
+        func toLarge() -> LargePerformanceCellItem {
             let startDate = startDate.replacingOccurrences(of: "-", with: ".")
             let startTime = startTime.prefix(5)
             
-            return PopularCellItem(
+            return LargePerformanceCellItem(
                 performanceID: id,
                 thumbnailPath: thumbnailImageUrl,
                 title: title,
@@ -34,8 +35,24 @@ struct PerformancesResDTO: Decodable {
             )
         }
         
-        func toRecommend() -> RecommendCellItem {
-            RecommendCellItem(
+        func toMedium() -> MediumPerformanceCellItem {
+            let startDate = startDate.replacingOccurrences(of: "-", with: ".")
+            let startTime = startTime.prefix(5)
+            
+            return MediumPerformanceCellItem(
+                performanceID: id,
+                thumbnailPath: thumbnailImageUrl,
+                artist: artistName,
+                title: title,
+                genre: genres.first ?? "알 수 없는 장르",
+                date: startDate,
+                time: String(startTime),
+                location: regionName
+            )
+        }
+        
+        func toSmall() -> SmallPerformanceCellItem {
+            SmallPerformanceCellItem(
                 performanceID: id,
                 thumbnailPath: thumbnailImageUrl,
                 title: title

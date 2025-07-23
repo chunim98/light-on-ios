@@ -1,5 +1,5 @@
 //
-//  PageControl.swift
+//  BannerPageControl.swift
 //  LightOn
 //
 //  Created by 신정욱 on 5/13/25.
@@ -10,8 +10,7 @@ import Combine
 
 import CombineCocoa
 
-extension BannerPageVC {
-final class PageControl: UIPageControl {
+final class BannerPageControl: UIPageControl {
     
     // MARK: Properties
     
@@ -43,7 +42,7 @@ final class PageControl: UIPageControl {
     // MARK: Defaults
     
     private func setupDefaults() { backgroundColor = .black.withAlphaComponent(0.2) }
-
+    
     // MARK: Layer Mask
     
     /// 좌우 패딩이 넓어서 마스킹 처리
@@ -59,11 +58,10 @@ final class PageControl: UIPageControl {
         layer.mask = mask
     }
 }
-}
 
 // MARK: Binders & Publishers
 
-extension BannerPageVC.PageControl {
+extension BannerPageControl {
     /// currentPagePublisher가 제대로 동작 안해서 있는 퍼블리셔
     var pageIndexPublisher: AnyPublisher<Int, Never> {
         self.controlEventPublisher(for: .valueChanged)
@@ -74,4 +72,4 @@ extension BannerPageVC.PageControl {
 
 // MARK: - Preview
 
-#Preview { BannerPageVC.PageControl() }
+#Preview { BannerPageControl() }
