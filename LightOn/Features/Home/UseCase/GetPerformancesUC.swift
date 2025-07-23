@@ -52,7 +52,6 @@ final class GetPerformancesUC {
             .switchToLatest()
             .share()
             .eraseToAnyPublisher()
-        
     }
     
     /// 주목받은 아티스트 공연 조회

@@ -15,6 +15,7 @@ final class PopularListVM {
     struct Input {
         let refreshEvent: AnyPublisher<Void, Never>
         let genreFilter: AnyPublisher<String, Never>
+        let selectedPerformanceID: AnyPublisher<Int, Never>
     }
     struct Output {
         /// 인기 공연 배열들
@@ -24,7 +25,6 @@ final class PopularListVM {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    
     private let getPerformancesUC: GetHashtagPerformancesUC
     
     // MARK: Initializer
@@ -48,6 +48,14 @@ final class PopularListVM {
                 return populars.filter { $0.hashtag == genreFilter }
             }
             .eraseToAnyPublisher()
+        
+        // 선택한 공연의 상세 페이지로 이동
+        input.selectedPerformanceID
+            .sink {
+                AppCoordinatorBus.shared.navigationEventSubject
+                    .send(.performanceDetail(id: $0))
+            }
+            .store(in: &cancellables)
         
         return Output(populars: filteredPopulars)
     }

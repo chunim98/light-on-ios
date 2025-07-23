@@ -36,4 +36,21 @@ final class GetHashtagPerformancesUC {
             .share()
             .eraseToAnyPublisher()
     }
+    
+    /// 최신 or 추천 공연 조회
+    func getRecentRecommendeds(
+        trigger: AnyPublisher<Void, Never>,
+        loginState: AnyPublisher<SessionManager.LoginState, Never>
+    ) -> AnyPublisher<[HashtagPerformanceCellItem], Never> {
+        trigger
+            .withLatestFrom(loginState) { _, state in state }
+            .compactMap { [weak self] in
+                $0 == .login    // 로그인일 경우만 추천공연
+                ? self?.repo.requestRecommended()
+                : self?.repo.requestRecent()
+            }
+            .switchToLatest()
+            .share()
+            .eraseToAnyPublisher()
+    }
 }

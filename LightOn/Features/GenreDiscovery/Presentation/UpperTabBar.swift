@@ -23,59 +23,14 @@ final class UpperTabBar: UIStackView {
     
     // MARK: Components
 
-    // 버튼이 2개 뿐이라, 하드코딩 해버림!
     private let popularButton = {
-        var textConfig = AttrConfiguration()
-        textConfig.letterSpacing = .zero
-        textConfig.alignment = .center
-        textConfig.lineHeight = 18.8
-        textConfig.text = "인기 공연"
-        
-        var config = UIButton.Configuration.plain()
-        config.contentInsets = .init(top: 13, bottom: 8)
-        config.background.backgroundColor = .clear
-        
-        let button = UIButton(configuration: config)
-        button.configurationUpdateHandler = {
-            if $0.isSelected {
-                textConfig.font = .pretendard.bold(17)
-                textConfig.foregroundColor = .brand
-            } else {
-                textConfig.font = .pretendard.regular(17)
-                textConfig.foregroundColor = .assistive
-            }
-            config.attributedTitle = .init(config: textConfig)
-            $0.configuration = config
-        }
+        let button = UpperTabBarButton()
+        button.setTitle("인기 공연")
         button.isSelected = true
         return button
     }()
     
-    private let recommendButton = {
-        var textConfig = AttrConfiguration()
-        textConfig.letterSpacing = .zero
-        textConfig.alignment = .center
-        textConfig.lineHeight = 18.8
-        textConfig.text = "추천 공연"
-        
-        var config = UIButton.Configuration.plain()
-        config.contentInsets = .init(top: 13, bottom: 8)
-        config.background.backgroundColor = .clear
-
-        let button = UIButton(configuration: config)
-        button.configurationUpdateHandler = {
-            if $0.isSelected {
-                textConfig.font = .pretendard.bold(17)
-                textConfig.foregroundColor = .brand
-            } else {
-                textConfig.font = .pretendard.regular(17)
-                textConfig.foregroundColor = .assistive
-            }
-            config.attributedTitle = .init(config: textConfig)
-            $0.configuration = config
-        }
-        return button
-    }()
+    private let recentRecommendButton = UpperTabBarButton()
     
     private let baseIndicator = {
         let view = LODivider(height: 2, color: .background)
@@ -110,7 +65,7 @@ final class UpperTabBar: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(popularButton)
-        addArrangedSubview(recommendButton)
+        addArrangedSubview(recentRecommendButton)
         
         addSubview(baseIndicator)
         baseIndicator.addSubview(tintIndicator)
@@ -130,7 +85,7 @@ final class UpperTabBar: UIStackView {
     private func setupBindings() {
         let selectedIndex = Publishers.Merge(
             popularButton.tapPublisher.map { _ in 0 },
-            recommendButton.tapPublisher.map { _ in 1 }
+            recentRecommendButton.tapPublisher.map { _ in 1 }
         ).eraseToAnyPublisher()
         
         // 내부 바인딩
@@ -142,6 +97,12 @@ final class UpperTabBar: UIStackView {
         selectedIndex
             .sink { [weak self] in self?.selectedIndexSubject.send($0) }
             .store(in: &cancellables)
+        
+        /// 로그인 상태별 버튼 타이틀
+        SessionManager.shared.$loginState
+            .map { $0 == .login ? "추천 공연" : "최신 공연" }
+            .sink { [weak self] in self?.recentRecommendButton.setTitle($0) }
+            .store(in: &cancellables)
     }
 }
 
@@ -152,7 +113,7 @@ extension UpperTabBar {
     func selectedIndexBinder(index: Int) {
         // 버튼 상태 갱신
         popularButton.isSelected = (index == 0)
-        recommendButton.isSelected = (index == 1)
+        recentRecommendButton.isSelected = (index == 1)
         
         // 인디케이터 바 위치 갱신
         let inset = (index == 0) ? 0 : bounds.width/2

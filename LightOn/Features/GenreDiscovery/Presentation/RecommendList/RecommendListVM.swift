@@ -14,18 +14,18 @@ final class RecommendListVM {
     
     struct Input {
         let refreshEvent: AnyPublisher<Void, Never>
+        let selectedPerformanceID: AnyPublisher<Int, Never>
     }
     struct Output {
-        /// 인기 공연 배열들
-        let recommendeds: AnyPublisher<[HashtagPerformanceCellItem], Never>
+        /// 최신 or 추천 공연 배열들
+        let recentRecommendeds: AnyPublisher<[HashtagPerformanceCellItem], Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    
     private let getPerformancesUC: GetHashtagPerformancesUC
-
+    
     // MARK: Initializer
     
     init(repo: any GenreDiscoveryRepo) {
@@ -35,10 +35,24 @@ final class RecommendListVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let recommendeds = getPerformancesUC.getRecommendeds(
-            trigger: input.refreshEvent
+        /// 로그인 상태
+        let loginState = SessionManager.shared.$loginState
+            .eraseToAnyPublisher()
+        
+        /// 최신 or 추천 공연 배열들
+        let recentRecommendeds = getPerformancesUC.getRecentRecommendeds(
+            trigger: input.refreshEvent,
+            loginState: loginState
         )
         
-        return Output(recommendeds: recommendeds)
+        // 선택한 공연의 상세 페이지로 이동
+        input.selectedPerformanceID
+            .sink {
+                AppCoordinatorBus.shared.navigationEventSubject
+                    .send(.performanceDetail(id: $0))
+            }
+            .store(in: &cancellables)
+        
+        return Output(recentRecommendeds: recentRecommendeds)
     }
 }

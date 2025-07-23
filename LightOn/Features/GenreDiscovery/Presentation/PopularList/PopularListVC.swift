@@ -60,13 +60,16 @@ final class PopularListVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        let selectedPerformance = tableView.selectedModelPublisher(
-            dataSource: tableView.diffableDataSource
-        )
+        /// 선택한 공연 아이디
+        let selectedPerformanceID = tableView
+            .selectedModelPublisher(dataSource: tableView.diffableDataSource)
+            .map { $0.id }
+            .eraseToAnyPublisher()
         
         let input = PopularListVM.Input(
             refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
-            genreFilter: tagsView.rootView.selectedGenrePublisher
+            genreFilter: tagsView.rootView.selectedGenrePublisher,
+            selectedPerformanceID: selectedPerformanceID
         )
         
         let output = vm.transform(input)
