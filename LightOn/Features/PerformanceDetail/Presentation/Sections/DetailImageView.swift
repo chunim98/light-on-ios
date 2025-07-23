@@ -16,7 +16,6 @@ final class DetailImageView: UIImageView {
             UIColor.white.withAlphaComponent(1.0).cgColor,
             UIColor.white.withAlphaComponent(0.0).cgColor,
         ]
-        
         let layer = CAGradientLayer()
         layer.startPoint = CGPoint(x: 0, y: 0)
         layer.endPoint = CGPoint(x: 0, y: 1)
@@ -45,7 +44,10 @@ final class DetailImageView: UIImageView {
     
     // MARK: Defaults
     
-    private func setupDefaults() { contentMode = .scaleAspectFill }
+    private func setupDefaults() {
+        contentMode = .scaleAspectFill
+        clipsToBounds = true
+    }
     
     // MARK: Layout
     

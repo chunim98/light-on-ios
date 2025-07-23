@@ -16,9 +16,9 @@ struct PerformanceDetailResDTO: Decodable {
     let regionName: String
     let type: PerformanceType
     let seats: [SeatType]
-    let totalSeatsCount: Int
-    let bookedSeatCount: Int
     let proofUrl: String
+    let isPaid: Bool
+    let fee: Int
     
     struct Info: Decodable {
         let title: String
@@ -29,19 +29,16 @@ struct PerformanceDetailResDTO: Decodable {
     }
     
     struct Artist: Decodable {
-        let id: Int?
+        let id: Int
         let name: String
         let description: String
-        let activityLocation: Int?
-        let genre: [String]?
-        let profileImage: String?
     }
     
     struct Schedule: Decodable {
-        let startDate: String
-        let endDate: String
-        let startTime: String  // "HH:mm:ss"
-        let endTime: String    // "HH:mm:ss"
+        let startDate: String // yyyy-MM-dd
+        let endDate: String   // yyyy-MM-dd
+        let startTime: String // HH:mm:ss
+        let endTime: String   // HH:mm:ss
     }
     
     enum PerformanceType: String, Decodable {
@@ -56,30 +53,38 @@ struct PerformanceDetailResDTO: Decodable {
     }
     
     func toDomain() -> PerformanceDetailInfo {
-        let type: PerformanceDetailInfo.PerformanceType = {
-            switch self.type {
-            case .concert: .concert
-            case .busking: .busking
-            }
-        }()
         let date = schedule.startDate.replacingOccurrences(of: "-", with: ".")
         let time = schedule.startTime.prefix(5)
-        let seatDescription = seats.reduce("") { "\($0)• \($1.rawValue)\n" }
+        
+        let type: PerformanceDetailInfo.PerformanceType
+        type = { switch self.type {
+        case .concert: return .concert
+        case .busking: return .busking
+        } }()
+        
+        let seatDescription = seats.reduce("") { pre, new in
+            let seatText = { switch new {
+            case .standing:     "스탠딩석"
+            case .freestyle:    "자율좌석"
+            case .assigned:     "지정좌석"
+            } }()
+            return "\(pre)• \(seatText)\n"
+        }
         
         return PerformanceDetailInfo(
-            type: type,
-            thumbnailPath: info.posterUrl,
-            genre: genres.first ?? "알 수 없는 장르",
-            title: info.title,
-            date: date,
-            time: String(time),
-            place: info.place,
-            price: "(무료? 유료?) 0000원",
-            description: info.description,
-            artistName: artists.first?.name ?? "알 수 없는 아티스트",
-            artistDescription: artists.first?.description ?? "소개가 없습니다.",
-            seatDescription: seatDescription,
-            noticeDescription: info.notice
+            type:               type,
+            thumbnailPath:      info.posterUrl,
+            genre:              genres.first ?? "알 수 없는 장르",
+            title:              info.title,
+            date:               date,
+            time:               String(time),
+            place:              info.place,
+            price:              "(무료? 유료?) 0000원",
+            description:        info.description,
+            artistName:         artists.first?.name ?? "알 수 없는 아티스트",
+            artistDescription:  artists.first?.description ?? "소개가 없습니다.",
+            seatDescription:    seatDescription,
+            noticeDescription:  info.notice
         )
     }
 }
