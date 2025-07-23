@@ -15,6 +15,7 @@ struct PerformanceDetailInfo {
     let date: String
     let time: String
     let place: String
+    let isPaid: Bool
     let price: String
     let description: String
     let artistName: String

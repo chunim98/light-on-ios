@@ -150,7 +150,7 @@ extension PerformanceDetailVC {
         // 유의사항
         noticeSection.descriptionLabel.config.text  = info.noticeDescription
         // 팁 풍선 표시여부
-        balloonView.isHidden                        = info.type == .concert
+        balloonView.isHidden                        = info.isPaid
     }
 }
 

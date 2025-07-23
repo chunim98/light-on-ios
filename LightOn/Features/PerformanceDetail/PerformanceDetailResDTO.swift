@@ -5,6 +5,7 @@
 //  Created by 신정욱 on 7/16/25.
 //
 
+import Foundation
 
 struct PerformanceDetailResDTO: Decodable {
     let id: Int
@@ -71,6 +72,13 @@ struct PerformanceDetailResDTO: Decodable {
             return "\(pre)• \(seatText)\n"
         }
         
+        let price = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            let formattedText = formatter.string(from: NSNumber(value: fee)) ?? "\(fee)"
+            return isPaid ? "유료 \(formattedText)원" : "무료 0원"
+        }()
+        
         return PerformanceDetailInfo(
             type:               type,
             thumbnailPath:      info.posterUrl,
@@ -79,7 +87,8 @@ struct PerformanceDetailResDTO: Decodable {
             date:               date,
             time:               String(time),
             place:              info.place,
-            price:              "(무료? 유료?) 0000원",
+            isPaid:             isPaid,
+            price:              price,
             description:        info.description,
             artistName:         artists.first?.name ?? "알 수 없는 아티스트",
             artistDescription:  artists.first?.description ?? "소개가 없습니다.",
