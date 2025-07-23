@@ -25,13 +25,6 @@ final class DetailNoticeSectionView: UIStackView {
         config.foregroundColor = .caption
         config.paragraphSpacing = 8
         config.lineHeight = 26
-        config.text =
-        """
-        • 슬리퍼, 운동복, 등산복 입장 불가
-        • 애완동물 입장 불가
-        • 외부 음식 반입 금지
-        """ // temp
-        
         let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label

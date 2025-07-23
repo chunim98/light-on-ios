@@ -46,9 +46,9 @@ final class DetailInfoSectionView: UIStackView {
     let openMapButton = {
         let button = LinkButton()
         button.setTitle(
-            title:  "지도 보기", // temp
-            font:   .pretendard.medium(14),
-            color:  .assistive
+            title: "지도 보기",
+            font: .pretendard.medium(14),
+            color: .assistive
         )
         return button
     }()
@@ -57,8 +57,6 @@ final class DetailInfoSectionView: UIStackView {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(14)
         config.foregroundColor = .brand
-        config.text = "어쿠스틱" // temp
-        
         let label = LOPaddingLabel(
             configuration: config,
             padding: .init(horizontal: 8, vertical: 4)
@@ -74,7 +72,6 @@ final class DetailInfoSectionView: UIStackView {
         config.lineBreakMode = .byTruncatingTail
         config.font = .pretendard.bold(23)
         config.foregroundColor = .loBlack
-        config.text = "[여의도] Light ON 홀리데이 버스킹버스킹" // temp
         return LOLabel(config: config)
     }()
     
@@ -82,7 +79,6 @@ final class DetailInfoSectionView: UIStackView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "2025.05.01" // temp
         return LOLabel(config: config)
     }()
     
@@ -90,7 +86,6 @@ final class DetailInfoSectionView: UIStackView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "17:00" // temp
         return LOLabel(config: config)
     }()
     
@@ -98,7 +93,6 @@ final class DetailInfoSectionView: UIStackView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "서울 영등포구 여의도동 81-8" // temp
         return LOLabel(config: config)
     }()
     
@@ -106,7 +100,6 @@ final class DetailInfoSectionView: UIStackView {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .caption
-        config.text = "(유료) 10,000원" // temp
         return LOLabel(config: config)
     }()
 

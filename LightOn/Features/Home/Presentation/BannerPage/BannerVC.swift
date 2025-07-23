@@ -25,15 +25,7 @@ final class BannerVC: UIViewController {
         .vertical, spacing: 8, inset: .init(horizontal: 30) + .init(bottom: 60)
     )
     
-    private let imageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        iv.backgroundColor = .xC5C5C5
-        iv.clipsToBounds = true
-        return iv
-    }()
-    
-    private let gradientView = GradientView()
+    private let imageView = BannerImageView()
     
     private let titleLabel = {
         var config = AttrConfiguration()
@@ -89,13 +81,11 @@ final class BannerVC: UIViewController {
     
     private func setupLayout() {
         view.addSubview(imageView)
-        view.addSubview(gradientView)
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(titleLabel)
         mainVStack.addArrangedSubview(descriptionLabel)
         
         imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        gradientView.snp.makeConstraints { $0.edges.equalTo(mainVStack) }
         mainVStack.snp.makeConstraints { $0.horizontalEdges.bottom.equalToSuperview() }
     }
 }

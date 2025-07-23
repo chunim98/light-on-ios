@@ -75,7 +75,6 @@ final class PerformanceDetailVC: BackButtonVC {
     
     private func setupDefaults() {
         navigationBar.titleLabel.config.text = "아티스트 공연 정보"
-        imageView.image = .debugBusking // temp
     }
     
     // MARK: Layout

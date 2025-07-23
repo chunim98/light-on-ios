@@ -13,16 +13,20 @@ import SnapKit
 final class BannerPageVC: UIPageViewController {
     
     // MARK: Properties
-
+    
     private var cancellables = Set<AnyCancellable>()
     
     private var pages = [UIViewController]()
     private var currentIndex: Int? { viewControllers?.first.flatMap { pages.firstIndex(of: $0) } }
     
+    // MARK: Outputs
+    
+    private let selectedIDSubject = PassthroughSubject<Int, Never>()
+    
     // MARK: Components
     
     private let pageControl = BannerPageControl()
-
+    
     // MARK: Life Cycle
     
     init() { super.init(transitionStyle: .scroll, navigationOrientation: .horizontal) }
@@ -86,12 +90,16 @@ extension BannerPageVC {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         pageControl.setNeedsDisplay()   // 반투명 배경 강제 렌더링
+        // 배너 퍼블리셔 바인딩
+        Publishers
+            .MergeMany(pages.map { ($0 as! BannerVC).tapWithIDPublsisher })
+            .sink { [weak self] in self?.selectedIDSubject.send($0) }
+            .store(in: &cancellables)
     }
     
     /// 선택한 공연 아이디 퍼블리셔
     var selectedIDPublisher: AnyPublisher<Int, Never> {
-        let ids = pages.map { ($0 as! BannerVC).tapWithIDPublsisher }
-        return Publishers.MergeMany(ids).eraseToAnyPublisher()
+        selectedIDSubject.eraseToAnyPublisher()
     }
 }
 

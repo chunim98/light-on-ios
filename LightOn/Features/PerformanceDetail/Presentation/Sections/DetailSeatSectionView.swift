@@ -25,13 +25,6 @@ final class DetailSeatSectionView: UIStackView {
         config.foregroundColor = .caption
         config.paragraphSpacing = 8
         config.lineHeight = 26
-        config.text =
-        """
-        • 유료공연 (R석:10,000원/S석:8,000원/A석:4,000원)
-        • 자율좌석
-        • 지정좌석
-        """ // temp
-        
         let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label

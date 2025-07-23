@@ -58,24 +58,12 @@ final class DetailArtistSectionView: UIStackView {
         config.foregroundColor = .loBlack
         config.paragraphSpacing = 8
         config.lineHeight = 23
-        config.text =
-        """
-        라이트 온은 홍익대학교 동아리 출신으로 이루어진 2022년 대뷔한 신입 밴드로 ‘일탈’이라는 곡을 통해 많은 팬덤을 보유한 4인조 밴드 그룹 입니다.
-        """ // temp
         let label = LOLabel(config: config)
         label.numberOfLines = .max
         return label
     }()
     
-    let artistButton = {
-        let button = LinkButton()
-        button.setTitle(
-            title:  "Light ON (라이트 온)", // temp
-            font:   .pretendard.regular(16),
-            color:  .brand
-        )
-        return button
-    }()
+    let artistButton = LinkButton()
     
     // MARK: Life Cycle
     
