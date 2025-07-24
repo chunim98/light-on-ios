@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 final class MyPageLoginInfoView: UIStackView {
-
+    
     // MARK: Components
     
     private let userInfoHStack = UIStackView(alignment: .center, spacing: 12)
@@ -55,7 +55,7 @@ final class MyPageLoginInfoView: UIStackView {
         config.font = .pretendard.bold(18)
         config.foregroundColor = .brand
         config.lineHeight = 17
-        config.text = "신정욱" // temp
+        config.text = "프로그라피" // temp
         return LOLabel(config: config)
     }()
     
@@ -64,7 +64,7 @@ final class MyPageLoginInfoView: UIStackView {
         config.font = .pretendard.regular(12)
         config.foregroundColor = .xA9A9A9
         config.lineHeight = 17
-        config.text = "chunnim98" // temp
+        config.text = "prograhpy10" // temp
         return LOLabel(config: config)
     }()
     

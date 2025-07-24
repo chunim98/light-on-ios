@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SafariServices
 
 import CombineCocoa
 import SnapKit
@@ -110,6 +111,33 @@ final class MyPageVC: NavigationBarVC {
         // 공연 등록 플로우 시작
         loginInfoView.performanceRegisterButton.tapPublisher
             .sink { [weak self] in self?.bindStartRegisterPerformanceFlow() }
+            .store(in: &cancellables)
+        
+        // 이용약관 페이지로 리디렉션
+        termsButton.tapPublisher
+            .sink { [weak self] in
+                let url = URL(string: "https://climbing-crop-26b.notion.site/229eaa9122bb80d587c6d186c37a2c79")!
+                let safariVC = SFSafariViewController(url: url)
+                self?.present(safariVC, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        // FAQ 페이지로 리디렉션
+        faqButton.tapPublisher
+            .sink { [weak self] in
+                let url = URL(string: "https://climbing-crop-26b.notion.site/FAQ-239eaa9122bb80bfb9b9edb50dd1936e")!
+                let safariVC = SFSafariViewController(url: url)
+                self?.present(safariVC, animated: true)
+            }
+            .store(in: &cancellables)
+        
+        // 아티스트 신청 페이지로 리디렉션
+        joinArtistButton.tapPublisher
+            .sink { [weak self] in
+                let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSc3WM6-wQSMTYBBYXxCN5loa8LcoRYR08Ju82IDSgchrhHE8g/viewform")!
+                let safariVC = SFSafariViewController(url: url)
+                self?.present(safariVC, animated: true)
+            }
             .store(in: &cancellables)
     }
 }
