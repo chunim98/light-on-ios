@@ -86,6 +86,4 @@ final class AppCoordinator: Coordinator {
         store(child: coord)
         coord.start()
     }
-    
-    deinit { print("AppCoordinator deinit") }
 }

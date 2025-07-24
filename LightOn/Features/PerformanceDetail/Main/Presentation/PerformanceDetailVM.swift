@@ -39,14 +39,26 @@ final class PerformanceDetailVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
+        let loginState = SessionManager.shared.$loginState
+        
         /// 공연 상세 정보
         let detailInfo = performanceDetailRepo
             .getPerformanceDetail(id: performanceID)
             .share()
             .eraseToAnyPublisher()
         
+        /// 로그인 상태가 아니라면, 먼저 로그인 화면으로 보내도록 필터링
+        let filteredApplyTap = input.applyTap
+            .withLatestFrom(loginState) { _, state in state }
+            .filter {
+                guard !($0 == .login) else { return true }
+                AppCoordinatorBus.shared.navigationEventSubject.send(.login)
+                return false
+            }
+            .eraseToAnyPublisher()
+        
         /// 공연 신청 이벤트(유료 공연 여부 포함)
-        let applyEventWithIsPaid = input.applyTap
+        let applyEventWithIsPaid = filteredApplyTap
             .withLatestFrom(detailInfo) { _, info in info.isPaid }
             .eraseToAnyPublisher()
         
