@@ -1,5 +1,5 @@
 //
-//  PaidAudienceCountModalVC.swift
+//  AudienceCountPickerModalVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/24/25.
@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PaidAudienceCountModalVC: PerformanceDetailBaseModalVC {
+final class AudienceCountPickerModalVC: BaseApplyModalVC {
     
     // MARK: Components
     
@@ -38,7 +38,7 @@ final class PaidAudienceCountModalVC: PerformanceDetailBaseModalVC {
 
 // MARK: Binders & Publishers
 
-extension PaidAudienceCountModalVC {
+extension AudienceCountPickerModalVC {
     /// 관객 수 퍼블리셔 (버튼 탭 이벤트와 전달됨)
     var audienceCountPublisher: AnyPublisher<Int, Never> {
         acceptButton.tapPublisher
@@ -49,4 +49,4 @@ extension PaidAudienceCountModalVC {
 
 // MARK: - Preview
 
-#Preview { PaidAudienceCountModalVC() }
+#Preview { AudienceCountPickerModalVC() }

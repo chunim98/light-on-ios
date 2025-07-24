@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class FreeApplyModalVC: PerformanceDetailBaseModalVC {
+final class FreeApplyModalVC: BaseApplyModalVC {
     
     // MARK: Life Cycle
     

@@ -1,5 +1,5 @@
 //
-//  PaidPaymentInfoModalVC.swift
+//  PaidApplyModalVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/24/25.
@@ -8,11 +8,11 @@
 import UIKit
 import Combine
 
-final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
+final class PaidApplyModalVC: BaseApplyModalVC {
     
     // MARK: Properties
     
-    private let vm: PaidPaymentInfoModalVM
+    private let vm: PaidApplyModalVM
     
     // MARK: Outputs
     
@@ -62,7 +62,7 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     
     // MARK: Life Cycle
     
-    init(vm: PaidPaymentInfoModalVM) {
+    init(vm: PaidApplyModalVM) {
         self.vm = vm
         super.init(nibName: nil, bundle: nil)
     }
@@ -95,7 +95,7 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = PaidPaymentInfoModalVM.Input(
+        let input = PaidApplyModalVM.Input(
             confirmTap: acceptButton.tapPublisher
         )
         
@@ -113,7 +113,7 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
 
 // MARK: Binders & Publishers
 
-extension PaidPaymentInfoModalVC {
+extension PaidApplyModalVC {
     /// 지불 정보 바인딩
     private func bindPaymentInfo(_ info: PaymentInfo) {
         let formatter = NumberFormatter()
@@ -149,10 +149,10 @@ extension PaidPaymentInfoModalVC {
 // MARK: - Preview
 
 #Preview {
-    let vm = PerformanceDetailDI.shared.makePaidPaymentInfoModalVM(
+    let vm = PerformanceDetailDI.shared.makePaidApplyModalVM(
         performanceID: -1,
         audienceCount: 1
     )
-    return PaidPaymentInfoModalVC(vm: vm)
+    return PaidApplyModalVC(vm: vm)
 }
 

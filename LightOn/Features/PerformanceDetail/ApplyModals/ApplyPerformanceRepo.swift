@@ -1,5 +1,5 @@
 //
-//  ApplyPaidPerformanceRepo.swift
+//  ApplyPerformanceRepo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/24/25.
@@ -9,7 +9,7 @@ import Combine
 
 import Alamofire
 
-protocol ApplyPaidPerformanceRepo {
+protocol ApplyPerformanceRepo {
     /// 결제 정보 요청
     func getPaymentInfo(
         performanceID: Int,
@@ -25,7 +25,7 @@ protocol ApplyPaidPerformanceRepo {
 
 // MARK: - Default
 
-final class DefaultApplyPaidPerformanceRepo: ApplyPaidPerformanceRepo {
+final class DefaultApplyPerformanceRepo: ApplyPerformanceRepo {
     func getPaymentInfo(
         performanceID: Int,
         audienceCount: Int

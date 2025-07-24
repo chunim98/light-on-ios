@@ -9,9 +9,9 @@ import Combine
 
 final class ApplyPerformanceUC {
     
-    private let repo: ApplyPaidPerformanceRepo
+    private let repo: ApplyPerformanceRepo
     
-    init(repo: ApplyPaidPerformanceRepo) {
+    init(repo: ApplyPerformanceRepo) {
         self.repo = repo
     }
     

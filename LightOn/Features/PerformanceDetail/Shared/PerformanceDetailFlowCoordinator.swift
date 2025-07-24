@@ -95,7 +95,7 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         vc.acceptTapPublisher
             .sink { [weak self] in
                 vc.dismiss(animated: true) {
-                    self?.showPaidAudienceCountModalVC()
+                    self?.showAudienceCountPickerModalVC()
                 }
             }
             .store(in: &cancellables)
@@ -107,8 +107,8 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
     }
     
     /// 유료공연 관객 수 선택 모달 표시
-    private func showPaidAudienceCountModalVC() {
-        let vc = PaidAudienceCountModalVC()
+    private func showAudienceCountPickerModalVC() {
+        let vc = AudienceCountPickerModalVC()
         
         // 취소 탭, 화면 닫기
         vc.cancelTapPublisher
@@ -119,7 +119,7 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         vc.audienceCountPublisher
             .sink { [weak self] audienceCount in
                 vc.dismiss(animated: true) {
-                    self?.showPaidPaymentInfoModalVC(audienceCount)
+                    self?.showPaidApplyModalVC(audienceCount)
                 }
             }
             .store(in: &cancellables)
@@ -130,12 +130,12 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
     }
     
     /// 지불 정보 확인 및 신청 모달 표시
-    private func showPaidPaymentInfoModalVC(_ audienceCount: Int) {
-        let vm = PerformanceDetailDI.shared.makePaidPaymentInfoModalVM(
+    private func showPaidApplyModalVC(_ audienceCount: Int) {
+        let vm = PerformanceDetailDI.shared.makePaidApplyModalVM(
             performanceID: performanceID,
             audienceCount: audienceCount
         )
-        let vc = PaidPaymentInfoModalVC(vm: vm)
+        let vc = PaidApplyModalVC(vm: vm)
         
         // 취소 탭, 화면 닫기
         vc.cancelTapPublisher

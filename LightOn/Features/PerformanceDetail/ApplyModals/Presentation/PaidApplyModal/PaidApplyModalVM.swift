@@ -1,5 +1,5 @@
 //
-//  PaidPaymentInfoModalVM.swift
+//  PaidApplyModalVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/24/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class PaidPaymentInfoModalVM {
+final class PaidApplyModalVM {
     
     // MARK: Input & Ouput
     
@@ -28,7 +28,7 @@ final class PaidPaymentInfoModalVM {
     private var cancellables = Set<AnyCancellable>()
     private let performanceID: Int
     private let audienceCount: Int
-    private let applyPerformanceRepo: ApplyPaidPerformanceRepo
+    private let applyPerformanceRepo: ApplyPerformanceRepo
     private let applyPerformanceUC: ApplyPerformanceUC
     
     // MARK: Initializer
@@ -36,7 +36,7 @@ final class PaidPaymentInfoModalVM {
     init(
         performanceID: Int,
         audienceCount: Int,
-        repo: ApplyPaidPerformanceRepo
+        repo: ApplyPerformanceRepo
     ) {
         self.performanceID = performanceID
         self.audienceCount = audienceCount

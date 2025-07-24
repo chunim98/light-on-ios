@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class PaidEntryModalVC: PerformanceDetailBaseModalVC {
+final class PaidEntryModalVC: BaseApplyModalVC {
     
     // MARK: Life Cycle
     

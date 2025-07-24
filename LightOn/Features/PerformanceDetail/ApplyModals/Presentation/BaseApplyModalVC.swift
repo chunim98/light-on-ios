@@ -1,5 +1,5 @@
 //
-//  PerformanceDetailBaseModalVC.swift
+//  BaseApplyModalVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/16/25.
@@ -10,7 +10,7 @@ import Combine
 
 import CombineCocoa
 
-class PerformanceDetailBaseModalVC: ModalVC {
+class BaseApplyModalVC: ModalVC {
     
     // MARK: Properties
     
@@ -73,7 +73,7 @@ class PerformanceDetailBaseModalVC: ModalVC {
 
 // MARK: Binders & Publishers
 
-extension PerformanceDetailBaseModalVC {
+extension BaseApplyModalVC {
     // 확인(승인) 버튼 탭 퍼블리셔
     var acceptTapPublisher: AnyPublisher<Void, Never> {
         acceptButton.tapPublisher
