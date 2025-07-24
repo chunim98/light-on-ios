@@ -39,7 +39,7 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         )
         let vc = PerformanceDetailVC(vm: vm)
         
-        // 뒤로가기 버튼 탭, 화면 닫기
+        // 뒤로가기 버튼 탭, 화면 닫기(코디네이터 해제)
         vc.backTapPublisher
             .sink { [weak self] in
                 guard let self else { return }
@@ -140,6 +140,17 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         // 취소 탭, 화면 닫기
         vc.cancelTapPublisher
             .sink { vc.dismiss(animated: true) }
+            .store(in: &cancellables)
+        
+        // 공연 신청 완료, 화면 닫기(코디네이터 해제)
+        vc.applicationCompleteEventPublisher
+            .sink { [weak self] in
+                guard let self else { return }
+                vc.dismiss(animated: true) {
+                    self.navigation.popViewController(animated: true)
+                    self.parent?.free(child: self)
+                }
+            }
             .store(in: &cancellables)
         
         // 화면 전환

@@ -14,6 +14,11 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     
     private let vm: PaidPaymentInfoModalVM
     
+    // MARK: Outputs
+    
+    /// 공연 신청 완료 이벤트 서브젝트
+    private let applicationCompleteEventSubject = PassthroughSubject<Void, Never>()
+    
     // MARK: Components
     
     private let infoLabel = {
@@ -90,11 +95,18 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = PaidPaymentInfoModalVM.Input()
+        let input = PaidPaymentInfoModalVM.Input(
+            confirmTap: acceptButton.tapPublisher
+        )
+        
         let output = vm.transform(input)
         
         output.paymentInfo
             .sink { [weak self] in self?.bindPaymentInfo($0) }
+            .store(in: &cancellables)
+        
+        output.applicationCompleteEvent
+            .sink { [weak self] in self?.applicationCompleteEventSubject.send(()) }
             .store(in: &cancellables)
     }
 }
@@ -126,6 +138,11 @@ extension PaidPaymentInfoModalVC {
             value: UIFont.pretendard.bold(14)!,
             segment: "공연 비용 : \(price)원"
         )
+    }
+    
+    /// 공연 신청 완료 이벤트 퍼블리셔
+    var applicationCompleteEventPublisher: AnyPublisher<Void, Never> {
+        applicationCompleteEventSubject.eraseToAnyPublisher()
     }
 }
 

@@ -12,10 +12,15 @@ final class PaidPaymentInfoModalVM {
     
     // MARK: Input & Ouput
     
-    struct Input {}
+    struct Input {
+        /// 최종 신청 버튼 탭
+        let confirmTap: AnyPublisher<Void, Never>
+    }
     struct Output {
         /// 지불 정보
         let paymentInfo: AnyPublisher<PaymentInfo, Never>
+        /// 공연 신청 완료 이벤트
+        let applicationCompleteEvent: AnyPublisher<Void, Never>
     }
     
     // MARK: Properties
@@ -24,6 +29,7 @@ final class PaidPaymentInfoModalVM {
     private let performanceID: Int
     private let audienceCount: Int
     private let applyPerformanceRepo: ApplyPaidPerformanceRepo
+    private let applyPerformanceUC: ApplyPerformanceUC
     
     // MARK: Initializer
     
@@ -35,6 +41,7 @@ final class PaidPaymentInfoModalVM {
         self.performanceID = performanceID
         self.audienceCount = audienceCount
         self.applyPerformanceRepo = repo
+        self.applyPerformanceUC = .init(repo: repo)
     }
     
     // MARK: Event Handling
@@ -49,6 +56,15 @@ final class PaidPaymentInfoModalVM {
             .share()
             .eraseToAnyPublisher()
         
-        return Output(paymentInfo: paymentInfo)
+        let applicationCompleteEvent = applyPerformanceUC.execute(
+            trigger: input.confirmTap,
+            performanceID: performanceID,
+            audienceCount: audienceCount
+        )
+        
+        return Output(
+            paymentInfo: paymentInfo,
+            applicationCompleteEvent: applicationCompleteEvent
+        )
     }
 }
