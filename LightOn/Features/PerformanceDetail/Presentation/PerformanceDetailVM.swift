@@ -18,8 +18,8 @@ final class PerformanceDetailVM {
     struct Output {
         /// 공연 상세 정보
         let detailInfo: AnyPublisher<PerformanceDetailInfo, Never>
-        /// 공연 신청 이벤트
-        let applyEvent: AnyPublisher<PerformanceDetailInfo, Never>
+        /// 공연 신청 이벤트(유료 공연 여부 포함)
+        let applyEventWithIsPaid: AnyPublisher<Bool, Never>
     }
     
     // MARK: Properties
@@ -39,15 +39,20 @@ final class PerformanceDetailVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
+        /// 공연 상세 정보
         let detailInfo = performanceDetailRepo
             .getPerformanceDetail(id: performanceID)
             .share()
             .eraseToAnyPublisher()
         
-        let applyEvent = input.applyTap
-            .withLatestFrom(detailInfo) { _, info in info }
+        /// 공연 신청 이벤트(유료 공연 여부 포함)
+        let applyEventWithIsPaid = input.applyTap
+            .withLatestFrom(detailInfo) { _, info in info.isPaid }
             .eraseToAnyPublisher()
         
-        return Output(detailInfo: detailInfo, applyEvent: applyEvent)
+        return Output(
+            detailInfo: detailInfo,
+            applyEventWithIsPaid: applyEventWithIsPaid
+        )
     }
 }

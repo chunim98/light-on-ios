@@ -38,8 +38,7 @@ final class AppCoordinator: Coordinator {
                     self?.startSignUpFlow()
                     
                 case .performanceDetail(id: let id):
-                    self?.showPerformanceDetailVC(id: id)
-                    
+                    self?.startPerformanceDetailFlow(id)
                 }
             }
             .store(in: &cancellables)
@@ -78,16 +77,14 @@ final class AppCoordinator: Coordinator {
         coord.start()
     }
     
-    private func showPerformanceDetailVC(id: Int) {
-        let vm = PerformanceDetailDI.shared.makePerformanceDetailVM(performanceID: id)
-        let vc = PerformanceDetailVC(vm: vm)
-        
-        // 뒤로가기 버튼 탭, 화면 닫기
-        vc.backTapPublisher
-            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
-            .store(in: &cancellables)
-        
-        navigation.pushViewController(vc, animated: true)
+    /// 공연 상세 코디네이터 시작
+    private func startPerformanceDetailFlow(_ performanceID: Int) {
+        let coord = PerformanceDetailFlowCoordinator(
+            navigation: navigation,
+            performanceID: performanceID
+        )
+        store(child: coord)
+        coord.start()
     }
     
     deinit { print("AppCoordinator deinit") }

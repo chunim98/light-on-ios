@@ -1,5 +1,5 @@
 //
-//  PerformanceApplyFlowCoordinator.swift
+//  PerformanceDetailFlowCoordinator.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/23/25.
@@ -8,28 +8,68 @@
 import UIKit
 import Combine
 
-final class PerformanceApplyFlowCoordinator: Coordinator {
+final class PerformanceDetailFlowCoordinator: Coordinator {
     
     // MARK: Properties
     
-    weak var parent: (any Coordinator)?     // 부모 없음(?)
+    weak var parent: (any Coordinator)?
     var children: [any Coordinator] = []    // 자식 없음
     let navigation: UINavigationController
     
     private var cancellables = Set<AnyCancellable>()
+    private let performanceID: Int
     
     // MARK: Life Cycle
     
-    init(navigation: UINavigationController) {
+    init(
+        navigation: UINavigationController,
+        performanceID: Int
+    ) {
         self.navigation = navigation
+        self.performanceID = performanceID
     }
     
     // MARK: Methods
     
-    func start() {} // 사용 안 함
+    func start() { showPerformanceDetailVC() }
+    
+    private func showPerformanceDetailVC() {
+        let vm = PerformanceDetailDI.shared.makePerformanceDetailVM(
+            performanceID: performanceID
+        )
+        let vc = PerformanceDetailVC(vm: vm)
+        
+        // 뒤로가기 버튼 탭, 화면 닫기
+        vc.backTapPublisher
+            .sink { [weak self] in
+                guard let self else { return }
+                navigation.popViewController(animated: true)
+                parent?.free(child: self)
+            }
+            .store(in: &cancellables)
+        
+        // 팝 제스쳐로 화면 닫은 경우, 코디네이터 해제만
+        vc.viewDidDisappearPublisher
+            .sink { [weak self] in
+                guard let self else { return }
+                parent?.free(child: self)
+            }
+            .store(in: &cancellables)
+        
+        // 공연 신청 탭, 신청 모달 열기
+        vc.applyEventPublisher
+            .sink { [weak self] isPaid in
+                isPaid
+                ? self?.showPaidEntryModalVC()
+                : self?.showFreeApplyModalVC()
+            }
+            .store(in: &cancellables)
+        
+        navigation.pushViewController(vc, animated: true)
+    }
     
     /// 무료공연 신청 모달 표시
-    func showFreeApplyModalVC() {
+    private func showFreeApplyModalVC() {
         let vc = FreeApplyModalVC()
         
         // 취소 탭, 화면 닫기
@@ -43,7 +83,7 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
     }
     
     /// 유로공연 신청 엔트리 모달 표시
-    func showPaidEntryModalVC() {
+    private func showPaidEntryModalVC() {
         let vc = PaidEntryModalVC()
         
         // 취소 탭, 화면 닫기
@@ -54,7 +94,9 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
         // 다음 탭, 관객 수 선택 화면 이동
         vc.acceptTapPublisher
             .sink { [weak self] in
-                vc.dismiss(animated: true) { self?.showPaidAudienceCountModalVC() }
+                vc.dismiss(animated: true) {
+                    self?.showPaidAudienceCountModalVC()
+                }
             }
             .store(in: &cancellables)
         
@@ -65,7 +107,7 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
     }
     
     /// 유료공연 관객 수 선택 모달 표시
-    func showPaidAudienceCountModalVC() {
+    private func showPaidAudienceCountModalVC() {
         let vc = PaidAudienceCountModalVC()
         
         // 취소 탭, 화면 닫기
@@ -74,9 +116,11 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
             .store(in: &cancellables)
         
         // 다음 탭, 지불 정보 확인 및 신청 모달 표시
-        vc.acceptTapPublisher
-            .sink { [weak self] in
-                vc.dismiss(animated: true) { self?.showPaidPaymentInfoModalVC() }
+        vc.audienceCountPublisher
+            .sink { [weak self] audienceCount in
+                vc.dismiss(animated: true) {
+                    self?.showPaidPaymentInfoModalVC(audienceCount)
+                }
             }
             .store(in: &cancellables)
         
@@ -86,8 +130,12 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
     }
     
     /// 지불 정보 확인 및 신청 모달 표시
-    func showPaidPaymentInfoModalVC() {
-        let vc = PaidPaymentInfoModalVC()
+    private func showPaidPaymentInfoModalVC(_ audienceCount: Int) {
+        let vm = PerformanceDetailDI.shared.makePaidPaymentInfoModalVM(
+            performanceID: performanceID,
+            audienceCount: audienceCount
+        )
+        let vc = PaidPaymentInfoModalVC(vm: vm)
         
         // 취소 탭, 화면 닫기
         vc.cancelTapPublisher
@@ -99,5 +147,5 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
         navigation.present(vc, animated: true)
     }
     
-    deinit { print("PerformanceApplyFlowCoordinator deinit") }
+    deinit { print("PerformanceDetailFlowCoordinator deinit") }
 }

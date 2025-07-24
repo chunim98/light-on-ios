@@ -12,6 +12,10 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     
     // MARK: Properties
     
+    private let vm: PaidPaymentInfoModalVM
+    
+    // MARK: Components
+    
     private let infoLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(14)
@@ -53,11 +57,20 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
     
     // MARK: Life Cycle
     
+    init(vm: PaidPaymentInfoModalVM) {
+        self.vm = vm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
-        setPaymentDescription(accountHolder: "아이유", accountNumber: "000-0000-11-323434", amount: 1190000) // temp
+        setupBindings()
     }
     
     // MARK: Defaults
@@ -74,24 +87,37 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
         contentVStack.insertArrangedSubview(captionLabel, at: 5)
     }
     
-    // MARK: Public Configuration
+    // MARK: Bindings
     
-    /// 지불 정보 레이블 구성
-    func setPaymentDescription(
-        accountHolder: String,
-        accountNumber: String,
-        amount: Int
-    ) {
+    private func setupBindings() {
+        let input = PaidPaymentInfoModalVM.Input()
+        let output = vm.transform(input)
+        
+        output.paymentInfo
+            .sink { [weak self] in self?.bindPaymentInfo($0) }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension PaidPaymentInfoModalVC {
+    /// 지불 정보 바인딩
+    private func bindPaymentInfo(_ info: PaymentInfo) {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         
         let price = formatter.string(
-            from: NSNumber(value: amount)
-        ) ?? "\(amount)"
+            from: NSNumber(value: info.amount)
+        ) ?? "\(info.amount)"
+        
+        let holder = info.accountHolder ?? ""
+        let number = info.accountNumber ?? ""
+        let bank = info.bank.map { "(\($0))" } ?? ""
         
         infoLabel.config.text = """
-        • 예금주 : \(accountHolder)
-        • 계좌번호 : \(accountNumber)
+        • 예금주 : \(holder)
+        • 계좌번호 : \(number)\(bank)
         • 공연 비용 : \(price)원
         """
         
@@ -105,4 +131,11 @@ final class PaidPaymentInfoModalVC: PerformanceDetailBaseModalVC {
 
 // MARK: - Preview
 
-#Preview { PaidPaymentInfoModalVC() }
+#Preview {
+    let vm = PerformanceDetailDI.shared.makePaidPaymentInfoModalVM(
+        performanceID: -1,
+        audienceCount: 1
+    )
+    return PaidPaymentInfoModalVC(vm: vm)
+}
+

@@ -20,4 +20,15 @@ final class PerformanceDetailDI {
             repo: DefaultPerformanceDetailRepo()
         )
     }
+    
+    func makePaidPaymentInfoModalVM(
+        performanceID: Int,
+        audienceCount: Int
+    ) -> PaidPaymentInfoModalVM {
+        PaidPaymentInfoModalVM(
+            performanceID: performanceID,
+            audienceCount: audienceCount,
+            repo: DefaultApplyPaidPerformanceRepo()
+        )
+    }
 }

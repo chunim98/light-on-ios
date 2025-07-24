@@ -18,7 +18,11 @@ final class PerformanceDetailVC: BackButtonVC {
     
     private var cancellables = Set<AnyCancellable>()
     private let vm: PerformanceDetailVM
-    private var applyFlowCoord: PerformanceApplyFlowCoordinator?
+    
+    // MARK: Outputs
+    
+    /// 공연 신청 이벤트 서브젝트 (유료 공연 여부 포함)
+    private let applyEventSubject = PassthroughSubject<Bool, Never>()
     
     // MARK: Containers
     
@@ -131,8 +135,8 @@ final class PerformanceDetailVC: BackButtonVC {
             .sink { [weak self] in self?.bindDetailInfo($0) }
             .store(in: &cancellables)
         
-        output.applyEvent
-            .sink { [weak self] in self?.bindStartApplyFlow($0) }
+        output.applyEventWithIsPaid
+            .sink { [weak self] in self?.applyEventSubject.send($0) }
             .store(in: &cancellables)
     }
 }
@@ -147,12 +151,12 @@ extension PerformanceDetailVC {
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: thumbnailURL)
         // 기본 정보
-        infoSection.genreTagLabel.config.text       = info.genre
-        infoSection.titleLabel.config.text          = info.title
-        infoSection.dateLabel.config.text           = info.date
-        infoSection.timeLabel.config.text           = info.time
-        infoSection.placeLabel.config.text          = info.place
-        infoSection.priceLabel.config.text          = info.price
+        infoSection.genreTagLabel.config.text   = info.genre
+        infoSection.titleLabel.config.text      = info.title
+        infoSection.dateLabel.config.text       = info.date
+        infoSection.timeLabel.config.text       = info.time
+        infoSection.placeLabel.config.text      = info.place
+        infoSection.priceLabel.config.text      = info.price
         // 아티스트 소개
         descriptionSection.descriptionLabel.config.text = info.description
         // 아티스트 정보
@@ -170,12 +174,9 @@ extension PerformanceDetailVC {
         balloonView.isHidden                        = info.isPaid
     }
     
-    /// 공연 신청 흐름 시작 바인딩
-    private func bindStartApplyFlow(_ info: PerformanceDetailInfo) {
-        applyFlowCoord = .init(navigation: navigationController!)
-        info.isPaid // 유료, 무료 여부에 따라 다른 모달 표시
-        ? applyFlowCoord?.showPaidEntryModalVC()
-        : applyFlowCoord?.showFreeApplyModalVC()
+    /// 공연 신청 이벤트 퍼블리셔 (유료 공연 여부 포함)
+    var applyEventPublisher: AnyPublisher<Bool, Never> {
+        applyEventSubject.eraseToAnyPublisher()
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-class NavigationBarVC: UIViewController {
+class NavigationBarVC: CombineVC {
     
     // MARK: Properties
     

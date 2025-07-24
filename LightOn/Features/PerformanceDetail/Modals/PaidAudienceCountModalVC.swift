@@ -36,6 +36,17 @@ final class PaidAudienceCountModalVC: PerformanceDetailBaseModalVC {
     }
 }
 
+// MARK: Binders & Publishers
+
+extension PaidAudienceCountModalVC {
+    /// 관객 수 퍼블리셔 (버튼 탭 이벤트와 전달됨)
+    var audienceCountPublisher: AnyPublisher<Int, Never> {
+        acceptButton.tapPublisher
+            .withLatestFrom(pickerView.countPublisher) { _, count in count }
+            .eraseToAnyPublisher()
+    }
+}
+
 // MARK: - Preview
 
 #Preview { PaidAudienceCountModalVC() }
