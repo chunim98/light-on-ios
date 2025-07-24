@@ -50,6 +50,7 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
             }
             .store(in: &cancellables)
         
+#warning("로그인 창 뜨면 코디네이터가 죽어버림")
         // 팝 제스쳐로 화면 닫은 경우, 코디네이터 해제만
         vc.viewDidDisappearPublisher
             .sink { [weak self] in
