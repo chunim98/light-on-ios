@@ -28,7 +28,7 @@ final class PaidApplyModalVM {
     private var cancellables = Set<AnyCancellable>()
     private let performanceID: Int
     private let audienceCount: Int
-    private let applyPerformanceRepo: ApplyPerformanceRepo
+    private let getPaymentInfoUC: GetPaymentInfoUC
     private let applyPerformanceUC: ApplyPerformanceUC
     
     // MARK: Initializer
@@ -40,7 +40,7 @@ final class PaidApplyModalVM {
     ) {
         self.performanceID = performanceID
         self.audienceCount = audienceCount
-        self.applyPerformanceRepo = repo
+        self.getPaymentInfoUC = .init(repo: repo)
         self.applyPerformanceUC = .init(repo: repo)
     }
     
@@ -48,14 +48,12 @@ final class PaidApplyModalVM {
     
     func transform(_ input: Input) -> Output {
         /// 지불 정보
-        let paymentInfo = applyPerformanceRepo
-            .getPaymentInfo(
-                performanceID: performanceID,
-                audienceCount: audienceCount
-            )
-            .share()
-            .eraseToAnyPublisher()
+        let paymentInfo = getPaymentInfoUC.execute(
+            performanceID: performanceID,
+            audienceCount: audienceCount
+        )
         
+        /// 공연 신청 완료 이벤트
         let applicationCompleteEvent = applyPerformanceUC.execute(
             trigger: input.confirmTap,
             performanceID: performanceID,
