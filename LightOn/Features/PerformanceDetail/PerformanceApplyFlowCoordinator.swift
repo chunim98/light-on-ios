@@ -73,8 +73,29 @@ final class PerformanceApplyFlowCoordinator: Coordinator {
             .sink { vc.dismiss(animated: true) }
             .store(in: &cancellables)
         
+        // 다음 탭, 지불 정보 확인 및 신청 모달 표시
+        vc.acceptTapPublisher
+            .sink { [weak self] in
+                vc.dismiss(animated: true) { self?.showPaidPaymentInfoModalVC() }
+            }
+            .store(in: &cancellables)
+        
         // 화면 전환
         vc.sheetPresentationController?.detents = [.custom { _ in 281.6 }]  // 사전 계산 높이
+        navigation.present(vc, animated: true)
+    }
+    
+    /// 지불 정보 확인 및 신청 모달 표시
+    func showPaidPaymentInfoModalVC() {
+        let vc = PaidPaymentInfoModalVC()
+        
+        // 취소 탭, 화면 닫기
+        vc.cancelTapPublisher
+            .sink { vc.dismiss(animated: true) }
+            .store(in: &cancellables)
+        
+        // 화면 전환
+        vc.sheetPresentationController?.detents = [.custom { _ in 386.6 }]  // 사전 계산 높이
         navigation.present(vc, animated: true)
     }
     

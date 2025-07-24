@@ -15,7 +15,7 @@ final class AudienceCountPickerView: UIView {
     
     // MARK: Properties
     
-    private let numbers = Array(1...99)
+    private let numbers = Array(1...10)
     
     // MARK: Outputs
     

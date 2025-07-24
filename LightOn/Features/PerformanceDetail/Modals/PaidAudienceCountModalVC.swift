@@ -22,12 +22,6 @@ final class PaidAudienceCountModalVC: PerformanceDetailBaseModalVC {
         setupLayout()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        view.layoutIfNeeded()
-        print(contentVStack.frame.height)
-    }
-    
     // MARK: Defaults
     
     private func setupDefaults() {
