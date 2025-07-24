@@ -29,9 +29,11 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         self.performanceID = performanceID
     }
     
-    // MARK: Methods
+    // MARK: Start
     
     func start() { showPerformanceDetailVC() }
+    
+    // MARK: PerformanceDetailVC
     
     private func showPerformanceDetailVC() {
         let vm = PerformanceDetailDI.shared.makePerformanceDetailVM(
@@ -68,19 +70,37 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         navigation.pushViewController(vc, animated: true)
     }
     
+    // MARK: FreeApplyModalVC
+    
     /// 무료공연 신청 모달 표시
     private func showFreeApplyModalVC() {
-        let vc = FreeApplyModalVC()
+        let vm = PerformanceDetailDI.shared.makeFreeApplyModalVM(
+            performanceID: performanceID
+        )
+        let vc = FreeApplyModalVC(vm: vm)
         
         // 취소 탭, 화면 닫기
         vc.cancelTapPublisher
             .sink { vc.dismiss(animated: true) }
             .store(in: &cancellables)
         
+        // 공연 신청 완료, 화면 닫기(코디네이터 해제)
+        vc.applicationCompleteEventPublisher
+            .sink { [weak self] in
+                guard let self else { return }
+                vc.dismiss(animated: true) {
+                    self.navigation.popViewController(animated: true)
+                    self.parent?.free(child: self)
+                }
+            }
+            .store(in: &cancellables)
+        
         // 화면 전환
         vc.sheetPresentationController?.detents = [.custom { _ in 247.6 }]  // 사전 계산 높이
         navigation.present(vc, animated: true)
     }
+    
+    // MARK: PaidEntryModalVC
     
     /// 유로공연 신청 엔트리 모달 표시
     private func showPaidEntryModalVC() {
@@ -106,6 +126,8 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         navigation.present(vc, animated: true)
     }
     
+    // MARK: AudienceCountPickerModalVC
+    
     /// 유료공연 관객 수 선택 모달 표시
     private func showAudienceCountPickerModalVC() {
         let vc = AudienceCountPickerModalVC()
@@ -128,6 +150,8 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         vc.sheetPresentationController?.detents = [.custom { _ in 281.6 }]  // 사전 계산 높이
         navigation.present(vc, animated: true)
     }
+    
+    // MARK: PaidApplyModalVC
     
     /// 지불 정보 확인 및 신청 모달 표시
     private func showPaidApplyModalVC(_ audienceCount: Int) {

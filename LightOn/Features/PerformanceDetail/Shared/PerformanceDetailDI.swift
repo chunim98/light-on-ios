@@ -31,4 +31,11 @@ final class PerformanceDetailDI {
             repo: DefaultApplyPerformanceRepo()
         )
     }
+    
+    func makeFreeApplyModalVM(performanceID: Int) -> FreeApplyModalVM {
+        FreeApplyModalVM(
+            performanceID: performanceID,
+            repo: DefaultApplyPerformanceRepo()
+        )
+    }
 }

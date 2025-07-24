@@ -150,7 +150,7 @@ final class HomeVC: NavigationBarVC {
             .store(in: &cancellables)
         
         output.populars
-            .sink { [weak self] in self?.popularCollectionView.setSnapshot(items: Array(Set($0))) } // temp
+            .sink { [weak self] in self?.popularCollectionView.setSnapshot(items: $0) }
             .store(in: &cancellables)
         
         output.spotlighteds
