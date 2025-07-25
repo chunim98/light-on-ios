@@ -19,6 +19,7 @@ class CombineVC: UIViewController {
     private let viewDidAppearSubject            = PassthroughSubject<Void, Never>()
     private let viewWillDisappearSubject        = PassthroughSubject<Void, Never>()
     private let viewDidDisappearSubject         = PassthroughSubject<Void, Never>()
+    private let deallocatedSubject              = PassthroughSubject<Void, Never>()
     
     // MARK: Life Cycle
     
@@ -56,6 +57,8 @@ class CombineVC: UIViewController {
         super.viewDidDisappear(animated)
         viewDidDisappearSubject.send(())
     }
+    
+    deinit { deallocatedSubject.send(()) }
 }
 
 extension CombineVC {
@@ -92,5 +95,10 @@ extension CombineVC {
     /// viewDidDisappear 이벤트 퍼블리셔
     var viewDidDisappearPublisher: AnyPublisher<Void, Never> {
         viewDidDisappearSubject.eraseToAnyPublisher()
+    }
+    
+    /// deinit 이벤트 퍼블리셔
+    var deallocatedPublisher: AnyPublisher<Void, Never> {
+        deallocatedSubject.eraseToAnyPublisher()
     }
 }
