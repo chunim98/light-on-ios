@@ -12,7 +12,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-class ModalVC: UIViewController {
+class ModalVC: CombineVC {
     
     // MARK: Components
     

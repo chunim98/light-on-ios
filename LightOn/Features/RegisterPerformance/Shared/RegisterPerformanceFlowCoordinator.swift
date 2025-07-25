@@ -46,7 +46,7 @@ final class RegisterPerformanceFlowCoordinator: Coordinator {
         // 버스킹 탭, 화면 이동
         vc.buskingTapPublisher
             .sink { [weak self] in
-                vc.dismiss(animated: true) { self?.showRegisterPerformanceVC() }
+                vc.dismiss(animated: true) { self?.showRegisterBuskingVC() }
             }
             .store(in: &cancellables)
         
@@ -56,6 +56,19 @@ final class RegisterPerformanceFlowCoordinator: Coordinator {
     
     private func showRegisterPerformanceVC() {
         let vc = RegisterPerformanceVC()
+        
+        // 뒤로가기 탭, 화면 닫기
+        vc.backTapPublisher
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        // 화면 전환
+        tabBar?.setTabBarHidden(true)   // 모달 내려간 뒤, 숨기기
+        navigation.pushViewController(vc, animated: true)
+    }
+    
+    private func showRegisterBuskingVC() {
+        let vc = RegisterBuskingVC()
         
         // 뒤로가기 탭, 화면 닫기
         vc.backTapPublisher

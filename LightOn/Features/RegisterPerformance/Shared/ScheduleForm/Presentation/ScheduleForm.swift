@@ -18,16 +18,20 @@ final class ScheduleForm: BaseForm {
     private var cancellables = Set<AnyCancellable>()
     private let vm = ScheduleFormVM()
     
+    private weak var presenter: UIViewController?
+    
     // MARK: Outputs
     
     /// 선택한 날짜, 시간을 외부 방출하는 서브젝트
     private let stateSubject = PassthroughSubject<ScheduleFormState, Never>()
     
-    // MARK: Components
+    // MARK: Modals
     
-    let datePickerModalVC = DatePickerModalVC()                     // 컴포넌트 취급
-    let startTimePickerModalVC = TimePickerModalVC(config: .start)  // 컴포넌트 취급
-    let endTimePickerModalVC = TimePickerModalVC(config: .end)      // 컴포넌트 취급
+    private let datePickerModalVC = DatePickerModalVC()                     // 컴포넌트 취급
+    private let startTimePickerModalVC = TimePickerModalVC(config: .start)  // 컴포넌트 취급
+    private let endTimePickerModalVC = TimePickerModalVC(config: .end)      // 컴포넌트 취급
+    
+    // MARK: Containers
     
     private let dateHStack = {
         var config = AttrConfiguration()
@@ -63,7 +67,9 @@ final class ScheduleForm: BaseForm {
         return sv
     }()
     
-    let startDateButton = {
+    // MARK: Buttons
+    
+    private let startDateButton = {
         let button = ScheduleFormButton()
         button.iconView.image = .calendar
         button._titleLabel.config.text = "00/00/00"
@@ -71,7 +77,7 @@ final class ScheduleForm: BaseForm {
         return button
     }()
     
-    let endDateButton = {
+    private let endDateButton = {
         let button = ScheduleFormButton()
         button.iconView.image = .calendar
         button._titleLabel.config.text = "00/00/00"
@@ -79,7 +85,7 @@ final class ScheduleForm: BaseForm {
         return button
     }()
     
-    let startTimeButton = {
+    private let startTimeButton = {
         let button = ScheduleFormButton()
         button.iconView.image = .timer
         button._titleLabel.config.text = "00:00"
@@ -87,7 +93,7 @@ final class ScheduleForm: BaseForm {
         return button
     }()
     
-    let endTimeButton = {
+    private let endTimeButton = {
         let button = ScheduleFormButton()
         button.iconView.image = .timer
         button._titleLabel.config.text = "00:00"
@@ -97,8 +103,9 @@ final class ScheduleForm: BaseForm {
     
     // MARK: Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(presenter: UIViewController?) {
+        self.presenter = presenter
+        super.init(frame: .zero)
         setupDefaults()
         setupLayout()
         setupBindings()
@@ -149,6 +156,19 @@ final class ScheduleForm: BaseForm {
                 self?.bindState(state: $0)
             }
             .store(in: &cancellables)
+        
+        Publishers
+            .Merge(startDateButton.tapPublisher, endDateButton.tapPublisher)
+            .sink { [weak self] in self?.bindShowDatePickerModal() }
+            .store(in: &cancellables)
+        
+        startTimeButton.tapPublisher
+            .sink { [weak self] in self?.bindShowStartTimePickerModalVC() }
+            .store(in: &cancellables)
+        
+        endTimeButton.tapPublisher
+            .sink { [weak self] in self?.bindShowEndTimePickerModalVC() }
+            .store(in: &cancellables)
     }
 }
 
@@ -177,6 +197,27 @@ extension ScheduleForm {
         endDateButton.setStyle(style: state.dateButtonsStyle)
         startTimeButton.setStyle(style: state.startTimeButtonStyle)
         endTimeButton.setStyle(style: state.endTimeButtonStyle)
+    }
+    
+    /// 날짜 피커 모달 표시
+    private func bindShowDatePickerModal() {
+        let vc = datePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 464.6 }]  // 사전 계산한 모달 높이
+        presenter?.present(vc, animated: true)
+    }
+    
+    /// 시작 시간 피커 모달 표시
+    private func bindShowStartTimePickerModalVC() {
+        let vc = startTimePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
+        presenter?.present(vc, animated: true)
+    }
+    
+    /// 종료 시간 피커 모달 표시
+    private func bindShowEndTimePickerModalVC() {
+        let vc = endTimePickerModalVC
+        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
+        presenter?.present(vc, animated: true)
     }
     
     /// 시작일 퍼블리셔
@@ -216,4 +257,4 @@ extension ScheduleForm {
 
 // MARK: - Preview
 
-#Preview { ScheduleForm() }
+#Preview { ScheduleForm(presenter: nil) }

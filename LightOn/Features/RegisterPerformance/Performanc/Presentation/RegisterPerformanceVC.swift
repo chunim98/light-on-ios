@@ -66,7 +66,7 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
-    private let scheduleForm = ScheduleForm()
+    private lazy var scheduleForm = ScheduleForm(presenter: self)
     
     private let addressForm = {
         let form = AddressForm()
@@ -86,7 +86,12 @@ final class RegisterPerformanceVC: BackButtonVC {
     
     private let paymentContainer = PaymentFormContainerView()
     
-    private let posterUploadForm = PosterUploadForm()
+    private lazy var posterUploadForm = {
+        let form = ImageUploadForm(presenter: self)
+        form.titleLabel.config.text = "공연 홍보 이미지"
+        form.textField.setPlaceHolder("공연 포스터 및 사진 업로드")
+        return form
+    }()
     
     private let artistNameForm = {
         let form = CounterTextForm(maxByte: 20)
@@ -117,7 +122,12 @@ final class RegisterPerformanceVC: BackButtonVC {
         return form
     }()
     
-    private let documentUploadForm = DocumentUploadForm()
+    private lazy var documentUploadForm = {
+        let form = ImageUploadForm(presenter: self)
+        form.titleLabel.config.text = "공연 진행 증빙자료"
+        form.textField.setPlaceHolder("파일을 업로드 해주세요")
+        return form
+    }()
     
     // MARK: Buttons
     
@@ -208,7 +218,10 @@ final class RegisterPerformanceVC: BackButtonVC {
         checkboxHStack.addArrangedSubview(assignedCheckbox)
         checkboxHStack.addArrangedSubview(LOSpacer())
         
-        scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
+        scrollView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(contentLayoutGuide)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+        }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         
         // 오버레이 뷰 레이아웃
@@ -224,21 +237,6 @@ final class RegisterPerformanceVC: BackButtonVC {
         contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
             .store(in: &cancellables)
-        
-        Publishers.Merge(
-            scheduleForm.startDateButton.tapPublisher,
-            scheduleForm.endDateButton.tapPublisher
-        )
-        .sink { [weak self] in self?.bindShowDatePickerModal() }
-        .store(in: &cancellables)
-        
-        scheduleForm.startTimeButton.tapPublisher
-            .sink { [weak self] in self?.bindShowStartTimePickerModalVC() }
-            .store(in: &cancellables)
-        
-        scheduleForm.endTimeButton.tapPublisher
-            .sink { [weak self] in self?.bindShowEndTimePickerModalVC() }
-            .store(in: &cancellables)
     }
 }
 
@@ -252,27 +250,6 @@ extension RegisterPerformanceVC {
         genreForm.dropdown.dismiss(gesture)
         paymentContainer.accountForm.bankDropdown.dismiss(gesture)
         view.endEditing(true)   // 키보드 닫기
-    }
-    
-    /// 날짜 피커 모달 표시
-    private func bindShowDatePickerModal() {
-        let vc = scheduleForm.datePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 464.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
-    }
-    
-    /// 시작 시간 피커 모달 표시
-    private func bindShowStartTimePickerModalVC() {
-        let vc = scheduleForm.startTimePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
-    }
-    
-    /// 종료 시간 피커 모달 표시
-    private func bindShowEndTimePickerModalVC() {
-        let vc = scheduleForm.endTimePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
     }
 }
 

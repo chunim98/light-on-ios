@@ -16,7 +16,7 @@ final class RegisterBuskingVC: BackButtonVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let vm = RegisterBuskingVM()
+    private let vm = RegisterPerformanceDI.shared.makeRegisterBuskingVM()
     
     // MARK: Alerts
     
@@ -70,7 +70,7 @@ final class RegisterBuskingVC: BackButtonVC {
         return form
     }()
     
-    private let scheduleForm = ScheduleForm()
+    private lazy var scheduleForm = ScheduleForm(presenter: self)
     
     private let addressForm = {
         let form = AddressForm()
@@ -88,7 +88,12 @@ final class RegisterBuskingVC: BackButtonVC {
         return form
     }()
     
-    private let posterUploadForm = PosterUploadForm()
+    private lazy var posterUploadForm = {
+        let form = ImageUploadForm(presenter: self)
+        form.titleLabel.config.text = "공연 홍보 이미지"
+        form.textField.setPlaceHolder("공연 포스터 및 사진 업로드")
+        return form
+    }()
     
     private let artistNameForm = {
         let form = CounterTextForm(maxByte: 20)
@@ -111,7 +116,12 @@ final class RegisterBuskingVC: BackButtonVC {
         return form
     }()
     
-    private let documentUploadForm = DocumentUploadForm()
+    private lazy var documentUploadForm = {
+        let form = ImageUploadForm(presenter: self)
+        form.titleLabel.config.text = "공연 진행 증빙자료"
+        form.textField.setPlaceHolder("파일을 업로드 해주세요")
+        return form
+    }()
     
     // MARK: Life Cycle
     
@@ -131,42 +141,41 @@ final class RegisterBuskingVC: BackButtonVC {
     // MARK: Layout
     
     private func setupLayout() {
-        let contentVStackSubViews = [
-            LOSpacer(20),
-            performanceInfoTitleLabel,
-            LOSpacer(16),
-            nameForm,
-            LOSpacer(24),
-            scheduleForm,
-            LOSpacer(24),
-            addressForm,
-            LOSpacer(24),
-            genreForm,
-            LOSpacer(24),
-            descriptionForm,
-            LOSpacer(24),
-            posterUploadForm,
-            LOSpacer(24),
-            atristInfoTitleLabel,
-            LOSpacer(16),
-            artistNameForm,
-            LOSpacer(24),
-            artistDescriptionForm,
-            LOSpacer(20),
-            noticeTitleLabel,
-            LOSpacer(16),
-            noticeForm,
-            LOSpacer(24),
-            documentUploadForm,
-            LOSpacer(20),
-            confirmButton
-        ]
-        
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
-        contentVStackSubViews.forEach { contentVStack.addArrangedSubview($0) }
+        contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(performanceInfoTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(nameForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(scheduleForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(addressForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(genreForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(descriptionForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(posterUploadForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(atristInfoTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(artistNameForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(artistDescriptionForm)
+        contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(noticeTitleLabel)
+        contentVStack.addArrangedSubview(LOSpacer(16))
+        contentVStack.addArrangedSubview(noticeForm)
+        contentVStack.addArrangedSubview(LOSpacer(24))
+        contentVStack.addArrangedSubview(documentUploadForm)
+        contentVStack.addArrangedSubview(LOSpacer(20))
+        contentVStack.addArrangedSubview(confirmButton)
         
-        scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
+        scrollView.snp.makeConstraints {
+            $0.top.horizontalEdges.equalTo(contentLayoutGuide)
+            $0.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+        }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         
         // 오버레이 뷰 레이아웃
@@ -185,12 +194,12 @@ final class RegisterBuskingVC: BackButtonVC {
             detailAddress:      addressForm.detailAddressPublisher,
             notice:             noticeForm.textPublisher,
             genre:              genreForm.genrePublisher,
-            posterPath:         Empty<String?, Never>().eraseToAnyPublisher(),
+            posterInfo:         posterUploadForm.imageInfoPublisher,
             startDate:          scheduleForm.startDatePublisher,
             endDate:            scheduleForm.endDatePublisher,
             startTime:          scheduleForm.startTimePublisher,
             endTime:            scheduleForm.endTimePublisher,
-            documentPath:       Empty<String?, Never>().eraseToAnyPublisher(),
+            documentInfo:       documentUploadForm.imageInfoPublisher,
             artistName:         artistNameForm.validTextPublisher,
             artistDescription:  artistDescriptionForm.validTextPublisher,
             alertConfirmTap:    confirmAlert.acceptButton.tapPublisher
@@ -207,35 +216,23 @@ final class RegisterBuskingVC: BackButtonVC {
                 detailAddress    = \($0.detailAddress ?? "nil")
                 notice           = \($0.notice ?? "nil")
                 genre            = \($0.genre)
-                posterPath       = \($0.posterPath ?? "nil")
                 startDate        = \($0.startDate ?? "nil")
                 endDate          = \($0.endDate ?? "nil")
                 startTime        = \($0.startTime ?? "nil")
                 endTime          = \($0.endTime ?? "nil")
-                documentPath     = \($0.documentPath ?? "nil")
                 artistName       = \($0.artistName ?? "nil")
                 artistDescription= \($0.artistDescription ?? "nil")
                 """) }
             .store(in: &cancellables)
         
+        output.registerCompleteEvent
+            .sink { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            .store(in: &cancellables)
+        
         contentVStack.tapPublisher
             .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
-            .store(in: &cancellables)
-        
-        Publishers
-            .Merge(
-                scheduleForm.startDateButton.tapPublisher,
-                scheduleForm.endDateButton.tapPublisher
-            )
-            .sink { [weak self] in self?.bindShowDatePickerModal() }
-            .store(in: &cancellables)
-        
-        scheduleForm.startTimeButton.tapPublisher
-            .sink { [weak self] in self?.bindShowStartTimePickerModalVC() }
-            .store(in: &cancellables)
-        
-        scheduleForm.endTimeButton.tapPublisher
-            .sink { [weak self] in self?.bindShowEndTimePickerModalVC() }
             .store(in: &cancellables)
         
         confirmButton.tapPublisher
@@ -253,27 +250,6 @@ extension RegisterBuskingVC {
         addressForm.cityDropdown.bindDismissTable(gesture)
         genreForm.dropdown.dismiss(gesture)
         view.endEditing(true)   // 키보드 닫기
-    }
-    
-    /// 날짜 피커 모달 표시
-    private func bindShowDatePickerModal() {
-        let vc = scheduleForm.datePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 464.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
-    }
-    
-    /// 시작 시간 피커 모달 표시
-    private func bindShowStartTimePickerModalVC() {
-        let vc = scheduleForm.startTimePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
-    }
-    
-    /// 종료 시간 피커 모달 표시
-    private func bindShowEndTimePickerModalVC() {
-        let vc = scheduleForm.endTimePickerModalVC
-        vc.sheetPresentationController?.detents = [.custom { _ in 256.6 }]  // 사전 계산한 모달 높이
-        present(vc, animated: true)
     }
     
     /// 등록 확인 얼럿 표시

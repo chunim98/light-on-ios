@@ -15,7 +15,6 @@ struct RegisterBuskingReqDTO: Encodable {
         let place: String
         let notice: String?     // 선택 필드
         let genre: [String]     // 문자열 배열로 수정
-        let poster: String?     // 선택 필드
     }
     
     struct Schedule: Encodable {
@@ -27,9 +26,6 @@ struct RegisterBuskingReqDTO: Encodable {
     
     let info: Info
     let schedule: Schedule
-    let proof: String
-    let artistName: String
-    let artistDescription: String
     
     init?(from domain: RegisterBuskingInfo) {
         guard let title = domain.name,
@@ -40,10 +36,7 @@ struct RegisterBuskingReqDTO: Encodable {
               let startDate = domain.startDate,
               let endDate = domain.endDate,
               let startTime = domain.startTime,
-              let endTime = domain.endTime,
-              let proof = domain.documentPath,
-              let artistName = domain.artistName,
-              let artistDescription = domain.artistDescription
+              let endTime = domain.endTime
         else { return nil }
         
         self.info = Info(
@@ -52,8 +45,7 @@ struct RegisterBuskingReqDTO: Encodable {
             location: location,
             place: place,
             notice: domain.notice,
-            genre: genres,
-            poster: domain.posterPath
+            genre: genres
         )
         self.schedule = Schedule(
             startDate: startDate,
@@ -61,8 +53,5 @@ struct RegisterBuskingReqDTO: Encodable {
             startTime: startTime,
             endTime: endTime
         )
-        self.proof = proof
-        self.artistName = artistName
-        self.artistDescription = artistDescription
     }
 }

@@ -5,6 +5,7 @@
 //  Created by 신정욱 on 7/14/25.
 //
 
+import UIKit
 
 struct RegisterBuskingInfo {
     var name: String?
@@ -13,12 +14,12 @@ struct RegisterBuskingInfo {
     var detailAddress: String?
     var notice: String?
     var genre: [String] = []
-    var posterPath: String?
-    var startDate: String?      // yyyy-MM-dd
-    var endDate: String?        // yyyy-MM-dd
-    var startTime: String?      // "HH:mm"
-    var endTime: String?        // "HH:mm"
-    var documentPath: String?   // 증빙자료 URL
+    var posterInfo: ImageInfo?
+    var startDate: String?          // yyyy-MM-dd
+    var endDate: String?            // yyyy-MM-dd
+    var startTime: String?          // "HH:mm"
+    var endTime: String?            // "HH:mm"
+    var documentInfo: ImageInfo?
     var artistName: String?
     var artistDescription: String?
 }

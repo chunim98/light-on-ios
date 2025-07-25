@@ -51,8 +51,8 @@ final class RegisterBuskingConfirmAlertVC: BaseAlertVC {
     private func setupDefaults() {
         titleLabel.config.text = "공연을 등록하시겠습니까?"
         descriptionLabel.config.text = """
-        버스킹 공연은 반드시 허가된 장소에서만 진행하셔야 합니다.
-        허가되지 않은 장소에서의 공연으로 발생하는 모든 책임은 주최자에게 있습니다.
+        버스킹 공연은 반드시\u{2028}허가된 장소에서만 진행하셔야 합니다.
+        허가되지 않은 장소에서의 공연으로\u{2028}발생하는 모든 책임은 주최자에게 있습니다.
         """
     }
     

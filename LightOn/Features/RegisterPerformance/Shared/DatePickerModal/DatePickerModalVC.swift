@@ -17,13 +17,10 @@ final class DatePickerModalVC: ModalVC {
     
     private var cancellables = Set<AnyCancellable>()
     
-    // MARK: Outputs
-    
-    private let isPresentedSubject = CurrentValueSubject<Bool, Never>(false)
-    
     // MARK: Components
     
     private let datePicker = LODatePicker()
+    
     private let confirmButton = {
         let button = LOButton(style: .filled, height: 46)
         button.setTitle("확인", .pretendard.semiBold(16))
@@ -38,16 +35,6 @@ final class DatePickerModalVC: ModalVC {
         setupDefaults()
         setupLayout()
         setupBindings()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        isPresentedSubject.send(true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        isPresentedSubject.send(false)
     }
     
     // MARK: Defaults
@@ -80,6 +67,8 @@ final class DatePickerModalVC: ModalVC {
     }
 }
 
+// MARK: Binders & Publishers
+
 extension DatePickerModalVC {
     /// 선택한 날짜 범위로 상태 갱신
     private func bindState(_ range: DateRange) {
@@ -105,7 +94,11 @@ extension DatePickerModalVC {
     
     /// 모달 표시 여부 퍼블리셔
     var isPresentedPublisher: AnyPublisher<Bool, Never> {
-        isPresentedSubject.eraseToAnyPublisher()
+        Publishers.Merge(
+            viewWillAppearPublisher.map { true },
+            viewWillDisappearPublisher.map { false }
+        )
+        .eraseToAnyPublisher()
     }
 }
 
