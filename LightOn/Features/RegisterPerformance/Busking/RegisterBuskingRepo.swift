@@ -46,16 +46,16 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
                         withName: "data",
                         mimeType: "application/json"
                     )
-                    // 포스터 이미지 전송
-                    multipartFormData.append(
-                        posterData,
-                        withName: "posterImage",
-                        mimeType: "image/png"
-                    )
                     // 증빙자료 전송
                     multipartFormData.append(
                         documentData,
                         withName: "proof",
+                        mimeType: "image/png"
+                    )
+                    // 포스터 이미지 전송
+                    multipartFormData.append(
+                        posterData,
+                        withName: "posterImage",
                         mimeType: "image/png"
                     )
                 },

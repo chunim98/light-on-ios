@@ -125,9 +125,10 @@ final class PerformanceMapVC: UIViewController {
         
         /// 선택된 공연 ID (마커 선택 & 해제)
         let selectedPerformanceID = Publishers
-            .Merge(
+            .Merge3(
                 selectedMarkerID,
-                deselectTrigger
+                deselectTrigger,
+                selectedCellItem.map { $0.performanceID }
             )
             .eraseToAnyPublisher()
         

@@ -46,7 +46,7 @@ final class LikeButton: UIButton {
             guard let self else { return }
             
             config.image = $0.isSelected ?
-                .performanceDetailHeartFilled :
+                .performanceDetailHeartFilled.withTintColor(.init(hex: 0xF4613C)) :
                 .performanceDetailHeart
             
             $0.configuration = config
