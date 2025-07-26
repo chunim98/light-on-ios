@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 
+import CombineCocoa
 import SnapKit
 
 final class NotificationVC: BackButtonVC {
@@ -19,13 +20,14 @@ final class NotificationVC: BackButtonVC {
     // MARK: Components
     
     private let tableView = NotificationTableView()
-
+    
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupBindings()
     }
     
     override func viewDidLayoutSubviews() {
@@ -44,6 +46,16 @@ final class NotificationVC: BackButtonVC {
     private func setupLayout() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        backBarButton.tapPublisher
+            .sink { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            .store(in: &cancellables)
     }
 }
 
