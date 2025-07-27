@@ -111,8 +111,12 @@ final class PerformanceMapVC: UIViewController {
         
         /// 선택한 마커의 공연 ID
         let selectedMarkerID = markersBuilder.selectedMarkerPublisher
-            .print()
             .map { Int?.some($0.performaceID) }
+        
+        /// 선택한 셀의 공연 ID
+        let selectedCellItemID = selectedCellItem
+            .map { Int?.some($0.performanceID) }
+            .eraseToAnyPublisher()
         
         /// 선택 해제 트리거들 (지도 탭, 뒤로가기 버튼)
         let deselectTrigger = Publishers
@@ -125,11 +129,7 @@ final class PerformanceMapVC: UIViewController {
         
         /// 선택된 공연 ID (마커 선택 & 해제)
         let selectedPerformanceID = Publishers
-            .Merge3(
-                selectedMarkerID,
-                deselectTrigger,
-                selectedCellItem.map { $0.performanceID }
-            )
+            .Merge3(selectedCellItemID, selectedMarkerID, deselectTrigger)
             .eraseToAnyPublisher()
         
         let input = PerformanceMapVM.Input(
@@ -160,7 +160,7 @@ final class PerformanceMapVC: UIViewController {
         
         output.selectedPerformance
             .sink { [weak self] in
-                self?.markersBuilder.bindDeselectAll(with: $0)
+                self?.markersBuilder.bindSelectedState(with: $0)
                 self?.summaryModal.bindPerfomanceInfo($0)
                 self?.bindModalHidden($0)
             }

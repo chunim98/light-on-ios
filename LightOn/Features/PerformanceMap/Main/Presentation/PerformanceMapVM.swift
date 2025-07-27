@@ -29,7 +29,7 @@ final class PerformanceMapVM {
         let reverseGeocodingCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         /// 카메라를 이동시킬 좌표
         let cameraTargetCoord: AnyPublisher<CLLocationCoordinate2D, Never>
-        /// 선택한 공연
+        /// 선택한 공연 정보
         let selectedPerformance: AnyPublisher<GeoPerformanceInfo?, Never>
         /// 뷰 상태
         let viewState: AnyPublisher<PerformanceMapState, Never>

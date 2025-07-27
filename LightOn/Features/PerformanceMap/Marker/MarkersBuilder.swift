@@ -12,10 +12,6 @@ import NMapsMap
 
 final class MarkersBuilder {
     
-    // MARK: Properties
-    
-    private var cancellables = Set<AnyCancellable>()
-    
     // MARK: Outputs
     
     /// 선택된 마커 정보 서브젝트
@@ -30,20 +26,6 @@ final class MarkersBuilder {
     
     init(_ mapView: NMFMapView?) {
         self.mapView = mapView
-        setupBindings()
-    }
-    
-    // MARK: Bindings
-    
-    private func setupBindings() {
-        // 선택한 마커 상태 바인딩
-        selectedMarkerSubject
-            .sink { [weak self] info in
-                self?.markers.forEach {
-                    $0.state = ($0.info == info) ? .selected : .deselected
-                }
-            }
-            .store(in: &cancellables)
     }
     
     // MARK: Public Configuration
@@ -62,10 +44,12 @@ final class MarkersBuilder {
 // MARK: Binders & Publishers
 
 extension MarkersBuilder {
-    /// 마커 선택 해제 바인딩
-    func bindDeselectAll(with info: GeoPerformanceInfo?) {
-        guard info == nil else { return }
-        markers.forEach { $0.state = .idle }
+    /// 마커 선택 상태 바인딩
+    func bindSelectedState(with info: GeoPerformanceInfo?) {
+        guard let info else { markers.forEach { $0.state = .idle }; return }
+        markers.forEach {
+            $0.state = ($0.info.performaceID == info.id) ? .selected : .deselected
+        }
     }
     
     /// 선택된 마커 정보 퍼블리셔
