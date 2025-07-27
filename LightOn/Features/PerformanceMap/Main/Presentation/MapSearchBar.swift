@@ -89,27 +89,42 @@ final class MapSearchBar: UIStackView {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 텍스트 모두 지우기 이벤트
-        let clearEvent = clearButton.tapPublisher
+        /// 돋보기 이미지 숨김 상태
+        let magnifierHiddenSubject = CurrentValueSubject<Bool, Never>(false)
         
-        /// 돋 보기 뷰 표시 여부
-        let magnifierHiddenByText = textField.textPublisher
+        // 텍스트로 돋보기 숨김 갱신
+        textField.textPublisher
             .compactMap { $0.map { !$0.isEmpty } }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
+            .sink { magnifierHiddenSubject.send($0) }
+            .store(in: &cancellables)
         
-        let magnifierHiddenByTap = clearEvent
+        // 버튼 탭으로 돋보기 숨김 갱신
+        clearButton.tapPublisher
             .map { false }
-            .eraseToAnyPublisher()
+            .sink { magnifierHiddenSubject.send($0) }
+            .store(in: &cancellables)
         
-        Publishers.Merge(magnifierHiddenByText, magnifierHiddenByTap)
-            .print()
+        // 돋보기 상태 바인딩
+        magnifierHiddenSubject
             .sink { [weak self] in self?.magnifierImageView.isHiddenWithAnime = $0 }
             .store(in: &cancellables)
         
-        clearEvent
+        // 필드 모두 지우기
+        clearButton.tapPublisher
             .sink { [weak self] in self?.textField.text = "" }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension MapSearchBar {
+    /// 텍스트 퍼블리셔 (지우기 버튼 이벤트까지 고려됨)
+    var textPublisher: AnyPublisher<String, Never> {
+        Publishers.Merge(
+            textField.textPublisher.compactMap { $0 },
+            clearButton.tapPublisher.map { "" }
+        ).eraseToAnyPublisher()
     }
 }
 

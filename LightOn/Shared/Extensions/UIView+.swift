@@ -9,19 +9,22 @@ import UIKit
 
 extension UIView {
     var isHiddenWithAnime: Bool {
-        get { self.isHidden }
+        get { isHidden }
         set {
+            guard isHidden != newValue else { return }  // 값이 동일하면 무시
+            
             if newValue {
-                // fade in
+                // 숨기기 애니메이션
                 UIView.animate(withDuration: 0.1) {
                     self.alpha = 0
                 } completion: { isFinished in
                     self.isHidden = isFinished
                 }
+                
             } else {
-                // fade out
-                self.alpha = 0
-                self.isHidden = false
+                // 보이기 애니메이션
+                alpha = 0
+                isHidden = false
                 UIView.animate(withDuration: 0.2) {
                     self.alpha = 1
                 }
