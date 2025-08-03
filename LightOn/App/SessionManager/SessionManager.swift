@@ -53,8 +53,8 @@ final class SessionManager {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         print("""
-        [엑세스 만료] \(formatter.string(from: accessExpireAt))
-        [리프레시 만료] \(formatter.string(from: refreshExpireAt))
+        [SessionManager] accessExpireAt \(formatter.string(from: accessExpireAt))
+        [SessionManager] refreshExpireAt \(formatter.string(from: refreshExpireAt))
         
         
         """)

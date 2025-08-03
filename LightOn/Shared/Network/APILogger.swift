@@ -18,7 +18,7 @@ final class APILogger: EventMonitor {
     /// 요청 전송 직후 호출
     /// 어댑터/인터셉터 적용까지 끝난 상태
     func request(_ request: Request, didResumeTask task: URLSessionTask) {
-        #if DEBUG
+#if DEBUG
         let url = request.request?.url?.absoluteString ?? "(알 수 없는 URL)"
         let method = request.request?.httpMethod ?? "(알 수 없는 메서드)"
         
@@ -30,7 +30,7 @@ final class APILogger: EventMonitor {
             
             """)
         }
-        #endif
+#endif
     }
     
     /// 서버에서 보낸 데이터를 전부 다 받은 직후 호출
@@ -39,7 +39,7 @@ final class APILogger: EventMonitor {
         _ request: DataRequest,
         didParseResponse response: DataResponse<Value, AFError>
     ) {
-        #if DEBUG
+#if DEBUG
         let url = request.request?.url?.absoluteString ?? "(알 수 없는 URL)"
         let statusCode = response.response?.statusCode ?? -1
         let statusEmoji = (200..<300).contains(statusCode) ? "✅" : "⚠️"
@@ -65,6 +65,6 @@ final class APILogger: EventMonitor {
             
             """)
         }
-        #endif
+#endif
     }
 }

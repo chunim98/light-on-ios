@@ -59,14 +59,14 @@ final class TokenAuthenticator: Authenticator {
             headers: ["Refresh-Token": credential.refreshToken]
         )
         .decodeResponse(decodeType: TokenResponseDTO.self) {
-            print("토큰 재발급 성공")
+            print("[TokenAuthenticator] 토큰 재발급 성공")
             let token = $0.toDomain()
             TokenKeychain.shared.save(.access, token: token.accessToken)
             TokenKeychain.shared.save(.refresh, token: token.refreshToken)
             completion(.success(TokenCredential()))
             
         } errorHandler: {
-            print("토큰 재발급 실패, 로그아웃 처리")
+            print("[TokenAuthenticator] 토큰 재발급 실패")
             TokenKeychain.shared.delete(.access)
             TokenKeychain.shared.delete(.refresh)
             TokenKeychain.shared.delete(.fcm)
