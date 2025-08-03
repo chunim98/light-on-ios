@@ -50,6 +50,7 @@ final class HomeVM {
     func transform(_ input: Input) -> Output {
         /// 로그인 상태
         let loginState = SessionManager.shared.$loginState
+            .filter { $0 != .unknown }
             .eraseToAnyPublisher()
         
         /// 공연 배너 배열들

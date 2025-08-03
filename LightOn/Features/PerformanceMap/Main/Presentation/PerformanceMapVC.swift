@@ -30,6 +30,9 @@ final class PerformanceMapVC: UIViewController {
     private let listModal = MapListModalView()
     private let mapView = NaverMapView()
     
+    private let searchView = MapSearchView()
+    private let searchBar = MapSearchBar()
+    
     private let refreshButton = {
         var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.semiBold(14)
@@ -74,8 +77,10 @@ final class PerformanceMapVC: UIViewController {
         view.addSubview(listModal)
         view.addSubview(summaryModal)
         view.addSubview(refreshButton)
+//        view.addSubview(searchView)
         
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        
         listModal.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             listModalBottmConstraint = $0.bottom.equalToSuperview()
@@ -89,6 +94,11 @@ final class PerformanceMapVC: UIViewController {
         refreshButton.snp.makeConstraints {
             $0.top.centerX.equalTo(view.safeAreaLayoutGuide)
         }
+//        searchView.snp.makeConstraints { $0.edges.equalToSuperview() }
+//        searchBar.snp.makeConstraints {
+//            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(18)
+//            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+//        }
     }
     
     // MARK: Bindings
@@ -169,6 +179,14 @@ final class PerformanceMapVC: UIViewController {
         output.viewState
             .sink { [weak self] in self?.bindViewState($0) }
             .store(in: &cancellables)
+        
+        Publishers.Merge(
+            searchBar.textField.didBeginEditingPublisher.map { _ in false },
+            searchBar.textField.controlEventPublisher(for: .editingDidEnd).map { _ in true }
+        )
+        .sink { [weak self] in self?.searchView.isHiddenWithAnime = $0 }
+        .store(in: &cancellables)
+
     }
 }
 

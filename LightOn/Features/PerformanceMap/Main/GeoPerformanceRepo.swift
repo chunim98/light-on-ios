@@ -8,6 +8,8 @@
 import Combine
 import CoreLocation
 
+import Alamofire
+
 protocol GeoPerformanceRepo {
     /// 좌표와 반경으로 공연맵 조회
     func getGeoPerformanceInfo(
@@ -25,16 +27,16 @@ final class DefaultGeoPerformanceRepo: GeoPerformanceRepo {
     ) -> AnyPublisher<[GeoPerformanceInfo], Never> {
         Future { proimse in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/nearby",
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/nearby",
+                method: .get,
                 parameters: [
                     "latitude": coord.latitude,
                     "longitude": coord.longitude,
                     "radius": radius
-                ],
-                tokenIncluded: false,
-                decodeType: GeoPerformanceListResDTO.self
-            ) {
+                ]
+            )
+            .decodeResponse(decodeType: GeoPerformanceListResDTO.self) {
                 print("공연맵 조회 완료")
                 proimse(.success($0.performanceMapList.map { $0.toDomain() }))
             }

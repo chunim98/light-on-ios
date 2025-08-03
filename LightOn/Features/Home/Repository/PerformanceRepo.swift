@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol PerformanceRepo {
     /// 인기공연 조회
     func requestPopular() -> AnyPublisher<[LargePerformanceCellItem], Never>
@@ -24,11 +26,11 @@ final class DefaultPerformanceRepo: PerformanceRepo {
     func requestPopular() -> AnyPublisher<[LargePerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/popular",
-                tokenIncluded: false,
-                decodeType: PerformancesResDTO.self
-            ) {
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/popular",
+                method: .get
+            )
+            .decodeResponse(decodeType: PerformancesResDTO.self) {
                 print("인기공연 조회 완료")
                 promise(.success($0.performances.map { $0.toLarge() }))
             }
@@ -40,10 +42,11 @@ final class DefaultPerformanceRepo: PerformanceRepo {
     func requestRecommended() -> AnyPublisher<[SmallPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/recommend",
-                decodeType: PerformancesResDTO.self
-            ) {
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/performances/recommend",
+                method: .get
+            )
+            .decodeResponse(decodeType: PerformancesResDTO.self) {
                 print("추천공연 조회 완료")
                 promise(.success($0.performances.map { $0.toSmall() }))
             }
@@ -55,11 +58,11 @@ final class DefaultPerformanceRepo: PerformanceRepo {
     func requestRecent() -> AnyPublisher<[SmallPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/recent",
-                tokenIncluded: false,
-                decodeType: PerformancesResDTO.self
-            ) {
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/recent",
+                method: .get
+            )
+            .decodeResponse(decodeType: PerformancesResDTO.self) {
                 print("최신공연 조회 완료")
                 promise(.success($0.performances.map { $0.toSmall() }))
             }
@@ -71,11 +74,11 @@ final class DefaultPerformanceRepo: PerformanceRepo {
     func requestSpotlighted() -> AnyPublisher<[MediumPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/trending",
-                tokenIncluded: false,
-                decodeType: PerformancesResDTO.self
-            ) {
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/trending",
+                method: .get
+            )
+            .decodeResponse(decodeType: PerformancesResDTO.self) {
                 print("주목받은 아티스트 공연 조회 완료")
                 promise(.success($0.performances.map { $0.toMedium() }))
             }

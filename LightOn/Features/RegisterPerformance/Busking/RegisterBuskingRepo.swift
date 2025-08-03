@@ -33,12 +33,8 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
                 RegisterBuskingReqDTO(from: info)
             ) else { return }
             
-            // 엔드포인트 설정
-            let baseURL = APIConstants.lightOnRootURL
-            let endPoint = "/api/members/performances/buskings"
-            
             // 서버에 전송 요청
-            let request = AF.upload(
+            APIClient.withAuth.upload(
                 multipartFormData: { multipartFormData in
                     // json 텍스트로 만들어서 전송
                     multipartFormData.append(
@@ -59,15 +55,9 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
                         mimeType: "image/png"
                     )
                 },
-                to: baseURL + endPoint,
-                interceptor: APITokenInterceptor()
+                to: BaseURL + "/api/members/performances/buskings"
             )
-            
-            // 결과 파싱
-            APIClient.shared.decodeResponse(
-                request: request,
-                decodeType: EmptyDTO.self
-            ) { _ in
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("버스킹 등록 요청 완료")
                 promise(.success(()))
                 

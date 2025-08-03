@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol LikingGenreRepo {
     /// 선호 장르 아이디들 전송
     func postLikingGenre(genreItems: [GenreCellItem]) -> AnyPublisher<Void, Never>
@@ -18,11 +20,13 @@ final class DefaultLikingGenreRepo: LikingGenreRepo {
     func postLikingGenre(genreItems: [GenreCellItem]) -> AnyPublisher<Void, Never> {
         Future { promise in
             
-            APIClient.shared.requestPost(
-                endPoint: "/api/members/genres",
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/genres",
+                method: .post,
                 parameters: LikingGenreRequestDTO(from: genreItems),
-                decodeType: EmptyDTO.self
-            ) { _ in
+                encoder: JSONParameterEncoder.default
+            )
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("선호 장르 전송 완료")
                 promise(.success(()))
             }

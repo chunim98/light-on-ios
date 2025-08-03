@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol GenreDiscoveryRepo {
     /// 인기공연 조회
     func requestPopular() -> AnyPublisher<[HashtagPerformanceCellItem], Never>
@@ -22,9 +24,11 @@ final class DefaultGenreDiscoveryRepo: GenreDiscoveryRepo {
     func requestPopular() -> AnyPublisher<[HashtagPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/popular",
-                tokenIncluded: false,
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/popular",
+                method: .get
+            )
+            .decodeResponse(
                 decodeType: PerformancesResDTO.self // Home의 DTO 재사용
             ) {
                 print("인기공연 조회 완료")
@@ -38,8 +42,11 @@ final class DefaultGenreDiscoveryRepo: GenreDiscoveryRepo {
     func requestRecommended() -> AnyPublisher<[HashtagPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/recommend",
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/performances/recommend",
+                method: .get
+            )
+            .decodeResponse(
                 decodeType: PerformancesResDTO.self // Home의 DTO 재사용
             ) {
                 print("추천공연 조회 완료")
@@ -53,9 +60,11 @@ final class DefaultGenreDiscoveryRepo: GenreDiscoveryRepo {
     func requestRecent() -> AnyPublisher<[HashtagPerformanceCellItem], Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/recent",
-                tokenIncluded: false,
+            APIClient.plain.request(
+                BaseURL + "/api/members/performances/recent",
+                method: .get
+            )
+            .decodeResponse(
                 decodeType: PerformancesResDTO.self // Home의 DTO 재사용
             ) {
                 print("최신공연 조회 완료")

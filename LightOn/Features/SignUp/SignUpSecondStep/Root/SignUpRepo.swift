@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol SignUpRepo {
     /// 정식 회원가입 요청 (멤버 정보 전송)
     func postMemberInfo(memberInfo: MemberInfo) -> AnyPublisher<UserToken, Never>
@@ -18,11 +20,13 @@ final class DefaultSignUpRepo: SignUpRepo {
     func postMemberInfo(memberInfo: MemberInfo) -> AnyPublisher<UserToken, Never> {
         Future { promise in
             
-            APIClient.shared.requestPost(
-                endPoint: "/api/members/\(memberInfo.tempMemberID)/info",
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/\(memberInfo.tempMemberID)/info",
+                method: .post,
                 parameters: MemberInfoRequestDTO(from: memberInfo),
-                decodeType: TokenResponseDTO.self
-            ) {
+                encoder: JSONParameterEncoder.default
+            )
+            .decodeResponse(decodeType: TokenResponseDTO.self) {
                 print("정식 회원가입 요청 완료")
                 promise(.success($0.toDomain()))
             }

@@ -19,7 +19,7 @@ final class MapSearchBar: UIStackView {
     
     // MARK: Components
     
-    private let textField = {
+    let textField = {
         var config = AttrConfiguration()
         config.font = .pretendard.medium(16)
         config.foregroundColor = .assistive

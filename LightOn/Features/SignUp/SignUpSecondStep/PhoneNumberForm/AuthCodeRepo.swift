@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol AuthCodeRepo {
     /// 인증코드 문자 발송 요청
     func requestAuthCodeSMS(state: PhoneNumberFormState) -> AnyPublisher<Void, Never>
@@ -20,12 +22,13 @@ final class DefaultAuthCodeRepo: AuthCodeRepo {
     func requestAuthCodeSMS(state: PhoneNumberFormState) -> AnyPublisher<Void, Never> {
         Future { promise in
             
-            APIClient.shared.requestPost(
-                endPoint: "/api/auth/phones/code",
+            APIClient.plain.request(
+                BaseURL + "/api/auth/phones/code",
+                method: .post,
                 parameters: AuthCodeRequestDTO(from: state),
-                tokenIncluded: false,
-                decodeType: EmptyDTO.self
-            ) { _ in
+                encoder: JSONParameterEncoder.default
+            )
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("인증코드 문자 발송 요청 완료")
                 promise(.success(()))
             }
@@ -37,12 +40,13 @@ final class DefaultAuthCodeRepo: AuthCodeRepo {
     func postAuthCode(state: PhoneNumberFormState) -> AnyPublisher<Void, Never> {
         Future { promise in
             
-            APIClient.shared.requestPost(
-                endPoint: "/api/auth/phones/code/verify",
+            APIClient.plain.request(
+                BaseURL + "/api/auth/phones/code/verify",
+                method: .post,
                 parameters: PhoneNumberVerificationRequestDTO(from: state),
-                tokenIncluded: false,
-                decodeType: EmptyDTO.self
-            ) { _ in
+                encoder: JSONParameterEncoder.default
+            )
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("휴대폰 번호 최종 인증 완료")
                 promise(.success(()))
             }

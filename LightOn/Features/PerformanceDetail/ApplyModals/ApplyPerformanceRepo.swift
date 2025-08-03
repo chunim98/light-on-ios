@@ -32,11 +32,12 @@ final class DefaultApplyPerformanceRepo: ApplyPerformanceRepo {
     ) -> AnyPublisher<PaymentInfo, Never> {
         Future { promise in
             
-            APIClient.shared.requestGet(
-                endPoint: "/api/members/performances/\(performanceID)/payment",
-                parameters: ["applySeats": audienceCount],
-                decodeType: PaymentInfoResDTO.self
-            ) {
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/performances/\(performanceID)/payment",
+                method: .get,
+                parameters: ["applySeats": audienceCount]
+            )
+            .decodeResponse(decodeType: PaymentInfoResDTO.self) {
                 print("결제 정보 조회 완료")
                 promise(.success($0.toDomain()))
             }
@@ -51,22 +52,13 @@ final class DefaultApplyPerformanceRepo: ApplyPerformanceRepo {
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
             
-            let rootURL = APIConstants.lightOnRootURL
-            let endPoint = "/api/members/performances/\(performanceID)/request"
-            
-            let request = AF.request(
-                rootURL + endPoint,
+            APIClient.withAuth.request(
+                BaseURL + "/api/members/performances/\(performanceID)/request",
                 method: .post,
                 parameters: ["applySeats": audienceCount],
-                encoding: URLEncoding.queryString,  // 이렇게 설정하면, POST인데도 항상 URL 뒤에 붙여 줌
-                headers: nil,
-                interceptor: APITokenInterceptor()
+                encoding: URLEncoding.queryString // 이렇게 설정하면, POST인데도 항상 URL 뒤에 붙여 줌
             )
-            
-            APIClient.shared.decodeResponse(
-                request: request,
-                decodeType: EmptyDTO.self
-            ) { _ in
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("공연 관람 신청 완료")
                 promise(.success(()))
                 

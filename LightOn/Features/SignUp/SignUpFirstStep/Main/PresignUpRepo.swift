@@ -7,6 +7,8 @@
 
 import Combine
 
+import Alamofire
+
 protocol PresignUpRepo {
     /// 임시 회원가입 요청 (임시 회원 번호 발급)
     func postEmailPW(email: String, pw: String) -> AnyPublisher<Int, Never>
@@ -18,12 +20,13 @@ final class DefaultPresignUpRepo: PresignUpRepo {
     func postEmailPW(email: String, pw: String) -> AnyPublisher<Int, Never> {
         Future { promise in
             
-            APIClient.shared.requestPost(
-                endPoint: "/api/members",
+            APIClient.plain.request(
+                BaseURL + "/api/members",
+                method: .post,
                 parameters: PresignUpRequestDTO(email: email, password: pw),
-                tokenIncluded: false,
-                decodeType: PresignUpResponseDTO.self
-            ) {
+                encoder: JSONParameterEncoder.default
+            )
+            .decodeResponse(decodeType: PresignUpResponseDTO.self) {
                 print("임시 회원가입 요청 성공")
                 promise(.success($0.temporaryUserId))
             }
