@@ -15,7 +15,7 @@ extension UIColor {
         let blue = CGFloat((hex & 0xff) >> 0) / 255.0
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
-
+    
     static let brand       = UIColor(hex: 0x6137DD) // 브랜드 메인 컬러
     static let pressed     = UIColor(hex: 0x432ACE) // 버튼이 눌렸을 때 컬러
     static let disable     = UIColor(hex: 0xE9E9E9) // 비활성화 상태(Disabled) 컬러
@@ -44,4 +44,6 @@ extension UIColor {
     static let xEEE7FB = UIColor(hex: 0xEEE7FB)
     static let xDEDEDE = UIColor(hex: 0xDEDEDE)
     static let xA9A9A9 = UIColor(hex: 0xA9A9A9)
+    static let xECFCE5 = UIColor(hex: 0xECFCE5)
+    static let x6DAF4F = UIColor(hex: 0x6DAF4F)
 }
