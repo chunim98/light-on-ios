@@ -139,6 +139,13 @@ final class MyPageVC: NavigationBarVC {
                 self?.present(safariVC, animated: true)
             }
             .store(in: &cancellables)
+        
+        loginInfoView.activityHistotyButton.tapPublisher
+            .sink { [weak self] in
+                let vc = MyActivityHistoryVC()
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .store(in: &cancellables)
     }
 }
 

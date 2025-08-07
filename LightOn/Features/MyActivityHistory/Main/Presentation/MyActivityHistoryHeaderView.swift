@@ -52,7 +52,7 @@ final class MyActivityHistoryHeaderView: UIStackView {
         super.init(frame: frame)
         setupDefaults()
         setupLayout()
-        setSummaryText() // temp
+        configure(with: .init(name: "아이유", applyCount: 10, place: "대학로")) // temp
     }
     
     required init(coder: NSCoder) {
@@ -92,27 +92,21 @@ final class MyActivityHistoryHeaderView: UIStackView {
     
     // MARK: Public Configuration
     
-    func setSummaryText() {
-        let name = "아이유"
-        let applyCount = 15
-        let place = "대학로"
-        
+    func configure(with item: MyActivityHistoryHeaderItem) {
         summaryLabel.config.text = """
-        \(name)님의
-        공연 참가 수는 \(applyCount)회
-        주요 활동 장소는 \(place) 입니다
+        \(item.name)님의
+        공연 참가 수는 \(item.applyCount)회
+        주요 활동 장소는 \(item.place) 입니다
         """
-        
         summaryLabel.addAnyAttribute(
             name: .foregroundColor,
             value: UIColor.brand,
-            segment: "\(applyCount)회"
+            segment: "\(item.applyCount)회"
         )
-        
         summaryLabel.addAnyAttribute(
             name: .foregroundColor,
             value: UIColor.brand,
-            segment: place
+            segment: item.place
         )
     }
 }
