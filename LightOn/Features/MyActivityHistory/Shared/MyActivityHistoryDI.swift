@@ -17,4 +17,8 @@ final class MyActivityHistoryDI {
     func makeMyPreferredVM() -> MyPreferredVM {
         MyPreferredVM(repo: DefaultPreferredGenreRepo())
     }
+    
+    func makeMyStatsVM() -> MyStatsVM {
+        MyStatsVM(repo: DefaultMyStatsInfoRepo())
+    }
 }

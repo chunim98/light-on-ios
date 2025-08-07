@@ -1,5 +1,5 @@
 //
-//  MyActivityHistoryHeaderView.swift
+//  MyStatsVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/24/25.
@@ -11,11 +11,18 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class MyActivityHistoryHeaderView: UIStackView {
+final class MyStatsVC: CombineVC {
     
     // MARK: Properties
     
+    private var cancellables = Set<AnyCancellable>()
+    private let vm = MyActivityHistoryDI.shared.makeMyStatsVM()
+    
     // MARK: Components
+    
+    private let mainVStack = UIStackView(
+        .vertical, inset: .init(horizontal: 18) + .init(top: 38, bottom: 24)
+    )
     
     private let buttonHStack = UIStackView()
     
@@ -48,39 +55,34 @@ final class MyActivityHistoryHeaderView: UIStackView {
     
     // MARK: Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupDefaults()
         setupLayout()
-        configure(with: .init(name: "아이유", applyCount: 10, place: "대학로")) // temp
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setupBindings()
     }
     
     // MARK: Defaults
     
     private func setupDefaults() {
-        inset = .init(horizontal: 18) + .init(top: 38, bottom: 24)
-        backgroundColor = .xF5F0FF
-        axis = .vertical
+        view.backgroundColor = .xF5F0FF
     }
     
     // MARK: Layout
     
     private func setupLayout() {
-        addSubview(imageView)
-        
-        addArrangedSubview(summaryLabel)
-        addArrangedSubview(LOSpacer(24))
-        addArrangedSubview(buttonHStack)
-        addArrangedSubview(LOSpacer())
+        view.addSubview(mainVStack)
+        mainVStack.addSubview(imageView)
+        mainVStack.addArrangedSubview(summaryLabel)
+        mainVStack.addArrangedSubview(LOSpacer(24))
+        mainVStack.addArrangedSubview(buttonHStack)
+        mainVStack.addArrangedSubview(LOSpacer())
         
         buttonHStack.addArrangedSubview(addLikingButton)
         buttonHStack.addArrangedSubview(LOSpacer())
         
-        self.snp.makeConstraints { $0.height.equalTo(308) }
+        view.snp.makeConstraints { $0.height.equalTo(308) }
+        mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         imageView.snp.makeConstraints {
             $0.bottom.trailing.equalToSuperview().inset(21)
         }
@@ -88,30 +90,48 @@ final class MyActivityHistoryHeaderView: UIStackView {
     
     // MARK: Bindings
     
-    private func setupBindings() {}
-    
-    // MARK: Public Configuration
-    
-    func configure(with item: MyActivityHistoryHeaderItem) {
+    private func setupBindings() {
+        let loginEvent = SessionManager.shared.$loginState
+            .compactMap { $0 == .login ? Void() : nil }
+            .eraseToAnyPublisher()
+        
+        let trigger = Publishers
+            .Merge(viewDidLoadPublisher, loginEvent)
+            .eraseToAnyPublisher()
+        
+        let input = MyStatsVM.Input(loadTrigger: trigger)
+        let output = vm.transform(input)
+        
+        output.myStatsInfo
+            .sink { [weak self] in self?.bindStatsInfo($0) }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Binders & Publishers
+
+extension MyStatsVC {
+    /// 활동 통계 바인딩
+    private func bindStatsInfo(_ info: MyStatsInfo) {
         summaryLabel.config.text = """
-        \(item.name)님의
-        공연 참가 수는 \(item.applyCount)회
-        주요 활동 장소는 \(item.place) 입니다
+        \(info.name)님의
+        공연 참가 수는 \(info.applyCount)회
+        주요 활동 장소는 \(info.place) 입니다
         """
         summaryLabel.addAnyAttribute(
             name: .foregroundColor,
             value: UIColor.brand,
-            segment: "\(item.applyCount)회"
+            segment: "\(info.applyCount)회"
         )
         summaryLabel.addAnyAttribute(
             name: .foregroundColor,
             value: UIColor.brand,
-            segment: item.place
+            segment: info.place
         )
     }
 }
 
 // MARK: - Preview
 
-#Preview { MyActivityHistoryHeaderView() }
+#Preview { MyStatsVC() }
 
