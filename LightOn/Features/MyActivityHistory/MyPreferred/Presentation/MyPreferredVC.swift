@@ -91,6 +91,10 @@ final class MyPreferredVC: CombineVC {
         let input = MyPreferredVM.Input(loadTrigger: trigger)
         let output = vm.transform(input)
         
+        output.preferredArtists
+            .sink { [weak self] in self?.artistCollectionView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
         output.preferredGenres
             .sink { [weak self] in self?.genreCollectionView.setSnapshot(items: $0) }
             .store(in: &cancellables)

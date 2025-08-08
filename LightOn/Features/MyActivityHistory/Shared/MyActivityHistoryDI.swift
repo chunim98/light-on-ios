@@ -15,7 +15,10 @@ final class MyActivityHistoryDI {
     // MARK: Methods
     
     func makeMyPreferredVM() -> MyPreferredVM {
-        MyPreferredVM(repo: DefaultPreferredGenreRepo())
+        MyPreferredVM(
+            preferredGenreRepo: DefaultPreferredGenreRepo(),
+            preferredArtistsRepo: DefaultPreferredArtistsRepo()
+        )
     }
     
     func makeMyStatsVM() -> MyStatsVM {

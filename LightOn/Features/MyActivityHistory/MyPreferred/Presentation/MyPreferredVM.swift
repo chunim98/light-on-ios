@@ -17,28 +17,37 @@ final class MyPreferredVM {
         let loadTrigger: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 선호 장르 배열들
+        /// 선호 장르 배열
         let preferredGenres: AnyPublisher<[MyPreferredCellItem], Never>
+        /// 선호 아티스트 배열
+        let preferredArtists: AnyPublisher<[MyPreferredCellItem], Never>
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
     private let getPreferredGenresUC: GetPreferredGenresUC
+    private let getPreferredArtistsUC: GetPreferredArtistsUC
     
     // MARK: Initializer
     
-    init(repo: any PreferredGenreRepo) {
-        self.getPreferredGenresUC = .init(repo: repo)
+    init(
+        preferredGenreRepo: any PreferredGenreRepo,
+        preferredArtistsRepo: any PreferredArtistsRepo
+    ) {
+        self.getPreferredGenresUC = .init(repo: preferredGenreRepo)
+        self.getPreferredArtistsUC = .init(repo: preferredArtistsRepo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let preferredGenres = getPreferredGenresUC.execute(
-            trigger: input.loadTrigger
-        )
+        let preferredGenres = getPreferredGenresUC.execute(trigger: input.loadTrigger)
+        let preferredArtists = getPreferredArtistsUC.execute(trigger: input.loadTrigger)
         
-        return Output(preferredGenres: preferredGenres)
+        return Output(
+            preferredGenres: preferredGenres,
+            preferredArtists: preferredArtists
+        )
     }
 }
