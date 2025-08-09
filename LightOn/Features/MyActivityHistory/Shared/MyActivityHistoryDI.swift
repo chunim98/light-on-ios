@@ -24,4 +24,12 @@ final class MyActivityHistoryDI {
     func makeMyStatsVM() -> MyStatsVM {
         MyStatsVM(repo: DefaultMyStatsInfoRepo())
     }
+    
+    func makeMyApplicationRequestedVM() -> MyApplicationRequestedVM {
+        MyApplicationRequestedVM(repo: MyApplicationsRepo())
+    }
+    
+    func makeMyRegistrationRequestedVM() -> MyRegistrationRequestedVM {
+        MyRegistrationRequestedVM(repo: MyRegistrationsRepo())
+    }
 }

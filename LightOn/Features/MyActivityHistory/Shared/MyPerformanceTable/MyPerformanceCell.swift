@@ -23,7 +23,6 @@ final class MyPerformanceCell: UITableViewCell {
         arrowImageView.contentMode = .scaleAspectFit
         
         let sv = UIStackView()
-        sv.backgroundColor = .xECFCE5 // temp
         sv.inset = .init(edges: 16)
         sv.layer.cornerRadius = 5
         sv.clipsToBounds = true
@@ -68,8 +67,6 @@ final class MyPerformanceCell: UITableViewCell {
     private let statusLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.semiBold(12)
-        config.foregroundColor = .x6DAF4F // temp
-        config.text = "승인 대기" // temp
         return LOLabel(config: config)
     }()
     
@@ -77,7 +74,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.semiBold(12)
         config.foregroundColor = .black
-        config.text = "[여의도] Light ON 홀리데이 버스킹" // temp
         return LOLabel(config: config)
     }()
     
@@ -85,7 +81,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(8)
         config.foregroundColor = .brand
-        config.text = "무료공연" // temp
         let label = LOPaddingLabel(
             configuration: config,
             padding: .init(horizontal: 4, vertical: 2)
@@ -100,7 +95,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        config.text = "2025.05.01" // temp
         return LOLabel(config: config)
     }()
     
@@ -108,7 +102,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        config.text = "18:00" // temp
         return LOLabel(config: config)
     }()
     
@@ -116,7 +109,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .caption
-        config.text = "여의도 1호선 여의도역 1번 출구" // temp
         return LOLabel(config: config)
     }()
     
@@ -125,7 +117,6 @@ final class MyPerformanceCell: UITableViewCell {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .clickable
-        config.text = "등록일 : 2025-04-29" // temp
         return LOLabel(config: config)
     }()
     
@@ -139,6 +130,11 @@ final class MyPerformanceCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configure(with: nil)
     }
     
     // MARK: Defaults
@@ -179,7 +175,17 @@ final class MyPerformanceCell: UITableViewCell {
     // MARK: Public Configuration
     
     func configure(with item: MyPerformanceCellItem?) {
-        
+        // Value
+        titleLabel.config.text      = item?.title
+        typeLabel.config.text       = item?.type
+        dateLabel.config.text       = item?.date
+        timeLabel.config.text       = item?.time
+        placeLabel.config.text      = item?.place
+        publishedLabel.config.text  = item?.publishedAt
+        // Style
+        statusLabel.config.text             = item?.style.statusText
+        statusLabel.config.foregroundColor  = item?.style.statusForegroundColor
+        mainHStack.backgroundColor          = item?.style.backgroundColor
     }
 }
 

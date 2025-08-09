@@ -22,7 +22,9 @@ final class MyActivityHistoryVC: BackButtonVC {
     private let contentVStack = UIStackView(.vertical)
     
     private let statsVC = MyStatsVC()
-    private let myPreferredVC = MyPreferredVC()
+    private let preferredVC = MyPreferredVC()
+    private let applicationVC = MyApplicationRequestedVC()
+    private let registaionVC = MyRegistrationRequestedVC()
     
     // MARK: Life Cycle
     
@@ -42,18 +44,27 @@ final class MyActivityHistoryVC: BackButtonVC {
     
     private func setupLayout() {
         addChild(statsVC)
-        addChild(myPreferredVC)
+        addChild(preferredVC)
+        addChild(registaionVC)
+        addChild(applicationVC)
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(statsVC.view)
-        contentVStack.addArrangedSubview(myPreferredVC.view)
+        contentVStack.addArrangedSubview(preferredVC.view)
         contentVStack.addArrangedSubview(
             LODivider(height: 12, color: .background)
         )
+        contentVStack.addArrangedSubview(registaionVC.view)
+        contentVStack.addArrangedSubview(
+            LODivider(height: 1, color: .background)
+        )
+        contentVStack.addArrangedSubview(applicationVC.view)
         
         statsVC.didMove(toParent: self)
-        myPreferredVC.didMove(toParent: self)
+        preferredVC.didMove(toParent: self)
+        registaionVC.didMove(toParent: self)
+        applicationVC.didMove(toParent: self)
         
         scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
