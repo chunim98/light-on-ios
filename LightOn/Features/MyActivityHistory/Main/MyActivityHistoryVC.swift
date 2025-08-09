@@ -75,6 +75,18 @@ final class MyActivityHistoryVC: BackButtonVC {
     private func setupBindings() {}
 }
 
+extension MyActivityHistoryVC {
+    /// 관람 신청 내역 상세 탭 퍼블리셔
+    var applicationDetailTapPublisher: AnyPublisher<Void, Never> {
+        applicationVC.detailButton.tapPublisher
+    }
+    
+    /// 공연 등록 내역 상세 탭 퍼블리셔
+    var registaionDetailTapPublisher: AnyPublisher<Void, Never> {
+        registaionVC.detailButton.tapPublisher
+    }
+}
+
 // MARK: - Preview
 
 #Preview { MyActivityHistoryVC() }

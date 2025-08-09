@@ -25,14 +25,14 @@ final class MyApplicationRequestedVC: CombineVC {
         alignment: .center, inset: .init(horizontal: 16) + .init(top: 30, bottom: 10)
     )
     
-    let titleLabel = {
+    private let titleLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(19)
         config.foregroundColor = .loBlack
         return LOLabel(config: config)
     }()
     
-    private let detailButton = {
+    let detailButton = {
         var config = UIButton.Configuration.plain()
         config.image = .activityHistoryArrowRight
         config.contentInsets = .zero

@@ -32,4 +32,12 @@ final class MyActivityHistoryDI {
     func makeMyRegistrationRequestedVM() -> MyRegistrationRequestedVM {
         MyRegistrationRequestedVM(repo: MyRegistrationsRepo())
     }
+    
+    func makeMyApplicationRequestedFullVM() -> MyApplicationRequestedFullVM {
+        MyApplicationRequestedFullVM(repo: MyApplicationsRepo())
+    }
+    
+    func makeMyRegistrationRequestedFullVM() -> MyRegistrationRequestedFullVM {
+        MyRegistrationRequestedFullVM(repo: MyRegistrationsRepo())
+    }
 }
