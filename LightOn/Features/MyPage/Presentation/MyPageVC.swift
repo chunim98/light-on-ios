@@ -20,6 +20,7 @@ final class MyPageVC: NavigationBarVC {
     private var cancellables = Set<AnyCancellable>()
     
     private var registerPerformanceFlowCoord: RegisterPerformanceFlowCoordinator?
+    private var myActivityHistoryCoord: MyActivityHistoryCoordinator?
     
     // MARK: Components
     
@@ -141,10 +142,7 @@ final class MyPageVC: NavigationBarVC {
             .store(in: &cancellables)
         
         loginInfoView.activityHistotyButton.tapPublisher
-            .sink { [weak self] in
-                let vc = MyActivityHistoryVC()
-                self?.navigationController?.pushViewController(vc, animated: true)
-            }
+            .sink { [weak self] in self?.startMyActivityHistoryCoord() }
             .store(in: &cancellables)
     }
 }
@@ -171,6 +169,12 @@ extension MyPageVC {
             tabBar: tabBar
         )
         registerPerformanceFlowCoord?.start()
+    }
+    
+    /// 내 활동 내역 코디네이터 시작
+    private func startMyActivityHistoryCoord() {
+        myActivityHistoryCoord = .init(navigation: navigationController!)
+        myActivityHistoryCoord?.start()
     }
 }
 
