@@ -14,10 +14,17 @@ final class PerformanceMapVM {
     // MARK: Input & Ouput
     
     struct Input {
+        /// 초기 좌표(= 내 위치)
         let initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>
+        /// 재검색 좌표
         let refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>
+        /// 검색 필터 타입
+        let filterType: AnyPublisher<MapFilterType?, Never>
+        /// 지도 카메라 이동 이벤트
         let cameraChanged: AnyPublisher<NMFMapChangedReason, Never>
+        /// 선택한 테이블 셀 (마커로 카메라 이동)
         let selectedCellItem: AnyPublisher<MediumPerformanceCellItem, Never>
+        /// 선택된 공연 ID
         let selectedID: AnyPublisher<Int?, Never>
     }
     struct Output {
@@ -53,13 +60,14 @@ final class PerformanceMapVM {
     func transform(_ input: Input) -> Output {
         /// 뷰 상태 서브젝트
         let viewStateSubject = CurrentValueSubject<PerformanceMapState, Never>(.init(
-            refreshButtonHidden: true
+            refreshButtonHidden: true, filterViewHidden: false
         ))
         
         /// 좌표 기반 공연 정보
         let performanceInfoArr = getGeoPerformanceInfoUC.execute(
             initialCoord: input.initialCoord,
-            refreshCoord: input.refreshCoord
+            refreshCoord: input.refreshCoord,
+            filterType: input.filterType
         )
         
         /// 테이블 뷰 데이터 가공
@@ -96,8 +104,14 @@ final class PerformanceMapVM {
         
         // 뷰 상태 갱신
         [
-            cameraChanged.sink      { _ in viewStateSubject.value.refreshButtonHidden = false },
-            performanceInfoArr.sink { _ in viewStateSubject.value.refreshButtonHidden = true },
+            cameraChanged.sink { _ in
+                viewStateSubject.value.refreshButtonHidden = false
+                viewStateSubject.value.filterViewHidden = true
+            },
+            performanceInfoArr.sink { _ in
+                viewStateSubject.value.refreshButtonHidden = true
+                viewStateSubject.value.filterViewHidden = false
+            },
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(

@@ -7,4 +7,5 @@
 
 struct PerformanceMapState {
     var refreshButtonHidden: Bool
+    var filterViewHidden: Bool
 }

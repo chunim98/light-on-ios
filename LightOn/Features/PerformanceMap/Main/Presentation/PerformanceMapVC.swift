@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Combine
 
 import CombineCocoa
@@ -32,6 +33,12 @@ final class PerformanceMapVC: UIViewController {
     
     private let searchView = MapSearchView()
     private let searchBar = MapSearchBar()
+    
+    private let filterView = {
+        let hc = UIHostingController(rootView: MapFilterView(vm: .init()))
+        hc.view.backgroundColor = .clear
+        return hc
+    }()
     
     private let refreshButton = {
         var titleConfig = AttrConfiguration()
@@ -62,6 +69,7 @@ final class PerformanceMapVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         mapView.addContentInset(.init(top: view.safeAreaInsets.top))    // 지도 상단 패딩 추가
+        
     }
     
     // MARK: Defaults
@@ -77,7 +85,8 @@ final class PerformanceMapVC: UIViewController {
         view.addSubview(listModal)
         view.addSubview(summaryModal)
         view.addSubview(refreshButton)
-//        view.addSubview(searchView)
+        //        view.addSubview(searchView)
+        view.addSubview(filterView.view)
         
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
         
@@ -94,11 +103,15 @@ final class PerformanceMapVC: UIViewController {
         refreshButton.snp.makeConstraints {
             $0.top.centerX.equalTo(view.safeAreaLayoutGuide)
         }
-//        searchView.snp.makeConstraints { $0.edges.equalToSuperview() }
-//        searchBar.snp.makeConstraints {
-//            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(18)
-//            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
-//        }
+        filterView.view.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.horizontalEdges.equalToSuperview()
+        }
+        //        searchView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        //        searchBar.snp.makeConstraints {
+        //            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(18)
+        //            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+        //        }
     }
     
     // MARK: Bindings
@@ -145,6 +158,7 @@ final class PerformanceMapVC: UIViewController {
         let input = PerformanceMapVM.Input(
             initialCoord: initialCoord,
             refreshCoord: refreshCoord,
+            filterType: filterView.rootView.filterPublisher,
             cameraChanged: mapView.cameraDidChangePublisher,
             selectedCellItem: selectedCellItem,
             selectedID: selectedPerformanceID
@@ -186,7 +200,6 @@ final class PerformanceMapVC: UIViewController {
         )
         .sink { [weak self] in self?.searchView.isHiddenWithAnime = $0 }
         .store(in: &cancellables)
-
     }
 }
 
@@ -216,6 +229,7 @@ extension PerformanceMapVC {
     /// 뷰 상태 바인딩
     private func bindViewState(_ state: PerformanceMapState) {
         refreshButton.isHidden = state.refreshButtonHidden
+        filterView.view.isHidden = state.filterViewHidden
     }
 }
 
