@@ -30,7 +30,7 @@ final class MyPageVC: NavigationBarVC {
         .vertical, inset: .init(horizontal: 18, vertical: 15)
     )
     
-    private let loginInfoView = MyPageLoginInfoView()
+    private let loginInfoView = LoginInfoVC()
     private let logoutInfoView = MyPageLogoutInfoView()
     
     private let noticeButton        = MyPageRowButton(title: "공지사항")
@@ -73,8 +73,10 @@ final class MyPageVC: NavigationBarVC {
     // MARK: Layout
     
     private func setupLayout() {
+        addChild(loginInfoView)
+        
         view.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(loginInfoView)
+        mainVStack.addArrangedSubview(loginInfoView.view)
         mainVStack.addArrangedSubview(logoutInfoView)
         mainVStack.addArrangedSubview(scrollView)
         
@@ -93,6 +95,8 @@ final class MyPageVC: NavigationBarVC {
         
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
+        
+        loginInfoView.didMove(toParent: self)
     }
     
     // MARK: Bindings
@@ -153,7 +157,7 @@ extension MyPageVC {
     /// 뷰 상태 바인딩
     private func bindState(state: MyPageState) {
         logoutInfoView.isHidden = state.loggedOutInfoViewHidden
-        loginInfoView.isHidden = state.loggedInInfoViewHidden
+        loginInfoView.view.isHidden = state.loggedInInfoViewHidden
         
         deleteAccountButton.isHidden = state.deleteAccountButtonHidden
         joinArtistButton.isHidden = state.joinArtistButtonHidden

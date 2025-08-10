@@ -7,6 +7,7 @@
 
 
 struct MyStatsResDTO: Decodable {
+    let name: String
     let totalPerformances: Int
     let mostPreferredRegion: String?
 }
@@ -14,10 +15,9 @@ struct MyStatsResDTO: Decodable {
 // MARK: Mapper
 
 extension MyStatsResDTO {
-#warning("이름 사용하는지 확인 필요, 활동 지역 없으면 뭐라고..?")
     func toDomain() -> MyStatsInfo {
         MyStatsInfo(
-            name: "아이유",
+            name: name,
             applyCount: totalPerformances,
             place: mostPreferredRegion ?? "없음"
         )

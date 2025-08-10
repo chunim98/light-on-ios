@@ -61,13 +61,13 @@ final class MyActivityHistoryVC: BackButtonVC {
         )
         contentVStack.addArrangedSubview(applicationVC.view)
         
+        scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
+        contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
+        
         statsVC.didMove(toParent: self)
         preferredVC.didMove(toParent: self)
         registaionVC.didMove(toParent: self)
         applicationVC.didMove(toParent: self)
-        
-        scrollView.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
-        contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
     }
     
     // MARK: Bindings

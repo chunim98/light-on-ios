@@ -1,19 +1,31 @@
 //
-//  MyPageLoginInfoView.swift
+//  LoginInfoVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/26/25.
 //
 
 import UIKit
+import Combine
 
+import CombineCocoa
 import SnapKit
 
-final class MyPageLoginInfoView: UIStackView {
+final class LoginInfoVC: CombineVC {
     
-    // MARK: Components
+    // MARK: Properties
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let vm = MyPageDI.shared.makeLoginInfoVM()
+    
+    // MARK: Containers
+    
+    private let mainVStack = UIStackView(
+        .vertical, spacing: 16, inset: .init(horizontal: 18, vertical: 30)
+    )
     
     private let userInfoHStack = UIStackView(alignment: .center, spacing: 12)
+    
     private let buttonsHStack = {
         let sv = UIStackView()
         sv.distribution = .fillEqually
@@ -22,6 +34,7 @@ final class MyPageLoginInfoView: UIStackView {
     }()
     
     private let infoDetailVStack = UIStackView(.vertical, spacing: 4)
+    
     private let nameHStack = {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(18)
@@ -35,7 +48,9 @@ final class MyPageLoginInfoView: UIStackView {
         return sv
     }()
     
-    let profileImageView = {
+    // MARK: Components
+    
+    private let profileImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = .white
@@ -50,21 +65,19 @@ final class MyPageLoginInfoView: UIStackView {
         return iv
     }()
     
-    let nameLabel = {
+    private let nameLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.bold(18)
         config.foregroundColor = .brand
         config.lineHeight = 17
-        config.text = "프로그라피" // temp
         return LOLabel(config: config)
     }()
     
-    let idLabel = {
+    private let idLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(12)
         config.foregroundColor = .xA9A9A9
         config.lineHeight = 17
-        config.text = "prograhpy10" // temp
         return LOLabel(config: config)
     }()
     
@@ -89,30 +102,23 @@ final class MyPageLoginInfoView: UIStackView {
     
     // MARK: Life Cycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupDefaults()
         setupLayout()
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setupBindings()
     }
     
     // MARK: Defaults
     
-    private func setupDefaults() {
-        inset = .init(horizontal: 18, vertical: 30)
-        backgroundColor = .xF5F0FF
-        axis = .vertical
-        spacing = 16
-    }
+    private func setupDefaults() { view.backgroundColor = .xF5F0FF }
     
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(userInfoHStack)
-        addArrangedSubview(buttonsHStack)
+        view.addSubview(mainVStack)
+        mainVStack.addArrangedSubview(userInfoHStack)
+        mainVStack.addArrangedSubview(buttonsHStack)
         
         userInfoHStack.addArrangedSubview(profileImageView)
         userInfoHStack.addArrangedSubview(infoDetailVStack)
@@ -127,10 +133,33 @@ final class MyPageLoginInfoView: UIStackView {
         
         nameHStack.insertArrangedSubview(nameLabel, at: 0)
         
+        mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
         settingsButton.snp.makeConstraints { $0.top.trailing.equalToSuperview() }
+    }
+    
+    // MARK: Bindings
+    
+    private func setupBindings() {
+        let loginEvent = SessionManager.shared.$loginState
+            .compactMap { $0 == .login ? Void() : nil }
+            .eraseToAnyPublisher()
+        
+        let trigger = Publishers
+            .Merge(viewDidAppearPublisher, loginEvent)
+            .eraseToAnyPublisher()
+        
+        let input = LoginInfoVM.Input(trigger: trigger)
+        let output = vm.transform(input)
+        
+        output.myInfo
+            .sink { [weak self] in
+                self?.nameLabel.config.text = $0.name
+                self?.idLabel.config.text = $0.id
+            }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: - Preview
 
-#Preview { MyPageLoginInfoView() }
+#Preview { LoginInfoVC() }
