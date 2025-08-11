@@ -16,6 +16,7 @@ final class MapSearchVC: UIViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private let vm = PerformanceMapDI.shared.makeMapSearchVM()
     
     // MARK: Components
     
@@ -52,6 +53,17 @@ final class MapSearchVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = MapSearchVM.Input(
+            address: searchBar.textPublisher,
+            trigger: searchBar.textField.controlEventPublisher(for: .editingDidEnd)
+        )
+        
+        let output = vm.transform(input)
+        
+        output.coord
+            .sink { [weak self] in print($0) }
+            .store(in: &cancellables)
+    
         // 검색 완료 시 일단 화면 닫기, 일단은...
         searchBar.textField.controlEventPublisher(for: .editingDidEnd)
             .sink { [weak self] in self?.dismiss(animated: true) }

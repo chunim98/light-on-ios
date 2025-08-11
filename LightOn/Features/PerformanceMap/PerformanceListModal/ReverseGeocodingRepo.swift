@@ -21,47 +21,22 @@ final class DefaultReverseGeocodingRepo: ReverseGeocodingRepo {
     func getDongName(coord: CLLocationCoordinate2D) -> AnyPublisher<String?, Never> {
         Future { promise in
             
-            let baseURL = "https://maps.apigw.ntruss.com/map-reversegeocode/v2"
-            let endPoint = "/gc"
-            
-            let parameters = [
-                "coords": "\(coord.longitude),\(coord.latitude)",
-                "orders": "admcode",    // 행정동 단위
-                "output": "json"        // json 응답
-            ]
-            
-            let headers: HTTPHeaders = [
-                "x-ncp-apigw-api-key-id": APIConstants.naverMapClientID,
-                "x-ncp-apigw-api-key": APIConstants.naverMapClientSecret
-            ]
-            
-            // 네트워크 통신 시작
-            AF.request(
-                baseURL + endPoint,
+            APIClient.plain.request(
+                "https://maps.apigw.ntruss.com/map-reversegeocode/v2" + "/gc",
                 method: .get,
-                parameters: parameters,
-                encoding: URLEncoding.default,  // URL로 쿼리
-                headers: headers
+                parameters: [
+                    "coords": "\(coord.longitude),\(coord.latitude)",
+                    "orders": "admcode",    // 행정동 단위
+                    "output": "json"        // json 응답
+                ],
+                headers: [
+                    "x-ncp-apigw-api-key-id": APIConstants.naverMapClientID,
+                    "x-ncp-apigw-api-key": APIConstants.naverMapClientSecret
+                ]
             )
-            .responseDecodable(
-                of: ReverseGeocodingResDTO.self
-            ) { response in
-                switch response.result {
-                case .success(let dto):
-                    let statusCode = response.response?.statusCode ?? -1
-                    
-                    if (200..<300).contains(statusCode) {
-                        print("리버스 지오코딩 완료")
-                        promise(.success(dto.getDongName()))
-                        
-                    } else {
-                        print("리버스 지오코딩 실패: error message", dto.status.message)
-                        print("리버스 지오코딩 실패: error status", dto.status.code)
-                    }
-                    
-                case .failure(let afError):
-                    print("리버스 지오코딩 실패: AFError", afError)    // 어떤 에러인지 로그
-                }
+            .decodeAnyResponse(decodeType: ReverseGeocodingResDTO.self) {
+                print("[\(type(of: self))] 리버스 지오코딩 완료")
+                promise(.success($0.getDongName()))
             }
             
         }

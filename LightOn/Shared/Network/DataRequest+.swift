@@ -36,4 +36,23 @@ extension DataRequest {
             }
         }
     }
+    
+    /// 도메인 API 외 리스폰스 파싱
+    func decodeAnyResponse<ResponseDTO: Decodable>(
+        decodeType: ResponseDTO.Type,
+        completion: @escaping (ResponseDTO) -> Void,
+        errorHandler: (() -> Void)? = nil
+    ) {
+        // validate없이는 Authenticator.didRequest 호출 안 됨
+        self.validate().responseDecodable(
+            of: ResponseDTO.self
+        ) { response in
+            switch response.result {
+            case .success(let dto):
+                completion(dto)
+            case .failure(_):
+                errorHandler?()
+            }
+        }
+    }
 }

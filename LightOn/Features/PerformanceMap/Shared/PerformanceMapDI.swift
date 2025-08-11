@@ -21,4 +21,8 @@ final class PerformanceMapDI {
     func makePerformanceMapVM() -> PerformanceMapVM {
         PerformanceMapVM(repo: DefaultGeoPerformanceRepo())
     }
+    
+    func makeMapSearchVM() -> MapSearchVM {
+        MapSearchVM(repo: DefaultGeocodingRepo())
+    }
 }
