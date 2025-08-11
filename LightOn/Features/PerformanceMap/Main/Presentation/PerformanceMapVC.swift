@@ -24,22 +24,28 @@ final class PerformanceMapVC: UIViewController {
     
     // MARK: Components
     
+    /// 마커 그리기 및 상태 업데이트
     private lazy var markersBuilder = MarkersBuilder(mapView.mapView)
+    /// 위치 권한 요청 및 현재 위치 가져오기 (위치 초기화용)
     private lazy var locationManager = LocationManager()
     
-    private let summaryModal = MapSummaryModalView()
-    private let listModal = MapListModalView()
+    /// 네이버 지도 뷰
     private let mapView = NaverMapView()
-    
-    private let searchView = MapSearchView()
-    private let searchBar = MapSearchBar()
-    
+    /// 공연 리스트 커스텀 모달
+    private let listModal = MapListModalView()
+    /// 공연 개요 커스텀 모달
+    private let summaryModal = MapSummaryModalView()
+    /// 검색 모달을 열기 위한 서치바 품은 버튼
+    private let searchBarButton = MapSearchBarButton()
+    /// 검색 풀 스크린 모달
+    private let mapSearchVC = MapSearchVC()
+    /// 공연 필터 버튼 뷰
     private let filterView = {
         let hc = UIHostingController(rootView: MapFilterView(vm: .init()))
         hc.view.backgroundColor = .clear
         return hc
     }()
-    
+    /// 재검색 버튼
     private let refreshButton = {
         var titleConfig = AttrConfiguration()
         titleConfig.font = .pretendard.semiBold(14)
@@ -68,15 +74,12 @@ final class PerformanceMapVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        mapView.addContentInset(.init(top: view.safeAreaInsets.top))    // 지도 상단 패딩 추가
-        
+        mapView.addContentInset(.init(top: view.safeAreaInsets.top)) // 지도 상단 패딩 추가
     }
     
     // MARK: Defaults
     
-    private func setupDefaults() {
-        navigationController?.navigationBar.isHidden = true
-    }
+    private func setupDefaults() { navigationController?.navigationBar.isHidden = true }
     
     // MARK: Layout
     
@@ -84,12 +87,11 @@ final class PerformanceMapVC: UIViewController {
         view.addSubview(mapView)
         view.addSubview(listModal)
         view.addSubview(summaryModal)
-        view.addSubview(refreshButton)
-        //        view.addSubview(searchView)
+        view.addSubview(searchBarButton)
         view.addSubview(filterView.view)
+        view.addSubview(refreshButton)
         
         mapView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        
         listModal.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview()
             listModalBottmConstraint = $0.bottom.equalToSuperview()
@@ -100,18 +102,18 @@ final class PerformanceMapVC: UIViewController {
             summaryModalBottmConstraint = $0.bottom.equalToSuperview()
                 .inset(-280).constraint // 초기에는 아래로 숨김
         }
-        refreshButton.snp.makeConstraints {
-            $0.top.centerX.equalTo(view.safeAreaLayoutGuide)
+        searchBarButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.horizontalEdges.equalToSuperview().inset(18)
         }
         filterView.view.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
+            $0.top.equalTo(searchBarButton.snp.bottom).inset(-12)
             $0.horizontalEdges.equalToSuperview()
         }
-        //        searchView.snp.makeConstraints { $0.edges.equalToSuperview() }
-        //        searchBar.snp.makeConstraints {
-        //            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(18)
-        //            $0.top.equalTo(view.safeAreaLayoutGuide).inset(10)
-        //        }
+        refreshButton.snp.makeConstraints {
+            $0.top.equalTo(searchBarButton.snp.bottom).inset(-12)
+            $0.centerX.equalToSuperview()
+        }
     }
     
     // MARK: Bindings
@@ -119,7 +121,7 @@ final class PerformanceMapVC: UIViewController {
     private func setupBindings() {
         /// 최초 실행 좌표 (현재 위치)
         let initialCoord = locationManager.currentCoordPublisher
-            .first().append(Empty())    // 종료 없이 1회만 방출
+            .first().append(Empty()) // 종료 없이 1회만 방출
             .eraseToAnyPublisher()
         
         /// 재검색 좌표
@@ -194,12 +196,15 @@ final class PerformanceMapVC: UIViewController {
             .sink { [weak self] in self?.bindViewState($0) }
             .store(in: &cancellables)
         
-        Publishers.Merge(
-            searchBar.textField.didBeginEditingPublisher.map { _ in false },
-            searchBar.textField.controlEventPublisher(for: .editingDidEnd).map { _ in true }
-        )
-        .sink { [weak self] in self?.searchView.isHiddenWithAnime = $0 }
-        .store(in: &cancellables)
+        // 레플리카 버튼 탭, 서치 뷰 모달 열기
+        searchBarButton.tapPublisher
+            .sink { [weak self] in self?.showMapSearchVC() }
+            .store(in: &cancellables)
+        
+        // 서치바 텍스트를 레플리카 버튼에 연동
+        mapSearchVC.searchBar.textPublisher
+            .sink { [weak self] in self?.searchBarButton.searchBar.textField.text = $0 }
+            .store(in: &cancellables)
     }
 }
 
@@ -230,6 +235,13 @@ extension PerformanceMapVC {
     private func bindViewState(_ state: PerformanceMapState) {
         refreshButton.isHidden = state.refreshButtonHidden
         filterView.view.isHidden = state.filterViewHidden
+    }
+    
+    /// 서치 뷰 풀스크린 모달 열기
+    private func showMapSearchVC() {
+        mapSearchVC.modalPresentationStyle = .overFullScreen
+        mapSearchVC.modalTransitionStyle = .crossDissolve
+        present(mapSearchVC, animated: true)
     }
 }
 

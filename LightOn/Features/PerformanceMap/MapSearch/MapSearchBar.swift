@@ -28,6 +28,7 @@ final class MapSearchBar: UIStackView {
         tf.attributedPlaceholder = .init(config: config)
         tf.autocapitalizationType = .none   // 자동 대문자 비활성화
         tf.textContentType = .oneTimeCode   // 강력한 비번 생성 방지
+        tf.returnKeyType = .done
         tf.font = .pretendard.medium(16)
         tf.textColor = .caption
         return tf
@@ -82,7 +83,7 @@ final class MapSearchBar: UIStackView {
         addArrangedSubview(clearButton)
         addSubview(magnifierImageView)
         
-        self.snp.makeConstraints { $0.height.equalTo(54) }
+        self.snp.makeConstraints { $0.height.equalTo(53) }
         magnifierImageView.snp.makeConstraints { $0.edges.equalTo(clearButton) }
     }
     
