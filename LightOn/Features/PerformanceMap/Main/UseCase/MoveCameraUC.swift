@@ -12,6 +12,7 @@ final class MoveCameraUC {
     /// 카메라를 이동 시킬 좌표 계산
     func execute(
         initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
+        searchedCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
         selectedCell: AnyPublisher<MediumPerformanceCellItem, Never>,
         performances: AnyPublisher<[GeoPerformanceInfo], Never>
     ) -> AnyPublisher<CLLocationCoordinate2D, Never> {
@@ -26,7 +27,7 @@ final class MoveCameraUC {
             .eraseToAnyPublisher()
         
         return Publishers
-            .Merge(initialCoord, selectedCellCoord)
+            .Merge3(initialCoord, searchedCoord, selectedCellCoord)
             .eraseToAnyPublisher()
     }
 }

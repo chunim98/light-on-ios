@@ -20,9 +20,10 @@ final class GetGeoPerformanceInfoUC {
     func execute(
         initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
         refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
+        searchedCoord: AnyPublisher<CLLocationCoordinate2D, Never>,
         filterType: AnyPublisher<MapFilterType?, Never>
     ) -> AnyPublisher<[GeoPerformanceInfo], Never> {
-        let coord = Publishers.Merge(initialCoord, refreshCoord)
+        let coord = Publishers.Merge3(initialCoord, refreshCoord, searchedCoord)
         
         return Publishers.CombineLatest(coord, filterType)
             .compactMap { [weak self] coord, filterType in

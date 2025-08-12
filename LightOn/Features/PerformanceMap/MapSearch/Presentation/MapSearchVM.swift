@@ -16,12 +16,10 @@ final class MapSearchVM {
     struct Input {
         /// 검색할 주소
         let address: AnyPublisher<String, Never>
-        /// 지오코딩 요청 트리거
-        let trigger: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 검색 결과 좌표
-        let coord: AnyPublisher<CLLocationCoordinate2D?, Never>
+        /// 지오코딩 결과 셀 아이템 배열
+        let searchResults: AnyPublisher<[MapSearchCellItem], Never>
     }
     
     // MARK: Properties
@@ -39,16 +37,14 @@ final class MapSearchVM {
     
     func transform(_ input: Input) -> Output {
         /// 지오코딩 결과
-        let geocodingInfo = getGeocodingInfoUC.execute(
-            adress: input.address,
-            trigger: input.trigger
-        )
+        let geocodingInfoArr = getGeocodingInfoUC
+            .execute(adress: input.address)
         
-        /// 검색 결과 좌표
-        let coord = geocodingInfo
-            .map { $0?.coord }
+        /// 지오코딩 결과 셀 아이템으로 맵핑
+        let searchResults = geocodingInfoArr
+            .map { infoArr in infoArr.map { $0.toCellItem() } }
             .eraseToAnyPublisher()
         
-        return Output(coord: coord)
+        return Output(searchResults: searchResults)
     }
 }

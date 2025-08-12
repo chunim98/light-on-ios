@@ -18,6 +18,8 @@ final class PerformanceMapVM {
         let initialCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         /// 재검색 좌표
         let refreshCoord: AnyPublisher<CLLocationCoordinate2D, Never>
+        /// 사용자 검색 좌표
+        let searchedCoord: AnyPublisher<CLLocationCoordinate2D, Never>
         /// 검색 필터 타입
         let filterType: AnyPublisher<MapFilterType?, Never>
         /// 지도 카메라 이동 이벤트
@@ -67,6 +69,7 @@ final class PerformanceMapVM {
         let performanceInfoArr = getGeoPerformanceInfoUC.execute(
             initialCoord: input.initialCoord,
             refreshCoord: input.refreshCoord,
+            searchedCoord: input.searchedCoord,
             filterType: input.filterType
         )
         
@@ -81,12 +84,17 @@ final class PerformanceMapVM {
         
         /// 리버스 지오코딩 좌표
         let reverseGeocodingCoord = Publishers
-            .Merge(input.refreshCoord, input.initialCoord)
+            .Merge3(
+                input.refreshCoord,
+                input.initialCoord,
+                input.searchedCoord
+            )
             .eraseToAnyPublisher()
         
         /// 카메라를 이동시킬 좌표 획득
         let cameraTargetCoord = moveCameraUC.execute(
             initialCoord: input.initialCoord,
+            searchedCoord: input.searchedCoord,
             selectedCell: input.selectedCellItem,
             performances: performanceInfoArr
         )

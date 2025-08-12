@@ -160,6 +160,7 @@ final class PerformanceMapVC: UIViewController {
         let input = PerformanceMapVM.Input(
             initialCoord: initialCoord,
             refreshCoord: refreshCoord,
+            searchedCoord: mapSearchVC.searchedCoordPublisher,
             filterType: filterView.rootView.filterPublisher,
             cameraChanged: mapView.cameraDidChangePublisher,
             selectedCellItem: selectedCellItem,

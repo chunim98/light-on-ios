@@ -11,13 +11,13 @@ import Alamofire
 
 protocol GeocodingRepo {
     /// 주소로 지오코딩 요청(지명 -> 좌표)
-    func getGeocodingInfo(name: String) -> AnyPublisher<GeocodingInfo?, Never>
+    func getGeocodingInfo(name: String) -> AnyPublisher<[GeocodingInfo], Never>
 }
 
 // MARK: Default
 
 final class DefaultGeocodingRepo: GeocodingRepo {
-    func getGeocodingInfo(name: String) -> AnyPublisher<GeocodingInfo?, Never> {
+    func getGeocodingInfo(name: String) -> AnyPublisher<[GeocodingInfo], Never> {
         Future { promise in
             
             APIClient.plain.request(
@@ -32,7 +32,7 @@ final class DefaultGeocodingRepo: GeocodingRepo {
             )
             .decodeAnyResponse(decodeType: GeocodingResDTO.self) {
                 print("[\(type(of: self))] 지오코딩 완료")
-                promise(.success($0.addresses.first?.toDomain()))
+                promise(.success($0.addresses.map { $0.toDomain() }))
             }
             
         }

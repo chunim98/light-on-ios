@@ -34,3 +34,15 @@ struct GeocodingInfo {
         case postalCode     // 우편번호
     }
 }
+
+// MARK: Mapper
+
+extension GeocodingInfo {
+    func toCellItem() -> MapSearchCellItem {
+        MapSearchCellItem(
+            name: roadAddress.components(separatedBy: " ").last ?? "알 수 없음",
+            description: roadAddress,
+            coord: coord
+        )
+    }
+}
