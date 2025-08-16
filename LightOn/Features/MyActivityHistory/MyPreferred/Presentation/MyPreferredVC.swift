@@ -80,7 +80,7 @@ final class MyPreferredVC: CombineVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let loginEvent = SessionManager.shared.$loginState
+        let loginEvent = SessionManager.shared.loginStatePublisher
             .compactMap { $0 == .login ? Void() : nil }
             .eraseToAnyPublisher()
         

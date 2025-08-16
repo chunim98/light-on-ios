@@ -39,7 +39,7 @@ final class PerformanceDetailVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let loginState = SessionManager.shared.$loginState
+        let loginState = SessionManager.shared.loginStatePublisher
         
         /// 공연 상세 정보
         let detailInfo = performanceDetailRepo

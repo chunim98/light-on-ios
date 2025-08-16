@@ -36,7 +36,7 @@ final class RecommendListVM {
     
     func transform(_ input: Input) -> Output {
         /// 로그인 상태
-        let loginState = SessionManager.shared.$loginState
+        let loginState = SessionManager.shared.loginStatePublisher
             .eraseToAnyPublisher()
         
         /// 최신 or 추천 공연 배열들

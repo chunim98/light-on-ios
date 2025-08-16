@@ -99,7 +99,7 @@ final class UpperTabBar: UIStackView {
             .store(in: &cancellables)
         
         /// 로그인 상태별 버튼 타이틀
-        SessionManager.shared.$loginState
+        SessionManager.shared.loginStatePublisher
             .map { $0 == .login ? "추천 공연" : "최신 공연" }
             .sink { [weak self] in self?.recentRecommendButton.setTitle($0) }
             .store(in: &cancellables)

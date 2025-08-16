@@ -49,7 +49,7 @@ final class HomeVM {
     
     func transform(_ input: Input) -> Output {
         /// 로그인 상태
-        let loginState = SessionManager.shared.$loginState
+        let loginState = SessionManager.shared.loginStatePublisher
             .filter { $0 != .unknown }
             .eraseToAnyPublisher()
         

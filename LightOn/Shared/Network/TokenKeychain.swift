@@ -78,7 +78,7 @@ final class TokenKeychain: @unchecked Sendable {
         if status == errSecSuccess {
             print("[TokenKeychain] \(type.rawValue) 삭제 성공!")
         } else if status == errSecItemNotFound {
-            print("[TokenKeychain] \(type.rawValue) 항목 없음!")
+            print("[TokenKeychain] \(type.rawValue) 삭제할 항목 없음!")
         } else {
             print("[TokenKeychain] \(type.rawValue) 삭제 실패! \(status)")
         }

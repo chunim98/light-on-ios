@@ -13,8 +13,8 @@ struct TokenCredential {
     
     // MARK: Properties
     
-    var accessToken: String { TokenKeychain.shared.load(.access) ?? "" }
-    var refreshToken: String { TokenKeychain.shared.load(.refresh) ?? "" }
+    var accessToken: String? { TokenKeychain.shared.load(.access) }
+    var refreshToken: String? { TokenKeychain.shared.load(.refresh) }
     
     var accessExpireAt: Date? { parseTokenExpiration(accessToken) }
     var refreshExpireAt: Date? { parseTokenExpiration(refreshToken) }
@@ -22,7 +22,9 @@ struct TokenCredential {
     // MARK: Private Helper
     
     /// 토큰 유효기간 파싱
-    private func parseTokenExpiration(_ token: String) -> Date? {
+    private func parseTokenExpiration(_ token: String?) -> Date? {
+        guard let token else { return nil }
+        
         // 토큰을 . 으로 분리
         let segments = token.components(separatedBy: ".")
         guard let payloadSegment = segments[safe: 1] else { return nil }
