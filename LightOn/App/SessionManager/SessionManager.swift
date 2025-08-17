@@ -23,6 +23,8 @@ final class SessionManager {
     
     /// 현재 로그인 상태 서브젝트
     private let loginStateSubject = CurrentValueSubject<LoginState, Never>(.unknown)
+    /// 현재 로그인 상태 스냅샷
+    var loginState: LoginState { loginStateSubject.value }
     
     // MARK: UseCases
     

@@ -52,11 +52,28 @@ final class HomeRecentRecommendedVC: CombineVC {
             .filter { $0 != .unknown }
             .eraseToAnyPublisher()
         
-        /// 데이터 로드 트리거
-        let trigger = Publishers
+        /// 최초 데이터 로드 트리거
+        ///
+        /// 최초 한 번은 viewDidAppear와 loginState가 함께 준비됐을 때 방출
+        let initial = Publishers
             .CombineLatest(viewDidAppearPublisher, loginState)
-            .debounce(for: 0.15, scheduler: DispatchQueue.main)
             .map { _, state in state }
+            .first() // 1회 방출 후 종료
+            .eraseToAnyPublisher()
+        
+        /// 이후 데이터 로드 트리거
+        ///
+        /// 이후에는 viewDidAppear 발생 시점마다 방출
+        let subsequent = viewDidAppearPublisher
+            .map { SessionManager.shared.loginState }
+            .eraseToAnyPublisher()
+        
+        /// 최종 데이터 로드 트리거
+        ///
+        /// - 최초 한 번은 viewDidAppear와 loginState가 함께 준비됐을 때 방출
+        /// - 이후에는 viewDidAppear 발생 시점마다 방출
+        let trigger = initial
+            .append(subsequent)
             .eraseToAnyPublisher()
         
         let input = HomeRecentRecommendedVM.Input(trigger: trigger)
