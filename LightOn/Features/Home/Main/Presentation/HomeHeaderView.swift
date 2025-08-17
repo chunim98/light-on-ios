@@ -6,16 +6,10 @@
 //
 
 import UIKit
-import Combine
 
-import CombineCocoa
 import SnapKit
 
 final class HomeHeaderView: UIStackView {
-    
-    // MARK: Properties
-    
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
     
@@ -33,7 +27,7 @@ final class HomeHeaderView: UIStackView {
         button.snp.makeConstraints { $0.size.equalTo(15) }
         return button
     }()
-
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -50,6 +44,7 @@ final class HomeHeaderView: UIStackView {
     
     private func setupDefaults() {
         inset = .init(horizontal: 18) + .init(top: 24, bottom: 12)
+        insetsLayoutMarginsFromSafeArea = false // 세이프에어리어 자동 합산 끔
         alignment = .center
     }
     
