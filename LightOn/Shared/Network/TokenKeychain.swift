@@ -33,7 +33,7 @@ final class TokenKeychain: @unchecked Sendable {
         
         SecItemDelete(query)                // 기존 항목 제거(기존 값이 있으면 안됨)
         let status = SecItemAdd(query, nil) // 새 항목 추가
-        
+//        print(Thread.callStackSymbols.joined(separator: "\n"))
         if status == errSecSuccess {
             print("[TokenKeychain] \(type.rawValue) 저장 성공!")
         } else if status == errSecDuplicateItem {
@@ -54,7 +54,7 @@ final class TokenKeychain: @unchecked Sendable {
         
         var dataTypeRef: AnyObject?
         let status = SecItemCopyMatching(query, &dataTypeRef)
-        
+//        print(Thread.callStackSymbols.joined(separator: "\n"))
         if status == errSecSuccess,
            let retrievedData = dataTypeRef as? Data,
            let token = String(data: retrievedData, encoding: .utf8) {
@@ -74,7 +74,7 @@ final class TokenKeychain: @unchecked Sendable {
         ] as CFDictionary
         
         let status = SecItemDelete(query)
-        
+//        print(Thread.callStackSymbols.joined(separator: "\n"))
         if status == errSecSuccess {
             print("[TokenKeychain] \(type.rawValue) 삭제 성공!")
         } else if status == errSecItemNotFound {

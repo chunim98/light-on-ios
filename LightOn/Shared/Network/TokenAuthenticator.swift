@@ -26,13 +26,13 @@ final class TokenAuthenticator: Authenticator {
     
     /// 요청이 인증 실패로 실패했는지 여부 판단
     ///
-    /// - 보통 401 상태코드만 인증 실패로 간주
+    /// - Authorization 헤더가 있는 경우에만, 응답 코드가 401이면 인증 실패로 간주
     func didRequest(
         _ urlRequest: URLRequest,
         with response: HTTPURLResponse,
         failDueToAuthenticationError error: any Error
     ) -> Bool {
-        return response.statusCode == 401
+        (urlRequest.headers["Authorization"] != nil) && (response.statusCode == 401)
     }
     
     /// 요청이 현재 Credential로 인증되어 발송된 것인지 확인
@@ -60,10 +60,6 @@ final class TokenAuthenticator: Authenticator {
         // 빈/누락 토큰 즉시 차단
         guard let refreshToken = credential.refreshToken else {
             print("[TokenAuthenticator] 토큰 재발급 중단 🛑")
-            TokenKeychain.shared.delete(.access)
-            TokenKeychain.shared.delete(.refresh)
-            TokenKeychain.shared.delete(.fcm)
-            SessionManager.shared.updateLoginState()
             completion(.failure(APIError(status: -1, message: "저장된 리프레시 토큰 없음")))
             return
         }

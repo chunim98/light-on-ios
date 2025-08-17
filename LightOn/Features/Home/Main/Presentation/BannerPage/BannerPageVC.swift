@@ -15,12 +15,16 @@ final class BannerPageVC: UIPageViewController {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    private var vm = HomeDI.shared.makeBannerPageVM()
     
     private var pages = [UIViewController]()
     private var currentIndex: Int? { viewControllers?.first.flatMap { pages.firstIndex(of: $0) } }
     
-    // MARK: Outputs
+    // MARK: Subjects
     
+    /// 선택한 페이지의 공연 ID를 외부로 방출하는 서브젝트
+    ///
+    /// `pages` 초기화가 지연될 수 있으므로, 초기 구독 시점부터 스트림을 미리 열어둠
     private let selectedIDSubject = PassthroughSubject<Int, Never>()
     
     // MARK: Components
@@ -29,17 +33,19 @@ final class BannerPageVC: UIPageViewController {
     
     // MARK: Life Cycle
     
-    init() { super.init(transitionStyle: .scroll, navigationOrientation: .horizontal) }
+    init() {
+        super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
         setupBindings()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: Defaults
@@ -53,15 +59,27 @@ final class BannerPageVC: UIPageViewController {
     
     private func setupLayout() {
         view.addSubview(pageControl)
+        
+        view.snp.makeConstraints {
+            $0.size.equalTo(view.snp.width)
+        }
         pageControl.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
             $0.bottom.equalToSuperview().inset(18)
+            $0.centerX.equalToSuperview()
         }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
+        let input = BannerPageVM.Input()
+        let output = vm.transform(input)
+        
+        output.performances
+            .sink { [weak self] in self?.bindBannerItems($0) }
+            .store(in: &cancellables)
+        
+        // 페이지 인디케이터 변경 시, 해당 페이지로 이동
         pageControl.pageIndexPublisher
             .sink { [weak self] in self?.bindPageIndex($0) }
             .store(in: &cancellables)
@@ -71,15 +89,6 @@ final class BannerPageVC: UIPageViewController {
 // MARK: Binders & Publishers
 
 extension BannerPageVC {
-    /// 페이지 컨트롤의 인덱스 바인딩
-    private func bindPageIndex(_ index: Int) {
-        guard let currentIndex else { return }
-        // 이전 페이지 인덱스에 따라, 전환 애니메이션 방향을 다르게 설정
-        let direction: UIPageViewController.NavigationDirection
-        direction = currentIndex < index ? .forward : .reverse
-        setViewControllers([pages[index]], direction: direction, animated: true)
-    }
-    
     /// 베너 데이터 바인딩
     func bindBannerItems(_ items: [PerformanceBannerItem]) {
         guard !items.isEmpty else { return }
@@ -89,7 +98,7 @@ extension BannerPageVC {
         // 페이지 컨트롤 초기화
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
-        pageControl.setNeedsDisplay()   // 반투명 배경 강제 렌더링
+        pageControl.setNeedsDisplay() // 반투명 배경 강제 렌더링
         // 배너 퍼블리셔 바인딩
         Publishers
             .MergeMany(pages.map { ($0 as! BannerVC).tapWithIDPublsisher })
@@ -97,7 +106,16 @@ extension BannerPageVC {
             .store(in: &cancellables)
     }
     
-    /// 선택한 공연 아이디 퍼블리셔
+    /// 페이지 컨트롤의 인덱스 바인딩
+    private func bindPageIndex(_ index: Int) {
+        guard let currentIndex else { return }
+        // 이전 페이지 인덱스에 따라, 전환 애니메이션 방향을 다르게 설정
+        let direction: UIPageViewController.NavigationDirection
+        direction = currentIndex < index ? .forward : .reverse
+        setViewControllers([pages[index]], direction: direction, animated: true)
+    }
+    
+    /// 선택한 공연 ID 퍼블리셔
     var selectedIDPublisher: AnyPublisher<Int, Never> {
         selectedIDSubject.eraseToAnyPublisher()
     }

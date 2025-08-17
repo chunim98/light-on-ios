@@ -14,10 +14,19 @@ final class HomeDI {
     
     // MARK: Methods
     
-    func makeHomeVM() -> HomeVM {
-        HomeVM(
-            bannerRepo: DefaultPerformanceBannerRepo(),
-            perfRepo: DefaultPerformanceRepo()
-        )
+    func makeBannerPageVM() -> BannerPageVM {
+        BannerPageVM(repo: DefaultPerformanceBannerRepo())
+    }
+    
+    func makeHomeRecentRecommendedVM() -> HomeRecentRecommendedVM {
+        HomeRecentRecommendedVM(repo: DefaultPerformanceRepo())
+    }
+    
+    func makeHomeSpotlightedVM() -> HomeSpotlightedVM {
+        HomeSpotlightedVM(repo: DefaultPerformanceRepo())
+    }
+    
+    func makeHomePopularVM() -> HomePopularVM {
+        HomePopularVM(repo: DefaultPerformanceRepo())
     }
 }
