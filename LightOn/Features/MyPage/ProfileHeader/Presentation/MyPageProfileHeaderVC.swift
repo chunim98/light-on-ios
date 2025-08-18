@@ -61,11 +61,6 @@ final class MyPageProfileHeaderVC: CombineVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        // viewDidAppear 시, 로그인 상태에 따라 뷰 표시 전환
-        viewDidAppearPublisher
-            .sink { [weak self] in self?.updateVisibility() }
-            .store(in: &cancellables)
-        
         // 로그아웃 상태: 로그인 화면 이동
         logoutView.loginButton.tapPublisher
             .sink { AppCoordinatorBus.shared.navigate(to: .login) }
@@ -102,17 +97,17 @@ extension MyPageProfileHeaderVC {
     /// 공연 등록 모달 열기
     private func presentEntryModal() { present(entryModalVC, animated: true) }
     
-    /// 로그인 상태에 따라 뷰 표시 전환
-    private func updateVisibility() {
-        let isLogin = SessionManager.shared.loginState == .login
-        loginVC.view.isHidden = !isLogin
-        logoutView.isHidden = isLogin
-    }
-    
     /// 내 활동 내역 코디네이터 시작
     private func startMyActivityHistory() {
         myActivityHistoryCoord = .init(navigation: navigationController!)
         myActivityHistoryCoord?.start()
+    }
+    
+    /// 로그인 상태에 따라 뷰 표시 전환
+    func updateVisibility() {
+        let isLogin = SessionManager.shared.loginState == .login
+        loginVC.view.isHidden = !isLogin
+        logoutView.isHidden = isLogin
     }
 }
 

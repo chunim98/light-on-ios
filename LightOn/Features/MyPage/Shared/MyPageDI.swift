@@ -17,4 +17,8 @@ final class MyPageDI {
     func makeMyPageLoginHeaderVM() -> MyPageLoginHeaderVM {
         MyPageLoginHeaderVM(repo: DefaultMyInfoRepo())
     }
+    
+    func makeLogoutAlertVM() -> LogoutAlertVM {
+        LogoutAlertVM(repo: DefaultLogoutRepo())
+    }
 }

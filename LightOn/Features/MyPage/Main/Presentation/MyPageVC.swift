@@ -20,6 +20,9 @@ final class MyPageVC: NavigationBarVC {
     
     // MARK: Components
     
+    /// 로그아웃 얼럿
+    private let logoutAlertVC = LogoutAlertVC()
+    
     private let mainVStack = UIStackView(.vertical)
     private let scrollView = UIScrollView()
     private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18, vertical: 15))
@@ -27,7 +30,7 @@ final class MyPageVC: NavigationBarVC {
     /// 프로필 헤더 컨테이너 뷰컨
     private let profileHeaderVC = MyPageProfileHeaderVC()
     
-    /// 메뉴 버튼들
+    // 메뉴 버튼들
     private let noticeButton        = MyPageRowButton(title: "공지사항")
     private let appSettingsButton   = MyPageRowButton(title: "앱 설정")
     private let faqButton           = MyPageRowButton(title: "FAQ")
@@ -91,9 +94,20 @@ final class MyPageVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        // viewDidAppear 시, 로그인 상태에 따라 뷰 표시 전환
-        viewDidAppearPublisher
-            .sink { [weak self] in self?.updateVisibility() }
+        // 화면 진입 또는 로그아웃 완료 시, 뷰 표시 상태 갱신
+        Publishers.Merge(
+            logoutAlertVC.logoutCompletedPublisher,
+            viewDidAppearPublisher
+        )
+        .sink { [weak self] in
+            self?.profileHeaderVC.updateVisibility()
+            self?.updateVisibility()
+        }
+        .store(in: &cancellables)
+        
+        // 로그아웃 얼럿 띄우기
+        logoutButton.tapPublisher
+            .sink { [weak self] in self?.presentLogoutAlert() }
             .store(in: &cancellables)
         
         // 이용약관 페이지로 리디렉션
@@ -139,6 +153,13 @@ extension MyPageVC {
         guard let url = URL(string: urlString) else { return }
         let safariVC = SFSafariViewController(url: url)
         present(safariVC, animated: true)
+    }
+    
+    /// 로그아웃 얼럿 띄우기
+    private func presentLogoutAlert() {
+        logoutAlertVC.modalPresentationStyle = .overFullScreen
+        logoutAlertVC.modalTransitionStyle = .crossDissolve
+        present(logoutAlertVC, animated: true)
     }
 }
 

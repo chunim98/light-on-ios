@@ -9,8 +9,8 @@ import UIKit
 
 import SnapKit
 
-class BaseAlertVC: UIViewController {
-
+class BaseAlertVC: CombineVC {
+    
     // MARK: Components
     
     let contentVStack = {
