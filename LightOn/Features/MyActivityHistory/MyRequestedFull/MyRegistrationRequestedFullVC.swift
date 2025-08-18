@@ -47,15 +47,7 @@ final class MyRegistrationRequestedFullVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let loginEvent = SessionManager.shared.loginStatePublisher
-            .compactMap { $0 == .login ? Void() : nil }
-            .eraseToAnyPublisher()
-        
-        let trigger = Publishers
-            .Merge(viewDidLoadPublisher, loginEvent)
-            .eraseToAnyPublisher()
-        
-        let input = MyRegistrationRequestedFullVM.Input(trigger: trigger)
+        let input = MyRegistrationRequestedFullVM.Input(trigger: viewDidAppearPublisher)
         let output = vm.transform(input)
         
         output.requests

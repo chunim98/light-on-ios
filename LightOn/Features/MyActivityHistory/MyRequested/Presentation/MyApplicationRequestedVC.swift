@@ -72,15 +72,7 @@ final class MyApplicationRequestedVC: CombineVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let loginEvent = SessionManager.shared.loginStatePublisher
-            .compactMap { $0 == .login ? Void() : nil }
-            .eraseToAnyPublisher()
-        
-        let trigger = Publishers
-            .Merge(viewDidLoadPublisher, loginEvent)
-            .eraseToAnyPublisher()
-        
-        let input = MyApplicationRequestedVM.Input(trigger: trigger)
+        let input = MyApplicationRequestedVM.Input(trigger: viewDidAppearPublisher)
         let output = vm.transform(input)
         
         output.requests

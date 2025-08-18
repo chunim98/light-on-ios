@@ -13,12 +13,12 @@ final class RecommendListVM {
     // MARK: Input & Ouput
     
     struct Input {
-        let refreshEvent: AnyPublisher<Void, Never>
-        let selectedPerformanceID: AnyPublisher<Int, Never>
+        /// 데이터 로드 트리거
+        let trigger: AnyPublisher<SessionManager.LoginState, Never>
     }
     struct Output {
-        /// 최신 or 추천 공연 배열들
-        let recentRecommendeds: AnyPublisher<[HashtagPerformanceCellItem], Never>
+        /// 최신 or 추천 공연 배열
+        let performances: AnyPublisher<[HashtagPerformanceCellItem], Never>
     }
     
     // MARK: Properties
@@ -29,30 +29,16 @@ final class RecommendListVM {
     // MARK: Initializer
     
     init(repo: any GenreDiscoveryRepo) {
-        self.getPerformancesUC = GetHashtagPerformancesUC(repo: repo)
+        self.getPerformancesUC = .init(repo: repo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        /// 로그인 상태
-        let loginState = SessionManager.shared.loginStatePublisher
-            .eraseToAnyPublisher()
+        /// 최신 or 추천 공연 배열
+        let performances = getPerformancesUC
+            .getRecentRecommendeds(loginState: input.trigger)
         
-        /// 최신 or 추천 공연 배열들
-        let recentRecommendeds = getPerformancesUC.getRecentRecommendeds(
-            trigger: input.refreshEvent,
-            loginState: loginState
-        )
-        
-        // 선택한 공연의 상세 페이지로 이동
-        input.selectedPerformanceID
-            .sink {
-                AppCoordinatorBus.shared.navigationEventSubject
-                    .send(.performanceDetail(id: $0))
-            }
-            .store(in: &cancellables)
-        
-        return Output(recentRecommendeds: recentRecommendeds)
+        return Output(performances: performances)
     }
 }

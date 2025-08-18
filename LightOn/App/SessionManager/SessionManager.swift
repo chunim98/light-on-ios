@@ -73,6 +73,9 @@ extension SessionManager {
     /// 현재 로그인 상태 퍼블리셔
     /// - Important: 항상 메인 스레드로 방출되니 메인 스레드 블락하지 않게 조심!
     var loginStatePublisher: AnyPublisher<LoginState, Never> {
-        loginStateSubject.receive(on: DispatchQueue.main).eraseToAnyPublisher()
+        loginStateSubject
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
     }
 }

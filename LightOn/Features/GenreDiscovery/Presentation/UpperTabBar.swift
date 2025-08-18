@@ -22,7 +22,7 @@ final class UpperTabBar: UIStackView {
     private let selectedIndexSubject = PassthroughSubject<Int, Never>()
     
     // MARK: Components
-
+    
     private let popularButton = {
         let button = UpperTabBarButton()
         button.setTitle("인기 공연")
@@ -43,7 +43,7 @@ final class UpperTabBar: UIStackView {
         view.isUserInteractionEnabled = false
         return view
     }()
-
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {

@@ -13,13 +13,14 @@ final class PopularListVM {
     // MARK: Input & Ouput
     
     struct Input {
-        let refreshEvent: AnyPublisher<Void, Never>
+        /// 데이터 로드 트리거
+        let trigger: AnyPublisher<Void, Never>
+        /// 장르 필터
         let genreFilter: AnyPublisher<String, Never>
-        let selectedPerformanceID: AnyPublisher<Int, Never>
     }
     struct Output {
-        /// 인기 공연 배열들
-        let populars: AnyPublisher<[HashtagPerformanceCellItem], Never>
+        /// 인기 공연 배열
+        let performances: AnyPublisher<[HashtagPerformanceCellItem], Never>
     }
     
     // MARK: Properties
@@ -30,33 +31,24 @@ final class PopularListVM {
     // MARK: Initializer
     
     init(repo: any GenreDiscoveryRepo) {
-        self.getPerformancesUC = GetHashtagPerformancesUC(repo: repo)
+        self.getPerformancesUC = .init(repo: repo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let populars = getPerformancesUC.getPopulars(
-            trigger: input.refreshEvent
-        )
+        /// 인기 공연 배열
+        let performances = getPerformancesUC.getPopulars(trigger: input.trigger)
         
         /// 필터링된 인기공연 배열들
-        let filteredPopulars = Publishers
-            .CombineLatest(populars, input.genreFilter)
-            .map { populars, genreFilter in
-                guard genreFilter != "전체" else { return populars }
-                return populars.filter { $0.hashtag == genreFilter }
+        let filteredPerformances = Publishers
+            .CombineLatest(performances, input.genreFilter)
+            .map { performances, genreFilter in
+                guard genreFilter != "전체" else { return performances }
+                return performances.filter { $0.hashtag == genreFilter }
             }
             .eraseToAnyPublisher()
         
-        // 선택한 공연의 상세 페이지로 이동
-        input.selectedPerformanceID
-            .sink {
-                AppCoordinatorBus.shared.navigationEventSubject
-                    .send(.performanceDetail(id: $0))
-            }
-            .store(in: &cancellables)
-        
-        return Output(populars: filteredPopulars)
+        return Output(performances: filteredPerformances)
     }
 }

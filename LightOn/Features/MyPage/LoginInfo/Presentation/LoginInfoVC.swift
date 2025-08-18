@@ -140,12 +140,18 @@ final class LoginInfoVC: CombineVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let loginEvent = SessionManager.shared.loginStatePublisher
+        /// 로그인 상태
+        let loginState = SessionManager.shared.loginStatePublisher
             .compactMap { $0 == .login ? Void() : nil }
             .eraseToAnyPublisher()
         
-        let trigger = Publishers
-            .Merge(viewDidAppearPublisher, loginEvent)
+        /// 데이터 로드 트리거
+        ///
+        /// 화면이 나타난 시점(viewDidAppear)에서,
+        /// 현재 로그인 상태(loginState)가 확정된 경우에만 이벤트 방출
+        let trigger = viewDidAppearPublisher
+            .map { loginState.first() }
+            .switchToLatest()
             .eraseToAnyPublisher()
         
         let input = LoginInfoVM.Input(trigger: trigger)

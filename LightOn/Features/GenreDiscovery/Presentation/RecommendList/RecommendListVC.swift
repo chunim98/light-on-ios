@@ -10,16 +10,12 @@ import Combine
 
 import SnapKit
 
-final class RecommendListVC: UIViewController {
+final class RecommendListVC: CombineVC {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
     private let vm = GenreDiscoveryDI.shared.makeRecommendListVM()
-    
-    // MARK: Inputs
-    
-    private let refreshEventSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -33,15 +29,6 @@ final class RecommendListVC: UIViewController {
         setupBindings()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshEventSubject.send(())    // 테이블 뷰 데이터 갱신
-    }
-    
-    // MARK: Defaults
-    
-    private func setupDefaults() {}
-    
     // MARK: Layout
     
     private func setupLayout() {
@@ -53,20 +40,26 @@ final class RecommendListVC: UIViewController {
     
     private func setupBindings() {
         /// 선택한 공연 아이디
-        let selectedPerformanceID = tableView
+        let selectedID = tableView
             .selectedModelPublisher(dataSource: tableView.diffableDataSource)
             .map { $0.id }
             .eraseToAnyPublisher()
         
-        let input = RecommendListVM.Input(
-            refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
-            selectedPerformanceID: selectedPerformanceID
-        )
+        /// 데이터 로드 트리거
+        let trigger = viewDidAppearPublisher
+            .map { SessionManager.shared.loginState }
+            .eraseToAnyPublisher()
         
+        let input = RecommendListVM.Input(trigger: trigger)
         let output = vm.transform(input)
         
-        output.recentRecommendeds
+        output.performances
             .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        // 선택한 공연의 상세 페이지로 이동
+        selectedID
+            .sink { AppCoordinatorBus.shared.navigate(to: .performanceDetail(id: $0)) }
             .store(in: &cancellables)
     }
 }

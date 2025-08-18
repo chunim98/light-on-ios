@@ -42,10 +42,14 @@ final class GenreDiscoveryVC: NavigationBarVC {
     // MARK: Layout
     
     private func setupLayout() {
+        addChild(pageVC)
+        
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(upperTabBar)
         mainVStack.addArrangedSubview(pageVC.view)
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
+        
+        pageVC.didMove(toParent: self)
     }
     
     // MARK: Bindings

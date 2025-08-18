@@ -11,16 +11,12 @@ import Combine
 
 import SnapKit
 
-final class PopularListVC: UIViewController {
+final class PopularListVC: CombineVC {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
     private let vm = GenreDiscoveryDI.shared.makePopularListVM()
-    
-    // MARK: Inputs
-    
-    private let refreshEventSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
@@ -37,15 +33,6 @@ final class PopularListVC: UIViewController {
         setupBindings()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshEventSubject.send(())    // 테이블 뷰 데이터 갱신
-    }
-    
-    // MARK: Defaults
-    
-    private func setupDefaults() {}
-    
     // MARK: Layout
     
     private func setupLayout() {
@@ -61,21 +48,25 @@ final class PopularListVC: UIViewController {
     
     private func setupBindings() {
         /// 선택한 공연 아이디
-        let selectedPerformanceID = tableView
+        let selectedID = tableView
             .selectedModelPublisher(dataSource: tableView.diffableDataSource)
             .map { $0.id }
             .eraseToAnyPublisher()
         
         let input = PopularListVM.Input(
-            refreshEvent: refreshEventSubject.eraseToAnyPublisher(),
-            genreFilter: tagsView.rootView.selectedGenrePublisher,
-            selectedPerformanceID: selectedPerformanceID
+            trigger: viewDidAppearPublisher,
+            genreFilter: tagsView.rootView.selectedGenrePublisher
         )
         
         let output = vm.transform(input)
         
-        output.populars
+        output.performances
             .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        // 선택한 공연의 상세 페이지로 이동
+        selectedID
+            .sink { AppCoordinatorBus.shared.navigate(to: .performanceDetail(id: $0)) }
             .store(in: &cancellables)
     }
 }
