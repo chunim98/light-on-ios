@@ -133,18 +133,9 @@ final class MyPageLoginHeaderVC: CombineVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 로그인 상태
-        let loginState = SessionManager.shared.loginStatePublisher
-            .compactMap { $0 == .login ? Void() : nil }
-            .eraseToAnyPublisher()
-        
         /// 데이터 로드 트리거
-        ///
-        /// 화면이 나타난 시점(viewDidAppear)에서,
-        /// 현재 로그인 상태(loginState)가 확정된 경우에만 이벤트 방출
         let trigger = viewDidAppearPublisher
-            .map { loginState.first() }
-            .switchToLatest()
+            .filter { SessionManager.shared.loginState == .login }
             .eraseToAnyPublisher()
         
         let input = MyPageLoginHeaderVM.Input(trigger: trigger)
