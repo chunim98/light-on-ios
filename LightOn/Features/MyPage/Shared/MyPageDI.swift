@@ -14,7 +14,7 @@ final class MyPageDI {
     
     // MARK: Methods
     
-    func makeLoginInfoVM() -> LoginInfoVM {
-        LoginInfoVM(repo: DefaultMyInfoRepo())
+    func makeMyPageLoginHeaderVM() -> MyPageLoginHeaderVM {
+        MyPageLoginHeaderVM(repo: DefaultMyInfoRepo())
     }
 }

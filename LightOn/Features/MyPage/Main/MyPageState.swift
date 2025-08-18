@@ -6,8 +6,6 @@
 //
 
 struct MyPageState {
-    let loggedInInfoViewHidden: Bool
-    let loggedOutInfoViewHidden: Bool
     let joinArtistButtonHidden: Bool
     let logoutButtonHidden: Bool
     let deleteAccountButtonHidden: Bool
@@ -15,8 +13,6 @@ struct MyPageState {
     
     static var logout: MyPageState {
         MyPageState(
-            loggedInInfoViewHidden: true,
-            loggedOutInfoViewHidden: false,
             joinArtistButtonHidden: true,
             logoutButtonHidden: true,
             deleteAccountButtonHidden: true,
@@ -26,8 +22,6 @@ struct MyPageState {
     
     static var login: MyPageState {
         MyPageState(
-            loggedInInfoViewHidden: false,
-            loggedOutInfoViewHidden: true,
             joinArtistButtonHidden: false,
             logoutButtonHidden: false,
             deleteAccountButtonHidden: false,

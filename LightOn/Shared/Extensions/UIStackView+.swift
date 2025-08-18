@@ -21,6 +21,7 @@ extension UIStackView {
         
         if let inset {
             self.isLayoutMarginsRelativeArrangement = true
+            self.insetsLayoutMarginsFromSafeArea = false // 세이프에어리어 자동 합산 끔
             self.directionalLayoutMargins = inset
         }
     }
@@ -28,8 +29,9 @@ extension UIStackView {
     var inset: NSDirectionalEdgeInsets {
         get { self.directionalLayoutMargins }
         set {
-            self.directionalLayoutMargins = newValue
             self.isLayoutMarginsRelativeArrangement = true
+            self.insetsLayoutMarginsFromSafeArea = false // 세이프에어리어 자동 합산 끔
+            self.directionalLayoutMargins = newValue
         }
     }
 }

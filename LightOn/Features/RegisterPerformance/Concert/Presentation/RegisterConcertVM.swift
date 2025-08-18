@@ -1,5 +1,5 @@
 //
-//  RegisterPerformanceVM.swift
+//  RegisterConcertVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/15/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class RegisterPerformanceVM {
+final class RegisterConcertVM {
     
     // MARK: Input & Output
     
@@ -39,7 +39,7 @@ final class RegisterPerformanceVM {
     
     struct Output {
         /// 입력값 상태
-        let info: AnyPublisher<RegisterPerformanceInfo, Never>
+        let info: AnyPublisher<RegisterConcertInfo, Never>
     }
     
     // MARK: Properties
@@ -49,7 +49,7 @@ final class RegisterPerformanceVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let infoSubject = CurrentValueSubject<RegisterPerformanceInfo, Never>(.init())
+        let infoSubject = CurrentValueSubject<RegisterConcertInfo, Never>(.init())
         
         // info 상태 갱신
         [

@@ -44,7 +44,6 @@ final class HomeHeaderView: UIStackView {
     
     private func setupDefaults() {
         inset = .init(horizontal: 18) + .init(top: 24, bottom: 12)
-        insetsLayoutMarginsFromSafeArea = false // 세이프에어리어 자동 합산 끔
         alignment = .center
     }
     

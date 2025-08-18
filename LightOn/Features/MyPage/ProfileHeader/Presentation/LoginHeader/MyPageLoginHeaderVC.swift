@@ -1,5 +1,5 @@
 //
-//  LoginInfoVC.swift
+//  MyPageLoginHeaderVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 6/26/25.
@@ -11,18 +11,16 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class LoginInfoVC: CombineVC {
+final class MyPageLoginHeaderVC: CombineVC {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let vm = MyPageDI.shared.makeLoginInfoVM()
+    private let vm = MyPageDI.shared.makeMyPageLoginHeaderVM()
     
     // MARK: Containers
     
-    private let mainVStack = UIStackView(
-        .vertical, spacing: 16, inset: .init(horizontal: 18, vertical: 30)
-    )
+    private let mainVStack = UIStackView(.vertical, spacing: 16)
     
     private let userInfoHStack = UIStackView(alignment: .center, spacing: 12)
     
@@ -104,14 +102,9 @@ final class LoginInfoVC: CombineVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDefaults()
         setupLayout()
         setupBindings()
     }
-    
-    // MARK: Defaults
-    
-    private func setupDefaults() { view.backgroundColor = .xF5F0FF }
     
     // MARK: Layout
     
@@ -154,7 +147,7 @@ final class LoginInfoVC: CombineVC {
             .switchToLatest()
             .eraseToAnyPublisher()
         
-        let input = LoginInfoVM.Input(trigger: trigger)
+        let input = MyPageLoginHeaderVM.Input(trigger: trigger)
         let output = vm.transform(input)
         
         output.myInfo
@@ -168,4 +161,4 @@ final class LoginInfoVC: CombineVC {
 
 // MARK: - Preview
 
-#Preview { LoginInfoVC() }
+#Preview { MyPageLoginHeaderVC() }

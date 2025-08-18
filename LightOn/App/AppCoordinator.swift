@@ -39,6 +39,12 @@ final class AppCoordinator: Coordinator {
                     
                 case .performanceDetail(id: let id):
                     self?.startPerformanceDetailFlow(id)
+                    
+                case .registerBusking:
+                    self?.startRegisterBusking()
+                    
+                case .registerConcert:
+                    self?.startRegisterConcertCoord()
                 }
             }
             .store(in: &cancellables)
@@ -83,6 +89,20 @@ final class AppCoordinator: Coordinator {
             navigation: navigation,
             performanceID: performanceID
         )
+        store(child: coord)
+        coord.start()
+    }
+    
+    /// 버스킹 등록 코디네이터 시작
+    private func startRegisterBusking() {
+        let coord = RegisterBuskingCoord(navigation: navigation)
+        store(child: coord)
+        coord.start()
+    }
+    
+    /// 일반 공연 등록 코디네이터 시작
+    private func startRegisterConcertCoord() {
+        let coord = RegisterConcertCoord(navigation: navigation)
         store(child: coord)
         coord.start()
     }

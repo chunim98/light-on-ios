@@ -70,8 +70,3 @@ extension AddressForm {
         textPublisher // 이름만 다르게 랩핑
     }
 }
-
-// MARK: - Preview
-
-#Preview { RegisterPerformanceVC() }
-

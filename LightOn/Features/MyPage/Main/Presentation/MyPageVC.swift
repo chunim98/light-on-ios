@@ -16,23 +16,18 @@ final class MyPageVC: NavigationBarVC {
     
     // MARK: Properties
     
-    private let vm = MyPageVM()
     private var cancellables = Set<AnyCancellable>()
-    
-    private var registerPerformanceFlowCoord: RegisterPerformanceFlowCoordinator?
-    private var myActivityHistoryCoord: MyActivityHistoryCoordinator?
     
     // MARK: Components
     
     private let mainVStack = UIStackView(.vertical)
     private let scrollView = UIScrollView()
-    private let contentVStack = UIStackView(
-        .vertical, inset: .init(horizontal: 18, vertical: 15)
-    )
+    private let contentVStack = UIStackView(.vertical, inset: .init(horizontal: 18, vertical: 15))
     
-    private let loginInfoView = LoginInfoVC()
-    private let logoutInfoView = MyPageLogoutInfoView()
+    /// 프로필 헤더 컨테이너 뷰컨
+    private let profileHeaderVC = MyPageProfileHeaderVC()
     
+    /// 메뉴 버튼들
     private let noticeButton        = MyPageRowButton(title: "공지사항")
     private let appSettingsButton   = MyPageRowButton(title: "앱 설정")
     private let faqButton           = MyPageRowButton(title: "FAQ")
@@ -59,11 +54,6 @@ final class MyPageVC: NavigationBarVC {
         setupBindings()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        tabBar?.setTabBarHidden(false)
-    }
-    
     // MARK: Defaults
     
     private func setupDefaults() {
@@ -73,11 +63,10 @@ final class MyPageVC: NavigationBarVC {
     // MARK: Layout
     
     private func setupLayout() {
-        addChild(loginInfoView)
+        addChild(profileHeaderVC)
         
         view.addSubview(mainVStack)
-        mainVStack.addArrangedSubview(loginInfoView.view)
-        mainVStack.addArrangedSubview(logoutInfoView)
+        mainVStack.addArrangedSubview(profileHeaderVC.view)
         mainVStack.addArrangedSubview(scrollView)
         
         scrollView.addSubview(contentVStack)
@@ -96,57 +85,36 @@ final class MyPageVC: NavigationBarVC {
         mainVStack.snp.makeConstraints { $0.edges.equalTo(contentLayoutGuide) }
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         
-        loginInfoView.didMove(toParent: self)
+        profileHeaderVC.didMove(toParent: self)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = MyPageVM.Input(
-            loginTap: logoutInfoView.loginButton.tapPublisher,
-            signUpTap: logoutInfoView.signUpButton.tapPublisher
-        )
-        
-        let output = vm.transform(input)
-        
-        output.state
-            .sink { [weak self] in self?.bindState(state: $0) }
-            .store(in: &cancellables)
-        
-        // 공연 등록 플로우 시작
-        loginInfoView.performanceRegisterButton.tapPublisher
-            .sink { [weak self] in self?.bindStartRegisterPerformanceFlow() }
+        // viewDidAppear 시, 로그인 상태에 따라 뷰 표시 전환
+        viewDidAppearPublisher
+            .sink { [weak self] in self?.updateVisibility() }
             .store(in: &cancellables)
         
         // 이용약관 페이지로 리디렉션
         termsButton.tapPublisher
-            .sink { [weak self] in
-                let url = URL(string: "https://climbing-crop-26b.notion.site/229eaa9122bb80d587c6d186c37a2c79")!
-                let safariVC = SFSafariViewController(url: url)
-                self?.present(safariVC, animated: true)
-            }
+            .sink { [weak self] in self?.openSafari(
+                with: "https://climbing-crop-26b.notion.site/229eaa9122bb80d587c6d186c37a2c79"
+            ) }
             .store(in: &cancellables)
         
         // FAQ 페이지로 리디렉션
         faqButton.tapPublisher
-            .sink { [weak self] in
-                let url = URL(string: "https://climbing-crop-26b.notion.site/FAQ-239eaa9122bb80bfb9b9edb50dd1936e")!
-                let safariVC = SFSafariViewController(url: url)
-                self?.present(safariVC, animated: true)
-            }
+            .sink { [weak self] in self?.openSafari(
+                with: "https://climbing-crop-26b.notion.site/FAQ-239eaa9122bb80bfb9b9edb50dd1936e"
+            ) }
             .store(in: &cancellables)
         
         // 아티스트 신청 페이지로 리디렉션
         joinArtistButton.tapPublisher
-            .sink { [weak self] in
-                let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSc3WM6-wQSMTYBBYXxCN5loa8LcoRYR08Ju82IDSgchrhHE8g/viewform")!
-                let safariVC = SFSafariViewController(url: url)
-                self?.present(safariVC, animated: true)
-            }
-            .store(in: &cancellables)
-        
-        loginInfoView.activityHistotyButton.tapPublisher
-            .sink { [weak self] in self?.startMyActivityHistoryCoord() }
+            .sink { [weak self] in self?.openSafari(
+                with: "https://docs.google.com/forms/d/e/1FAIpQLSc3WM6-wQSMTYBBYXxCN5loa8LcoRYR08Ju82IDSgchrhHE8g/viewform"
+            ) }
             .store(in: &cancellables)
     }
 }
@@ -154,10 +122,10 @@ final class MyPageVC: NavigationBarVC {
 // MARK: Binders & Publishers
 
 extension MyPageVC {
-    /// 뷰 상태 바인딩
-    private func bindState(state: MyPageState) {
-        logoutInfoView.isHidden = state.loggedOutInfoViewHidden
-        loginInfoView.view.isHidden = state.loggedInInfoViewHidden
+    /// 로그인 상태에 따라 뷰 표시 전환
+    private func updateVisibility() {
+        let isLogin = SessionManager.shared.loginState == .login
+        let state = isLogin ? MyPageState.login : MyPageState.logout
         
         deleteAccountButton.isHidden = state.deleteAccountButtonHidden
         joinArtistButton.isHidden = state.joinArtistButtonHidden
@@ -166,19 +134,11 @@ extension MyPageVC {
         zip(dividers, state.dividersHidden).forEach { $0.0.isHidden = $0.1 }
     }
     
-    /// 공연 등록 플로우 시작
-    private func bindStartRegisterPerformanceFlow() {
-        registerPerformanceFlowCoord = .init(
-            navigation: navigationController!,
-            tabBar: tabBar
-        )
-        registerPerformanceFlowCoord?.start()
-    }
-    
-    /// 내 활동 내역 코디네이터 시작
-    private func startMyActivityHistoryCoord() {
-        myActivityHistoryCoord = .init(navigation: navigationController!)
-        myActivityHistoryCoord?.start()
+    /// 주어진 URL을 Safari 뷰 컨트롤러로 열기
+    private func openSafari(with urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
 }
 

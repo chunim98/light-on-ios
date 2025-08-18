@@ -1,5 +1,5 @@
 //
-//  RegisterPerformanceVC.swift
+//  RegisterConcertVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/4/25.
@@ -11,7 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class RegisterPerformanceVC: BackButtonVC {
+final class RegisterConcertVC: BackButtonVC {
     
     // MARK: Properties
     
@@ -242,7 +242,7 @@ final class RegisterPerformanceVC: BackButtonVC {
 
 // MARK: Binders & Publishers
 
-extension RegisterPerformanceVC {
+extension RegisterConcertVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
         addressForm.provinceDropdown.bindDismissTable(gesture)
@@ -255,4 +255,4 @@ extension RegisterPerformanceVC {
 
 // MARK: - Preview
 
-#Preview { RegisterPerformanceVC() }
+#Preview { RegisterConcertVC() }

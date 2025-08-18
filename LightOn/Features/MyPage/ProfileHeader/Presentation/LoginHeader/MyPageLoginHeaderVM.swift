@@ -1,5 +1,5 @@
 //
-//  LoginInfoVM.swift
+//  MyPageLoginHeaderVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 8/10/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class LoginInfoVM {
+final class MyPageLoginHeaderVM {
     
     // MARK: Input & Ouput
     

@@ -35,14 +35,19 @@ final class RegisterPerformanceEntryModalVC: ModalVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDefaults()
         setupLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupDefaults()
     }
     
     // MARK: Defaults
     
     private func setupDefaults() {
         sheetPresentationController?.detents = [.custom { _ in 220.6 }] // 사전 계산한 모달 높이
+        sheetPresentationController?.preferredCornerRadius = 14         // 모달 모서리 굴곡
         titleLabel.config.text = "어떤 공연을 등록할까요?"
     }
     
@@ -61,9 +66,28 @@ final class RegisterPerformanceEntryModalVC: ModalVC {
 
 extension RegisterPerformanceEntryModalVC {
     /// 일반 공연 버튼 탭
-    var normalTapPublisher: AnyPublisher<Void, Never> { normalButton.tapPublisher }
+    ///
+    /// 모달이 닫히고 나서 이벤트 방출
+    var normalTapPublisher: AnyPublisher<Void, Never> {
+        normalButton.tapPublisher.flatMap {
+            Future { [weak self] promise in
+                self?.dismiss(animated: true) { promise(.success(())) }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
     /// 버스킹 버튼 탭
-    var buskingTapPublisher: AnyPublisher<Void, Never> { buskingButton.tapPublisher }
+    ///
+    /// 모달이 닫히고 나서 이벤트 방출
+    var buskingTapPublisher: AnyPublisher<Void, Never> {
+        buskingButton.tapPublisher.flatMap {
+            Future { [weak self] promise in
+                self?.dismiss(animated: true) { promise(.success(())) }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview

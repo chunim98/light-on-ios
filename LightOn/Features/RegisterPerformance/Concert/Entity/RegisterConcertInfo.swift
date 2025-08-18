@@ -1,11 +1,11 @@
 //
-//  RegisterPerformanceInfo.swift
+//  RegisterConcertInfo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/15/25.
 //
 
-struct RegisterPerformanceInfo {
+struct RegisterConcertInfo {
     var name: String?              // 공연명
     var description: String?       // 공연 소개
     var regionID: Int?             // 지역 코드

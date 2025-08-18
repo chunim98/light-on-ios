@@ -12,9 +12,16 @@ final class AppCoordinatorBus {
     // MARK: Enum
     
     enum NavigationEvent {
+        /// 로그인 화면
         case login
+        /// 회원 가입 화면
         case signUp
+        /// 공연 상세 정보 화면
         case performanceDetail(id: Int)
+        /// 버스킹 등록 화면
+        case registerBusking
+        /// 일반 공연 등록 화면
+        case registerConcert
     }
     
     // MARK: Singleton

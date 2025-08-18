@@ -1,5 +1,5 @@
 //
-//  MyPageLogoutInfoView.swift
+//  MyPageLogoutHeaderView.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/4/25.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MyPageLogoutInfoView: UIStackView {
+final class MyPageLogoutHeaderView: UIStackView {
     
     // MARK: Components
     
@@ -64,8 +64,6 @@ final class MyPageLogoutInfoView: UIStackView {
     // MARK: Defaults
     
     private func setupDefaults() {
-        inset = .init(horizontal: 18, vertical: 30)
-        backgroundColor = .xF5F0FF
         axis = .vertical
         spacing = 16
     }
@@ -83,4 +81,4 @@ final class MyPageLogoutInfoView: UIStackView {
 
 // MARK: - Preview
 
-#Preview { MyPageLogoutInfoView() }
+#Preview { MyPageLogoutHeaderView() }
