@@ -18,6 +18,11 @@ final class RegisterBuskingVC: BackButtonVC {
     private var cancellables = Set<AnyCancellable>()
     private let vm = RegisterPerformanceDI.shared.makeRegisterBuskingVM()
     
+    // MARK: Subjects
+    
+    /// 공연 등록 완료 서브젝트
+    private let registerCompleteSubject = PassthroughSubject<Void, Never>()
+    
     // MARK: Alerts
     
     private let confirmAlert = RegisterBuskingConfirmAlertVC()
@@ -225,18 +230,19 @@ final class RegisterBuskingVC: BackButtonVC {
                 """) }
             .store(in: &cancellables)
         
-        output.registerCompleteEvent
-            .sink { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            }
-            .store(in: &cancellables)
-        
-        contentVStack.tapPublisher
-            .sink { [weak self] in self?.bindDismissOverlay(gesture: $0) }
-            .store(in: &cancellables)
-        
+        // 공연등록 확인 얼럿 띄우기
         confirmButton.tapPublisher
-            .sink { [weak self] in self?.bindShowConfirmAlert() }
+            .sink { [weak self] in self?.presentConfirmAlert() }
+            .store(in: &cancellables)
+        
+        // 공연 등록 완료 이벤트 외부로 전달
+        output.registerCompleteEvent
+            .sink { [weak self] in self?.registerCompleteSubject.send(()) }
+            .store(in: &cancellables)
+        
+        // 배경 터치 시, 모든 오버레이 닫기 (키보드 포함)
+        contentVStack.tapPublisher
+            .sink { [weak self] in self?.dismissOverlays(gesture: $0) }
             .store(in: &cancellables)
     }
 }
@@ -244,19 +250,24 @@ final class RegisterBuskingVC: BackButtonVC {
 // MARK: Binders & Publishers
 
 extension RegisterBuskingVC {
-    /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
-    private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
+    /// 배경 터치 시, 모든 오버레이 닫기 (키보드 포함)
+    private func dismissOverlays(gesture: UITapGestureRecognizer) {
         addressForm.provinceDropdown.bindDismissTable(gesture)
         addressForm.cityDropdown.bindDismissTable(gesture)
         genreForm.dropdown.dismiss(gesture)
-        view.endEditing(true)   // 키보드 닫기
+        view.endEditing(true) // 키보드 닫기
     }
     
-    /// 등록 확인 얼럿 표시
-    private func bindShowConfirmAlert() {
+    /// 공연등록 확인 얼럿 띄우기
+    private func presentConfirmAlert() {
         confirmAlert.modalPresentationStyle = .overFullScreen
         confirmAlert.modalTransitionStyle = .crossDissolve
         present(confirmAlert, animated: true)
+    }
+    
+    /// 공연 등록 완료 이벤트 퍼블리셔
+    var registerCompletePublisher: AnyPublisher<Void, Never> {
+        registerCompleteSubject.eraseToAnyPublisher()
     }
 }
 

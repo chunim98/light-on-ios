@@ -32,12 +32,12 @@ final class RegisterBuskingCoord: Coordinator {
     private func showRegisterBuskingVC() {
         let vc = RegisterBuskingVC()
         
-        // 뒤로가기 탭, 화면 닫기
-        vc.backTapPublisher
+        // 공연등록 완료 또는 뒤로가기 시, 화면 닫기
+        Publishers.Merge(vc.registerCompletePublisher, vc.backTapPublisher)
             .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
-        // 해당 뷰컨 해제시, 코디네이터도 해제
+        // 해당 뷰컨 해제 시, 코디네이터도 해제
         vc.deallocatedPublisher
             .sink { [weak self] in self.map { $0.parent?.free(child: $0) } }
             .store(in: &cancellables)
