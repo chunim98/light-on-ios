@@ -16,13 +16,15 @@ final class ImageUploadForm: TextForm {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    /// 피커를 띄워줄 프레젠터
     private weak var presenter: UIViewController?
     
     // MARK: Components
     
+    /// 피커 풀 스크린 모달
     private let pickerVC = PHPickerVC()
     
-    let button = {
+    private let importButton = {
         let button = LOButton(style: .borderedTinted)
         button.setTitle("파일 업로드", .pretendard.semiBold(16))
         button.snp.makeConstraints { $0.width.equalTo(109) }
@@ -60,30 +62,30 @@ final class ImageUploadForm: TextForm {
     private func setupLayout() {
         addArrangedSubview(captionLabel)
         textFieldHStack.addArrangedSubview(LOSpacer(12))
-        textFieldHStack.addArrangedSubview(button)
+        textFieldHStack.addArrangedSubview(importButton)
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        // 업로드 버튼 탭, 이미지 피커 열기
-        button.tapPublisher
-            .sink { [weak self] in self?.bindShowPHPicker() }
+        // 업로드 버튼 탭 시, 이미지 피커 표시
+        importButton.tapPublisher
+            .sink { [weak self] in self?.presentPHPicker() }
             .store(in: &cancellables)
         
-        // 닫기 버튼 탭, 이미지 선택, 이미지 피커 닫기
+        // 이미지 선택 완료 또는 취소 시, 피커 닫기
         Publishers.Merge(
-            pickerVC.cancelTapPublisher,
-            pickerVC.selectedImageInfoPublisher.print().map { _ in }
+            pickerVC.selectedImageInfoPublisher.map { _ in },
+            pickerVC.cancelTapPublisher
         )
-        .sink { [weak self] in self?.pickerVC.dismiss(animated: true) }
+        .sink { [weak self] in
+            self?.pickerVC.dismiss(animated: false)
+        }
         .store(in: &cancellables)
         
+        // 전달받은 이미지 정보로 텍스트필드 UI 업데이트
         pickerVC.selectedImageInfoPublisher
-            .sink { [weak self] in
-                self?.textField.layer.borderColor = UIColor.loBlack.cgColor
-                self?.textField.text = $0.name
-            }
+            .sink { [weak self] in self?.updateUI(with: $0) }
             .store(in: &cancellables)
     }
 }
@@ -91,10 +93,16 @@ final class ImageUploadForm: TextForm {
 // MARK: Binders & Publishers
 
 extension ImageUploadForm {
-    /// PHPicker 열기 바인딩
-    private func bindShowPHPicker() {
+    /// PHPicker 열기
+    private func presentPHPicker() {
         pickerVC.modalPresentationStyle = .overFullScreen
         presenter?.present(pickerVC, animated: false)
+    }
+    
+    /// 전달받은 이미지 정보로 텍스트필드 UI 업데이트
+    private func updateUI(with info: ImageInfo) {
+        textField.layer.borderColor = UIColor.loBlack.cgColor
+        textField.text = info.name
     }
     
     /// 선택한 이미지 정보 퍼블리셔

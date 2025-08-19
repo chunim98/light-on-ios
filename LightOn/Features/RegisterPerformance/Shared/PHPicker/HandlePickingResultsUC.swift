@@ -10,49 +10,43 @@ import Combine
 import PhotosUI
 
 final class HandlePickingResultsUC {
-    
-    // MARK: Properties
-    
-    private var cancellables = Set<AnyCancellable>()
-    private let selectedImageSubject = PassthroughSubject<UIImage?, Never>()
-    private let selectedFileNameSubject = PassthroughSubject<String?, Never>()
-    
-    // MARK: Methods
-    
-    /// 선택 결과에서 이미지 추출
+    /// 선택 결과에서 이미지와 파일명 추출
     func execute(
         pickingResults: AnyPublisher<[PHPickerResult], Never>
     ) -> AnyPublisher<ImageInfo?, Never> {
-        pickingResults.sink { [weak self] results in
-            // itemProvider는 데이터를 실제 메모리로 로드해 주는 객체
+        pickingResults.map { results -> AnyPublisher<ImageInfo?, Never> in
+            // 첫 번째 결과의 itemProvider 가져오기 (이미지를 로드할 수 없는 경우 nil 방출)
             guard let provider = results.first?.itemProvider,
                   provider.canLoadObject(ofClass: UIImage.self)
-            else { self?.selectedImageSubject.send(nil); return }
+            else { return Just(nil).eraseToAnyPublisher() }
             
-            // 이미지 추출
-            provider.loadObject(ofClass: UIImage.self) { image, _ in
-                self?.selectedImageSubject.send(image as? UIImage)
+            /// 이미지 로드 퍼블리셔
+            let image = Future<UIImage?, Never> { promise in
+                provider.loadObject(ofClass: UIImage.self) { image, _ in
+                    promise(.success(image as? UIImage))
+                }
             }
             
-            // 파일 이름 추출
-            provider.loadFileRepresentation(
-                forTypeIdentifier: UTType.image.identifier
-            ) { url, _ in
-                self?.selectedFileNameSubject.send(url?.lastPathComponent)
+            /// 파일 이름 로드 퍼블리셔
+            let name = Future<String?, Never> { promise in
+                provider.loadFileRepresentation(
+                    forTypeIdentifier: UTType.image.identifier
+                ) { url, _ in
+                    promise(.success(url?.lastPathComponent))
+                }
             }
+            
+            // 이미지와 파일 이름을 묶어서 ImageInfo?로 변환
+            return Publishers.Zip(image, name)
+                .map { image, name -> ImageInfo? in
+                    guard let image, let name else { return nil }
+                    return ImageInfo(image: image, name: name)
+                }
+                .eraseToAnyPublisher()
         }
-        .store(in: &cancellables)
-        
-        // 두 값 합쳐서 방출
-        return Publishers.Zip(
-            selectedImageSubject.eraseToAnyPublisher(),
-            selectedFileNameSubject.eraseToAnyPublisher()
-        )
-        .map {
-            guard let image = $0.0, let name = $0.1 else { return nil }
-            return ImageInfo(image: image, name: name)
-        }
-        .receive(on: DispatchQueue.main)
+        .switchToLatest()
+        .receive(on: DispatchQueue.main) // 메인스레드 전환
+        .share()
         .eraseToAnyPublisher()
     }
 }
