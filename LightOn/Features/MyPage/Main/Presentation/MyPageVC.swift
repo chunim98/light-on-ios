@@ -22,6 +22,8 @@ final class MyPageVC: NavigationBarVC {
     
     /// 로그아웃 얼럿
     private let logoutAlertVC = LogoutAlertVC()
+    /// 회원탈퇴 얼럿
+    private let deleteAccountAlertVC = DeleteAccountAlertVC()
     
     private let mainVStack = UIStackView(.vertical)
     private let scrollView = UIScrollView()
@@ -94,9 +96,10 @@ final class MyPageVC: NavigationBarVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        // 화면 진입 또는 로그아웃 완료 시, 뷰 표시 상태 갱신
-        Publishers.Merge(
+        // 화면 진입 또는 로그아웃, 회원탈퇴 완료 시, 뷰 표시 상태 갱신
+        Publishers.Merge3(
             logoutAlertVC.logoutCompletedPublisher,
+            deleteAccountAlertVC.accountDeletedPublisher,
             viewDidAppearPublisher
         )
         .sink { [weak self] in
@@ -108,6 +111,11 @@ final class MyPageVC: NavigationBarVC {
         // 로그아웃 얼럿 띄우기
         logoutButton.tapPublisher
             .sink { [weak self] in self?.presentLogoutAlert() }
+            .store(in: &cancellables)
+        
+        // 회원탈퇴 얼럿 띄우기
+        deleteAccountButton.tapPublisher
+            .sink { [weak self] in self?.presentdeleteAccountAlert() }
             .store(in: &cancellables)
         
         // 이용약관 페이지로 리디렉션
@@ -160,6 +168,13 @@ extension MyPageVC {
         logoutAlertVC.modalPresentationStyle = .overFullScreen
         logoutAlertVC.modalTransitionStyle = .crossDissolve
         present(logoutAlertVC, animated: true)
+    }
+    
+    /// 회원탈퇴 얼럿 띄우기
+    private func presentdeleteAccountAlert() {
+        deleteAccountAlertVC.modalPresentationStyle = .overFullScreen
+        deleteAccountAlertVC.modalTransitionStyle = .crossDissolve
+        present(deleteAccountAlertVC, animated: true)
     }
 }
 

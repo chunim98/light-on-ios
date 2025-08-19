@@ -21,4 +21,8 @@ final class MyPageDI {
     func makeLogoutAlertVM() -> LogoutAlertVM {
         LogoutAlertVM(repo: DefaultLogoutRepo())
     }
+    
+    func makeDeleteAccountAlertVM() -> DeleteAccountAlertVM {
+        DeleteAccountAlertVM(repo: DefaultDeleteAccountRepo())
+    }
 }
