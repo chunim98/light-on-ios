@@ -30,10 +30,10 @@ final class RegisterBuskingVM {
         let alertConfirmTap: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 입력값 상태
-        let info: AnyPublisher<RegisterBuskingInfo, Never>
         /// 버스킹 등록 완료 이벤트
         let registerCompleteEvent: AnyPublisher<Void, Never>
+        /// 모든 필드가 유효한지 여부
+        let allValuesValid: AnyPublisher<Bool, Never>
     }
     
     // MARK: Properties
@@ -51,6 +51,18 @@ final class RegisterBuskingVM {
     
     func transform(_ input: Input) -> Output {
         let infoSubject = CurrentValueSubject<RegisterBuskingInfo, Never>(.init())
+        
+        /// 버스킹 등록 완료 이벤트
+        let registerCompleteEvent = registerBuskingUC.execute(
+            trigger: input.alertConfirmTap,
+            info: infoSubject.eraseToAnyPublisher()
+        )
+        
+        /// 모든 필드가 유효한지 여부
+        let allValuesValid = infoSubject
+            .map { $0.allValuesValid }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
         
         // info 상태 갱신
         [
@@ -70,15 +82,9 @@ final class RegisterBuskingVM {
             input.artistDescription.sink { infoSubject.value.artistDescription = $0 },
         ].forEach { $0.store(in: &cancellables) }
         
-        /// 버스킹 등록 완료 이벤트
-        let registerCompleteEvent = registerBuskingUC.execute(
-            trigger: input.alertConfirmTap,
-            info: infoSubject.eraseToAnyPublisher()
-        )
-        
         return Output(
-            info: infoSubject.eraseToAnyPublisher(),
-            registerCompleteEvent: registerCompleteEvent
+            registerCompleteEvent: registerCompleteEvent,
+            allValuesValid: allValuesValid
         )
     }
 }

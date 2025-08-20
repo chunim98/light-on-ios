@@ -22,4 +22,22 @@ struct RegisterBuskingInfo {
     var documentInfo: ImageInfo?
     var artistName: String?
     var artistDescription: String?
+    
+    /// 모든 필드가 유효한지 여부
+    var allValuesValid: Bool {
+        name              != nil &&
+        description       != nil &&
+        regionID          != nil &&
+        detailAddress     != nil &&
+        notice            != nil &&
+        posterInfo        != nil &&
+        startDate         != nil &&
+        endDate           != nil &&
+        startTime         != nil &&
+        endTime           != nil &&
+        documentInfo      != nil &&
+        artistName        != nil &&
+        artistDescription != nil &&
+        !genre.isEmpty
+    }
 }

@@ -7,6 +7,10 @@
 
 
 struct RegisterBuskingReqDTO: Encodable {
+    let info: Info
+    let schedule: Schedule
+    let artistName: String
+    let artistDescription: String
     
     struct Info: Encodable {
         let title: String
@@ -23,10 +27,11 @@ struct RegisterBuskingReqDTO: Encodable {
         let startTime: String   // "HH:mm"
         let endTime: String     // "HH:mm"
     }
-    
-    let info: Info
-    let schedule: Schedule
-    
+}
+
+// MARK: Mapper
+
+extension RegisterBuskingReqDTO {
     init?(from domain: RegisterBuskingInfo) {
         guard let title = domain.name,
               let description = domain.description,
@@ -36,7 +41,9 @@ struct RegisterBuskingReqDTO: Encodable {
               let startDate = domain.startDate,
               let endDate = domain.endDate,
               let startTime = domain.startTime,
-              let endTime = domain.endTime
+              let endTime = domain.endTime,
+              let artistName = domain.artistName,
+              let artistDescription = domain.artistDescription
         else { return nil }
         
         self.info = Info(
@@ -53,5 +60,7 @@ struct RegisterBuskingReqDTO: Encodable {
             startTime: startTime,
             endTime: endTime
         )
+        self.artistName = artistName
+        self.artistDescription = artistDescription
     }
 }

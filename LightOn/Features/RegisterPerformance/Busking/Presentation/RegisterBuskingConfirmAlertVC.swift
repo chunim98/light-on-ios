@@ -6,15 +6,8 @@
 //
 
 import UIKit
-import Combine
-
-import CombineCocoa
 
 final class RegisterBuskingConfirmAlertVC: BaseAlertVC {
-    
-    // MARK: Properties
-    
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: Components
     
@@ -31,7 +24,7 @@ final class RegisterBuskingConfirmAlertVC: BaseAlertVC {
         return button
     }()
     
-    private let cancelButton = {
+    let cancelButton = {
         let button = LOButton(style: .bordered)
         button.setTitle("취소", .pretendard.regular(16))
         return button
@@ -43,7 +36,6 @@ final class RegisterBuskingConfirmAlertVC: BaseAlertVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
-        setupBindings()
     }
     
     // MARK: Defaults
@@ -64,14 +56,6 @@ final class RegisterBuskingConfirmAlertVC: BaseAlertVC {
         
         buttonHStack.addArrangedSubview(cancelButton)
         buttonHStack.addArrangedSubview(acceptButton)
-    }
-    
-    // MARK: Bindings
-    
-    private func setupBindings() {
-        cancelButton.tapPublisher
-            .sink { [weak self] _ in self?.dismiss(animated: true) }
-            .store(in: &cancellables)
     }
 }
 

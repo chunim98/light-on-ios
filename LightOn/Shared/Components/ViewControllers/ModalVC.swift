@@ -30,8 +30,12 @@ class ModalVC: CombineVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupDefaults()
         setupLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupDefaults()
     }
     
     // MARK: Defaults

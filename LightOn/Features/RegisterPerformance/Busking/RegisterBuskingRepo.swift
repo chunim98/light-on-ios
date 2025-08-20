@@ -29,40 +29,41 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
             
+            // jsonData 생성
             guard let jsonData = try? JSONEncoder().encode(
                 RegisterBuskingReqDTO(from: info)
             ) else { return }
             
             // 서버에 전송 요청
             APIClient.withAuth.upload(
-                multipartFormData: { multipartFormData in
+                multipartFormData: { formData in
                     // json 텍스트로 만들어서 전송
-                    multipartFormData.append(
+                    formData.append(
                         jsonData,
                         withName: "data",
                         mimeType: "application/json"
                     )
                     // 증빙자료 전송
-                    multipartFormData.append(
+                    formData.append(
                         documentData,
                         withName: "proof",
-                        mimeType: "image/png"
+                        fileName: "proof.png"
                     )
                     // 포스터 이미지 전송
-                    multipartFormData.append(
+                    formData.append(
                         posterData,
                         withName: "posterImage",
-                        mimeType: "image/png"
+                        fileName: "posterImage.png"
                     )
                 },
                 to: BaseURL + "/api/members/performances/buskings"
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in
-                print("버스킹 등록 요청 완료")
+                print("[RegisterBuskingRepo] 버스킹 등록 요청 완료")
                 promise(.success(()))
                 
             } errorHandler: { _ in
-                print("버스킹 등록 요청 실패")
+                print("[RegisterBuskingRepo] 버스킹 등록 요청 실패")
             }
             
         }
