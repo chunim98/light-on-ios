@@ -29,6 +29,7 @@ final class MyPerformanceCell: UITableViewCell {
         sv.alignment = .center
         sv.spacing = 12
         
+        sv.addArrangedSubview(LOSpacer())
         sv.addArrangedSubview(arrowImageView)
         return sv
     }()
