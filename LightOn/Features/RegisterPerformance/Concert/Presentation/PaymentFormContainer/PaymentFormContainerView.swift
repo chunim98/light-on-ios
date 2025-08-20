@@ -46,6 +46,7 @@ final class PaymentFormContainerView: UIStackView {
     private func setupDefaults() {
         axis = .vertical
         spacing = 16
+        clipsToBounds = true
     }
     
     // MARK: Layout

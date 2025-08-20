@@ -8,6 +8,8 @@
 import UIKit
 import Combine
 
+import SnapKit
+
 final class AccountForm: BaseForm {
     
     // MARK: Components
@@ -20,15 +22,16 @@ final class AccountForm: BaseForm {
     
     private let accountHolderTextField = {
         let tf = LOTintedTextField()
-        tf.snp.makeConstraints { $0.height.equalTo(47) }
         tf.setPlaceHolder("예금주명을 입력해주세요")
+        tf.snp.makeConstraints { $0.height.equalTo(47) }
         return tf
     }()
     
     private let accountNumberTextField = {
         let tf = LOTintedTextField()
-        tf.snp.makeConstraints { $0.height.equalTo(47) }
+        tf.keyboardType = .numberPad
         tf.setPlaceHolder("계좌번호를 입력해주세요 (숫자만 기입)")
+        tf.snp.makeConstraints { $0.height.equalTo(47) }
         return tf
     }()
     
@@ -55,11 +58,6 @@ final class AccountForm: BaseForm {
         addArrangedSubview(accountNumberTextField)
         addArrangedSubview(accountHolderTextField)
     }
-}
-
-// MARK: Binders & Publishers
-
-extension AccountForm {
 }
 
 // MARK: - Preview
