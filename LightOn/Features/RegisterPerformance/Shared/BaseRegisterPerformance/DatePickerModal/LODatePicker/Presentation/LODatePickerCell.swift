@@ -12,19 +12,10 @@ import SnapKit
 
 final class LODatePickerCell: FSCalendarCell {
     
-    // MARK: Enum
-    
-    enum SelectionType {
-        case `default`
-        case single
-        case start
-        case end
-        case inRange
-    }
-    
     // MARK: Properties
     
     static let id = "LODatePickerCell"
+    
     private var radius: CGFloat { 35/2 }
     
     // MARK: Components
@@ -48,7 +39,20 @@ final class LODatePickerCell: FSCalendarCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        resetComponents()
+        // backView 초기화
+        backView.backgroundColor = nil
+        backView.layer.mask = nil
+        
+        // selectionView 초기화
+        selectionView.backgroundColor = nil
+        selectionView.layer.cornerRadius = 0
+        selectionView.layer.borderWidth = 0
+        selectionView.layer.borderColor = nil
+        
+        // dateLabel 초기화
+        dateLabel.config.foregroundColor = nil
+        dateLabel.config.font = nil
+        dateLabel.config.text = nil
     }
     
     required init!(coder aDecoder: NSCoder!) {
@@ -78,6 +82,9 @@ final class LODatePickerCell: FSCalendarCell {
     
     // MARK: Left Rounded Mask
     
+    /// 좌측 모서리만 둥글게 마스킹한 `CAShapeLayer`를 반환
+    ///
+    /// - rect: selectionView의 시작 x좌표부터 contentView 전체 너비를 커버
     private func getLeftRoundedMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
         let rect = CGRect(
@@ -99,6 +106,9 @@ final class LODatePickerCell: FSCalendarCell {
     
     // MARK: Right Rounded Mask
     
+    /// 우측 모서리만 둥글게 마스킹한 `CAShapeLayer`를 반환
+    ///
+    /// - rect: contentView의 시작 x좌표부터 selectionView의 끝 x좌표까지 커버
     private func getRightRoundedMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
         let rect = CGRect(
@@ -120,6 +130,7 @@ final class LODatePickerCell: FSCalendarCell {
     
     // MARK: Rounded Mask
     
+    /// selectionView 전체를 둥글게 마스킹한 `CAShapeLayer`를 반환
     private func getRoundMask() -> CAShapeLayer {
         let mask = CAShapeLayer()
         let path = UIBezierPath(
@@ -131,39 +142,23 @@ final class LODatePickerCell: FSCalendarCell {
         return mask
     }
     
-    // MARK: Reset Components
-    
-    private func resetComponents() {
-        // backView 초기화
-        backView.backgroundColor = nil
-        backView.layer.mask = nil
-
-        // selectionView 초기화
-        selectionView.backgroundColor = nil
-        selectionView.layer.cornerRadius = 0
-        selectionView.layer.borderWidth = 0
-        selectionView.layer.borderColor = nil
-        
-        // dateLabel 초기화
-        dateLabel.textColor = nil
-        dateLabel.font = nil
-        dateLabel.text = nil
-    }
-
     // MARK: BackView Configuration
     
-    private func configureBackView(for selection: SelectionType, weakDay: Int) {
+    
+    /// 선택 상태(selection)와 요일(weekDay)에 따라 BackView의 마스크를 설정
+    ///
+    /// - start: 시작일이면 좌측만 둥글게, 단 주말(일요일)일 경우 전체 둥글게
+    /// - end: 종료일이면 우측만 둥글게, 단 주초(월요일)일 경우 전체 둥글게
+    /// - inRange: 범위 안에 있을 경우, 주말/주초에는 각각 우측/좌측만 둥글게
+    private func configureBackViewMask(selection: LODatePickerCellSelection, weakDay: Int) {
         switch selection {
         case .start:
-            backView.backgroundColor = UIColor(hex: 0xF5F0FF)
             backView.layer.mask = (weakDay == 7) ? getRoundMask() : getLeftRoundedMask()
             
         case .end:
-            backView.backgroundColor = UIColor(hex: 0xF5F0FF)
             backView.layer.mask = (weakDay == 1) ? getRoundMask() : getRightRoundedMask()
             
         case .inRange:
-            backView.backgroundColor = UIColor(hex: 0xF5F0FF)
             if weakDay == 7 {
                 backView.layer.mask = getRightRoundedMask()
             } else if weakDay == 1 {
@@ -171,69 +166,30 @@ final class LODatePickerCell: FSCalendarCell {
             }
             
         default:
-            backView.backgroundColor = .clear
-        }
-    }
-
-    // MARK: SelectionView Configuration
-    
-    private func configureSelectionView(for selection: SelectionType) {
-        switch selection {
-        case .single:
-            selectionView.layer.cornerRadius = radius
-            selectionView.backgroundColor = .brand
-            
-        case .start:
-            selectionView.layer.cornerRadius = radius
-            selectionView.backgroundColor = .brand
-            
-        case .end:
-            selectionView.layer.cornerRadius = radius
-            selectionView.backgroundColor = .white
-            selectionView.layer.borderColor = UIColor.brand.cgColor
-            selectionView.layer.borderWidth = 1
-            
-        default:
-            selectionView.backgroundColor = .clear
-        }
-    }
-
-    // MARK: DateLabel Configuration
-    
-    private func configureDateLabel(day: String, for selection: SelectionType) {
-        dateLabel.config.text = day
-        
-        switch selection {
-        case .single, .start:
-            dateLabel.config.font = .pretendard.semiBold(18)
-            dateLabel.config.foregroundColor = .white
-            
-        case .end:
-            dateLabel.config.font = .pretendard.semiBold(18)
-            dateLabel.config.foregroundColor = .brand
-            
-        case .inRange:
-            dateLabel.config.font = .pretendard.regular(18)
-            dateLabel.config.foregroundColor = .caption
-            
-        default:
-            dateLabel.config.font = .pretendard.regular(18)
-            dateLabel.config.foregroundColor = .caption
+            break
         }
     }
     
     // MARK: Public Configuration
     
-    func configure(selection: SelectionType, date: Date) {
+    func configure(selection: LODatePickerCellSelection, date: Date) {
         let day = String(Calendar.current.component(.day, from: date))
         let weakDay = Calendar.current.component(.weekday, from: date)
+        let style = LODatePickerCellStyle(selection)
         
-        configureBackView(for: selection, weakDay: weakDay)
-        configureSelectionView(for: selection)
-        configureDateLabel(day: day, for: selection)
+        // backView 초기화
+        backView.backgroundColor = style.backgroundColor
+        configureBackViewMask(selection: selection, weakDay: weakDay)
+        
+        // selectionView 초기화
+        selectionView.backgroundColor = style.selectionColor
+        selectionView.layer.cornerRadius = style.selectionCornerRadius
+        selectionView.layer.borderWidth = style.selectionBorderWidth
+        selectionView.layer.borderColor = style.selectionBorderColor?.cgColor
+        
+        // dateLabel 초기화
+        dateLabel.config.foregroundColor = style.dateColor
+        dateLabel.config.font = style.dateFont
+        dateLabel.config.text = day
     }
 }
-
-// MARK: - Preview
-
-#Preview { LODatePickerStyledBodyView() }

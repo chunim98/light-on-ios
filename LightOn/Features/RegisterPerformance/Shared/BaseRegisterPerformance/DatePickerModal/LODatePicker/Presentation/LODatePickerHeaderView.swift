@@ -41,7 +41,6 @@ final class LODatePickerHeaderView: UIStackView {
         super.init(frame: frame)
         setupDefaults()
         setupLayout()
-        bindDateHeaderText("2025년 5월")
     }
     
     required init(coder: NSCoder) {
@@ -67,8 +66,8 @@ final class LODatePickerHeaderView: UIStackView {
 // MARK: Binders & Publishers
 
 extension LODatePickerHeaderView {
-    /// 날짜 버튼 타이틀 바인딩
-    func bindDateHeaderText(_ text: String) {
+    /// 날짜 버튼 타이틀 설정
+    func setTitle(_ text: String) {
         var config = AttrConfiguration()
         config.font = .pretendard.semiBold(20)
         config.foregroundColor = .loBlack
@@ -77,12 +76,12 @@ extension LODatePickerHeaderView {
         dateButton.configuration?.attributedTitle = .init(config: config)
     }
     
-    /// 이전 버튼 탭
+    /// 이전 버튼 탭 퍼블리셔
     var previousTapPublisher: AnyPublisher<Void, Never> {
         previousButton.tapPublisher
     }
     
-    /// 다음 버튼 탭
+    /// 다음 버튼 탭 퍼블리셔
     var nextTapPublisher: AnyPublisher<Void, Never> {
         nextButton.tapPublisher
     }

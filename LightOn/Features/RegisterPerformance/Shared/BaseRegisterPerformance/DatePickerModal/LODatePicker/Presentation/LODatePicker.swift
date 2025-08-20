@@ -14,17 +14,12 @@ final class LODatePicker: UIStackView {
     
     // MARK: Properties
     
-    private let vm = LODatePickerVM()
     private var cancaellables = Set<AnyCancellable>()
-    
-    // MARK: Outputs
-    
-    private let dateRangeSubject = PassthroughSubject<DateRange, Never>()
     
     // MARK: Components
     
     private let pickerHeaderView = LODatePickerHeaderView()
-    private let pickerBodyView = LODatePickerStyledBodyView()
+    private let pickerBodyView = LODatePickerBodyView()
     
     // MARK: Life Cycle
     
@@ -58,24 +53,19 @@ final class LODatePicker: UIStackView {
     // MARK: Bindig
     
     private func setupBindings() {
-        let input = LODatePickerVM.Input(
-            previousButtonTapEvent: pickerHeaderView.previousTapPublisher,
-            nextButtonTapEvent: pickerHeaderView.nextTapPublisher,
-            currentPage: pickerBodyView.currentPagePublisher,
-            dateRange: pickerBodyView.dateRangePublisher
-        )
-        let output = vm.transform(input)
-        
-        output.currentPage
-            .sink { [weak self] in self?.pickerBodyView.currentPageBinder($0) }
+        // 헤더에서 이전 버튼을 누르면, 이전 달 페이지로 이동
+        pickerHeaderView.previousTapPublisher
+            .sink { [weak self] in self?.pickerBodyView.goToPreviousPage() }
             .store(in: &cancaellables)
         
-        output.dateHeaderText
-            .sink { [weak self] in self?.pickerHeaderView.bindDateHeaderText($0) }
+        // 헤더에서 다음 버튼을 누르면, 다음 달 페이지로 이동
+        pickerHeaderView.nextTapPublisher
+            .sink { [weak self] in self?.pickerBodyView.goToNextPage() }
             .store(in: &cancaellables)
         
-        output.dateRange
-            .sink { [weak self] in self?.dateRangeSubject.send($0) }
+        // 현재 페이지가 바뀌면, 헤더 타이틀을 갱신
+        pickerBodyView.currentPagePublisher
+            .sink { [weak self] in self?.updateHeaderTitle(with: $0) }
             .store(in: &cancaellables)
     }
 }
@@ -83,9 +73,22 @@ final class LODatePicker: UIStackView {
 // MARK: Binders & Publishers
 
 extension LODatePicker {
+    /// 전달받은 날짜를 "yyyy년 M월" 형식으로 변환 후, 헤더 타이틀 갱신
+    private func updateHeaderTitle(with date: Date) {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR") // 한국어 설정
+        formatter.dateFormat = "yyyy년 M월"
+        pickerHeaderView.setTitle(formatter.string(from: date))
+    }
+    
+    /// 현재 선택된 날짜 범위 업데이트
+    func updateDateRange(_ dateRange: DateRange) {
+        pickerBodyView.updateDateRange(dateRange)
+    }
+    
     /// 선택한 날짜 범위 퍼블리셔
     var dateRangePublisher: AnyPublisher<DateRange, Never> {
-        dateRangeSubject.eraseToAnyPublisher()
+        pickerBodyView.dateRangePublisher
     }
 }
 
