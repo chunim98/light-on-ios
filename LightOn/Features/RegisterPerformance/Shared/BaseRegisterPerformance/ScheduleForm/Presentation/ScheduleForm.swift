@@ -27,9 +27,22 @@ final class ScheduleForm: BaseForm {
     
     // MARK: Modals
     
-    private let datePickerModalVC = DatePickerModalVC()                     // 컴포넌트 취급
-    private let startTimePickerModalVC = TimePickerModalVC(config: .start)  // 컴포넌트 취급
-    private let endTimePickerModalVC = TimePickerModalVC(config: .end)      // 컴포넌트 취급
+    /// 날짜 선택 모달
+    private let datePickerModalVC = DatePickerModalVC()
+    
+    /// 시작시간 선택 모달
+    private let startTimePickerModalVC = {
+        let vc = TimePickerModalVC()
+        vc.titleLabel.config.text = "공연 시작 시간"
+        return vc
+    }()
+    
+    /// 종료시간 선택 모달
+    private let endTimePickerModalVC = {
+        let vc = TimePickerModalVC()
+        vc.titleLabel.config.text = "공연 종료 시간"
+        return vc
+    }()
     
     // MARK: Containers
     

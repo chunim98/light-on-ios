@@ -16,11 +16,6 @@ final class TimePickerModalVC: ModalVC {
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    private let config: TimePickerModalConfig
-    
-    // MARK: Outputs
-    
-    private let isPresentedSubject = CurrentValueSubject<Bool, Never>(false)
     
     // MARK: Components
     
@@ -34,37 +29,17 @@ final class TimePickerModalVC: ModalVC {
     
     // MARK: Life Cycle
     
-    init(config: TimePickerModalConfig) {
-        self.config = config
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @MainActor required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
         setupBindings()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        isPresentedSubject.send(true)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        isPresentedSubject.send(false)
-    }
     
     // MARK: Defaults
     
     private func setupDefaults() {
         titleLabel.config.foregroundColor = .brand
-        titleLabel.config.text = config.title
     }
     
     // MARK: Layout
@@ -98,10 +73,14 @@ extension TimePickerModalVC {
     
     /// 모달 표시 상태 퍼블리셔
     var isPresentedPublisher: AnyPublisher<Bool, Never> {
-        isPresentedSubject.eraseToAnyPublisher()
+        Publishers.Merge(
+            viewWillAppearPublisher.map { true },
+            viewWillDisappearPublisher.map { false }
+        )
+        .eraseToAnyPublisher()
     }
 }
 
 // MARK: - Preview
 
-#Preview { TimePickerModalVC(config: .start) }
+#Preview { TimePickerModalVC() }

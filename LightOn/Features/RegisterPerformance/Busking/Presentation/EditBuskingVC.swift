@@ -26,7 +26,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
         return sv
     }()
     
-    /// 수정 완료 버튼
+    /// 공연 취소 버튼
     private let deleteButton = {
         let button = LOButton(style: .borderedTinted)
         button.setTitle("취소하기", .pretendard.bold(16))

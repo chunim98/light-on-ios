@@ -27,7 +27,7 @@ final class TimePickerView: UIView {
     
     // MARK: Components
     
-    private let pickerView = UIPickerView()
+    let pickerView = UIPickerView()
     
     // MARK: Life Cycle
     
