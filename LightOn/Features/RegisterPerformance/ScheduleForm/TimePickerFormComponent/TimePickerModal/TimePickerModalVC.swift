@@ -64,6 +64,11 @@ final class TimePickerModalVC: ModalVC {
 // MARK: Binders & Publishers
 
 extension TimePickerModalVC {
+    /// 선택한 시간 업데이트
+    func updateTime(_ time: String?) {
+        timePicker.updateTime(time)
+    }
+    
     /// 선택한 시간 퍼블리셔
     var timePublisher: AnyPublisher<String?, Never> {
         confirmButton.tapPublisher

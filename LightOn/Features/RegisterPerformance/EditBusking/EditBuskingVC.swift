@@ -107,6 +107,8 @@ extension EditBuskingVC {
             start: info.startDate,
             end: info.endDate
         ))
+        scheduleFormVC.updateStartTime(info.startTime)
+        scheduleFormVC.updateEndTime(info.endTime)
     }
 }
 

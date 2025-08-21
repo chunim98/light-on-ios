@@ -13,9 +13,32 @@ import SnapKit
 
 final class TimePickerFormComponentVC: UIViewController {
     
+    // MARK: State
+    
+    struct State {
+        // 시작, 종료 시간
+        var startTime: String?
+        var endTime: String?
+        // 모달 표시 여부
+        var isStartPresenting: Bool = false
+        var isEndPresenting: Bool = false
+    }
+    
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Subjects
+    
+    /// 시작 시간 업데이트 서브젝트
+    ///
+    /// 입력 목적
+    private let updateStartSubject = PassthroughSubject<String?, Never>()
+    
+    /// 종료 시간 업데이트 서브젝트
+    ///
+    /// 입력 목적
+    private let updateEndSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Components
     
@@ -89,33 +112,51 @@ final class TimePickerFormComponentVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 시작 모달 상태
-        ///
-        /// timePublisher는 초기값 없어서 초기값 제공중
-        let startModalState = startModalVC.isPresentedPublisher
-            .withLatestFrom(startModalVC.timePublisher.prepend(nil)) { ($0, $1) }
+        /// 모달과 버튼의 상태를 한곳에서 관리하기 위한 SOT 서브젝트
+        let stateSubject = CurrentValueSubject<State, Never>(.init())
         
-        /// 종료 모달 상태
-        ///
-        /// timePublisher는 초기값 없어서 초기값 제공중
-        let endModalState = endModalVC.isPresentedPublisher
-            .withLatestFrom(endModalVC.timePublisher.prepend(nil)) { ($0, $1) }
+        // 모달 표시여부 갱신
+        startModalVC.isPresentedPublisher
+            .sink { stateSubject.value.isStartPresenting = $0 }
+            .store(in: &cancellables)
         
-        // 모달 상태 변화에 따라 버튼 스타일 및 타이틀 업데이트
-        startModalState
-            .sink { [weak self] in self?.updateStartButton(isPresented: $0.0, time: $0.1) }
+        // 모달 표시여부 갱신
+        endModalVC.isPresentedPublisher
+            .sink { stateSubject.value.isEndPresenting = $0 }
+            .store(in: &cancellables)
+        
+        // 모달에서 선택된 값과 외부에서 요청된 날짜 범위 변경 이벤트를 병합해 상태 반영
+        Publishers
+            .Merge(
+                updateStartSubject.eraseToAnyPublisher(),
+                startModalVC.timePublisher
+            )
+            .sink { stateSubject.value.startTime = $0 }
+            .store(in: &cancellables)
+        
+        // 모달에서 선택된 값과 외부에서 요청된 날짜 범위 변경 이벤트를 병합해 상태 반영
+        Publishers
+            .Merge(
+                updateEndSubject.eraseToAnyPublisher(),
+                endModalVC.timePublisher
+            )
+            .sink { stateSubject.value.endTime = $0 }
             .store(in: &cancellables)
         
         // 모달 상태 변화에 따라 버튼 스타일 및 타이틀 업데이트
-        endModalState
-            .sink { [weak self] in self?.updateEndButton(isPresented: $0.0, time: $0.1) }
+        stateSubject
+            .sink { [weak self] in
+                self?.startModalVC.updateTime($0.startTime)
+                self?.endModalVC.updateTime($0.endTime)
+                self?.updateStartButton(with: $0)
+                self?.updateEndButton(with: $0)
+            }
             .store(in: &cancellables)
         
         // 시작 시간 피커 모달 띄우기
         startButton.tapPublisher
             .sink { [weak self] in self?.presentStartModal() }
             .store(in: &cancellables)
-        
         
         // 종료 시간 피커 모달 띄우기
         endButton.tapPublisher
@@ -128,18 +169,22 @@ final class TimePickerFormComponentVC: UIViewController {
 
 extension TimePickerFormComponentVC {
     /// 모달 상태 변화에 따라 버튼 스타일 및 타이틀 업데이트
-    private func updateStartButton(isPresented: Bool, time: String?) {
+    private func updateStartButton(with state: State) {
+        let isPresenting = state.isStartPresenting
+        let time = state.startTime
         let style: ScheduleFormButtonStyle
-        style = isPresented ? .editing : (time == nil ? .idle : .filled)
+        style = isPresenting ? .editing : (time == nil ? .idle : .filled)
         startButton.setStyle(style: style)
         // 시간이 존재하면 버튼 타이틀에 반영
         time.map { startButton._titleLabel.config.text = $0 }
     }
     
     /// 모달 상태 변화에 따라 버튼 스타일 및 타이틀 업데이트
-    private func updateEndButton(isPresented: Bool, time: String?) {
+    private func updateEndButton(with state: State) {
+        let isPresenting = state.isEndPresenting
+        let time = state.endTime
         let style: ScheduleFormButtonStyle
-        style = isPresented ? .editing : (time == nil ? .idle : .filled)
+        style = isPresenting ? .editing : (time == nil ? .idle : .filled)
         endButton.setStyle(style: style)
         // 시간이 존재하면 버튼 타이틀에 반영
         time.map { endButton._titleLabel.config.text = $0 }
@@ -157,6 +202,26 @@ extension TimePickerFormComponentVC {
     private func presentEndModal() {
         endModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }]
         present(endModalVC, animated: true)
+    }
+    
+    /// 시작 시간 업데이트
+    ///
+    /// 직접 상태를 수정하지 않고, Subject를 통해 변경 요청을 전달함
+    func updateStartTime(_ time: String?) {
+        guard let comps = time?.split(separator: ":"),
+              comps.count >= 2
+        else { return }
+        updateStartSubject.send("\(comps[0]):\(comps[1])")
+    }
+    
+    /// 종료 시간 업데이트
+    ///
+    /// 직접 상태를 수정하지 않고, Subject를 통해 변경 요청을 전달함
+    func updateEndTime(_ time: String?) {
+        guard let comps = time?.split(separator: ":"),
+              comps.count >= 2
+        else { return }
+        updateEndSubject.send("\(comps[0]):\(comps[1])")
     }
 }
 

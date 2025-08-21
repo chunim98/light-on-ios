@@ -55,6 +55,16 @@ extension ScheduleFormVC {
         datePickerFormCompVC.updateDateRange(dateRange)
     }
     
+    /// 시작 시간 업데이트
+    func updateStartTime(_ time: String?) {
+        timePickerFormCompVC.updateStartTime(time)
+    }
+    
+    /// 종료 시간 업데이트
+    func updateEndTime(_ time: String?) {
+        timePickerFormCompVC.updateEndTime(time)
+    }
+    
     /// 시작일 퍼블리셔
     var startDatePublisher: AnyPublisher<String?, Never> {
         datePickerFormCompVC.dateRangePublisher.map { range in
@@ -77,11 +87,11 @@ extension ScheduleFormVC {
     
     /// 시작 시간 퍼블리셔
     var startTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.startModalVC.timePublisher
+        timePickerFormCompVC.startModalVC.timePublisher.print("ㅅㅣ작").eraseToAnyPublisher()
     }
     
     /// 종료 시간 퍼블리셔
     var endTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.endModalVC.timePublisher
+        timePickerFormCompVC.endModalVC.timePublisher.print("종료").eraseToAnyPublisher()
     }
 }

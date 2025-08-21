@@ -27,7 +27,7 @@ final class TimePickerView: UIView {
     
     // MARK: Components
     
-    let pickerView = UIPickerView()
+    private let pickerView = UIPickerView()
     
     // MARK: Life Cycle
     
@@ -39,7 +39,7 @@ final class TimePickerView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        pickerView.subviews[safe: 1]?.isHidden = true   // 피커뷰 중앙 막대 숨김
+        pickerView.subviews[safe: 1]?.isHidden = true // 피커뷰 중앙 막대 숨김
     }
     
     required init?(coder: NSCoder) {
@@ -67,6 +67,37 @@ final class TimePickerView: UIView {
 // MARK: Binders & Publishers
 
 extension TimePickerView {
+    /// 선택한 시간 갱신
+    func updateTime(_ time: String?) {
+        // 문자열을 ":" 기준으로 분리하고 시(hour)와 분(minute) 추출
+        guard
+            let components = time?.split(separator: ":"),
+            components.count >= 2,
+            let hour24 = Int(components[0]),
+            let minute = Int(components[1])
+        else { return }
+        
+        // 24시간제를 오전/오후 + 12시간제로 변환
+        let ampmValue = hour24 >= 12 ? "오후" : "오전"
+        let hour12 = (hour24 % 12 == 0) ? 12 : (hour24 % 12)
+        
+        // 변환된 값에 맞는 배열 인덱스 찾기
+        guard let amPMIndex = amPM.firstIndex(of: ampmValue),
+              let hourIndex = hours.firstIndex(of: hour12),
+              let minuteIndex = minutes.firstIndex(of: minute)
+        else { return }
+        
+        // 피커뷰를 해당 인덱스 위치로 이동
+        pickerView.selectRow(amPMIndex, inComponent: 0, animated: false)
+        pickerView.selectRow(hourIndex, inComponent: 1, animated: false)
+        pickerView.selectRow(minuteIndex, inComponent: 2, animated: false)
+        
+        // 선택된 값들을 Subject로 발행해서 상태 갱신
+        amPMSubject.send(ampmValue)
+        hoursSubject.send(hour12)
+        minutesSubject.send(minute)
+    }
+    
     /// 선택한 시간 퍼블리셔
     var timePublisher: AnyPublisher<String, Never> {
         Publishers.CombineLatest3(
