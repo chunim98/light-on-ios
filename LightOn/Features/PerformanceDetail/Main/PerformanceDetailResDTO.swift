@@ -52,7 +52,11 @@ struct PerformanceDetailResDTO: Decodable {
         case freestyle = "FREESTYLE"
         case assigned = "ASSIGNED"
     }
-    
+}
+
+// MARK: Mapper
+
+extension PerformanceDetailResDTO {
     func toDomain() -> PerformanceDetailInfo {
         let date = schedule.startDate.replacingOccurrences(of: "-", with: ".")
         let time = schedule.startTime.prefix(5)

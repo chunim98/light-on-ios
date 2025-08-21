@@ -19,7 +19,7 @@ struct PerformancesResDTO: Decodable {
         let startTime: String  // HH:mm:ss
         let isPaid: Bool
         let regionName: String
-        let artistName: String
+        let artistName: String?
         
         func toLarge() -> LargePerformanceCellItem {
             let startDate = startDate.replacingOccurrences(of: "-", with: ".")
@@ -42,7 +42,7 @@ struct PerformancesResDTO: Decodable {
             return MediumPerformanceCellItem(
                 performanceID: id,
                 thumbnailPath: thumbnailImageUrl,
-                artist: artistName,
+                artist: artistName ?? "알 수 없는 아티스트",
                 title: title,
                 genre: genres.first ?? "알 수 없는 장르",
                 date: startDate,
