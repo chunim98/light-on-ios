@@ -50,23 +50,38 @@ final class ScheduleFormVC: UIViewController {
 // MARK: Binders & Publishers
 
 extension ScheduleFormVC {
+    /// 현재 선택된 날짜 범위 업데이트
+    func updateDateRange(_ dateRange: DateRange) {
+        datePickerFormCompVC.updateDateRange(dateRange)
+    }
+    
     /// 시작일 퍼블리셔
     var startDatePublisher: AnyPublisher<String?, Never> {
-        datePickerFormCompVC.startDatePublisher
+        datePickerFormCompVC.dateRangePublisher.map { range in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return range.start.map { formatter.string(from: $0) }
+        }
+        .eraseToAnyPublisher()
     }
     
     /// 종료일 퍼블리셔
     var endDatePublisher: AnyPublisher<String?, Never> {
-        datePickerFormCompVC.endDatePublisher
+        datePickerFormCompVC.dateRangePublisher.map { range in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return range.end.map { formatter.string(from: $0) }
+        }
+        .eraseToAnyPublisher()
     }
     
     /// 시작 시간 퍼블리셔
     var startTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.startTimePublisher
+        timePickerFormCompVC.startModalVC.timePublisher
     }
     
     /// 종료 시간 퍼블리셔
     var endTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.endTimePublisher
+        timePickerFormCompVC.endModalVC.timePublisher
     }
 }

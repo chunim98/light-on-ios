@@ -13,9 +13,25 @@ import SnapKit
 
 final class DatePickerFormComponentVC: UIViewController {
     
+    // MARK: State
+    
+    struct State {
+        /// 선택한 날짜 범위
+        var dateRange: DateRange = DateRange(start: Date?.none, end: Date?.none)
+        /// 날짜 선택 모달 표시 여부
+        var isPresenting: Bool = false
+    }
+    
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Subjects
+    
+    /// 현재 선택된 날짜 범위 업데이트 서브젝트
+    ///
+    /// 입력 목적
+    private let updateDateRangeSubject = PassthroughSubject<DateRange, Never>()
     
     // MARK: Components
     
@@ -81,19 +97,29 @@ final class DatePickerFormComponentVC: UIViewController {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 선택한 날짜 범위
-        ///
-        /// 초기값 없어서 초기값 제공중
-        let dateRange = modalVC.newDateRangePublisher
-            .prepend(.init(start: nil, end: nil))
+        /// 모달과 버튼의 상태를 한곳에서 관리하기 위한 SOT 서브젝트
+        let stateSubject = CurrentValueSubject<State, Never>(.init())
         
-        /// 시작 모달 상태
-        let startModalState = modalVC.isPresentedPublisher
-            .withLatestFrom(dateRange) { ($0, $1) }
+        // 모달 표시여부 갱신
+        modalVC.isPresentedPublisher
+            .sink { stateSubject.value.isPresenting = $0 }
+            .store(in: &cancellables)
         
-        // 모달 표시 여부와 선택된 날짜에 따라 버튼 스타일 및 타이틀 갱신
-        startModalState
-            .sink { [weak self] in self?.updateStartButton(isPresented: $0.0, dateRange: $0.1) }
+        // 모달에서 선택된 값과 외부에서 요청된 날짜 범위 변경 이벤트를 병합해 상태 반영
+        Publishers
+            .Merge(
+                updateDateRangeSubject.eraseToAnyPublisher(),
+                modalVC.dateRangePublisher
+            )
+            .sink { stateSubject.value.dateRange = $0 }
+            .store(in: &cancellables)
+        
+        // 상태 변화에 따라 모달의 날짜 범위와 버튼 UI를 동기화
+        stateSubject
+            .sink { [weak self] in
+                self?.modalVC.updateDateRange($0.dateRange)
+                self?.updateButton(with: $0)
+            }
             .store(in: &cancellables)
         
         // 피커 모달 띄우기
@@ -108,7 +134,9 @@ final class DatePickerFormComponentVC: UIViewController {
 
 extension DatePickerFormComponentVC {
     /// 모달 표시 여부와 선택된 날짜에 따라 버튼 스타일 및 타이틀 갱신
-    private func updateStartButton(isPresented: Bool, dateRange: DateRange) {
+    private func updateButton(with state: State) {
+        let isPresenting = state.isPresenting
+        let dateRange = state.dateRange
         let formatter = DateFormatter()
         formatter.dateFormat = "yy/MM/dd"
         
@@ -116,7 +144,7 @@ extension DatePickerFormComponentVC {
         ///
         /// start만 확인하는 이유는 날짜가 선택되면 end도 항상 함께 선택되기 때문
         let style: ScheduleFormButtonStyle
-        style = isPresented ? .editing : (dateRange.start == nil ? .idle : .filled)
+        style = isPresenting ? .editing : (dateRange.start == nil ? .idle : .filled)
         startButton.setStyle(style: style)
         endButton.setStyle(style: style)
         
@@ -133,24 +161,16 @@ extension DatePickerFormComponentVC {
         present(modalVC, animated: true)
     }
     
-    /// 시작일 퍼블리셔
-    var startDatePublisher: AnyPublisher<String?, Never> {
-        modalVC.newDateRangePublisher.map { range in
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            return range.start.map { formatter.string(from: $0) }
-        }
-        .eraseToAnyPublisher()
+    /// 선택된 날짜 범위 갱신
+    ///
+    /// 직접 상태를 수정하지 않고, Subject를 통해 변경 요청을 전달함
+    func updateDateRange(_ dateRange: DateRange) {
+        updateDateRangeSubject.send(dateRange)
     }
     
-    /// 종료일 퍼블리셔
-    var endDatePublisher: AnyPublisher<String?, Never> {
-        modalVC.newDateRangePublisher.map { range in
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            return range.end.map { formatter.string(from: $0) }
-        }
-        .eraseToAnyPublisher()
+    /// 선택된 날짜 범위를 방출하는 퍼블리셔
+    var dateRangePublisher: AnyPublisher<DateRange, Never> {
+        modalVC.dateRangePublisher
     }
 }
 

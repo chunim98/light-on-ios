@@ -15,7 +15,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     
     // MARK: Properties
     
-    private let vm = RegisterPerformanceDI.shared.makeRegisterBuskingVM()
+    private let vm: EditBuskingVM
     
     // MARK: Components
     
@@ -42,6 +42,15 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     
     // MARK: Life Cycle
     
+    init(vm: EditBuskingVM) {
+        self.vm = vm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @MainActor required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
@@ -61,7 +70,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = RegisterBuskingVM.Input(
+        let input = EditBuskingVM.Input(
             name:               nameForm.validTextPublisher,
             description:        descriptionForm.validTextPublisher,
             regionID:           addressForm.regionIDPublisher,
@@ -80,13 +89,27 @@ final class EditBuskingVC: BaseRegisterPerfVC {
         )
         
         let output = vm.transform(input)
+        
+        output.buskingInfo
+            .sink { [weak self] in self?.setUIValues(with: $0) }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: Binders & Publishers
 
-extension EditBuskingVC {}
+extension EditBuskingVC {
+    private func setUIValues(with info: RegisterBuskingInfo) {
+        nameForm.textView.text = info.name
+        descriptionForm.textView.text = info.description
+        addressForm.textField.text = info.detailAddress
+        scheduleFormVC.updateDateRange(DateRange(
+            start: info.startDate,
+            end: info.endDate
+        ))
+    }
+}
 
 // MARK: - Preview
 
-#Preview { EditBuskingVC() }
+#Preview { EditBuskingVC(vm: RegisterPerformanceDI.shared.makeEditBuskingVM(id: 62)) }

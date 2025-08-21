@@ -29,7 +29,7 @@ final class PlaceholderTextView: UITextView {
     
     // MARK: Components
     
-    let placeHolderLabel = {
+    private let placeHolderLabel = {
         var config = AttrConfiguration()
         config.font = .pretendard.regular(16)
         config.foregroundColor = .assistive

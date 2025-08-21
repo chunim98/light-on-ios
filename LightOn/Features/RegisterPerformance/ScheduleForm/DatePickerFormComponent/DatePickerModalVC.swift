@@ -76,11 +76,16 @@ extension DatePickerModalVC {
         confirmButton.isEnabled = range.start != nil
     }
     
+    /// 현재 선택된 날짜 범위 업데이트
+    func updateDateRange(_ dateRange: DateRange) {
+        datePicker.updateDateRange(dateRange)
+    }
+    
     /// 선택된 날짜 범위를 방출하는 퍼블리셔
     ///
     /// - 시작일만 선택된 경우: 시작일과 같은 날짜를 종료일로 사용
     /// - 시작일과 종료일이 모두 선택된 경우: 해당 범위를 그대로 사용
-    var newDateRangePublisher: AnyPublisher<DateRange, Never> {
+    var dateRangePublisher: AnyPublisher<DateRange, Never> {
         confirmButton.tapPublisher
             .withLatestFrom(datePicker.dateRangePublisher)
             .map { DateRange(start: $0.start, end: $0.end ?? $0.start) }

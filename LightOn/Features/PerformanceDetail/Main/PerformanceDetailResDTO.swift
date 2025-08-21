@@ -17,7 +17,7 @@ struct PerformanceDetailResDTO: Decodable {
     let regionName: String
     let type: PerformanceType
     let seats: [SeatType]
-    let proofUrl: String
+    let proofUrl: String?
     let isPaid: Bool
     let fee: Int
     
@@ -26,7 +26,7 @@ struct PerformanceDetailResDTO: Decodable {
         let description: String
         let place: String
         let notice: String
-        let posterUrl: String
+        let posterUrl: String?
     }
     
     struct Artist: Decodable {
@@ -85,7 +85,7 @@ extension PerformanceDetailResDTO {
         
         return PerformanceDetailInfo(
             type:               type,
-            thumbnailPath:      info.posterUrl,
+            thumbnailPath:      info.posterUrl ?? "",
             genre:              genres.first ?? "알 수 없는 장르",
             title:              info.title,
             date:               date,
@@ -98,6 +98,33 @@ extension PerformanceDetailResDTO {
             artistDescription:  artists.first?.description ?? "소개가 없습니다.",
             seatDescription:    seatDescription,
             noticeDescription:  info.notice
+        )
+    }
+    
+    func toRegisterBuskingInfo() -> RegisterBuskingInfo {
+        let posterInfo: ImageInfo? = info.posterUrl.flatMap {
+            $0.isEmpty ? nil : ImageInfo(image: .init(), name: "포스터.png")
+        }
+        
+        let documentInfo: ImageInfo? = info.posterUrl.flatMap {
+            $0.isEmpty ? nil : ImageInfo(image: .init(), name: "증빙자료.png")
+        }
+        
+        return RegisterBuskingInfo(
+            name: info.title,
+            description: info.description,
+            regionID: regionCode,
+            detailAddress: info.place,
+            notice: info.notice,
+            genre: genres,
+            posterInfo: posterInfo,
+            startDate: schedule.startDate,
+            endDate: schedule.endDate,
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            documentInfo: documentInfo,
+            artistName: artists.first?.name ?? "알 수 없는 아티스트",
+            artistDescription: artists.first?.description ?? "소개가 없습니다."
         )
     }
 }

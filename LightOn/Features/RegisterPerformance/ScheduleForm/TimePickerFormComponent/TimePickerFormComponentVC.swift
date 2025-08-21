@@ -20,14 +20,14 @@ final class TimePickerFormComponentVC: UIViewController {
     // MARK: Components
     
     /// 시작시간 선택 모달
-    private let startModalVC = {
+    let startModalVC = {
         let vc = TimePickerModalVC()
         vc.titleLabel.config.text = "공연 시작 시간"
         return vc
     }()
     
     /// 종료시간 선택 모달
-    private let endModalVC = {
+    let endModalVC = {
         let vc = TimePickerModalVC()
         vc.titleLabel.config.text = "공연 종료 시간"
         return vc
@@ -157,16 +157,6 @@ extension TimePickerFormComponentVC {
     private func presentEndModal() {
         endModalVC.sheetPresentationController?.detents = [.custom { _ in 256.6 }]
         present(endModalVC, animated: true)
-    }
-    
-    /// 시작 시간 퍼블리셔
-    var startTimePublisher: AnyPublisher<String?, Never> {
-        startModalVC.timePublisher.eraseToAnyPublisher()
-    }
-    
-    /// 종료 시간 퍼블리셔
-    var endTimePublisher: AnyPublisher<String?, Never> {
-        endModalVC.timePublisher.eraseToAnyPublisher()
     }
 }
 

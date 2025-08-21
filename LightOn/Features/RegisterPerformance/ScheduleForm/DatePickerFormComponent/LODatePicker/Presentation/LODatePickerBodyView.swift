@@ -82,6 +82,7 @@ extension LODatePickerBodyView {
     ///
     /// 셀 상태 갱신을 위해 reloadData() 호출
     func updateDateRange(_ dateRange: DateRange) {
+        selectedDates.forEach { deselect($0) }
         select(dateRange.start, scrollToDate: true)
         select(dateRange.end, scrollToDate: true)
         reloadData()
