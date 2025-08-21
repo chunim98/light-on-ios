@@ -57,10 +57,10 @@ class BaseRegisterPerfVC: BackButtonVC {
         return form
     }()
     
-    /// 공연 일시
+    /// 공연 일시 뷰컨
     ///
-    /// 모달을 내부에서 띄워야 해서 현재 뷰컨 인스턴스를 전달
-    private(set) lazy var scheduleForm = ScheduleForm(presenter: self)
+    /// 내부적으로 모달을 가지고 있음
+    let scheduleFormVC = ScheduleFormVC()
     
     /// 공연 장소
     ///
@@ -147,6 +147,8 @@ class BaseRegisterPerfVC: BackButtonVC {
     // MARK: Layout
     
     private func setupLayout() {
+        addChild(scheduleFormVC)
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
         contentVStack.addArrangedSubview(LOSpacer(20))
@@ -154,7 +156,7 @@ class BaseRegisterPerfVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(16))
         contentVStack.addArrangedSubview(nameForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(scheduleForm)
+        contentVStack.addArrangedSubview(scheduleFormVC.view)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(addressForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
@@ -189,6 +191,8 @@ class BaseRegisterPerfVC: BackButtonVC {
         addressForm.provinceDropdown.setupOverlayLayout(superView: contentVStack)
         addressForm.cityDropdown.setupOverlayLayout(superView: contentVStack)
         genreForm.dropdown.setupOverlayLayout(superView: contentVStack)
+        
+        scheduleFormVC.didMove(toParent: self)
     }
     
     // MARK: Bindings

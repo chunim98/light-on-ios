@@ -9,7 +9,6 @@ import Combine
 
 extension Publisher {
     
-
     /// RxSwift `withLatestFrom` 과 같은 동작
     /// - Parameter other: 최신 값을 가져올 퍼블리셔
     /// - Returns: (self 출력, other 최신 출력)을 원하는 형태로 매핑한 퍼블리셔
@@ -33,15 +32,15 @@ extension Publisher {
             return resultSelector(value, otherValue)
         }
         .handleEvents(receiveCancel: {
-            latestCancellable.cancel()      // 메모리 누수 방지
+            latestCancellable.cancel() // 메모리 누수 방지
         })
         .eraseToAnyPublisher()
     }
-
+    
     /// resultSelector를 사용하지 않는 withLatestFrom
     func withLatestFrom<Other: Publisher>(
         _ other: Other
-    ) -> AnyPublisher<(Output, Other.Output), Failure> where Other.Failure == Failure {
+    ) -> AnyPublisher<Other.Output, Failure> where Other.Failure == Failure {
         
         // 다른 퍼블리셔의 최신 값을 보관할 subject
         let latest = CurrentValueSubject<Other.Output?, Never>(nil)
@@ -53,13 +52,11 @@ extension Publisher {
         )
         
         // self 가 값을 방출할 때마다 최신 값을 붙여서 내보냄
-        return self.compactMap { value -> (Output, Other.Output)? in
-            guard let otherValue = latest.value else { return nil }
-            return (value, otherValue)
-        }
-        .handleEvents(receiveCancel: {
-            latestCancellable.cancel()      // 메모리 누수 방지
-        })
-        .eraseToAnyPublisher()
+        return self
+            .compactMap { _ in latest.value }
+            .handleEvents(receiveCancel: {
+                latestCancellable.cancel() // 메모리 누수 방지
+            })
+            .eraseToAnyPublisher()
     }
 }

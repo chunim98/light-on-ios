@@ -76,19 +76,14 @@ extension DatePickerModalVC {
         confirmButton.isEnabled = range.start != nil
     }
     
-    /// 시작-종료일 퍼블리셔
-    var dateRangePublisher: AnyPublisher<(Date, Date)?, Never> {
+    /// 선택된 날짜 범위를 방출하는 퍼블리셔
+    ///
+    /// - 시작일만 선택된 경우: 시작일과 같은 날짜를 종료일로 사용
+    /// - 시작일과 종료일이 모두 선택된 경우: 해당 범위를 그대로 사용
+    var newDateRangePublisher: AnyPublisher<DateRange, Never> {
         confirmButton.tapPublisher
-            .withLatestFrom(datePicker.dateRangePublisher) { _, range in range }
-            .compactMap {
-                if let start = $0.start, let end = $0.end {
-                    return (start, end)
-                } else if let start = $0.start {
-                    return (start, start)
-                } else {
-                    return nil
-                }
-            }
+            .withLatestFrom(datePicker.dateRangePublisher)
+            .map { DateRange(start: $0.start, end: $0.end ?? $0.start) }
             .eraseToAnyPublisher()
     }
     
