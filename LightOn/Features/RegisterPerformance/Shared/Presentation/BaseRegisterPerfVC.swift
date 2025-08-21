@@ -85,14 +85,14 @@ class BaseRegisterPerfVC: BackButtonVC {
         return form
     }()
     
-    /// 공연 홍보 이미지
+    /// 공연 홍보 이미지 뷰컨
     ///
-    /// 모달을 내부에서 띄워야 해서 현재 뷰컨 인스턴스를 전달
-    private(set) lazy var posterUploadForm = {
-        let form = ImageUploadForm(presenter: self)
-        form.titleLabel.config.text = "공연 홍보 이미지"
-        form.textField.setPlaceHolder("공연 포스터 및 사진 업로드")
-        return form
+    /// 내부적으로 모달을 가지고 있음
+    let posterUploadFormVC = {
+        let vc = ImageUploadFormVC()
+        vc.baseForm.titleLabel.config.text = "공연 홍보 이미지"
+        vc.baseForm.textField.setPlaceHolder("공연 포스터 및 사진 업로드")
+        return vc
     }()
     
     /// 아티스트명
@@ -119,14 +119,14 @@ class BaseRegisterPerfVC: BackButtonVC {
         return form
     }()
     
-    /// 공연 진행 증빙자료
+    /// 공연 진행 증빙자료 뷰컨
     ///
-    /// 모달을 내부에서 띄워야 해서 현재 뷰컨 인스턴스를 전달
-    private(set) lazy var documentUploadForm = {
-        let form = ImageUploadForm(presenter: self)
-        form.titleLabel.config.text = "공연 진행 증빙자료"
-        form.textField.setPlaceHolder("파일을 업로드 해주세요")
-        return form
+    /// 내부적으로 모달을 가지고 있음
+    let documentUploadFormVC = {
+        let vc = ImageUploadFormVC()
+        vc.baseForm.titleLabel.config.text = "공연 진행 증빙자료"
+        vc.baseForm.textField.setPlaceHolder("파일을 업로드 해주세요")
+        return vc
     }()
     
     // MARK: Life Cycle
@@ -148,6 +148,8 @@ class BaseRegisterPerfVC: BackButtonVC {
     
     private func setupLayout() {
         addChild(scheduleFormVC)
+        addChild(posterUploadFormVC)
+        addChild(documentUploadFormVC)
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentVStack)
@@ -164,7 +166,7 @@ class BaseRegisterPerfVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(descriptionForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(posterUploadForm)
+        contentVStack.addArrangedSubview(posterUploadFormVC.view)
         contentVStack.addArrangedSubview(LOSpacer(24))
         contentVStack.addArrangedSubview(atristInfoTitleLabel)
         contentVStack.addArrangedSubview(LOSpacer(16))
@@ -176,7 +178,7 @@ class BaseRegisterPerfVC: BackButtonVC {
         contentVStack.addArrangedSubview(LOSpacer(16))
         contentVStack.addArrangedSubview(noticeForm)
         contentVStack.addArrangedSubview(LOSpacer(24))
-        contentVStack.addArrangedSubview(documentUploadForm)
+        contentVStack.addArrangedSubview(documentUploadFormVC.view)
         contentVStack.addArrangedSubview(LOSpacer(20))
         
         scrollView.snp.makeConstraints {
@@ -193,6 +195,8 @@ class BaseRegisterPerfVC: BackButtonVC {
         genreForm.dropdown.setupOverlayLayout(superView: contentVStack)
         
         scheduleFormVC.didMove(toParent: self)
+        posterUploadFormVC.didMove(toParent: self)
+        documentUploadFormVC.didMove(toParent: self)
     }
     
     // MARK: Bindings

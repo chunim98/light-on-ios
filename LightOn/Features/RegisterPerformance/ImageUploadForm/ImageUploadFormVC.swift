@@ -1,8 +1,8 @@
 //
-//  ImageUploadForm.swift
+//  ImageUploadFormVC.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/14/25.
+//  Created by 신정욱 on 8/21/25.
 //
 
 import UIKit
@@ -11,18 +11,29 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class ImageUploadForm: TextForm {
+final class ImageUploadFormVC: UIViewController {
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
-    /// 피커를 띄워줄 프레젠터
-    private weak var presenter: UIViewController?
     
     // MARK: Components
     
     /// 피커 풀 스크린 모달
     private let pickerVC = PHPickerVC()
+    
+    let baseForm = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.regular(12)
+        config.foregroundColor = .infoText
+        config.text = "* 10mb 이하 PDF, png, jpeg, jpg, 파일만 업로드 가능합니다."
+        let label = LOLabel(config: config)
+        
+        let form = TextForm()
+        form.textField.isEnabled = false
+        form.addArrangedSubview(label)
+        return form
+    }()
     
     private let importButton = {
         let button = LOButton(style: .borderedTinted)
@@ -31,38 +42,22 @@ final class ImageUploadForm: TextForm {
         return button
     }()
     
-    private let captionLabel = {
-        var config = AttrConfiguration()
-        config.font = .pretendard.regular(12)
-        config.foregroundColor = .infoText
-        config.text = "* 10mb 이하 PDF, png, jpeg, jpg, 파일만 업로드 가능합니다."
-        return LOLabel(config: config)
-    }()
-    
     // MARK: Life Cycle
     
-    init(presenter: UIViewController?) {
-        self.presenter = presenter
-        super.init(frame: .zero)
-        setupDefaults()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupLayout()
         setupBindings()
     }
     
-    @MainActor required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Defaults
-    
-    private func setupDefaults() { textField.isEnabled = false }
-    
     // MARK: Layout
     
     private func setupLayout() {
-        addArrangedSubview(captionLabel)
-        textFieldHStack.addArrangedSubview(LOSpacer(12))
-        textFieldHStack.addArrangedSubview(importButton)
+        view.addSubview(baseForm)
+        baseForm.textFieldHStack.addArrangedSubview(LOSpacer(12))
+        baseForm.textFieldHStack.addArrangedSubview(importButton)
+        
+        baseForm.snp.makeConstraints { $0.edges.equalToSuperview() }
     }
     
     // MARK: Bindings
@@ -92,17 +87,17 @@ final class ImageUploadForm: TextForm {
 
 // MARK: Binders & Publishers
 
-extension ImageUploadForm {
-    /// PHPicker 열기
+extension ImageUploadFormVC {
+    /// PHPicker 풀스크린 모달 띄우기
     private func presentPHPicker() {
         pickerVC.modalPresentationStyle = .overFullScreen
-        presenter?.present(pickerVC, animated: false)
+        present(pickerVC, animated: false)
     }
     
     /// 전달받은 이미지 정보로 텍스트필드 UI 업데이트
     private func updateUI(with info: ImageInfo) {
-        textField.layer.borderColor = UIColor.loBlack.cgColor
-        textField.text = info.name
+        baseForm.textField.layer.borderColor = UIColor.loBlack.cgColor
+        baseForm.textField.text = info.name
     }
     
     /// 선택한 이미지 정보 퍼블리셔
