@@ -18,8 +18,9 @@ final class CounterTextForm: BaseForm {
     private var cancellables = Set<AnyCancellable>()
     private let vm: CounterTextFormVM
     
-    // MARK: Outputs
+    // MARK: Subjects
     
+    /// 유효한 텍스트 서브젝트(출력용)
     private let validTextSubject = PassthroughSubject<String?, Never>()
     
     // MARK: Components
@@ -61,7 +62,7 @@ final class CounterTextForm: BaseForm {
     // MARK: Bindings
     
     private func setupBindings() {
-        let text = textField.textPublisher
+        let text = textField.textChangesPublisher
             .compactMap { $0 }
             .removeDuplicates()
             .eraseToAnyPublisher()

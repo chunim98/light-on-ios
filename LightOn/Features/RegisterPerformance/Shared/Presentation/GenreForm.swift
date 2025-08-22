@@ -14,7 +14,7 @@ final class GenreForm: BaseForm {
     
     let dropdown = {
         let view = DropdownView<GenreCellItem>(placeholder: "장르를 선택해 주세요")
-        view.tableView.setSnapshot(items: GenreCellItem.genres)
+        view.setSnapshot(items: GenreCellItem.genres)
         return view
     }()
     
@@ -42,9 +42,15 @@ final class GenreForm: BaseForm {
 // MARK: Binders & Publishers
 
 extension GenreForm {
+    /// 장르 이름으로 드롭다운 값 바인딩
+    func selectGenre(_ genres: [String]) {
+        dropdown.selectItem(.genres.first { $0.title == genres.first })
+    }
+    
     /// 선택한 장르 아이디 퍼블리셔
     var genrePublisher: AnyPublisher<[String], Never> {
-        dropdown.selectedItemPublisher.map { $0.map { [$0.title] } ?? [] }
+        dropdown.selectedItemPublisher
+            .map { $0.map { [$0.title] } ?? [] }
             .removeDuplicates()
             .eraseToAnyPublisher()
     }

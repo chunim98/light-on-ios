@@ -16,7 +16,7 @@ final class AccountForm: BaseForm {
     
     let bankDropdown = {
         let view = DropdownView<BankCellItem>(placeholder: "은행명을 선택해주세요")
-        view.tableView.setSnapshot(items: BankCellItem.banks)
+        view.setSnapshot(items: BankCellItem.banks)
         return view
     }()
     

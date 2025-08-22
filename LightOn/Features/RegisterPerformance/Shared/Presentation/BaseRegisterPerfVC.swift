@@ -214,9 +214,9 @@ class BaseRegisterPerfVC: BackButtonVC {
 extension BaseRegisterPerfVC {
     /// 배경 터치 시, 모든 오버레이 닫기 (키보드 포함)
     private func dismissOverlays(gesture: UITapGestureRecognizer) {
-        addressForm.provinceDropdown.bindDismissTable(gesture)
-        addressForm.cityDropdown.bindDismissTable(gesture)
-        genreForm.dropdown.dismiss(gesture)
+        addressForm.provinceDropdown.dismissTable(gesture)
+        addressForm.cityDropdown.dismissTable(gesture)
+        genreForm.dropdown.dismissTable(gesture)
         view.endEditing(true) // 키보드 닫기
     }
 }

@@ -87,11 +87,11 @@ extension ScheduleFormVC {
     
     /// 시작 시간 퍼블리셔
     var startTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.startModalVC.timePublisher.print("ㅅㅣ작").eraseToAnyPublisher()
+        timePickerFormCompVC.startModalVC.timePublisher
     }
     
     /// 종료 시간 퍼블리셔
     var endTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.endModalVC.timePublisher.print("종료").eraseToAnyPublisher()
+        timePickerFormCompVC.endModalVC.timePublisher
     }
 }

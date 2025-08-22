@@ -49,7 +49,7 @@ final class DropdownButton: UIButton {
         
         configuration = config
         contentHorizontalAlignment = .fill
-        
+        isEnabled = false
         setState(.idle)
     }
     

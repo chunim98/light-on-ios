@@ -34,8 +34,8 @@ final class EditBuskingVM {
         let registerCompleteEvent: AnyPublisher<Void, Never>
         /// 모든 필드가 유효한지 여부
         let allValuesValid: AnyPublisher<Bool, Never>
-        
-        let buskingInfo: AnyPublisher<RegisterBuskingInfo, Never>
+        /// 최초 로드 시 바인딩할 공연 정보
+        let initialInfo: AnyPublisher<RegisterBuskingInfo, Never>
     }
     
     // MARK: Properties
@@ -55,10 +55,14 @@ final class EditBuskingVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
+        /// 공연 정보 상태
         let infoSubject = CurrentValueSubject<RegisterBuskingInfo, Never>(.init())
 
-        editBuskingRepo
-            .getPerformanceDetail(id: performanceID)
+        /// 초기 할당 공연 정보
+        let initialInfo = editBuskingRepo.getPerformanceDetail(id: performanceID)
+        
+        // 상태 초기화
+        initialInfo
             .sink { infoSubject.send($0) }
             .store(in: &cancellables)
         
@@ -89,7 +93,7 @@ final class EditBuskingVM {
         return Output(
             registerCompleteEvent: Empty().eraseToAnyPublisher(),
             allValuesValid: allValuesValid,
-            buskingInfo: infoSubject.eraseToAnyPublisher()
+            initialInfo: initialInfo
         )
     }
 }

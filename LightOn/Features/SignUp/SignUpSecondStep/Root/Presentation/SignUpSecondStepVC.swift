@@ -165,8 +165,8 @@ final class SignUpSecondStepVC: BackButtonVC {
 extension SignUpSecondStepVC {
     /// 배경을 터치하면, 오버레이 닫기 (키보드 포함)
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        addressForm.provinceDropdown.bindDismissTable(gesture)
-        addressForm.cityDropdown.bindDismissTable(gesture)
+        addressForm.provinceDropdown.dismissTable(gesture)
+        addressForm.cityDropdown.dismissTable(gesture)
         view.endEditing(true)   // 키보드 닫기
     }
     

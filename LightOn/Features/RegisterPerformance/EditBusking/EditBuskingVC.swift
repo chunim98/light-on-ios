@@ -90,8 +90,12 @@ final class EditBuskingVC: BaseRegisterPerfVC {
         
         let output = vm.transform(input)
         
-        output.buskingInfo
+        output.initialInfo
             .sink { [weak self] in self?.setUIValues(with: $0) }
+            .store(in: &cancellables)
+        
+        output.allValuesValid
+            .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
             .store(in: &cancellables)
     }
 }
@@ -100,15 +104,33 @@ final class EditBuskingVC: BaseRegisterPerfVC {
 
 extension EditBuskingVC {
     private func setUIValues(with info: RegisterBuskingInfo) {
+        // 기본 정보
         nameForm.textView.text = info.name
         descriptionForm.textView.text = info.description
+        noticeForm.textField.text = info.notice
+        
+        // 아티스트 정보
+        artistNameForm.textField.text = info.artistName
+        artistDescriptionForm.textView.text = info.artistDescription
+        
+        // 장소 정보
+        addressForm.setRegionID(info.regionID)
         addressForm.textField.text = info.detailAddress
+        
+        // 일정 정보
         scheduleFormVC.updateDateRange(DateRange(
             start: info.startDate,
             end: info.endDate
         ))
         scheduleFormVC.updateStartTime(info.startTime)
         scheduleFormVC.updateEndTime(info.endTime)
+        
+        // 장르
+        genreForm.selectGenre(info.genre)
+        
+        // 첨부 파일
+        posterUploadFormVC.baseForm.textField.text = info.posterInfo?.name
+        documentUploadFormVC.baseForm.textField.text = info.documentInfo?.name
     }
 }
 

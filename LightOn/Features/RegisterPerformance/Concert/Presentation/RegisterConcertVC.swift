@@ -110,7 +110,7 @@ final class RegisterConcertVC: BaseRegisterPerfVC {
 extension RegisterConcertVC {
     /// 배경을 터치하면, 오버레이 닫기
     private func bindDismissOverlay(gesture: UITapGestureRecognizer) {
-        paymentContainer.accountForm.bankDropdown.dismiss(gesture)
+        paymentContainer.accountForm.bankDropdown.dismissTable(gesture)
     }
 }
 
