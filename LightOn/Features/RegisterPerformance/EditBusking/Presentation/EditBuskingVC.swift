@@ -17,7 +17,15 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     
     private let vm: EditBuskingVM
     
+    // MARK: Subjects
+    
+    /// 공연 수정 완료 서브젝트(출력용)
+    private let editCompleteSubject = PassthroughSubject<Void, Never>()
+    
     // MARK: Components
+    
+    /// 공연 수정 확인 얼럿
+    private let editConfirmAlert = EditBuskingConfirmAlertVC()
     
     private let buttonsHStack = {
         let sv = UIStackView()
@@ -85,17 +93,30 @@ final class EditBuskingVC: BaseRegisterPerfVC {
             documentInfo:       documentUploadFormVC.imageInfoPublisher,
             artistName:         artistNameForm.validTextPublisher,
             artistDescription:  artistDescriptionForm.validTextPublisher,
-            alertConfirmTap:    Empty().eraseToAnyPublisher()
+            editConfirmTap:     editConfirmAlert.acceptButton.tapPublisher
         )
         
         let output = vm.transform(input)
         
         output.initialInfo
-            .sink { [weak self] in self?.setUIValues(with: $0) }
+            .sink { [weak self] in self?.updateUI(with: $0) }
             .store(in: &cancellables)
         
         output.allValuesValid
             .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
+            .store(in: &cancellables)
+        
+        output.editComplete
+            .sink { [weak self] in
+                self?.editConfirmAlert.dismiss(animated: true) {
+                    self?.editCompleteSubject.send(())
+                }
+            }
+            .store(in: &cancellables)
+        
+        // 수정하기 버튼 누르면 확인 얼럿 띄우기
+        confirmButton.tapPublisher
+            .sink { [weak self] in self?.presentEditConfirmAlert() }
             .store(in: &cancellables)
     }
 }
@@ -103,7 +124,8 @@ final class EditBuskingVC: BaseRegisterPerfVC {
 // MARK: Binders & Publishers
 
 extension EditBuskingVC {
-    private func setUIValues(with info: RegisterBuskingInfo) {
+    /// RegisterBuskingInfo의 데이터를 각 UI 컴포넌트에 바인딩
+    private func updateUI(with info: BuskingInfo) {
         // 기본 정보
         nameForm.textView.text = info.name
         descriptionForm.textView.text = info.description
@@ -131,6 +153,18 @@ extension EditBuskingVC {
         // 첨부 파일
         posterUploadFormVC.baseForm.textField.text = info.posterInfo?.name
         documentUploadFormVC.baseForm.textField.text = info.documentInfo?.name
+    }
+    
+    /// 공연수정 확인 얼럿 띄우기
+    private func presentEditConfirmAlert() {
+        editConfirmAlert.modalPresentationStyle = .overFullScreen
+        editConfirmAlert.modalTransitionStyle = .crossDissolve
+        present(editConfirmAlert, animated: true)
+    }
+    
+    /// 버스킹 수정 완료 이벤트
+    var editCompletePublisher: AnyPublisher<Void, Never> {
+        editCompleteSubject.eraseToAnyPublisher()
     }
 }
 

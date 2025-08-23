@@ -13,7 +13,7 @@ import Alamofire
 protocol RegisterBuskingRepo {
     /// 버스킹 등록 요청
     func requestRegisterBusking(
-        info: RegisterBuskingInfo,
+        info: BuskingInfo,
         posterData: Data,
         documentData: Data
     ) -> AnyPublisher<Void, Never>
@@ -23,7 +23,7 @@ protocol RegisterBuskingRepo {
 
 final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
     func requestRegisterBusking(
-        info: RegisterBuskingInfo,
+        info: BuskingInfo,
         posterData: Data,
         documentData: Data
     ) -> AnyPublisher<Void, Never> {

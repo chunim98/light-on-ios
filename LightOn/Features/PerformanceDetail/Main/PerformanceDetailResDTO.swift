@@ -30,7 +30,7 @@ struct PerformanceDetailResDTO: Decodable {
     }
     
     struct Artist: Decodable {
-        let id: Int
+        let id: Int?
         let name: String
         let description: String
     }
@@ -101,7 +101,7 @@ extension PerformanceDetailResDTO {
         )
     }
     
-    func toRegisterBuskingInfo() -> RegisterBuskingInfo {
+    func toBuskingInfo() -> BuskingInfo {
         let posterInfo: ImageInfo? = info.posterUrl.flatMap {
             $0.isEmpty ? nil : ImageInfo(image: .init(), name: "포스터.png")
         }
@@ -110,7 +110,7 @@ extension PerformanceDetailResDTO {
             $0.isEmpty ? nil : ImageInfo(image: .init(), name: "증빙자료.png")
         }
         
-        return RegisterBuskingInfo(
+        return BuskingInfo(
             name: info.title,
             description: info.description,
             regionID: regionCode,

@@ -5,19 +5,28 @@
 //  Created by 신정욱 on 8/21/25.
 //
 
+import Foundation
 import Combine
 
 import Alamofire
 
 protocol EditBuskingRepo {
     /// 공연 상세정보 조회
-    func getPerformanceDetail(id: Int) -> AnyPublisher<RegisterBuskingInfo, Never>
+    func getBuskingInfo(id: Int) -> AnyPublisher<BuskingInfo, Never>
+    
+    /// 버스킹 수정 요청
+    func requestEditBusking(
+        id: Int,
+        info: BuskingInfo,
+        posterData: Data?,
+        documentData: Data?
+    ) -> AnyPublisher<Void, Never>
 }
 
 // MARK: - Default
 
 final class DefaultEditBuskingRepo: EditBuskingRepo {
-    func getPerformanceDetail(id: Int) -> AnyPublisher<RegisterBuskingInfo, Never> {
+    func getBuskingInfo(id: Int) -> AnyPublisher<BuskingInfo, Never> {
         Future { promise in
             
             APIClient.plain.request(
@@ -26,10 +35,65 @@ final class DefaultEditBuskingRepo: EditBuskingRepo {
             )
             .decodeResponse(decodeType: PerformanceDetailResDTO.self) {
                 print("[EditBuskingRepo] 공연 상세정보 조회 완료")
-                promise(.success($0.toRegisterBuskingInfo()))
+                promise(.success($0.toBuskingInfo()))
             }
             
         }
         .eraseToAnyPublisher()
     }
+    
+    func requestEditBusking(
+        id: Int,
+        info: BuskingInfo,
+        posterData: Data?,
+        documentData: Data?
+    ) -> AnyPublisher<Void, Never> {
+        Future { promise in
+            
+            // jsonData 생성
+            guard let jsonData = try? JSONEncoder().encode(
+                RegisterBuskingReqDTO(from: info)
+            ) else { return }
+            
+            // 서버에 전송 요청
+            APIClient.withAuth.upload(
+                multipartFormData: { formData in
+                    // json 텍스트로 만들어서 전송
+                    formData.append(
+                        jsonData,
+                        withName: "data",
+                        mimeType: "application/json"
+                    )
+                    // 증빙자료 전송
+                    if let documentData {
+                        formData.append(
+                            documentData,
+                            withName: "proof",
+                            fileName: "proof.png"
+                        )
+                    }
+                    // 포스터 이미지 전송
+                    if let posterData {
+                        formData.append(
+                            posterData,
+                            withName: "posterImage",
+                            fileName: "posterImage.png"
+                        )
+                    }
+                },
+                to: BaseURL + "/api/members/performances/buskings/\(id)",
+                method: .put
+            )
+            .decodeResponse(decodeType: EmptyDTO.self) { _ in
+                print("[EditBuskingRepo] 버스킹 수정요청 완료")
+                promise(.success(()))
+                
+            } errorHandler: { _ in
+                print("[EditBuskingRepo] 버스킹 수정요청 실패")
+            }
+            
+        }
+        .eraseToAnyPublisher()
+    }
+    
 }

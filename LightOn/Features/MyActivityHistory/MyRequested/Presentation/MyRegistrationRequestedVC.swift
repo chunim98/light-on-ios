@@ -11,6 +11,7 @@ import Combine
 import CombineCocoa
 import SnapKit
 
+/// 내가 신청한 공연 뷰컨(풀사이즈 아님)
 final class MyRegistrationRequestedVC: CombineVC {
     
     // MARK: Properties
@@ -39,7 +40,7 @@ final class MyRegistrationRequestedVC: CombineVC {
         return UIButton(configuration: config)
     }()
     
-    private let tableView = MyPerformanceTableView()
+    let tableView = MyPerformanceTableView()
     
     // MARK: Life Cycle
     

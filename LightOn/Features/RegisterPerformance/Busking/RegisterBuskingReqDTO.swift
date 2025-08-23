@@ -32,7 +32,7 @@ struct RegisterBuskingReqDTO: Encodable {
 // MARK: Mapper
 
 extension RegisterBuskingReqDTO {
-    init?(from domain: RegisterBuskingInfo) {
+    init?(from domain: BuskingInfo) {
         guard let title = domain.name,
               let description = domain.description,
               let location = domain.regionID,

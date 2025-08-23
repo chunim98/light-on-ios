@@ -50,7 +50,7 @@ final class RegisterBuskingVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let infoSubject = CurrentValueSubject<RegisterBuskingInfo, Never>(.init())
+        let infoSubject = CurrentValueSubject<BuskingInfo, Never>(.init())
         
         /// 버스킹 등록 완료 이벤트
         let registerCompleteEvent = registerBuskingUC.execute(

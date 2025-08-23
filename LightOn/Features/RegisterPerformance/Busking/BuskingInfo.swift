@@ -1,5 +1,5 @@
 //
-//  RegisterBuskingInfo.swift
+//  BuskingInfo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/14/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct RegisterBuskingInfo {
+struct BuskingInfo {
     var name: String?
     var description: String?
     var regionID: Int?

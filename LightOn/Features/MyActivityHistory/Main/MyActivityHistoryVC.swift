@@ -85,6 +85,18 @@ extension MyActivityHistoryVC {
     var registaionDetailTapPublisher: AnyPublisher<Void, Never> {
         registaionVC.detailButton.tapPublisher
     }
+    
+#warning("버스킹인지 일반공연인지 확인 불가능, 일단 무료공연이면 버스킹으로 추정하고, API 수정 요청해야할듯?")
+    /// 등록한 공연 ID 퍼블리셔
+    var registeredIDPublisher: AnyPublisher<Int, Never> {
+        registaionVC.tableView.selectedModelPublisher(
+            dataSource: registaionVC.tableView.diffableDataSource
+        )
+        .filter { $0.type == "무료공연" }
+        .map { $0.id }
+        .eraseToAnyPublisher()
+    }
+    
 }
 
 // MARK: - Preview

@@ -1,38 +1,38 @@
 //
-//  RegisterBuskingUC.swift
+//  EditBuskingUC.swift
 //  LightOn
 //
-//  Created by 신정욱 on 7/15/25.
+//  Created by 신정욱 on 8/23/25.
 //
 
 import UIKit
 import Combine
 
-final class RegisterBuskingUC {
+final class EditBuskingUC {
     
-    private let repo: RegisterBuskingRepo
+    private let repo: EditBuskingRepo
     
-    init(repo: RegisterBuskingRepo) {
+    init(repo: EditBuskingRepo) {
         self.repo = repo
     }
     
-    /// 버스킹 등록 요청
+    /// 버스킹 수정 요청
     func execute(
         trigger: AnyPublisher<Void, Never>,
+        id: Int,
         info: AnyPublisher<BuskingInfo, Never>
     ) -> AnyPublisher<Void, Never> {
         trigger
             .withLatestFrom(info) { _, info in info }
             .receive(on: DispatchQueue.global(qos: .userInitiated))
             .compactMap { [weak self] info in
-                guard let self,
-                      let posterImage = info.posterInfo?.image,
-                      let documentImage = info.documentInfo?.image,
-                      let posterData = self.resizeImage(posterImage),
-                      let documentData = self.resizeImage(documentImage)
-                else { return AnyPublisher<Void, Never>?.none }
+                guard let self else { return AnyPublisher<Void, Never>?.none }
                 
-                return repo.requestRegisterBusking(
+                let posterData = info.posterInfo.flatMap { self.resizeImage($0.image) }
+                let documentData = info.documentInfo.flatMap { self.resizeImage($0.image) }
+                
+                return repo.requestEditBusking(
+                    id: id,
                     info: info,
                     posterData: posterData,
                     documentData: documentData
