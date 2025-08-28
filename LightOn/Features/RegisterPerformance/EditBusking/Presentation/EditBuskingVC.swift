@@ -19,13 +19,15 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     
     // MARK: Subjects
     
-    /// 공연 수정 완료 서브젝트(출력용)
-    private let editCompleteSubject = PassthroughSubject<Void, Never>()
+    /// 버스킹 수정 및 삭제 완료 서브젝트(출력용)
+    private let editOrDeleteCompletedSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Components
     
-    /// 공연 수정 확인 얼럿
+    /// 버스킹 수정 확인 얼럿
     private let editConfirmAlert = EditBuskingConfirmAlertVC()
+    /// 버스킹 삭제 확인 얼럿
+    private let deleteConfirmAlert = DeleteBuskingConfirmAlertVC()
     
     private let buttonsHStack = {
         let sv = UIStackView()
@@ -34,7 +36,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
         return sv
     }()
     
-    /// 공연 취소 버튼
+    /// 버스킹 취소 버튼
     private let deleteButton = {
         let button = LOButton(style: .borderedTinted)
         button.setTitle("취소하기", .pretendard.bold(16))
@@ -93,23 +95,36 @@ final class EditBuskingVC: BaseRegisterPerfVC {
             documentInfo:       documentUploadFormVC.imageInfoPublisher,
             artistName:         artistNameForm.validTextPublisher,
             artistDescription:  artistDescriptionForm.validTextPublisher,
-            editConfirmTap:     editConfirmAlert.acceptButton.tapPublisher
+            editConfirmTap:     editConfirmAlert.acceptButton.tapPublisher,
+            deleteConfirmTap: deleteConfirmAlert.acceptButton.tapPublisher
         )
         
         let output = vm.transform(input)
         
+        // 최초 로드 시 버스킹 정보 바인딩
         output.initialInfo
             .sink { [weak self] in self?.updateUI(with: $0) }
             .store(in: &cancellables)
         
+        // 모든 필드가 유효하면 수정 버튼 활성화
         output.allValuesValid
             .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
             .store(in: &cancellables)
         
+        // 수정 완료 시, 화면닫고 외부로 이벤트 방출
         output.editComplete
             .sink { [weak self] in
                 self?.editConfirmAlert.dismiss(animated: true) {
-                    self?.editCompleteSubject.send(())
+                    self?.editOrDeleteCompletedSubject.send(())
+                }
+            }
+            .store(in: &cancellables)
+        
+        // 삭제 완료 시, 화면닫고 외부로 이벤트 방출
+        output.deleteComplete
+            .sink { [weak self] in
+                self?.deleteConfirmAlert.dismiss(animated: true) {
+                    self?.editOrDeleteCompletedSubject.send(())
                 }
             }
             .store(in: &cancellables)
@@ -117,6 +132,11 @@ final class EditBuskingVC: BaseRegisterPerfVC {
         // 수정하기 버튼 누르면 확인 얼럿 띄우기
         confirmButton.tapPublisher
             .sink { [weak self] in self?.presentEditConfirmAlert() }
+            .store(in: &cancellables)
+        
+        // 삭제하기 버튼 누르면 확인 얼럿 띄우기
+        deleteButton.tapPublisher
+            .sink { [weak self] in self?.presentDeleteConfirmAlert() }
             .store(in: &cancellables)
     }
 }
@@ -152,16 +172,23 @@ extension EditBuskingVC {
         documentUploadFormVC.baseForm.textField.text = info.documentInfo?.name
     }
     
-    /// 공연수정 확인 얼럿 띄우기
+    /// 버스킹 수정 확인 얼럿 띄우기
     private func presentEditConfirmAlert() {
         editConfirmAlert.modalPresentationStyle = .overFullScreen
         editConfirmAlert.modalTransitionStyle = .crossDissolve
         present(editConfirmAlert, animated: true)
     }
     
-    /// 버스킹 수정 완료 이벤트
-    var editCompletePublisher: AnyPublisher<Void, Never> {
-        editCompleteSubject.eraseToAnyPublisher()
+    /// 버스킹 삭제 확인 얼럿 띄우기
+    private func presentDeleteConfirmAlert() {
+        deleteConfirmAlert.modalPresentationStyle = .overFullScreen
+        deleteConfirmAlert.modalTransitionStyle = .crossDissolve
+        present(deleteConfirmAlert, animated: true)
+    }
+    
+    /// 버스킹 수정 및 삭제 완료 이벤트
+    var editOrDeleteCompletedPublisher: AnyPublisher<Void, Never> {
+        editOrDeleteCompletedSubject.eraseToAnyPublisher()
     }
 }
 

@@ -90,12 +90,9 @@ final class MyActivityHistoryCoordinator: Coordinator {
         let vm = RegisterPerformanceDI.shared.makeEditBuskingVM(id: id)
         let vc = EditBuskingVC(vm: vm)
         
-        /// 버스킹 수정 완료 또는 뒤로 가기 탭하면 화면 닫기
-        Publishers
-            .Merge(vc.editCompletePublisher, vc.backTapPublisher)
-            .sink { [weak self] in
-                self?.navigation.popViewController(animated: true)
-            }
+        /// 버스킹 수정 및 삭제 완료 또는 뒤로 가기 탭하면 화면 닫기
+        Publishers.Merge(vc.editOrDeleteCompletedPublisher, vc.backTapPublisher)
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
         // 화면 전환

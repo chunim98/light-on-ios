@@ -21,7 +21,8 @@ final class RegisterPerformanceDI {
     func makeEditBuskingVM(id performanceID: Int) -> EditBuskingVM {
         EditBuskingVM(
             performanceID: performanceID,
-            repo: DefaultEditBuskingRepo()
+            editBuskingRepo: DefaultEditBuskingRepo(),
+            deleteBuskingRepo: DefaultDeleteBuskingRepo()
         )
     }
 }

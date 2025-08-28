@@ -27,16 +27,20 @@ final class EditBuskingVM {
         let documentInfo: AnyPublisher<ImageInfo, Never>
         let artistName: AnyPublisher<String?, Never>
         let artistDescription: AnyPublisher<String?, Never>
-        /// 공연수정 확인 탭
+        /// 버스킹수정 확인 탭
         let editConfirmTap: AnyPublisher<Void, Never>
+        /// 버스킹 삭제 탭
+        let deleteConfirmTap: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 버스킹 수정 완료 이벤트
-        let editComplete: AnyPublisher<Void, Never>
         /// 모든 필드가 유효한지 여부
         let allValuesValid: AnyPublisher<Bool, Never>
-        /// 최초 로드 시 바인딩할 공연 정보
+        /// 최초 로드 시 바인딩할 버스킹 정보
         let initialInfo: AnyPublisher<BuskingInfo, Never>
+        /// 버스킹 수정 완료 이벤트
+        let editComplete: AnyPublisher<Void, Never>
+        /// 버스킹 삭제 완료 이벤트
+        let deleteComplete: AnyPublisher<Void, Never>
     }
     
     // MARK: Properties
@@ -46,25 +50,28 @@ final class EditBuskingVM {
     private let performanceID: Int
     private let getBuskingInfoUC: GetBuskingInfoUC
     private let editBuskingUC: EditBuskingUC
+    private let deleteBuskingUC: DeleteBuskingUC
     
     // MARK: Initializer
     
     init(
         performanceID: Int,
-        repo: any EditBuskingRepo
+        editBuskingRepo: any EditBuskingRepo,
+        deleteBuskingRepo: any DeleteBuskingRepo
     ) {
         self.performanceID = performanceID
-        self.getBuskingInfoUC = .init(repo: repo)
-        self.editBuskingUC = .init(repo: repo)
+        self.getBuskingInfoUC = .init(repo: editBuskingRepo)
+        self.editBuskingUC = .init(repo: editBuskingRepo)
+        self.deleteBuskingUC = .init(repo: deleteBuskingRepo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        /// 공연 정보 상태
+        /// 버스킹 정보 상태
         let infoSubject = CurrentValueSubject<BuskingInfo, Never>(.init())
         
-        /// 초기 할당 공연 정보
+        /// 초기 할당 버스킹 정보
         let initialInfo = getBuskingInfoUC.execure(id: performanceID)
         
         /// 모든 필드가 유효한지 여부
@@ -73,11 +80,17 @@ final class EditBuskingVM {
             .removeDuplicates()
             .eraseToAnyPublisher()
         
-        /// 공연 수정 완료 이벤트
+        // 버스킹 수정 요청
         let editComplete = editBuskingUC.execute(
             trigger: input.editConfirmTap,
             id: performanceID,
             info: infoSubject.eraseToAnyPublisher()
+        )
+        
+        // 버스킹 삭제 요청
+        let buskingDeleted = deleteBuskingUC.execute(
+            trigger: input.deleteConfirmTap,
+            id: performanceID
         )
         
         // info 상태 갱신
@@ -100,9 +113,10 @@ final class EditBuskingVM {
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(
-            editComplete: editComplete,
             allValuesValid: allValuesValid,
-            initialInfo: initialInfo
+            initialInfo: initialInfo,
+            editComplete: editComplete,
+            deleteComplete: buskingDeleted
         )
     }
 }
