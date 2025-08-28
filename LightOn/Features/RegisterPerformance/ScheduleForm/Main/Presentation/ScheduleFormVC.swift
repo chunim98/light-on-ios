@@ -20,8 +20,8 @@ final class ScheduleFormVC: UIViewController {
         return form
     }()
     
-    private let datePickerFormCompVC = DatePickerFormComponentVC()
-    private let timePickerFormCompVC = TimePickerFormComponentVC()
+    let datePickerFormCompVC = DatePickerFormComponentVC()
+    let timePickerFormCompVC = TimePickerFormComponentVC()
     
     // MARK: Life Cycle
     
@@ -44,54 +44,5 @@ final class ScheduleFormVC: UIViewController {
         
         datePickerFormCompVC.didMove(toParent: self)
         timePickerFormCompVC.didMove(toParent: self)
-    }
-}
-
-// MARK: Binders & Publishers
-
-extension ScheduleFormVC {
-    /// 현재 선택된 날짜 범위 업데이트
-    func updateDateRange(_ dateRange: DateRange) {
-        datePickerFormCompVC.updateDateRange(dateRange)
-    }
-    
-    /// 시작 시간 업데이트
-    func updateStartTime(_ time: String?) {
-        timePickerFormCompVC.updateStartTime(time)
-    }
-    
-    /// 종료 시간 업데이트
-    func updateEndTime(_ time: String?) {
-        timePickerFormCompVC.updateEndTime(time)
-    }
-    
-    /// 시작일 퍼블리셔
-    var startDatePublisher: AnyPublisher<String?, Never> {
-        datePickerFormCompVC.dateRangePublisher.map { range in
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            return range.start.map { formatter.string(from: $0) }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    /// 종료일 퍼블리셔
-    var endDatePublisher: AnyPublisher<String?, Never> {
-        datePickerFormCompVC.dateRangePublisher.map { range in
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            return range.end.map { formatter.string(from: $0) }
-        }
-        .eraseToAnyPublisher()
-    }
-    
-    /// 시작 시간 퍼블리셔
-    var startTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.startModalVC.timePublisher
-    }
-    
-    /// 종료 시간 퍼블리셔
-    var endTimePublisher: AnyPublisher<String?, Never> {
-        timePickerFormCompVC.endModalVC.timePublisher
     }
 }

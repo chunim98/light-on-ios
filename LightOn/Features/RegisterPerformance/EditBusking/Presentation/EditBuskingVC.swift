@@ -86,10 +86,10 @@ final class EditBuskingVC: BaseRegisterPerfVC {
             notice:             noticeForm.textPublisher,
             genre:              genreForm.genrePublisher,
             posterInfo:         posterUploadFormVC.imageInfoPublisher,
-            startDate:          scheduleFormVC.startDatePublisher,
-            endDate:            scheduleFormVC.endDatePublisher,
-            startTime:          scheduleFormVC.startTimePublisher,
-            endTime:            scheduleFormVC.endTimePublisher,
+            startDate:          scheduleFormVC.datePickerFormCompVC.startDatePublisher,
+            endDate:            scheduleFormVC.datePickerFormCompVC.endDatePublisher,
+            startTime:          scheduleFormVC.timePickerFormCompVC.startModalVC.timePublisher,
+            endTime:            scheduleFormVC.timePickerFormCompVC.endModalVC.timePublisher,
             documentInfo:       documentUploadFormVC.imageInfoPublisher,
             artistName:         artistNameForm.validTextPublisher,
             artistDescription:  artistDescriptionForm.validTextPublisher,
@@ -140,12 +140,9 @@ extension EditBuskingVC {
         addressForm.textField.text = info.detailAddress
         
         // 일정 정보
-        scheduleFormVC.updateDateRange(DateRange(
-            start: info.startDate,
-            end: info.endDate
-        ))
-        scheduleFormVC.updateStartTime(info.startTime)
-        scheduleFormVC.updateEndTime(info.endTime)
+        scheduleFormVC.datePickerFormCompVC.setDates(start: info.startDate, end: info.endDate)
+        scheduleFormVC.timePickerFormCompVC.updateStartTime(info.startTime)
+        scheduleFormVC.timePickerFormCompVC.updateEndTime(info.endTime)
         
         // 장르
         genreForm.selectGenre(info.genre)

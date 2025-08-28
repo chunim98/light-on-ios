@@ -2,7 +2,7 @@
 //  LODatePickerHeaderView.swift
 //  LightOn
 //
-//  Created by 신정욱 on 5/14/25.
+//  Created by 신정욱 on 8/28/25.
 //
 
 import UIKit
@@ -15,10 +15,13 @@ final class LODatePickerHeaderView: UIStackView {
     
     // MARK: Components
     
-    private let dateButton = {
-        var config = UIButton.Configuration.plain()
-        config.contentInsets = .zero
-        return UIButton(configuration: config)
+    private let dateLabel = {
+        var config = AttrConfiguration()
+        config.font = .pretendard.semiBold(20)
+        config.foregroundColor = .loBlack
+        config.alignment = .center
+        config.lineHeight = 20
+        return LOLabel(config: config)
     }()
     
     private let previousButton = {
@@ -58,7 +61,7 @@ final class LODatePickerHeaderView: UIStackView {
     
     private func setupLayout() {
         addArrangedSubview(previousButton)
-        addArrangedSubview(dateButton)
+        addArrangedSubview(dateLabel)
         addArrangedSubview(nextButton)
     }
 }
@@ -67,13 +70,12 @@ final class LODatePickerHeaderView: UIStackView {
 
 extension LODatePickerHeaderView {
     /// 날짜 버튼 타이틀 설정
-    func setTitle(_ text: String) {
-        var config = AttrConfiguration()
-        config.font = .pretendard.semiBold(20)
-        config.foregroundColor = .loBlack
-        config.lineHeight = 20
-        config.text = text
-        dateButton.configuration?.attributedTitle = .init(config: config)
+    /// - 전달받은 날짜를 "yyyy년 M월" 형식으로 변환
+    func setTitle(with date: Date) {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR") // 한국어 설정
+        formatter.dateFormat = "yyyy년 M월"
+        dateLabel.config.text = formatter.string(from: date)
     }
     
     /// 이전 버튼 탭 퍼블리셔

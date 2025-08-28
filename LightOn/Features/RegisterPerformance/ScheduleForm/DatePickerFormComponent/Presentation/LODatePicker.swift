@@ -1,8 +1,8 @@
 //
-//  LODatePickerBodyView.swift
+//  LODatePicker.swift
 //  LightOn
 //
-//  Created by 신정욱 on 5/15/25.
+//  Created by 신정욱 on 8/28/25.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import Combine
 
 import FSCalendar
 
-final class LODatePickerBodyView: FSCalendar {
+final class LODatePicker: FSCalendar {
     
     // MARK: Properties
     
@@ -19,15 +19,10 @@ final class LODatePickerBodyView: FSCalendar {
     
     // MARK: Subjects
     
-    /// 현재 페이지(월 단위) 서브젝트
-    ///
-    /// 외부 방출 목적
-    private lazy var currentPageSubject = CurrentValueSubject<Date, Never>(currentPage)
-    
-    /// 현재 선택된 날짜 범위 서브젝트
-    ///
-    /// 외부 방출 목적
-    private let dateRangeSubject = PassthroughSubject<DateRange, Never>()
+    /// 현재 페이지(월 단위) 서브젝트(출력)
+    private let pageSubject = PassthroughSubject<Date, Never>()
+    /// 현재 선택된 기간  서브젝트(출력)
+    private let datesSubject = PassthroughSubject<[Date], Never>()
     
     // MARK: Life Cycle
     
@@ -61,9 +56,14 @@ final class LODatePickerBodyView: FSCalendar {
 
 // MARK: Binders & Publishers
 
-extension LODatePickerBodyView {
+extension LODatePicker {
+    /// 현재 페이지 업데이트
+    func updatePage(_ date: Date) {
+        setCurrentPage(date, animated: false)
+    }
+    
     /// 다음 페이지(월 단위)로 이동
-    func goToNextPage() {
+    func goNextPage() {
         guard let nextPage = Calendar.current.date(
             byAdding: .month, value: 1, to: currentPage
         ) else { return }
@@ -71,7 +71,7 @@ extension LODatePickerBodyView {
     }
     
     /// 이전 페이지(월 단위)로 이동
-    func goToPreviousPage() {
+    func goPreviousPage() {
         guard let previousPage = Calendar.current.date(
             byAdding: .month, value: -1, to: currentPage
         ) else { return }
@@ -79,29 +79,34 @@ extension LODatePickerBodyView {
     }
     
     /// 현재 선택된 날짜 범위 업데이트
-    ///
-    /// 셀 상태 갱신을 위해 reloadData() 호출
-    func updateDateRange(_ dateRange: DateRange) {
+    func updateDates(_ dates: [Date]) {
         selectedDates.forEach { deselect($0) }
-        select(dateRange.start, scrollToDate: true)
-        select(dateRange.end, scrollToDate: true)
-        reloadData()
+        dates.forEach { select($0, scrollToDate: true) }
+        reloadData() // 셀 상태 갱신
     }
     
     /// 현재 페이지(월 단위) 퍼블리셔
-    var currentPagePublisher: AnyPublisher<Date, Never> {
-        currentPageSubject.eraseToAnyPublisher()
+    var pagePublisher: AnyPublisher<Date, Never> {
+        pageSubject
+            .prepend(currentPage) // 현재 페이지 초기값
+            .eraseToAnyPublisher()
     }
     
-    /// 현재 선택된 날짜 범위 퍼블리셔
-    var dateRangePublisher: AnyPublisher<DateRange, Never> {
-        dateRangeSubject.eraseToAnyPublisher()
+    /// 현재 선택된 날짜 범위를 발행하는 퍼블리셔
+    /// - datesSubject에서 선택된 날짜 배열을 그대로 방출
+    /// - 단, 배열에 날짜가 하나만 있으면 시작·종료가 같은 "단일 구간"으로 간주하기 위해
+    ///   같은 값을 두 번 넣어 `[start, end]` 형태로 변환하여 방출
+    /// - 즉, 항상 `[시작일, 종료일]` 형태의 배열을 보장함
+    var datesPublisher: AnyPublisher<[Date], Never> {
+        datesSubject
+            .map { $0.count == 1 ? ($0+$0) : $0 }
+            .eraseToAnyPublisher()
     }
 }
 
 // MARK: - FSCalendarDelegate
 
-extension LODatePickerBodyView: FSCalendarDelegate {
+extension LODatePicker: FSCalendarDelegate {
     /// 달력 셀 선택 시 호출됨
     ///
     /// 현재 선택된 날짜 범위를 dateRangeSubject로 방출하고
@@ -111,12 +116,7 @@ extension LODatePickerBodyView: FSCalendarDelegate {
         didSelect date: Date,
         at monthPosition: FSCalendarMonthPosition
     ) {
-        /// 현재 선택된 날짜 범위
-        let dateRange = DateRange(
-            start: selectedDates[safe: 0],
-            end: selectedDates[safe: 1]
-        )
-        dateRangeSubject.send(dateRange)
+        datesSubject.send(selectedDates)
         reloadData()
     }
     
@@ -129,12 +129,7 @@ extension LODatePickerBodyView: FSCalendarDelegate {
         didDeselect date: Date,
         at monthPosition: FSCalendarMonthPosition
     ) {
-        /// 현재 선택된 날짜 범위
-        let dateRange = DateRange(
-            start: selectedDates[safe: 0],
-            end: selectedDates[safe: 1]
-        )
-        dateRangeSubject.send(dateRange)
+        datesSubject.send(selectedDates)
         reloadData()
     }
     
@@ -153,13 +148,13 @@ extension LODatePickerBodyView: FSCalendarDelegate {
     func calendarCurrentPageDidChange(
         _ calendar: FSCalendar
     ) {
-        currentPageSubject.send(currentPage)
+        pageSubject.send(currentPage)
     }
 }
 
 // MARK: - FSCalendarDataSource
 
-extension LODatePickerBodyView: FSCalendarDataSource {
+extension LODatePicker: FSCalendarDataSource {
     /// 커스텀 셀 구성
     func calendar(
         _ calendar: FSCalendar,
