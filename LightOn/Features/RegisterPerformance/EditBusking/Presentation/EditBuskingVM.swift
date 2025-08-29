@@ -33,14 +33,16 @@ final class EditBuskingVM {
         let deleteConfirmTap: AnyPublisher<Void, Never>
     }
     struct Output {
-        /// 모든 필드가 유효한지 여부
-        let allValuesValid: AnyPublisher<Bool, Never>
         /// 최초 로드 시 바인딩할 버스킹 정보
         let initialInfo: AnyPublisher<BuskingInfo, Never>
         /// 버스킹 수정 완료 이벤트
         let editComplete: AnyPublisher<Void, Never>
         /// 버스킹 삭제 완료 이벤트
         let deleteComplete: AnyPublisher<Void, Never>
+        /// 버스킹 수정이 가능한지 여부
+        let buskingEditable: AnyPublisher<Bool, Never>
+        /// 버스킹 취소가 가능한지 여부
+        let buskingCancellable: AnyPublisher<Bool, Never>
     }
     
     // MARK: Properties
@@ -51,6 +53,7 @@ final class EditBuskingVM {
     private let getBuskingInfoUC: GetBuskingInfoUC
     private let editBuskingUC: EditBuskingUC
     private let deleteBuskingUC: DeleteBuskingUC
+    private let validateModificationUC = ValidateBuskingModificationUC()
     
     // MARK: Initializer
     
@@ -74,11 +77,16 @@ final class EditBuskingVM {
         /// 초기 할당 버스킹 정보
         let initialInfo = getBuskingInfoUC.execure(id: performanceID)
         
-        /// 모든 필드가 유효한지 여부
-        let allValuesValid = infoSubject
-            .map { $0.allValuesValid }
-            .removeDuplicates()
-            .eraseToAnyPublisher()
+        /// 버스킹 수정이 가능한지 여부
+        let buskingEditable = validateModificationUC.validateEditable(
+            initialInfo: initialInfo,
+            currentInfo: infoSubject.eraseToAnyPublisher()
+        )
+        
+        /// 버스킹 취소가 가능한지 여부
+        let buskingCancellable = validateModificationUC.validateCancellable(
+            initialInfo: initialInfo
+        )
         
         // 버스킹 수정 요청
         let editComplete = editBuskingUC.execute(
@@ -113,10 +121,11 @@ final class EditBuskingVM {
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(
-            allValuesValid: allValuesValid,
             initialInfo: initialInfo,
             editComplete: editComplete,
-            deleteComplete: buskingDeleted
+            deleteComplete: buskingDeleted,
+            buskingEditable: buskingEditable,
+            buskingCancellable: buskingCancellable
         )
     }
 }

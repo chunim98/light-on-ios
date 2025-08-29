@@ -51,7 +51,7 @@ final class MyActivityHistoryCoordinator: Coordinator {
         // 등록한 공연 셀 선택 시, 수정화면으로 이동
         // (추후, 버스킹인지, 일반공연인지 확인하는 로직 필요할듯)
         vc.registeredIDPublisher
-            .sink { [weak self] in self?.showEditBusking(id: $0) }
+            .sink { AppCoordinatorBus.shared.navigate(to: .editBusking(id: $0)) }
             .store(in: &cancellables)
         
         // 화면 전환
@@ -80,19 +80,6 @@ final class MyActivityHistoryCoordinator: Coordinator {
             .sink { [weak self] in
                 self?.navigation.popViewController(animated: true)
             }
-            .store(in: &cancellables)
-        
-        // 화면 전환
-        navigation.pushViewController(vc, animated: true)
-    }
-    
-    private func showEditBusking(id: Int) {
-        let vm = RegisterPerformanceDI.shared.makeEditBuskingVM(id: id)
-        let vc = EditBuskingVC(vm: vm)
-        
-        /// 버스킹 수정 및 삭제 완료 또는 뒤로 가기 탭하면 화면 닫기
-        Publishers.Merge(vc.editOrDeleteCompletedPublisher, vc.backTapPublisher)
-            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
         // 화면 전환

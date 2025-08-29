@@ -106,11 +106,6 @@ final class EditBuskingVC: BaseRegisterPerfVC {
             .sink { [weak self] in self?.updateUI(with: $0) }
             .store(in: &cancellables)
         
-        // 모든 필드가 유효하면 수정 버튼 활성화
-        output.allValuesValid
-            .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
-            .store(in: &cancellables)
-        
         // 수정 완료 시, 화면닫고 외부로 이벤트 방출
         output.editComplete
             .sink { [weak self] in
@@ -127,6 +122,16 @@ final class EditBuskingVC: BaseRegisterPerfVC {
                     self?.editOrDeleteCompletedSubject.send(())
                 }
             }
+            .store(in: &cancellables)
+        
+        // 시작 3일 전이고, 모든 필드가 채워지면 수정 버튼 활성화
+        output.buskingEditable
+            .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
+            .store(in: &cancellables)
+        
+        // 시작 1시간 전이면 삭제 버튼 활성화
+        output.buskingCancellable
+            .sink { [weak self] in self?.deleteButton.isEnabled = $0 }
             .store(in: &cancellables)
         
         // 수정하기 버튼 누르면 확인 얼럿 띄우기

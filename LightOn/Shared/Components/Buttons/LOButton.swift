@@ -63,11 +63,13 @@ class LOButton: UIButton {
             if $0.isEnabled {
                 config.baseBackgroundColor = style.backgroundColor
                 config.baseForegroundColor = style.foregroundColor
+                config.background.strokeColor = style.strokeColor
                 config.attributedTitle = .init(config: titleConfig)
                 
             } else {
                 titleConfig.foregroundColor = style.disabledForegroundColor
                 config.background.backgroundColor = style.disabledBackgroundColor
+                config.background.strokeColor = style.disabledForegroundColor
                 config.attributedTitle = .init(config: titleConfig)
             }
             
@@ -84,8 +86,8 @@ class LOButton: UIButton {
 // MARK: - Preview
 
 #Preview {
-    let button = LOButton(style: .filled)
+    let button = LOButton(style: .borderedTinted)
     button.setTitle("로그인", .pretendard.bold(16))
-//        button.isEnabled = false
+    button.isEnabled = false
     return button
 }

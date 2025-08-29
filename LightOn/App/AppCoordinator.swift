@@ -45,6 +45,9 @@ final class AppCoordinator: Coordinator {
                     
                 case .registerConcert:
                     self?.startRegisterConcertCoord()
+                    
+                case .editBusking(id: let id):
+                    self?.startEditBuskingCoord(id)
                 }
             }
             .store(in: &cancellables)
@@ -103,6 +106,16 @@ final class AppCoordinator: Coordinator {
     /// 일반 공연 등록 코디네이터 시작
     private func startRegisterConcertCoord() {
         let coord = RegisterConcertCoord(navigation: navigation)
+        store(child: coord)
+        coord.start()
+    }
+    
+    /// 버스킹 편집 코디네이터 시작
+    private func startEditBuskingCoord(_ performanceID: Int) {
+        let coord = EditBuskingCoord(
+            performaceID: performanceID,
+            navigation: navigation
+        )
         store(child: coord)
         coord.start()
     }

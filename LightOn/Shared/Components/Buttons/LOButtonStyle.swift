@@ -45,7 +45,9 @@ struct LOButtonStyle {
             strokeWidth: 1,
             strokeColor: .brand,
             backgroundColor: .clear,
-            foregroundColor: .brand
+            foregroundColor: .brand,
+            disabledBackgroundColor: .clear,
+            disabledForegroundColor: .disable
         )
     }
 }
