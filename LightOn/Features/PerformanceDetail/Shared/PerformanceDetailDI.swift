@@ -17,7 +17,8 @@ final class PerformanceDetailDI {
     func makePerformanceDetailVM(performanceID: Int) -> PerformanceDetailVM {
         PerformanceDetailVM(
             performanceID: performanceID,
-            repo: DefaultPerformanceDetailRepo()
+            performanceDetailRepo: DefaultPerformanceDetailRepo(),
+            isAppliedRepo: DefaultIsAppliedRepo()
         )
     }
     

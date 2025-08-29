@@ -20,6 +20,8 @@ final class PerformanceDetailVM {
         let detailInfo: AnyPublisher<PerformanceDetailInfo, Never>
         /// 공연 신청 이벤트(유료 공연 여부 포함)
         let applyEventWithIsPaid: AnyPublisher<Bool, Never>
+        /// 이미 신청한 공연인지 여부
+        let isApplied: AnyPublisher<Bool, Never>
     }
     
     // MARK: Properties
@@ -28,12 +30,18 @@ final class PerformanceDetailVM {
     
     private let performanceID: Int
     private let performanceDetailRepo: PerformanceDetailRepo
+    private let getIsAppliedUC: GetIsAppliedUC
     
     // MARK: Initializer
     
-    init(performanceID: Int, repo: any PerformanceDetailRepo) {
+    init(
+        performanceID: Int,
+        performanceDetailRepo: any PerformanceDetailRepo,
+        isAppliedRepo: any IsAppliedRepo
+    ) {
         self.performanceID = performanceID
-        self.performanceDetailRepo = repo
+        self.performanceDetailRepo = performanceDetailRepo
+        self.getIsAppliedUC = .init(repo: isAppliedRepo)
     }
     
     // MARK: Event Handling
@@ -63,9 +71,16 @@ final class PerformanceDetailVM {
             .withLatestFrom(detailInfo) { _, info in info.isPaid }
             .eraseToAnyPublisher()
         
+        /// 이미 신청한 공연인지 여부
+        let isApplied = getIsAppliedUC.execute(
+            performanceID: performanceID,
+            loginState: loginState
+        )
+        
         return Output(
             detailInfo: detailInfo,
-            applyEventWithIsPaid: applyEventWithIsPaid
+            applyEventWithIsPaid: applyEventWithIsPaid,
+            isApplied: isApplied
         )
     }
 }
