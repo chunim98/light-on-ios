@@ -59,7 +59,7 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
             .store(in: &cancellables)
         
         // 공연 신청 탭, 신청 모달 열기
-        vc.applyEventPublisher
+        vc.applyWithPaidPublisher
             .sink { [weak self] isPaid in
                 isPaid
                 ? self?.showPaidEntryModalVC()

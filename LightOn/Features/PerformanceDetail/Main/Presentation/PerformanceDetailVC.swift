@@ -19,10 +19,12 @@ final class PerformanceDetailVC: BackButtonVC {
     private var cancellables = Set<AnyCancellable>()
     private let vm: PerformanceDetailVM
     
-    // MARK: Outputs
+    // MARK: Subjects
     
-    /// 공연 신청 이벤트 서브젝트 (유료 공연 여부 포함)
-    private let applyEventSubject = PassthroughSubject<Bool, Never>()
+    /// 공연 신청 이벤트 서브젝트 (유료 공연 여부 포함) (출력)
+    private let applyWithPaidSubject = PassthroughSubject<Bool, Never>()
+    /// 공연 취소 이벤트 서브젝트 (출력)
+    private let cancelSubject = PassthroughSubject<Void, Never>()
     
     // MARK: Containers
     
@@ -50,7 +52,9 @@ final class PerformanceDetailVC: BackButtonVC {
     
     private let likeButton = LikeButton()
     
-    private let applyButton = {
+    /// 최하단 버튼
+    /// - 버튼 모드별로 UI와 탭 이벤트의 동작이 달라짐
+    private let actionButton = {
         let button = LOButton(style: .filled, height: 48)
         button.setTitle("신청하기", .pretendard.bold(16))
         return button
@@ -99,7 +103,7 @@ final class PerformanceDetailVC: BackButtonVC {
         
         scrollView.addSubview(contentVStack)
         buttonsHStack.addArrangedSubview(likeButton)
-        buttonsHStack.addArrangedSubview(applyButton)
+        buttonsHStack.addArrangedSubview(actionButton)
         
         contentVStack.addArrangedSubview(imageView)
         contentVStack.addArrangedSubview(infoSection)
@@ -117,26 +121,27 @@ final class PerformanceDetailVC: BackButtonVC {
         contentVStack.snp.makeConstraints { $0.edges.width.equalToSuperview() }
         imageView.snp.makeConstraints { $0.size.equalTo(scrollView.snp.width) }
         balloonView.snp.makeConstraints {
-            $0.bottom.equalTo(applyButton.snp.top).offset(-17)
-            $0.centerX.equalTo(applyButton)
+            $0.bottom.equalTo(actionButton.snp.top).offset(-17)
+            $0.centerX.equalTo(actionButton)
         }
     }
     
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = PerformanceDetailVM.Input(
-            applyTap: applyButton.tapPublisher
-        )
-        
+        let input = PerformanceDetailVM.Input(actionTap: actionButton.tapPublisher)
         let output = vm.transform(input)
         
         output.detailInfo
             .sink { [weak self] in self?.bindDetailInfo($0) }
             .store(in: &cancellables)
         
-        output.applyEventWithIsPaid
-            .sink { [weak self] in self?.applyEventSubject.send($0) }
+        output.buttonMode
+            .sink { [weak self] in self?.setActionButtonUI(with: $0) }
+            .store(in: &cancellables)
+        
+        output.actionTapWithMode
+            .sink { [weak self] in self?.routeApplyAction(with: $0) }
             .store(in: &cancellables)
     }
 }
@@ -174,9 +179,42 @@ extension PerformanceDetailVC {
         balloonView.isHidden                        = info.isPaid
     }
     
+    /// 하단 액션 버튼 UI 설정
+    private func setActionButtonUI(with mode: ApplyButtonMode) {
+        switch mode {
+        case .apply(_), .login:
+            actionButton.setTitle("신청하기", .pretendard.bold(16))
+            actionButton.isEnabled = true
+            
+        case .cancel:
+            actionButton.setTitle("신청취소", .pretendard.bold(16))
+            actionButton.isEnabled = true
+            
+        case .finished:
+            actionButton.setTitle("공연 종료", .pretendard.bold(16))
+            actionButton.isEnabled = false
+        }
+    }
+    
+    /// 하단 액션 버튼 모드에 따른 이벤트 처리
+    /// - 각 케이스별 디스크립션 참고
+    private func routeApplyAction(with mode: ApplyButtonMode) {
+        switch mode {
+        case .apply(let isPaid): applyWithPaidSubject.send(isPaid)
+        case .cancel: cancelSubject.send(())
+        case .login: AppCoordinatorBus.shared.navigate(to: .login)
+        case .finished: break
+        }
+    }
+    
     /// 공연 신청 이벤트 퍼블리셔 (유료 공연 여부 포함)
-    var applyEventPublisher: AnyPublisher<Bool, Never> {
-        applyEventSubject.eraseToAnyPublisher()
+    var applyWithPaidPublisher: AnyPublisher<Bool, Never> {
+        applyWithPaidSubject.eraseToAnyPublisher()
+    }
+    
+    /// 공연 취소 이벤트 퍼블리셔
+    var cancelPublisher: AnyPublisher<Void, Never> {
+        cancelSubject.eraseToAnyPublisher()
     }
 }
 

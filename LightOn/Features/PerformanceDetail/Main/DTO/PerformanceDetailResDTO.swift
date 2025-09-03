@@ -83,6 +83,15 @@ extension PerformanceDetailResDTO {
             return isPaid ? "유료 \(formattedText)원" : "무료 0원"
         }()
         
+        /// 공연 종료 여부
+        /// - 공연 종료일이 현재 시각보다 과거라면 true
+        let perfFinished = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let endDate = formatter.date(from: schedule.endDate)
+            return endDate.map { $0 < Date() } ?? true
+        }()
+        
         return PerformanceDetailInfo(
             type:               type,
             thumbnailPath:      info.posterUrl ?? "",
@@ -97,7 +106,8 @@ extension PerformanceDetailResDTO {
             artistName:         artists.first?.name ?? "알 수 없는 아티스트",
             artistDescription:  artists.first?.description ?? "소개가 없습니다.",
             seatDescription:    seatDescription,
-            noticeDescription:  info.notice
+            noticeDescription:  info.notice,
+            perfFinished:       perfFinished
         )
     }
     

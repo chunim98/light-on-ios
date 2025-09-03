@@ -22,4 +22,5 @@ struct PerformanceDetailInfo {
     let artistDescription: String
     let seatDescription: String
     let noticeDescription: String
+    let perfFinished: Bool
 }

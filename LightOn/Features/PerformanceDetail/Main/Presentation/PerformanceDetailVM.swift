@@ -13,15 +13,16 @@ final class PerformanceDetailVM {
     // MARK: Input & Ouput
     
     struct Input {
-        let applyTap: AnyPublisher<Void, Never>
+        /// 하단 액션버튼 탭 이벤트
+        let actionTap: AnyPublisher<Void, Never>
     }
     struct Output {
         /// 공연 상세 정보
         let detailInfo: AnyPublisher<PerformanceDetailInfo, Never>
-        /// 공연 신청 이벤트(유료 공연 여부 포함)
-        let applyEventWithIsPaid: AnyPublisher<Bool, Never>
-        /// 이미 신청한 공연인지 여부
-        let isApplied: AnyPublisher<Bool, Never>
+        /// 하단 액션 버튼 모드
+        let buttonMode: AnyPublisher<ApplyButtonMode, Never>
+        /// 모드가 포함된 하단 액션버튼 탭 이벤트
+        let actionTapWithMode: AnyPublisher<ApplyButtonMode, Never>
     }
     
     // MARK: Properties
@@ -31,6 +32,7 @@ final class PerformanceDetailVM {
     private let performanceID: Int
     private let performanceDetailRepo: PerformanceDetailRepo
     private let getIsAppliedUC: GetIsAppliedUC
+    private let determineButtonModeUC = DetermineApplyButtonModeUC()
     
     // MARK: Initializer
     
@@ -56,31 +58,29 @@ final class PerformanceDetailVM {
             .share()
             .eraseToAnyPublisher()
         
-        /// 로그인 상태가 아니라면, 먼저 로그인 화면으로 보내도록 필터링
-        let filteredApplyTap = input.applyTap
-            .withLatestFrom(loginState) { _, state in state }
-            .filter {
-                guard !($0 == .login) else { return true }
-                AppCoordinatorBus.shared.navigationEventSubject.send(.login)
-                return false
-            }
-            .eraseToAnyPublisher()
-        
-        /// 공연 신청 이벤트(유료 공연 여부 포함)
-        let applyEventWithIsPaid = filteredApplyTap
-            .withLatestFrom(detailInfo) { _, info in info.isPaid }
-            .eraseToAnyPublisher()
-        
         /// 이미 신청한 공연인지 여부
-        let isApplied = getIsAppliedUC.execute(
-            performanceID: performanceID,
-            loginState: loginState
+        /// - 로그인 상태가 아니면 방출하지 않음
+        let isApplied = getIsAppliedUC
+            .execute(id: performanceID, loginState: loginState)
+            .share()
+            .eraseToAnyPublisher()
+        
+        /// 공연 상세 화면 하단 액션버튼의 모드를 결정
+        let buttonMode = determineButtonModeUC.execute(
+            perfDetailInfo: detailInfo,
+            loginState: loginState,
+            isApplied: isApplied
         )
+        
+        /// 모드가 포함된 하단 액션버튼 탭 이벤트
+        let actionTapWithMode = input.actionTap
+            .withLatestFrom(buttonMode)
+            .eraseToAnyPublisher()
         
         return Output(
             detailInfo: detailInfo,
-            applyEventWithIsPaid: applyEventWithIsPaid,
-            isApplied: isApplied
+            buttonMode: buttonMode,
+            actionTapWithMode: actionTapWithMode
         )
     }
 }
