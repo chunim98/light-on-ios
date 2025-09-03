@@ -135,9 +135,10 @@ final class DetailInfoSectionView: UIStackView {
         addArrangedSubview(LOSpacer(8))
         addArrangedSubview(priceHStack)
         
+        #warning("미구현 기능의 버튼 제외")
         genreTagHStack.addArrangedSubview(genreTagLabel)
         genreTagHStack.addArrangedSubview(LOSpacer())
-        genreTagHStack.addArrangedSubview(shareButton)
+        // genreTagHStack.addArrangedSubview(shareButton)
         
         dateHStack.addArrangedSubview(dateLabel)
         dateHStack.addArrangedSubview(LODivider(
@@ -148,7 +149,7 @@ final class DetailInfoSectionView: UIStackView {
         
         placeHStack.addArrangedSubview(placeLabel)
         placeHStack.addArrangedSubview(LOSpacer(8))
-        placeHStack.addArrangedSubview(openMapButton)
+        // placeHStack.addArrangedSubview(openMapButton)
         placeHStack.addArrangedSubview(LOSpacer())
         
         priceHStack.addArrangedSubview(priceLabel)

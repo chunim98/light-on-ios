@@ -104,6 +104,7 @@ final class LoginVC: NavigationBarVC {
     // MARK: Layout
     
     private func setupLayout() {
+        #warning("미구현 기능의 버튼 제외")
         view.addSubview(mainVStack)
         mainVStack.addArrangedSubview(LOSpacer(60))
         mainVStack.addArrangedSubview(UIImageView(image: .loginLogo))
@@ -114,10 +115,10 @@ final class LoginVC: NavigationBarVC {
         mainVStack.addArrangedSubview(LOSpacer(40))
         mainVStack.addArrangedSubview(loginButton)
         mainVStack.addArrangedSubview(LOSpacer(23))
-        mainVStack.addArrangedSubview(loginElseDivider)
-        mainVStack.addArrangedSubview(LOSpacer(23))
-        mainVStack.addArrangedSubview(socialButtonHStack)
-        mainVStack.addArrangedSubview(LOSpacer(23))
+        // mainVStack.addArrangedSubview(loginElseDivider)
+        // mainVStack.addArrangedSubview(LOSpacer(23))
+        // mainVStack.addArrangedSubview(socialButtonHStack)
+        // mainVStack.addArrangedSubview(LOSpacer(23))
         mainVStack.addArrangedSubview(optionButtonHStack)
         
         socialButtonHStack.addArrangedSubview(kakaoLoginButton)
@@ -125,16 +126,16 @@ final class LoginVC: NavigationBarVC {
         socialButtonHStack.addArrangedSubview(appleLoginButton)
         
         optionButtonHStack.addArrangedSubview(signUpButton)
-        optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
-        optionButtonHStack.addArrangedSubview(findMyIDButton)
-        optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
-        optionButtonHStack.addArrangedSubview(findMyPWButton)
+        // optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
+        // optionButtonHStack.addArrangedSubview(findMyIDButton)
+        // optionButtonHStack.addArrangedSubview(LODivider(width: 1, height: 12, color: .disable))
+        // optionButtonHStack.addArrangedSubview(findMyPWButton)
         
         mainVStack.snp.makeConstraints { $0.top.horizontalEdges.equalTo(contentLayoutGuide) }
         idForm.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         pwForm.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
         loginButton.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(34) }
-        loginElseDivider.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(16) }
+        // loginElseDivider.snp.makeConstraints { $0.horizontalEdges.equalToSuperview().inset(16) }
     }
     
     // MARK: Bindings

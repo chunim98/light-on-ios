@@ -66,11 +66,12 @@ final class HomeVC: NavigationBarVC {
         
         navigationBar.leftItemHStack.addArrangedSubview(LOSpacer(18))
         navigationBar.leftItemHStack.addArrangedSubview(logoImageView)
-        
-        navigationBar.rightItemHStack.addArrangedSubview(notificationBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(9))
-        navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
-        navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
+         
+        #warning("미구현 기능의 버튼 제외")
+        // navigationBar.rightItemHStack.addArrangedSubview(notificationBarButton)
+        // navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(9))
+        // navigationBar.rightItemHStack.addArrangedSubview(searchBarButton)
+        // navigationBar.rightItemHStack.addArrangedSubview(LOSpacer(18))
     }
     
     // MARK: Layout

@@ -113,10 +113,11 @@ final class MyPageLoginHeaderVC: CombineVC {
         mainVStack.addArrangedSubview(userInfoHStack)
         mainVStack.addArrangedSubview(buttonsHStack)
         
+        #warning("미구현 기능의 버튼 제외")
         userInfoHStack.addArrangedSubview(profileImageView)
         userInfoHStack.addArrangedSubview(infoDetailVStack)
         userInfoHStack.addArrangedSubview(LOSpacer())
-        userInfoHStack.addSubview(settingsButton)
+        // userInfoHStack.addSubview(settingsButton)
         
         buttonsHStack.addArrangedSubview(activityHistotyButton)
         buttonsHStack.addArrangedSubview(performanceRegisterButton)
@@ -127,7 +128,7 @@ final class MyPageLoginHeaderVC: CombineVC {
         nameHStack.insertArrangedSubview(nameLabel, at: 0)
         
         mainVStack.snp.makeConstraints { $0.edges.equalToSuperview() }
-        settingsButton.snp.makeConstraints { $0.top.trailing.equalToSuperview() }
+        // settingsButton.snp.makeConstraints { $0.top.trailing.equalToSuperview() }
     }
     
     // MARK: Bindings

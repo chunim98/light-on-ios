@@ -78,7 +78,8 @@ final class MyStatsVC: CombineVC {
         mainVStack.addArrangedSubview(buttonHStack)
         mainVStack.addArrangedSubview(LOSpacer())
         
-        buttonHStack.addArrangedSubview(addLikingButton)
+        #warning("미구현 기능의 버튼 제외")
+        // buttonHStack.addArrangedSubview(addLikingButton)
         buttonHStack.addArrangedSubview(LOSpacer())
         
         view.snp.makeConstraints { $0.height.equalTo(308) }
