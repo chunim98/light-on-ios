@@ -39,4 +39,11 @@ final class PerformanceDetailDI {
             repo: DefaultApplyPerformanceRepo()
         )
     }
+    
+    func makeCancelApplicationModalVM(performanceID: Int) -> CancelApplicationModalVM {
+        CancelApplicationModalVM(
+            perfomanceID: performanceID,
+            cancelApplicationRepo: DefaultCancelApplicationRepo()
+        )
+    }
 }

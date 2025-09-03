@@ -67,6 +67,11 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
             }
             .store(in: &cancellables)
         
+        // 공연 신청취소 모달 띄우기
+        vc.cancelPublisher
+            .sink { [weak self] in self?.showCancelApplicationModal() }
+            .store(in: &cancellables)
+        
         navigation.pushViewController(vc, animated: true)
     }
     
@@ -182,5 +187,23 @@ final class PerformanceDetailFlowCoordinator: Coordinator {
         navigation.present(vc, animated: true)
     }
     
-    deinit { print("PerformanceDetailFlowCoordinator deinit") }
+    /// 공연 취소 모달 띄우기
+    private func showCancelApplicationModal() {
+        let vm = PerformanceDetailDI.shared.makeCancelApplicationModalVM(
+            performanceID: performanceID
+        )
+        let vc = CancelApplicationModalVC(vm: vm)
+        
+        // 공연신청 취소 완료 시 화면 닫기
+        vc.applicationCancelledPublisher
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        // 화면 전환
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        navigation.present(vc, animated: true)
+    }
+    
+    deinit { print("[PerformanceDetailFlowCoordinator] deinit") }
 }
