@@ -47,11 +47,23 @@ final class MyApplicationRequestedFullVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
+        /// 선택한 공연 아이디 퍼블리셔
+        let selectedID = tableView
+            .selectedModelPublisher(dataSource: tableView.diffableDataSource)
+            .map { $0.id }
+            .eraseToAnyPublisher()
+        
         let input = MyApplicationRequestedFullVM.Input(trigger: viewDidAppearPublisher)
         let output = vm.transform(input)
         
         output.requests
             .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
+            .store(in: &cancellables)
+        
+        // 신청한 공연 셀 선택 시, 공연 상세 화면으로 이동
+        // (일단 버스킹만 지원하니까 나중에는 셀 내부 버튼 눌러야 이동하게끔 수정해야함)
+        selectedID
+            .sink { AppCoordinatorBus.shared.navigate(to: .performanceDetail(id: $0)) }
             .store(in: &cancellables)
     }
 }

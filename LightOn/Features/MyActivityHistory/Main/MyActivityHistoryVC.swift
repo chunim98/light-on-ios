@@ -97,6 +97,14 @@ extension MyActivityHistoryVC {
         .eraseToAnyPublisher()
     }
     
+    /// 신청한 공연 아이디 퍼블리셔
+    var appliedIDPublisher: AnyPublisher<Int, Never> {
+        applicationVC.tableView.selectedModelPublisher(
+            dataSource: applicationVC.tableView.diffableDataSource
+        )
+        .map { $0.id }
+        .eraseToAnyPublisher()
+    }
 }
 
 // MARK: - Preview

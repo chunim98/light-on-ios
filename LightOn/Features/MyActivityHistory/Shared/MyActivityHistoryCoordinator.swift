@@ -54,6 +54,12 @@ final class MyActivityHistoryCoordinator: Coordinator {
             .sink { AppCoordinatorBus.shared.navigate(to: .editBusking(id: $0)) }
             .store(in: &cancellables)
         
+        // 신청한 공연 셀 선택 시, 공연 상세 화면으로 이동
+        // (일단 버스킹만 지원하니까 나중에는 셀 내부 버튼 눌러야 이동하게끔 수정해야함)
+        vc.appliedIDPublisher
+            .sink { AppCoordinatorBus.shared.navigate(to: .performanceDetail(id: $0)) }
+            .store(in: &cancellables)
+        
         // 화면 전환
         navigation.pushViewController(vc, animated: true)
     }
@@ -63,9 +69,7 @@ final class MyActivityHistoryCoordinator: Coordinator {
         
         /// 뒤로 가기 버튼 탭, 화면 닫기
         vc.backTapPublisher
-            .sink { [weak self] in
-                self?.navigation.popViewController(animated: true)
-            }
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
         // 화면 전환
@@ -77,9 +81,7 @@ final class MyActivityHistoryCoordinator: Coordinator {
         
         /// 뒤로 가기 버튼 탭, 화면 닫기
         vc.backTapPublisher
-            .sink { [weak self] in
-                self?.navigation.popViewController(animated: true)
-            }
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         
         // 화면 전환

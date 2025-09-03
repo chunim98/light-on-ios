@@ -39,7 +39,7 @@ final class MyApplicationRequestedVC: CombineVC {
         return UIButton(configuration: config)
     }()
     
-    private let tableView = MyPerformanceTableView()
+    let tableView = MyPerformanceTableView()
     
     // MARK: Life Cycle
     
