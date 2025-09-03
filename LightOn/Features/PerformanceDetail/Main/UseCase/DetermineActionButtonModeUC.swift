@@ -1,5 +1,5 @@
 //
-//  DetermineApplyButtonModeUC.swift
+//  DetermineActionButtonModeUC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 9/3/25.
@@ -7,7 +7,7 @@
 
 import Combine
 
-final class DetermineApplyButtonModeUC {
+final class DetermineActionButtonModeUC {
     /// 공연 상세 화면 하단 액션버튼의 모드를 결정
     ///
     /// - Parameters:
@@ -20,7 +20,7 @@ final class DetermineApplyButtonModeUC {
         perfDetailInfo: AnyPublisher<PerformanceDetailInfo, Never>,
         loginState: AnyPublisher<SessionManager.LoginState, Never>,
         isApplied: AnyPublisher<Bool, Never>
-    ) -> AnyPublisher<ApplyButtonMode, Never> {
+    ) -> AnyPublisher<ActionButtonMode, Never> {
         /// isApplied는 로그인 상태인 경우에만 방출되기 때문에 초기값 제공
         let isApplied = isApplied
             .prepend(false)
@@ -29,7 +29,7 @@ final class DetermineApplyButtonModeUC {
         // 버튼 모드 결정
         return Publishers
             .CombineLatest3(perfDetailInfo, loginState, isApplied)
-            .map { perfDetailInfo, loginState, isApplied -> ApplyButtonMode in
+            .map { perfDetailInfo, loginState, isApplied -> ActionButtonMode in
                 guard !perfDetailInfo.perfFinished else { return .finished }
                 guard loginState == .login else { return .login }
                 return isApplied ? .cancel : .apply(isPaid: perfDetailInfo.isPaid)

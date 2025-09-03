@@ -13,16 +13,20 @@ final class PerformanceDetailVM {
     // MARK: Input & Ouput
     
     struct Input {
-        /// 하단 액션버튼 탭 이벤트
+        /// 하단 액션버튼 탭
         let actionTap: AnyPublisher<Void, Never>
+        /// 좋아요 버튼 탭
+        let likeTap: AnyPublisher<Void, Never>
     }
     struct Output {
         /// 공연 상세 정보
         let detailInfo: AnyPublisher<PerformanceDetailInfo, Never>
         /// 하단 액션 버튼 모드
-        let buttonMode: AnyPublisher<ApplyButtonMode, Never>
+        let buttonMode: AnyPublisher<ActionButtonMode, Never>
         /// 모드가 포함된 하단 액션버튼 탭 이벤트
-        let actionTapWithMode: AnyPublisher<ApplyButtonMode, Never>
+        let actionTapWithMode: AnyPublisher<ActionButtonMode, Never>
+        /// 찜(좋아요) 상태
+        let isLiked: AnyPublisher<Bool, Never>
     }
     
     // MARK: Properties
@@ -32,18 +36,22 @@ final class PerformanceDetailVM {
     private let performanceID: Int
     private let performanceDetailRepo: PerformanceDetailRepo
     private let getIsAppliedUC: GetIsAppliedUC
-    private let determineButtonModeUC = DetermineApplyButtonModeUC()
+    private let determineActionButtonModeUC = DetermineActionButtonModeUC()
+    private let makeIsLikedStreamUC: MakeIsLikedStreamUC
+    private let determineLikeButtonModeUC = DetermineLikeButtonModeUC()
     
     // MARK: Initializer
     
     init(
         performanceID: Int,
         performanceDetailRepo: any PerformanceDetailRepo,
-        isAppliedRepo: any IsAppliedRepo
+        isAppliedRepo: any IsAppliedRepo,
+        isLikedRepo: any IsLikedRepo
     ) {
         self.performanceID = performanceID
         self.performanceDetailRepo = performanceDetailRepo
         self.getIsAppliedUC = .init(repo: isAppliedRepo)
+        self.makeIsLikedStreamUC = .init(repo: isLikedRepo)
     }
     
     // MARK: Event Handling
@@ -66,7 +74,7 @@ final class PerformanceDetailVM {
             .eraseToAnyPublisher()
         
         /// 공연 상세 화면 하단 액션버튼의 모드를 결정
-        let buttonMode = determineButtonModeUC.execute(
+        let buttonMode = determineActionButtonModeUC.execute(
             perfDetailInfo: detailInfo,
             loginState: loginState,
             isApplied: isApplied
@@ -77,10 +85,23 @@ final class PerformanceDetailVM {
             .withLatestFrom(buttonMode)
             .eraseToAnyPublisher()
         
+        /// 찜(좋아요) 버튼의 모드
+        let likeButtonMode = determineLikeButtonModeUC
+            .execute(loginState: loginState)
+        
+        /// 찜(좋아요) 상태
+        /// - 유즈케이스가 찜(좋아요) 상태 조회 및 토글까지 수행
+        let isLiked = makeIsLikedStreamUC.execute(
+            id: performanceID,
+            mode: likeButtonMode,
+            trigger: input.likeTap
+        )
+        
         return Output(
             detailInfo: detailInfo,
             buttonMode: buttonMode,
-            actionTapWithMode: actionTapWithMode
+            actionTapWithMode: actionTapWithMode,
+            isLiked: isLiked
         )
     }
 }

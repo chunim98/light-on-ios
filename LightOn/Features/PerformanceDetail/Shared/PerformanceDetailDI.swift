@@ -18,7 +18,8 @@ final class PerformanceDetailDI {
         PerformanceDetailVM(
             performanceID: performanceID,
             performanceDetailRepo: DefaultPerformanceDetailRepo(),
-            isAppliedRepo: DefaultIsAppliedRepo()
+            isAppliedRepo: DefaultIsAppliedRepo(),
+            isLikedRepo: DefaultIsLikedRepo()
         )
     }
     

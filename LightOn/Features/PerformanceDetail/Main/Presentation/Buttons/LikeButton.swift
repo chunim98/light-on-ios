@@ -27,7 +27,7 @@ final class LikeButton: UIButton {
     override var intrinsicContentSize: CGSize {
         CGSize(width: 48, height: 48)
     }
-
+    
     // MARK: Life Cycle
     
     override init(frame: CGRect) {
@@ -51,13 +51,7 @@ final class LikeButton: UIButton {
             
             $0.configuration = config
         }
-        
-        addTarget(self, action: #selector(handleTapEvent), for: .touchUpInside)
     }
-
-    // MARK: Event Handling
-    
-    @objc private func handleTapEvent() { self.isSelected.toggle() }
 }
 
 // MARK: - Preview

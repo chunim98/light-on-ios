@@ -129,7 +129,11 @@ final class PerformanceDetailVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = PerformanceDetailVM.Input(actionTap: actionButton.tapPublisher)
+        let input = PerformanceDetailVM.Input(
+            actionTap: actionButton.tapPublisher,
+            likeTap: likeButton.tapPublisher
+        )
+        
         let output = vm.transform(input)
         
         output.detailInfo
@@ -142,6 +146,12 @@ final class PerformanceDetailVC: BackButtonVC {
         
         output.actionTapWithMode
             .sink { [weak self] in self?.routeApplyAction(with: $0) }
+            .store(in: &cancellables)
+        
+        // 찜(좋아요) 버튼 상태 바인딩
+        output.isLiked
+            .print("🍗")
+            .sink { [weak self] in self?.likeButton.isSelected = $0 }
             .store(in: &cancellables)
     }
 }
@@ -180,7 +190,7 @@ extension PerformanceDetailVC {
     }
     
     /// 하단 액션 버튼 UI 설정
-    private func setActionButtonUI(with mode: ApplyButtonMode) {
+    private func setActionButtonUI(with mode: ActionButtonMode) {
         switch mode {
         case .apply(_), .login:
             actionButton.setTitle("신청하기", .pretendard.bold(16))
@@ -198,7 +208,7 @@ extension PerformanceDetailVC {
     
     /// 하단 액션 버튼 모드에 따른 이벤트 처리
     /// - 각 케이스별 디스크립션 참고
-    private func routeApplyAction(with mode: ApplyButtonMode) {
+    private func routeApplyAction(with mode: ActionButtonMode) {
         switch mode {
         case .apply(let isPaid): applyWithPaidSubject.send(isPaid)
         case .cancel: cancelSubject.send(())
