@@ -10,25 +10,41 @@ import Combine
 
 final class SessionManager {
     
-    // MARK: Enum
+    // MARK: LoginState
     
     enum LoginState: String { case unknown, login, logout }
+    
+    // MARK: Properties
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let clearTokenOnReinstallUC = ClearTokenOnReinstallUC()
+    private let fetchIsArtistUC = FetchIsArtistUC(repo: DefaultIsArtistRepo())
+    
+    // MARK: Subjects
+    
+    /// 현재 로그인 상태 서브젝트
+    private let loginStateSubject = CurrentValueSubject<LoginState, Never>(.unknown)
+    /// 사용자 아티스트 여부 서브젝트
+    private let isArtistSubject = CurrentValueSubject<Bool, Never>(false)
+    
+    /// 현재 로그인 상태 스냅샷
+    var loginState: LoginState { loginStateSubject.value }
+    /// 사용자 아티스트 여부 스냅샷
+    var isArtist: Bool { isArtistSubject.value }
     
     // MARK: Singleton
     
     static let shared = SessionManager()
-    private init() {}
+    private init() { setupBindings() }
     
-    // MARK: Outputs
+    // MARK: Bindings
     
-    /// 현재 로그인 상태 서브젝트
-    private let loginStateSubject = CurrentValueSubject<LoginState, Never>(.unknown)
-    /// 현재 로그인 상태 스냅샷
-    var loginState: LoginState { loginStateSubject.value }
-    
-    // MARK: UseCases
-    
-    private let clearTokenOnReinstallUC = ClearTokenOnReinstallUC()
+    private func setupBindings() {
+        fetchIsArtistUC
+            .execute(loginState: loginStateSubject.eraseToAnyPublisher())
+            .sink(receiveValue: isArtistSubject.send(_:))
+            .store(in: &cancellables)
+    }
     
     // MARK: Methods
     
