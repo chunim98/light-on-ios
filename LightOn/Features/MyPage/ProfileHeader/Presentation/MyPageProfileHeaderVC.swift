@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SafariServices
 
 import CombineCocoa
 import SnapKit
@@ -27,6 +28,8 @@ final class MyPageProfileHeaderVC: CombineVC {
     
     /// 공연 등록 분기 모달
     private let entryModalVC = RegisterPerformanceEntryModalVC()
+    /// "아티스트 회원 아님" 안내 얼럿
+    private let notArtistAlertVC = NotArtistAlertVC()
     /// 로그아웃 상태의 헤더 뷰
     private let logoutView = MyPageLogoutHeaderView()
     /// 로그인 상태의 헤더 뷰
@@ -81,21 +84,48 @@ final class MyPageProfileHeaderVC: CombineVC {
             .sink { [weak self] in self?.presentEntryModal() }
             .store(in: &cancellables)
         
-        // 로그인 상태: 일반 공연 등록 화면 이동
+        // 로그인 상태: 아티스트 확인 후, 일반 공연 등록 화면 이동
         entryModalVC.normalTapPublisher
-            .sink { AppCoordinatorBus.shared.navigate(to: .registerConcert) }
+            .sink { [weak self] in
+                SessionManager.shared.isArtist
+                ? AppCoordinatorBus.shared.navigate(to: .registerConcert)
+                : self?.presentNotArtistAlert()
+            }
             .store(in: &cancellables)
         
         // 로그인 상태: 버스킹 등록 화면 이동
         entryModalVC.buskingTapPublisher
             .sink { AppCoordinatorBus.shared.navigate(to: .registerBusking) }
             .store(in: &cancellables)
+        
+        // 아티스트 신청 페이지로 리디렉션
+        notArtistAlertVC.acceptTapPublisher
+            .sink { [weak self] in self?.openSafari(
+                with: "https://docs.google.com/forms/d/e/1FAIpQLSc3WM6-wQSMTYBBYXxCN5loa8LcoRYR08Ju82IDSgchrhHE8g/viewform"
+            ) }
+            .store(in: &cancellables)
     }
 }
+
+// MARK: Binders & Publishers
 
 extension MyPageProfileHeaderVC {
     /// 공연 등록 모달 열기
     private func presentEntryModal() { present(entryModalVC, animated: true) }
+    
+    /// "아티스트 회원 아님" 얼럿 띄우기
+    private func presentNotArtistAlert() {
+        notArtistAlertVC.modalPresentationStyle = .overFullScreen
+        notArtistAlertVC.modalTransitionStyle = .crossDissolve
+        present(notArtistAlertVC, animated: true)
+    }
+    
+    /// 주어진 URL을 Safari 뷰 컨트롤러로 열기
+    private func openSafari(with urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
+    }
     
     /// 내 활동 내역 코디네이터 시작
     private func startMyActivityHistory() {
