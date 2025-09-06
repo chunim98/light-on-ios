@@ -32,4 +32,11 @@ final class RegisterPerformanceDI {
             registerConcertRepo: DefaultRegisterConcertRepo()
         )
     }
+    
+    func makeEditConcertVM(id performanceID: Int) -> EditConcertVM {
+        EditConcertVM(
+            performanceID: performanceID,
+            modifyConcertRepo: DefaultModifyConcertRepo()
+        )
+    }
 }

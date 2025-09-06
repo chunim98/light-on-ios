@@ -20,6 +20,8 @@ struct PerformanceDetailResDTO: Decodable {
     let proofUrl: String?
     let isPaid: Bool
     let fee: Int
+    /// 버스킹이나 좌석 무제한은 0 반환
+    let totalSeatsCount: Int
     
     struct Info: Decodable {
         let title: String
@@ -135,6 +137,48 @@ extension PerformanceDetailResDTO {
             documentInfo: documentInfo,
             artistName: artists.first?.name ?? "알 수 없는 아티스트",
             artistDescription: artists.first?.description ?? "소개가 없습니다."
+        )
+    }
+    
+    func toConcertInfo() -> RegisterConcertInfo {
+        let posterInfo: ImageInfo? = info.posterUrl.flatMap {
+            $0.isEmpty ? nil : ImageInfo(image: .init(), name: "포스터.png")
+        }
+        
+        let documentInfo: ImageInfo? = info.posterUrl.flatMap {
+            $0.isEmpty ? nil : ImageInfo(image: .init(), name: "증빙자료.png")
+        }
+        
+        let seatTypes: [RegisterConcertInfo.SeatType] = {
+            seats.map { switch $0 {
+            case .standing:     .standing
+            case .freestyle:    .freestyle
+            case .assigned:     .assigned
+            } }
+        }()
+        
+        return RegisterConcertInfo(
+            title: info.title,
+            description: info.description,
+            regionID: regionCode,
+            place: info.place,
+            notice: info.notice,
+            genre: genres,
+            startDate: schedule.startDate,
+            endDate: schedule.endDate,
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            isPaid: isPaid,
+            price: fee,
+            account: nil,       // 별도 api 호출해서 취합할 예정
+            bank: nil,          // 별도 api 호출해서 취합할 예정
+            accountHolder: nil, // 별도 api 호출해서 취합할 예정
+            seatTypes: seatTypes,
+            totalSeatsCount: totalSeatsCount,
+            artistName: artists.first?.name ?? "알 수 없는 아티스트",
+            artistDescription: artists.first?.description ?? "소개가 없습니다.",
+            posterInfo: posterInfo,
+            documentInfo: documentInfo
         )
     }
 }

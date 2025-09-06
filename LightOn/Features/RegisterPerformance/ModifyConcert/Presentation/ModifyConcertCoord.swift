@@ -1,0 +1,56 @@
+//
+//  ModifyConcertCoord.swift
+//  LightOn
+//
+//  Created by 신정욱 on 9/7/25.
+//
+
+import UIKit
+import Combine
+
+final class ModifyConcertCoord: Coordinator {
+    
+    // MARK: Properties
+    
+    weak var parent: (any Coordinator)?
+    var children: [any Coordinator] = []    // 자식 없음
+    let navigation: UINavigationController
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let performaceID: Int
+    
+    // MARK: Life Cycle
+    
+    init(
+        performaceID: Int,
+        navigation: UINavigationController
+    ) {
+        self.performaceID = performaceID
+        self.navigation = navigation
+    }
+    
+    // MARK: Methods
+    
+    func start() { showEditConcert() }
+    
+    /// 콘서트 등록 화면 이동
+    private func showEditConcert() {
+        let vm = RegisterPerformanceDI.shared.makeEditConcertVM(id: performaceID)
+        let vc = EditConcertVC(vm: vm)
+        
+        /// 콘서트 수정 및 삭제 완료 또는 뒤로 가기 탭하면 화면 닫기
+        Publishers.Merge(vc.editOrDeleteCompletedPublisher, vc.backTapPublisher)
+            .sink { [weak self] in self?.navigation.popViewController(animated: true) }
+            .store(in: &cancellables)
+        
+        // 해당 뷰컨 해제 시, 코디네이터도 해제
+        vc.deallocatedPublisher
+            .sink { [weak self] in self.map { $0.parent?.free(child: $0) } }
+            .store(in: &cancellables)
+        
+        // 화면 전환
+        navigation.pushViewController(vc, animated: true)
+    }
+    
+    deinit { print("[ModifyConcertCoord] deinit") }
+}

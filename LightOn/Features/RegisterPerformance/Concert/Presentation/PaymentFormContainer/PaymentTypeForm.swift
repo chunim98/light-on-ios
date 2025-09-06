@@ -12,7 +12,7 @@ final class PaymentTypeForm: BaseForm {
     
     // MARK: Components
     
-    private let radioControll = {
+    let radioControll = {
         let radio = RadioControll(isRequired: true)
         radio.titles = ["무료공연", "유료공연"]
         return radio

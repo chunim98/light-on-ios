@@ -28,6 +28,7 @@ final class DefaultRegisterConcertRepo: RegisterConcertRepo {
         documentData: Data
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
+            print(info.isPaid)
             
             // jsonData 생성
             guard let jsonData = try? JSONEncoder().encode(
@@ -56,7 +57,7 @@ final class DefaultRegisterConcertRepo: RegisterConcertRepo {
                         fileName: "posterImage.png"
                     )
                 },
-                to: BaseURL + "/api/members/performances/buskings"
+                to: BaseURL + "/api/artists/performances/concerts"
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("[RegisterConcertRepo] 콘서트 등록 요청 완료")

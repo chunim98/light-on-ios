@@ -80,9 +80,7 @@ final class RadioControll: UIStackView {
         
         // 변경된 상태 버튼에 바인딩
         selectedIndexSubject
-            .sink { [weak self] tag in
-                self?.buttons.forEach { $0.isSelected = ($0.tag == tag) }
-            }
+            .sink { [weak self] in self?.selectIndex($0) }
             .store(in: &cancellables)
     }
 }
@@ -90,6 +88,11 @@ final class RadioControll: UIStackView {
 // MARK: Binders & Observable
 
 extension RadioControll {
+    /// 선택된 인덱스에 따라서 버튼 UI 갱신
+    func selectIndex(_ tag: Int) {
+        buttons.forEach { $0.isSelected = ($0.tag == tag) }
+    }
+    
     /// 선택한 버튼 인덱스 퍼블리셔
     var selectedIndexPublisher: AnyPublisher<Int, Never> {
         selectedIndexSubject.eraseToAnyPublisher()

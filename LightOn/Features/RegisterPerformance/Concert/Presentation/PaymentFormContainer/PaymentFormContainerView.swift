@@ -72,17 +72,3 @@ final class PaymentFormContainerView: UIStackView {
             .store(in: &cancellables)
     }
 }
-//
-//// MARK: Binders & Publishers
-//
-//extension PaymentFormContainerView {
-//    /// 가격 퍼블리셔 (무료일 경우 nil)
-//    var pricePublisher: AnyPublisher<String?, Never> {
-//        Publishers.CombineLatest(
-//            priceForm.textPublisher,
-//            paymentTypeForm.isPaidPublisher
-//        )
-//        .map { price, isPaid in isPaid ? price : nil }
-//        .eraseToAnyPublisher()
-//    }
-//}

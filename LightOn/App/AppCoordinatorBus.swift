@@ -24,6 +24,8 @@ final class AppCoordinatorBus {
         case registerConcert
         /// 버스킹 수정 화면
         case editBusking(id: Int)
+        /// 콘서트 수정화면
+        case modifyConcert(id: Int)
     }
     
     // MARK: Singleton
