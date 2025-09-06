@@ -174,7 +174,11 @@ extension SignUpSecondStepVC {
     private func bindShowTermsAlert() {
         let alert = PolicyDetailAlert()
         alert.titleLabel.config.text = "이용약관"
-        alert.textView.setText("대충 엄청 긴 텍스트") // temp
+        alert.textView.setText({
+            let path = Bundle.main.path(forResource: "ServicePolicyDetail", ofType: "txt") ?? ""
+            let text = try? String(contentsOfFile: path, encoding: .utf8)
+            return text ?? ""
+        }())
         alert.modalPresentationStyle = .overFullScreen
         alert.modalTransitionStyle = .crossDissolve
         present(alert, animated: true)
@@ -184,7 +188,11 @@ extension SignUpSecondStepVC {
     private func bindShowPrivacyAlert() {
         let alert = PolicyDetailAlert()
         alert.titleLabel.config.text = "개인정보 수집 및 이용동의"
-        alert.textView.setText("대충 엄청 긴 텍스트") // temp
+        alert.textView.setText({
+            let path = Bundle.main.path(forResource: "PrivacyPolicyDetail", ofType: "txt") ?? ""
+            let text = try? String(contentsOfFile: path, encoding: .utf8)
+            return text ?? ""
+        }())
         alert.modalPresentationStyle = .overFullScreen
         alert.modalTransitionStyle = .crossDissolve
         present(alert, animated: true) 

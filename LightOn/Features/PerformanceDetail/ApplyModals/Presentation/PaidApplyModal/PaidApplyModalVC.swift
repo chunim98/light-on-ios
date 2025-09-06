@@ -44,7 +44,7 @@ final class PaidApplyModalVC: BaseApplyModalVC {
         config.lineHeight = 20
         config.text = """
         * 반드시 신청자 이름으로 입금 부탁드립니다.
-        * 영업일 기준 1~2일정도 소요됩니다.
+        * 환불은 영업일 기준 1~2일정도 소요됩니다.
         * 입금 계좌 정보는 [마이페이지]>[신청 내역]에서 확인하실 수 있습니다.
         """
         let label = LOPaddingLabel(

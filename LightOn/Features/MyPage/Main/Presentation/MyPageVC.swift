@@ -76,7 +76,7 @@ final class MyPageVC: NavigationBarVC {
         
         #warning("미구현 기능의 버튼 제외")
         scrollView.addSubview(contentVStack)
-        // contentVStack.addArrangedSubview(noticeButton)
+        contentVStack.addArrangedSubview(noticeButton)
         // contentVStack.addArrangedSubview(appSettingsButton)
         contentVStack.addArrangedSubview(faqButton)
         contentVStack.addArrangedSubview(dividers[0])
@@ -117,6 +117,13 @@ final class MyPageVC: NavigationBarVC {
         // 회원탈퇴 얼럿 띄우기
         deleteAccountButton.tapPublisher
             .sink { [weak self] in self?.presentdeleteAccountAlert() }
+            .store(in: &cancellables)
+        
+        // 공지사항 페이지로 리디렉션
+        noticeButton.tapPublisher
+            .sink { [weak self] in self?.openSafari(
+                with: "https://climbing-crop-26b.notion.site/LightOn-266eaa9122bb80e186f1dd76161effef"
+            ) }
             .store(in: &cancellables)
         
         // 이용약관 페이지로 리디렉션

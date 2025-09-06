@@ -44,7 +44,7 @@ final class PasswordValidationFormVM {
         let passwordFormat = input.password
             .map { password -> Format in
                 guard !password.isEmpty else { return .unknown }
-                let regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=]).{8,}$/
+                let regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=]).{8,}$/
                 let isValid = password.wholeMatch(of: regex) != nil
                 return isValid ? .valid : .invalid
             }
