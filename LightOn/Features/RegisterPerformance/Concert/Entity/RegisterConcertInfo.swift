@@ -20,13 +20,12 @@ struct RegisterConcertInfo {
     var startTime: String?          // HH:mm
     var endTime: String?            // HH:mm
     
-    var isPaid: Bool?               // false - 무료, true - 유료
+    var isPaid: Bool = false        // false - 무료, true - 유료
     var price: Int?                 // 유료일 때만 필수
     var account: String?            // 유료일 때만 필수
     var bank: String?               // 유료일 때만 필수
     var accountHolder: String?      // 유료일 때만 필수
     
-    var artists: [Int]?             // 같이 공연하는 아티스트 ID (선택)
     var seatTypes: [SeatType] = []  // 좌석 유형 (STANDING, FREESTYLE, ASSIGNED)
     var totalSeatsCount: Int?
     var artistName: String?
@@ -41,5 +40,35 @@ struct RegisterConcertInfo {
         case standing
         case freestyle
         case assigned
+    }
+}
+
+extension RegisterConcertInfo {
+    /// 모든 필수 옵셔널 값이 nil이 아닌지 여부
+    var allValuesValid: Bool {
+        title != nil &&
+        description != nil &&
+        regionID != nil &&
+        place != nil &&
+        notice != nil &&
+        !genre.isEmpty && // 장르 배열이 비었을 때, nil로 취급
+        startDate != nil &&
+        endDate != nil &&
+        startTime != nil &&
+        endTime != nil &&
+        /// 유료 공연일 때만 가격, 계좌, 은행, 예금주 필수
+        {
+            isPaid
+            ? price != nil &&
+            account != nil &&
+            bank != nil &&
+            accountHolder != nil
+            : true
+        }() &&
+        totalSeatsCount != nil &&
+        artistName != nil &&
+        artistDescription != nil &&
+        posterInfo != nil &&
+        documentInfo != nil
     }
 }

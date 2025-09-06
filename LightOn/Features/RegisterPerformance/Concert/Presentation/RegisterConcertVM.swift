@@ -31,30 +31,39 @@ final class RegisterConcertVM {
         let bank: AnyPublisher<String?, Never>
         let accountHolder: AnyPublisher<String?, Never>
         
-        let artists: AnyPublisher<[Int]?, Never>
         let seatTypes: AnyPublisher<[RegisterConcertInfo.SeatType], Never>
         let totalSeatsCount: AnyPublisher<Int?, Never>
         
         let posterInfo: AnyPublisher<ImageInfo, Never>
         let documentInfo: AnyPublisher<ImageInfo, Never>
+        
+        let alertConfirmTap: AnyPublisher<Void, Never>
     }
     
     struct Output {
-        /// 입력값 상태
-        let info: AnyPublisher<RegisterConcertInfo, Never>
         /// 필드를 채울 아티스트 정보 초기값
         let initialArtistInfo: AnyPublisher<ArtistInfo, Never>
+        /// 콘서트 등록 완료 이벤트
+        let registerCompleteEvent: AnyPublisher<Void, Never>
+        /// 모든 필드가 유효한지 여부
+        let allValuesValid: AnyPublisher<Bool, Never>
+        
     }
     
     // MARK: Properties
     
     private var cancellables = Set<AnyCancellable>()
     private let fetchArtistInfoUC: FetchArtistInfoUC
+    private let registerConcertUC: RegisterConcertUC
     
     // MARK: Initializer
     
-    init(repo: any ArtistInfoRepo) {
-        self.fetchArtistInfoUC = .init(repo: repo)
+    init(
+        artistInfoRepo: any ArtistInfoRepo,
+        registerConcertRepo: any RegisterConcertRepo
+    ) {
+        self.fetchArtistInfoUC = .init(repo: artistInfoRepo)
+        self.registerConcertUC = .init(repo: registerConcertRepo)
     }
     
     // MARK: Event Handling
@@ -72,6 +81,18 @@ final class RegisterConcertVM {
                 infoSubject.value.artistName = $0.artistName
             }
             .store(in: &cancellables)
+        
+        /// 콘서트 등록 완료 이벤트
+        let registerCompleteEvent = registerConcertUC.execute(
+            trigger: input.alertConfirmTap,
+            info: infoSubject.eraseToAnyPublisher()
+        )
+        
+        /// 모든 필드가 유효한지 여부
+        let allValuesValid = infoSubject
+            .map { $0.allValuesValid }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
         
         // info 상태 갱신
         [
@@ -93,7 +114,6 @@ final class RegisterConcertVM {
             input.bank.sink            { infoSubject.value.bank            = $0 },
             input.accountHolder.sink   { infoSubject.value.accountHolder   = $0 },
             
-            input.artists.sink         { infoSubject.value.artists         = $0 },
             input.seatTypes.sink       { infoSubject.value.seatTypes       = $0 },
             input.totalSeatsCount.sink { infoSubject.value.totalSeatsCount = $0 },
             
@@ -102,8 +122,9 @@ final class RegisterConcertVM {
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(
-            info: infoSubject.eraseToAnyPublisher(),
-            initialArtistInfo: initialArtistInfo
+            initialArtistInfo: initialArtistInfo,
+            registerCompleteEvent: registerCompleteEvent,
+            allValuesValid: allValuesValid
         )
     }
 }

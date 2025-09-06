@@ -11,7 +11,6 @@ struct RegisterConcertReqDTO: Encodable {
     let info: Info
     let schedule: Schedule
     let payment: Payment
-    let artists: [Int]?                 // 같이 공연하는 아티스트 ID (선택)
     let seat: [SeatType]                // 좌석 유형 (STANDING, FREESTYLE, ASSIGNED)
     let totalSeatsCount: Int
     let artistName: String
@@ -63,7 +62,6 @@ extension RegisterConcertReqDTO {
         self.info = info
         self.schedule = schedule
         self.payment = payment
-        self.artists = domain.artists
         self.seat = domain.seatTypes.map { SeatType(from: $0) }
         self.totalSeatsCount = totalSeatsCount
         self.artistName = artistName
@@ -105,18 +103,11 @@ extension RegisterConcertReqDTO.Schedule {
 
 extension RegisterConcertReqDTO.Payment {
     init?(from domain: RegisterConcertInfo) {
-        guard let isPaid = domain.isPaid,
-              let price = domain.price,
-              let account = domain.account,
-              let bank = domain.bank,
-              let accountHolder = domain.accountHolder
-        else { return nil }
-        
-        self.isPaid = isPaid
-        self.price = price
-        self.account = account
-        self.bank = bank
-        self.accountHolder = accountHolder
+        self.isPaid = domain.isPaid
+        self.price = domain.isPaid ? domain.price : nil
+        self.account = domain.isPaid ? domain.account : nil
+        self.bank = domain.isPaid ? domain.bank : nil
+        self.accountHolder = domain.isPaid ? domain.accountHolder : nil
     }
 }
 

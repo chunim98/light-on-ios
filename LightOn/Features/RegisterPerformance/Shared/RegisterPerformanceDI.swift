@@ -27,6 +27,9 @@ final class RegisterPerformanceDI {
     }
     
     func makeRegisterConcertVM() -> RegisterConcertVM {
-        RegisterConcertVM(repo: DefaultArtistInfoRepo())
+        RegisterConcertVM(
+            artistInfoRepo: DefaultArtistInfoRepo(),
+            registerConcertRepo: DefaultRegisterConcertRepo()
+        )
     }
 }

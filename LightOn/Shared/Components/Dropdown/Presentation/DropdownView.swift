@@ -29,7 +29,7 @@ final class DropdownView<Item: DropdownCellItem>: UIStackView {
     
     // MARK: Components
     
-    private let tableContainer = DropdownTableContainerView()
+    let tableContainer = DropdownTableContainerView()
     private let tableView = DropdownTableView<Item>()
     private let button: DropdownButton
     
