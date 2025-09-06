@@ -16,9 +16,9 @@ final class PaymentFormContainerView: UIStackView {
     
     // MARK: Components
     
-    private let paymentTypeForm = PaymentTypeForm()
+    let paymentTypeForm = PaymentTypeForm()
     
-    private let priceForm = {
+    let priceForm = {
         let form = TextForm()
         form.textField.keyboardType = .numberPad
         form.textField.setPlaceHolder("공연 비용을 적어주세요 (숫자만 기입)")
@@ -72,17 +72,17 @@ final class PaymentFormContainerView: UIStackView {
             .store(in: &cancellables)
     }
 }
-
-// MARK: Binders & Publishers
-
-extension PaymentFormContainerView {
-    /// 가격 퍼블리셔 (무료일 경우 nil)
-    var pricePublisher: AnyPublisher<String?, Never> {
-        Publishers.CombineLatest(
-            priceForm.textPublisher,
-            paymentTypeForm.isPaidPublisher
-        )
-        .map { price, isPaid in isPaid ? price : nil }
-        .eraseToAnyPublisher()
-    }
-}
+//
+//// MARK: Binders & Publishers
+//
+//extension PaymentFormContainerView {
+//    /// 가격 퍼블리셔 (무료일 경우 nil)
+//    var pricePublisher: AnyPublisher<String?, Never> {
+//        Publishers.CombineLatest(
+//            priceForm.textPublisher,
+//            paymentTypeForm.isPaidPublisher
+//        )
+//        .map { price, isPaid in isPaid ? price : nil }
+//        .eraseToAnyPublisher()
+//    }
+//}

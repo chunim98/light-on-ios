@@ -54,9 +54,8 @@ final class RegisterPerformanceEntryModalVC: ModalVC {
     // MARK: Layout
     
     private func setupLayout() {
-        #warning("미구현 기능의 버튼 제외")
         contentVStack.addArrangedSubview(LOSpacer(28))
-        // contentVStack.addArrangedSubview(normalButton)
+        contentVStack.addArrangedSubview(normalButton)
         contentVStack.addArrangedSubview(LOSpacer(20))
         contentVStack.addArrangedSubview(buskingButton)
         contentVStack.addArrangedSubview(LOSpacer(28))

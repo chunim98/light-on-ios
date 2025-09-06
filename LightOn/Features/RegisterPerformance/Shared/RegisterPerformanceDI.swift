@@ -25,4 +25,8 @@ final class RegisterPerformanceDI {
             deleteBuskingRepo: DefaultDeleteBuskingRepo()
         )
     }
+    
+    func makeRegisterConcertVM() -> RegisterConcertVM {
+        RegisterConcertVM(repo: DefaultArtistInfoRepo())
+    }
 }

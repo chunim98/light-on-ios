@@ -20,14 +20,14 @@ final class AccountForm: BaseForm {
         return view
     }()
     
-    private let accountHolderTextField = {
+    let accountHolderTextField = {
         let tf = LOTintedTextField()
         tf.setPlaceHolder("예금주명을 입력해주세요")
         tf.snp.makeConstraints { $0.height.equalTo(47) }
         return tf
     }()
     
-    private let accountNumberTextField = {
+    let accountNumberTextField = {
         let tf = LOTintedTextField()
         tf.keyboardType = .numberPad
         tf.setPlaceHolder("계좌번호를 입력해주세요 (숫자만 기입)")
