@@ -50,6 +50,11 @@ final class DefaultEditBuskingRepo: EditBuskingRepo {
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
             
+            /// 아티스트 상태면 아티스트 버스킹으로 수정
+            let endpoint = SessionManager.shared.isArtist
+            ? "/api/artists/performances/buskings/\(id)"
+            : "/api/members/performances/buskings/\(id)"
+            
             // jsonData 생성
             guard let jsonData = try? JSONEncoder().encode(
                 RegisterBuskingReqDTO(from: info)
@@ -81,7 +86,7 @@ final class DefaultEditBuskingRepo: EditBuskingRepo {
                         )
                     }
                 },
-                to: BaseURL + "/api/members/performances/buskings/\(id)",
+                to: BaseURL + endpoint,
                 method: .put
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in

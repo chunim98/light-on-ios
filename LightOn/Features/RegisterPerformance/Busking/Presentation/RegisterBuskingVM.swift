@@ -30,6 +30,9 @@ final class RegisterBuskingVM {
         let alertConfirmTap: AnyPublisher<Void, Never>
     }
     struct Output {
+        /// 필드를 채울 아티스트 정보 초기값
+        /// - 아티스트일 경우에만 해당
+        let initialArtistInfo: AnyPublisher<ArtistInfo, Never>
         /// 버스킹 등록 완료 이벤트
         let registerCompleteEvent: AnyPublisher<Void, Never>
         /// 모든 필드가 유효한지 여부
@@ -40,17 +43,35 @@ final class RegisterBuskingVM {
     
     private var cancellables = Set<AnyCancellable>()
     private let registerBuskingUC: RegisterBuskingUC
+    private let fetchArtistInfoUC: FetchArtistInfoUC
     
     // MARK: Initializer
     
-    init(repo: any RegisterBuskingRepo) {
-        self.registerBuskingUC = .init(repo: repo)
+    init(
+        registerBuskingRepo: any RegisterBuskingRepo,
+        artistInfoRepo: any ArtistInfoRepo
+    ) {
+        self.registerBuskingUC = .init(repo: registerBuskingRepo)
+        self.fetchArtistInfoUC = .init(repo: artistInfoRepo)
     }
     
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
         let infoSubject = CurrentValueSubject<BuskingInfo, Never>(.init())
+        
+        /// 아티스트 정보 필드 초기값
+        /// - 사용자가 아티스트 상태가 아니면 방출하지 않음
+        let initialArtistInfo = fetchArtistInfoUC.execute()
+        
+        /// 아티스트 정보를 불러와 초기상태 구성
+        /// - 아티스트일 경우에만 해당
+        initialArtistInfo
+            .sink {
+                infoSubject.value.artistDescription = $0.artistDescription
+                infoSubject.value.artistName = $0.artistName
+            }
+            .store(in: &cancellables)
         
         /// 버스킹 등록 완료 이벤트
         let registerCompleteEvent = registerBuskingUC.execute(
@@ -83,6 +104,7 @@ final class RegisterBuskingVM {
         ].forEach { $0.store(in: &cancellables) }
         
         return Output(
+            initialArtistInfo: initialArtistInfo,
             registerCompleteEvent: registerCompleteEvent,
             allValuesValid: allValuesValid
         )

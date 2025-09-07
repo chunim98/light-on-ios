@@ -29,6 +29,11 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
             
+            /// 아티스트 상태면 아티스트 버스킹으로 등록
+            let endpoint = SessionManager.shared.isArtist
+            ? "/api/artists/performances/buskings"
+            : "/api/members/performances/buskings"
+            
             // jsonData 생성
             guard let jsonData = try? JSONEncoder().encode(
                 RegisterBuskingReqDTO(from: info)
@@ -56,7 +61,7 @@ final class DefaultRegisterBuskingRepo: RegisterBuskingRepo {
                         fileName: "posterImage.png"
                     )
                 },
-                to: BaseURL + "/api/members/performances/buskings"
+                to: BaseURL + endpoint
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in
                 print("[RegisterBuskingRepo] 버스킹 등록 요청 완료")

@@ -80,6 +80,8 @@ final class DefaultModifyConcertRepo: ModifyConcertRepo {
                 RegisterConcertReqDTO(from: info)
             ) else { return }
             
+            print(String(data: jsonData, encoding: .utf8))
+            
             // 서버에 전송 요청
             APIClient.withAuth.upload(
                 multipartFormData: { formData in

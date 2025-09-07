@@ -69,6 +69,11 @@ final class RegisterBuskingVC: BaseRegisterPerfVC {
         
         let output = vm.transform(input)
         
+        // 아티스트 정보 초기값을 컴포넌트에 할당
+        output.initialArtistInfo
+            .sink { [weak self] in self?.assignInitialValues(with: $0) }
+            .store(in: &cancellables)
+        
         // 모든 필드가 채워지면 등록버튼 활성화
         output.allValuesValid
             .sink { [weak self] in self?.confirmButton.isEnabled = $0 }
@@ -99,6 +104,12 @@ final class RegisterBuskingVC: BaseRegisterPerfVC {
 // MARK: Binders & Publishers
 
 extension RegisterBuskingVC {
+    /// 아티스트 정보 초기값을 컴포넌트에 할당
+    private func assignInitialValues(with info: ArtistInfo) {
+        artistNameForm.textField.text = info.artistName
+        artistDescriptionForm.textView.text = info.artistDescription
+    }
+    
     /// 공연등록 확인 얼럿 띄우기
     private func presentConfirmAlert() {
         confirmAlert.modalPresentationStyle = .overFullScreen

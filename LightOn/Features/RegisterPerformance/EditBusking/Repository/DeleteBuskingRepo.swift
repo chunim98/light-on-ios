@@ -21,8 +21,13 @@ final class DefaultDeleteBuskingRepo: DeleteBuskingRepo {
     func requestDeleteBusking(id: Int) -> AnyPublisher<Void, Never> {
         Future { promise in
             
+            /// 아티스트 상태면 아티스트 버스킹으로 취소
+            let endpoint = SessionManager.shared.isArtist
+            ? "/api/artists/performances/buskings/\(id)"
+            : "/api/members/performances/buskings/\(id)"
+            
             APIClient.withAuth.request(
-                BaseURL + "/api/members/performances/buskings/\(id)",
+                BaseURL + endpoint,
                 method: .delete
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in

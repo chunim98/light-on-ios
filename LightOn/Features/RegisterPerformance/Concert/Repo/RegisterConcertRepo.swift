@@ -28,13 +28,13 @@ final class DefaultRegisterConcertRepo: RegisterConcertRepo {
         documentData: Data
     ) -> AnyPublisher<Void, Never> {
         Future { promise in
-            print(info.isPaid)
             
             // jsonData 생성
             guard let jsonData = try? JSONEncoder().encode(
                 RegisterConcertReqDTO(from: info)
             ) else { return }
             
+            print(String(data: jsonData, encoding: .utf8))
             // 서버에 전송 요청
             APIClient.withAuth.upload(
                 multipartFormData: { formData in
