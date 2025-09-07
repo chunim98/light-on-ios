@@ -32,8 +32,8 @@ final class RegisterConcertCoord: Coordinator {
     private func showRegisterPerformanceVC() {
         let vc = RegisterConcertVC()
         
-        // 뒤로가기 탭, 화면 닫기
-        vc.backTapPublisher
+        // 콘서트 등록완료 또는 뒤로가기 탭하면 화면 닫기
+        Publishers.Merge(vc.registerCompletePublisher, vc.backTapPublisher)
             .sink { [weak self] in self?.navigation.popViewController(animated: true) }
             .store(in: &cancellables)
         

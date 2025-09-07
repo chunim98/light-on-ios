@@ -19,7 +19,7 @@ struct PerformanceDetailResDTO: Decodable {
     let seats: [SeatType]
     let proofUrl: String?
     let isPaid: Bool
-    let fee: Int
+    let fee: Int?
     /// 버스킹이나 좌석 무제한은 0 반환
     let totalSeatsCount: Int?
     
@@ -79,6 +79,7 @@ extension PerformanceDetailResDTO {
         }
         
         let price = {
+            guard let fee else { return "알 수 없는 가격" }
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             let formattedText = formatter.string(from: NSNumber(value: fee)) ?? "\(fee)"
