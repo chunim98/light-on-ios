@@ -47,12 +47,6 @@ final class MyRegistrationRequestedFullVC: BackButtonVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 선택한 공연 아이디 퍼블리셔
-        let selectedID = tableView
-            .selectedModelPublisher(dataSource: tableView.diffableDataSource)
-            .map { $0.id }
-            .eraseToAnyPublisher()
-        
         let input = MyRegistrationRequestedFullVM.Input(trigger: viewDidAppearPublisher)
         let output = vm.transform(input)
         
@@ -60,10 +54,15 @@ final class MyRegistrationRequestedFullVC: BackButtonVC {
             .sink { [weak self] in self?.tableView.setSnapshot(items: $0) }
             .store(in: &cancellables)
         
-#warning("일단 버스킹인지 일반공연인지 구분하지 않고, 버스킹 수정으로 진입시키고 있음")
-        // 공연 선택하면 공연 수정화면으로 이동
-        selectedID
-            .sink { AppCoordinatorBus.shared.navigate(to: .modifyBusking(id: $0)) }
+        // 등록한 공연을 선택했을 때,
+        // 버스킹인지 콘서트인지 구분해서 수정화면으로 이동
+        tableView
+            .selectedModelPublisher(dataSource: tableView.diffableDataSource)
+            .sink {
+                $0.isConcert
+                ? AppCoordinatorBus.shared.navigate(to: .modifyConcert(id: $0.id))
+                : AppCoordinatorBus.shared.navigate(to: .modifyBusking(id: $0.id))
+            }
             .store(in: &cancellables)
     }
 }
