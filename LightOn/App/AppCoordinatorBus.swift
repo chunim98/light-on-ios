@@ -23,7 +23,7 @@ final class AppCoordinatorBus {
         /// 일반 공연 등록 화면
         case registerConcert
         /// 버스킹 수정 화면
-        case editBusking(id: Int)
+        case modifyBusking(id: Int)
         /// 콘서트 수정화면
         case modifyConcert(id: Int)
     }

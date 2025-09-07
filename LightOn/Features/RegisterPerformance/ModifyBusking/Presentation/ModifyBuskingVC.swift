@@ -1,5 +1,5 @@
 //
-//  EditBuskingVC.swift
+//  ModifyBuskingVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 8/20/25.
@@ -11,11 +11,11 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class EditBuskingVC: BaseRegisterPerfVC {
+final class ModifyBuskingVC: BaseRegisterPerfVC {
     
     // MARK: Properties
     
-    private let vm: EditBuskingVM
+    private let vm: ModifyBuskingVM
     
     // MARK: Subjects
     
@@ -25,9 +25,9 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     // MARK: Components
     
     /// 버스킹 수정 확인 얼럿
-    private let editConfirmAlert = EditBuskingConfirmAlertVC()
+    private let editConfirmAlert = EditPerfConfirmAlertVC()
     /// 버스킹 삭제 확인 얼럿
-    private let deleteConfirmAlert = DeleteBuskingConfirmAlertVC()
+    private let deleteConfirmAlert = DeletePerfConfirmAlertVC()
     
     private let buttonsHStack = {
         let sv = UIStackView()
@@ -52,7 +52,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     
     // MARK: Life Cycle
     
-    init(vm: EditBuskingVM) {
+    init(vm: ModifyBuskingVM) {
         self.vm = vm
         super.init(nibName: nil, bundle: nil)
     }
@@ -80,7 +80,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        let input = EditBuskingVM.Input(
+        let input = ModifyBuskingVM.Input(
             name:               nameForm.validTextPublisher,
             description:        descriptionForm.validTextPublisher,
             regionID:           addressForm.regionIDPublisher,
@@ -148,7 +148,7 @@ final class EditBuskingVC: BaseRegisterPerfVC {
 
 // MARK: Binders & Publishers
 
-extension EditBuskingVC {
+extension ModifyBuskingVC {
     /// RegisterBuskingInfo의 데이터를 각 UI 컴포넌트에 바인딩
     private func updateUI(with info: BuskingInfo) {
         // 기본 정보
@@ -199,4 +199,4 @@ extension EditBuskingVC {
 
 // MARK: - Preview
 
-#Preview { EditBuskingVC(vm: RegisterPerformanceDI.shared.makeEditBuskingVM(id: 62)) }
+#Preview { ModifyBuskingVC(vm: RegisterPerformanceDI.shared.makeModifyBuskingVM(id: 62)) }

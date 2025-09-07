@@ -46,8 +46,8 @@ final class AppCoordinator: Coordinator {
                 case .registerConcert:
                     self?.startRegisterConcertCoord()
                     
-                case .editBusking(id: let id):
-                    self?.startEditBuskingCoord(id)
+                case .modifyBusking(id: let id):
+                    self?.startModifyBuskingCoord(id)
                     
                 case .modifyConcert(id: let id):
                     self?.startModifyConcertCoord(id)
@@ -114,8 +114,8 @@ final class AppCoordinator: Coordinator {
     }
     
     /// 버스킹 편집 코디네이터 시작
-    private func startEditBuskingCoord(_ performanceID: Int) {
-        let coord = EditBuskingCoord(
+    private func startModifyBuskingCoord(_ performanceID: Int) {
+        let coord = ModifyBuskingCoord(
             performaceID: performanceID,
             navigation: navigation
         )

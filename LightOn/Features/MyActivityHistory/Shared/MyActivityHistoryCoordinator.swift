@@ -54,7 +54,7 @@ final class MyActivityHistoryCoordinator: Coordinator {
             case .concert(id: let id):
                 AppCoordinatorBus.shared.navigate(to: .modifyConcert(id: id))
             case .busking(id: let id):
-                AppCoordinatorBus.shared.navigate(to: .editBusking(id: id))
+                AppCoordinatorBus.shared.navigate(to: .modifyBusking(id: id))
             } }
             .store(in: &cancellables)
         

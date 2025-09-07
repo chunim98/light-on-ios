@@ -1,5 +1,5 @@
 //
-//  EditConcertVC.swift
+//  ModifyConcertVC.swift
 //  LightOn
 //
 //  Created by 신정욱 on 9/6/25.
@@ -11,11 +11,11 @@ import Combine
 import CombineCocoa
 import SnapKit
 
-final class EditConcertVC: BaseRegisterConcertVC {
+final class ModifyConcertVC: BaseRegisterConcertVC {
     
     // MARK: Properties
     
-    private let vm: EditConcertVM
+    private let vm: ModifyConcertVM
     
     // MARK: Subjects
     
@@ -25,9 +25,9 @@ final class EditConcertVC: BaseRegisterConcertVC {
     // MARK: Components
     
     /// 콘서트 수정 확인 얼럿
-    private let editConfirmAlert = EditBuskingConfirmAlertVC()
+    private let editConfirmAlert = EditPerfConfirmAlertVC()
     /// 콘서트 삭제 확인 얼럿
-    private let deleteConfirmAlert = DeleteBuskingConfirmAlertVC()
+    private let deleteConfirmAlert = DeletePerfConfirmAlertVC()
     
     private let buttonsHStack = {
         let sv = UIStackView()
@@ -52,7 +52,7 @@ final class EditConcertVC: BaseRegisterConcertVC {
     
     // MARK: Life Cycle
     
-    init(vm: EditConcertVM) {
+    init(vm: ModifyConcertVM) {
         self.vm = vm
         super.init(nibName: nil, bundle: nil)
     }
@@ -134,7 +134,7 @@ final class EditConcertVC: BaseRegisterConcertVC {
             .map { $0.flatMap { $0.isEmpty ? nil : $0 } }
             .eraseToAnyPublisher()
         
-        let input = EditConcertVM.Input(
+        let input = ModifyConcertVM.Input(
             title: nameForm.validTextPublisher,
             description: descriptionForm.validTextPublisher,
             regionID: addressForm.regionIDPublisher,
@@ -207,7 +207,7 @@ final class EditConcertVC: BaseRegisterConcertVC {
 
 // MARK: Binders & Publishers
 
-extension EditConcertVC {
+extension ModifyConcertVC {
     /// RegisterConcertInfo의 데이터를 각 UI 컴포넌트에 바인딩
     private func updateUI(with info: ConcertInfo) {
         // 기본 정보
@@ -277,4 +277,4 @@ extension EditConcertVC {
 
 // MARK: - Preview
 
-#Preview { EditBuskingVC(vm: RegisterPerformanceDI.shared.makeEditBuskingVM(id: 62)) }
+#Preview { ModifyBuskingVC(vm: RegisterPerformanceDI.shared.makeModifyBuskingVM(id: 62)) }

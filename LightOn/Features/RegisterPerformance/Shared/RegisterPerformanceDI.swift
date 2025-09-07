@@ -21,8 +21,8 @@ final class RegisterPerformanceDI {
         )
     }
     
-    func makeEditBuskingVM(id performanceID: Int) -> EditBuskingVM {
-        EditBuskingVM(
+    func makeModifyBuskingVM(id performanceID: Int) -> ModifyBuskingVM {
+        ModifyBuskingVM(
             performanceID: performanceID,
             editBuskingRepo: DefaultEditBuskingRepo(),
             deleteBuskingRepo: DefaultDeleteBuskingRepo()
@@ -36,8 +36,8 @@ final class RegisterPerformanceDI {
         )
     }
     
-    func makeEditConcertVM(id performanceID: Int) -> EditConcertVM {
-        EditConcertVM(
+    func makeModifyConcertVM(id performanceID: Int) -> ModifyConcertVM {
+        ModifyConcertVM(
             performanceID: performanceID,
             modifyConcertRepo: DefaultModifyConcertRepo()
         )

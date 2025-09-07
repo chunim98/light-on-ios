@@ -63,7 +63,7 @@ final class MyRegistrationRequestedFullVC: BackButtonVC {
 #warning("일단 버스킹인지 일반공연인지 구분하지 않고, 버스킹 수정으로 진입시키고 있음")
         // 공연 선택하면 공연 수정화면으로 이동
         selectedID
-            .sink { AppCoordinatorBus.shared.navigate(to: .editBusking(id: $0)) }
+            .sink { AppCoordinatorBus.shared.navigate(to: .modifyBusking(id: $0)) }
             .store(in: &cancellables)
     }
 }

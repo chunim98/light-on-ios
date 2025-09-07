@@ -1,5 +1,5 @@
 //
-//  EditConcertVM.swift
+//  ModifyConcertVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 9/7/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class EditConcertVM {
+final class ModifyConcertVM {
     
     // MARK: Input & Ouput
     

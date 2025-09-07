@@ -108,7 +108,7 @@ final class DefaultModifyConcertRepo: ModifyConcertRepo {
                         )
                     }
                 },
-                to: BaseURL + "/api/artists/performances/\(id)",
+                to: BaseURL + "/api/artists/performances/concerts/\(id)",
                 method: .put
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in
@@ -127,7 +127,7 @@ final class DefaultModifyConcertRepo: ModifyConcertRepo {
         Future { promise in
             
             APIClient.withAuth.request(
-                BaseURL + "/api/artists/performances/\(id)",
+                BaseURL + "/api/artists/performances/concerts/\(id)",
                 method: .delete
             )
             .decodeResponse(decodeType: EmptyDTO.self) { _ in

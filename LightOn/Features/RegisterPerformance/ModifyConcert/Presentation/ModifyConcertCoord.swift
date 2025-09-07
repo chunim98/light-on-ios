@@ -31,12 +31,12 @@ final class ModifyConcertCoord: Coordinator {
     
     // MARK: Methods
     
-    func start() { showEditConcert() }
+    func start() { showModifyConcert() }
     
     /// 콘서트 등록 화면 이동
-    private func showEditConcert() {
-        let vm = RegisterPerformanceDI.shared.makeEditConcertVM(id: performaceID)
-        let vc = EditConcertVC(vm: vm)
+    private func showModifyConcert() {
+        let vm = RegisterPerformanceDI.shared.makeModifyConcertVM(id: performaceID)
+        let vc = ModifyConcertVC(vm: vm)
         
         /// 콘서트 수정 및 삭제 완료 또는 뒤로 가기 탭하면 화면 닫기
         Publishers.Merge(vc.editOrDeleteCompletedPublisher, vc.backTapPublisher)

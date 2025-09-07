@@ -1,5 +1,5 @@
 //
-//  EditBuskingVM.swift
+//  ModifyBuskingVM.swift
 //  LightOn
 //
 //  Created by 신정욱 on 8/21/25.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class EditBuskingVM {
+final class ModifyBuskingVM {
     
     // MARK: Input & Ouput
     

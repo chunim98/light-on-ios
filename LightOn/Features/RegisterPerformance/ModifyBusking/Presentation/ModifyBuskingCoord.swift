@@ -1,5 +1,5 @@
 //
-//  EditBuskingCoord.swift
+//  ModifyBuskingCoord.swift
 //  LightOn
 //
 //  Created by 신정욱 on 8/29/25.
@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-final class EditBuskingCoord: Coordinator {
+final class ModifyBuskingCoord: Coordinator {
     
     // MARK: Properties
     
@@ -31,12 +31,12 @@ final class EditBuskingCoord: Coordinator {
     
     // MARK: Methods
     
-    func start() { showRegisterBuskingVC() }
+    func start() { showModifyBuskingVC() }
     
     /// 버스킹 등록 화면 이동
-    private func showRegisterBuskingVC() {
-        let vm = RegisterPerformanceDI.shared.makeEditBuskingVM(id: performaceID)
-        let vc = EditBuskingVC(vm: vm)
+    private func showModifyBuskingVC() {
+        let vm = RegisterPerformanceDI.shared.makeModifyBuskingVM(id: performaceID)
+        let vc = ModifyBuskingVC(vm: vm)
         
         /// 버스킹 수정 및 삭제 완료 또는 뒤로 가기 탭하면 화면 닫기
         Publishers.Merge(vc.editOrDeleteCompletedPublisher, vc.backTapPublisher)
@@ -52,5 +52,5 @@ final class EditBuskingCoord: Coordinator {
         navigation.pushViewController(vc, animated: true)
     }
     
-    deinit { print("[EditBuskingCoord] deinit") }
+    deinit { print("[ModifyBuskingCoord] deinit") }
 }
