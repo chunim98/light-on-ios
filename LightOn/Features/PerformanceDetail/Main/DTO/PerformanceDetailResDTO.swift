@@ -21,7 +21,7 @@ struct PerformanceDetailResDTO: Decodable {
     let isPaid: Bool
     let fee: Int
     /// 버스킹이나 좌석 무제한은 0 반환
-    let totalSeatsCount: Int
+    let totalSeatsCount: Int?
     
     struct Info: Decodable {
         let title: String

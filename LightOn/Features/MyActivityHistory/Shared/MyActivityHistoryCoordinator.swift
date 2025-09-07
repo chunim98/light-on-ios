@@ -48,10 +48,14 @@ final class MyActivityHistoryCoordinator: Coordinator {
             .sink { [weak self] in self?.showMyApplicationRequestedFull() }
             .store(in: &cancellables)
         
-        // 등록한 공연 셀 선택 시, 수정화면으로 이동
-        // (추후, 버스킹인지, 일반공연인지 확인하는 로직 필요할듯)
+        // 등록한 공연 선택 시, 수정화면으로 이동
         vc.registeredIDPublisher
-            .sink { AppCoordinatorBus.shared.navigate(to: .editBusking(id: $0)) }
+            .sink { switch $0 {
+            case .concert(id: let id):
+                AppCoordinatorBus.shared.navigate(to: .modifyConcert(id: id))
+            case .busking(id: let id):
+                AppCoordinatorBus.shared.navigate(to: .editBusking(id: id))
+            } }
             .store(in: &cancellables)
         
         // 신청한 공연 셀 선택 시, 공연 상세 화면으로 이동

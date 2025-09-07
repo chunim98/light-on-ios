@@ -13,8 +13,18 @@ import SnapKit
 
 final class MyActivityHistoryVC: BackButtonVC {
     
+    // MARK: PerfType
+    
+    enum PerfType { case concert(id: Int), busking(id: Int) }
+    
     // MARK: Properties
     
+    private var cancellables = Set<AnyCancellable>()
+    
+    // MARK: Subjects
+    
+    /// 등록한 공연 ID서브젝트(출력)
+    private let registeredIDSubject = PassthroughSubject<PerfType, Never>()
     
     // MARK: Components
     
@@ -32,6 +42,7 @@ final class MyActivityHistoryVC: BackButtonVC {
         super.viewDidLoad()
         setupDefaults()
         setupLayout()
+        setupBindings()
     }
     
     // MARK: Defaults
@@ -72,7 +83,20 @@ final class MyActivityHistoryVC: BackButtonVC {
     
     // MARK: Bindings
     
-    private func setupBindings() {}
+    private func setupBindings() {
+        // 등록한 공연을 선택했을 때,
+        // 버스킹인지 콘서트인지 구분해서 아이디와 함께 외부로 방출
+        registaionVC.tableView.selectedModelPublisher(
+            dataSource: registaionVC.tableView.diffableDataSource
+        )
+        .map {
+            $0.isConcert
+            ? PerfType.concert(id: $0.id)
+            : PerfType.busking(id: $0.id)
+        }
+        .sink(receiveValue: registeredIDSubject.send(_:))
+        .store(in: &cancellables)
+    }
 }
 
 extension MyActivityHistoryVC {
@@ -86,15 +110,9 @@ extension MyActivityHistoryVC {
         registaionVC.detailButton.tapPublisher
     }
     
-#warning("버스킹인지 일반공연인지 확인 불가능, 일단 무료공연이면 버스킹으로 추정하고, API 수정 요청해야할듯?")
     /// 등록한 공연 ID 퍼블리셔
-    var registeredIDPublisher: AnyPublisher<Int, Never> {
-        registaionVC.tableView.selectedModelPublisher(
-            dataSource: registaionVC.tableView.diffableDataSource
-        )
-        .filter { $0.type == "무료공연" }
-        .map { $0.id }
-        .eraseToAnyPublisher()
+    var registeredIDPublisher: AnyPublisher<PerfType, Never> {
+        registeredIDSubject.eraseToAnyPublisher()
     }
     
     /// 신청한 공연 아이디 퍼블리셔

@@ -15,5 +15,6 @@ struct MyPerformanceCellItem: Hashable {
     let time: String
     let place: String
     let publishedAt: String
+    let isConcert: Bool
     let style: MyPerformanceCellStyle
 }

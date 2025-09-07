@@ -17,6 +17,7 @@ struct MyApplicationResDTO: Decodable {
         let address: String
         let isPaid: Bool
         let requestedAt: String
+        let isConcert: Bool
     }
     
     enum PerformanceStatus: String, Decodable {
@@ -51,6 +52,7 @@ extension MyApplicationResDTO.RequestedPerformance {
             time: String(time),
             place: address,
             publishedAt: "신청일 : \(requestedAt)",
+            isConcert: isConcert,
             style: style
         )
     }
