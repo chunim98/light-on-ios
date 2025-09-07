@@ -150,14 +150,6 @@ extension PerformanceDetailResDTO {
             $0.isEmpty ? nil : ImageInfo(image: .init(), name: "증빙자료.png")
         }
         
-        let seatTypes: [ConcertInfo.SeatType] = {
-            seats.map { switch $0 {
-            case .standing:     .standing
-            case .freestyle:    .freestyle
-            case .assigned:     .assigned
-            } }
-        }()
-        
         return ConcertInfo(
             title: info.title,
             description: info.description,
@@ -174,7 +166,9 @@ extension PerformanceDetailResDTO {
             account: nil,       // 별도 api 호출해서 취합할 예정
             bank: nil,          // 별도 api 호출해서 취합할 예정
             accountHolder: nil, // 별도 api 호출해서 취합할 예정
-            seatTypes: seatTypes,
+            isStanding: seats.contains(.standing),
+            isFreestyle: seats.contains(.freestyle),
+            isAssigned: seats.contains(.assigned),
             totalSeatsCount: totalSeatsCount,
             artistName: artists.first?.name ?? "알 수 없는 아티스트",
             artistDescription: artists.first?.description ?? "소개가 없습니다.",

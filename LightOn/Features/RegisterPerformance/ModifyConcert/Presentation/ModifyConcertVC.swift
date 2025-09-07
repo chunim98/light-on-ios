@@ -80,33 +80,6 @@ final class ModifyConcertVC: BaseRegisterConcertVC {
     // MARK: Bindings
     
     private func setupBindings() {
-        /// 스탠딩석 체크 여부
-        /// - 초기값 nil, 체크 상태가 아니면 nil
-        let standing = standingCheckbox.isSelectedPublisher
-            .map { $0 ? ConcertInfo.SeatType.standing : nil }
-            .prepend(nil) // 초기값 필요
-            .eraseToAnyPublisher()
-        
-        /// 자율좌석 체크 여부
-        /// - 초기값 nil, 체크 상태가 아니면 nil
-        let freestyle = freestyleCheckbox.isSelectedPublisher
-            .map { $0 ? ConcertInfo.SeatType.freestyle : nil }
-            .prepend(nil) // 초기값 필요
-            .eraseToAnyPublisher()
-        
-        /// 지정좌석 체크 여부
-        /// - 초기값 nil, 체크 상태가 아니면 nil
-        let assigned = assignedCheckbox.isSelectedPublisher
-            .map { $0 ? ConcertInfo.SeatType.assigned : nil }
-            .prepend(nil) // 초기값 필요
-            .eraseToAnyPublisher()
-        
-        /// 좌석 타입 배열
-        /// - nil인 좌석들은 배열에서 제외
-        let seatTypes = Publishers.CombineLatest3(standing, freestyle, assigned)
-            .map { [$0.0, $0.1, $0.2].compactMap { $0 } }
-            .eraseToAnyPublisher()
-        
         /// 좌석 수
         /// - String? 타입을 Int타입으로 변환
         let totalSeatsCount = seatCountForm.textPublisher
@@ -150,7 +123,9 @@ final class ModifyConcertVC: BaseRegisterConcertVC {
             account: accountNumber,
             bank: bank,
             accountHolder: accountHolder,
-            seatTypes: seatTypes,
+            isStanding: standingCheckbox.isSelectedPublisher,
+            isFreestyle: freestyleCheckbox.isSelectedPublisher,
+            isAssigned: assignedCheckbox.isSelectedPublisher,
             totalSeatsCount: totalSeatsCount,
             posterInfo: posterUploadFormVC.imageInfoPublisher,
             documentInfo: documentUploadFormVC.imageInfoPublisher,
@@ -230,9 +205,9 @@ extension ModifyConcertVC {
         
         // 좌석 정보
         seatCountForm.textField.text = info.totalSeatsCount.map { String($0) }
-        standingCheckbox.isSelected = info.seatTypes.contains(.standing)
-        freestyleCheckbox.isSelected = info.seatTypes.contains(.freestyle)
-        assignedCheckbox.isSelected = info.seatTypes.contains(.assigned)
+        standingCheckbox.isSelected = info.isStanding
+        freestyleCheckbox.isSelected = info.isFreestyle
+        assignedCheckbox.isSelected = info.isAssigned
         
         // 아티스트 정보
         artistNameForm.textField.text = info.artistName

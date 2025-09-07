@@ -31,7 +31,9 @@ final class ModifyConcertVM {
         let bank: AnyPublisher<String?, Never>
         let accountHolder: AnyPublisher<String?, Never>
         
-        let seatTypes: AnyPublisher<[ConcertInfo.SeatType], Never>
+        let isStanding: AnyPublisher<Bool, Never>
+        let isFreestyle: AnyPublisher<Bool, Never>
+        let isAssigned: AnyPublisher<Bool, Never>
         let totalSeatsCount: AnyPublisher<Int?, Never>
         
         let posterInfo: AnyPublisher<ImageInfo, Never>
@@ -131,7 +133,9 @@ final class ModifyConcertVM {
             input.bank.sink            { infoSubject.value.bank            = $0 },
             input.accountHolder.sink   { infoSubject.value.accountHolder   = $0 },
             
-            input.seatTypes.sink       { infoSubject.value.seatTypes       = $0 },
+            input.isStanding.sink      { infoSubject.value.isStanding      = $0 },
+            input.isFreestyle.sink     { infoSubject.value.isFreestyle     = $0 },
+            input.isAssigned.sink      { infoSubject.value.isAssigned      = $0 },
             input.totalSeatsCount.sink { infoSubject.value.totalSeatsCount = $0 },
             
             input.posterInfo.sink      { infoSubject.value.posterInfo      = $0 },

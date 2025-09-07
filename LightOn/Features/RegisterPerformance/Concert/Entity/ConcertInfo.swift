@@ -26,7 +26,9 @@ struct ConcertInfo {
     var bank: String?               // 유료일 때만 필수
     var accountHolder: String?      // 유료일 때만 필수
     
-    var seatTypes: [SeatType] = []  // 좌석 유형 (STANDING, FREESTYLE, ASSIGNED)
+    var isStanding: Bool = false
+    var isFreestyle: Bool = false
+    var isAssigned: Bool = false
     var totalSeatsCount: Int?
     var artistName: String?
     var artistDescription: String?
@@ -35,12 +37,6 @@ struct ConcertInfo {
     var posterInfo: ImageInfo?
     /// 증빙서류 이미지 정보
     var documentInfo: ImageInfo?
-    
-    enum SeatType {
-        case standing
-        case freestyle
-        case assigned
-    }
 }
 
 extension ConcertInfo {
@@ -65,7 +61,8 @@ extension ConcertInfo {
             accountHolder != nil
             : true
         }() &&
-        !seatTypes.isEmpty &&
+        /// 좌석 타입을 하나라도 선택해야 함
+        (isStanding || isFreestyle || isAssigned) &&
         totalSeatsCount != nil &&
         artistName != nil &&
         artistDescription != nil &&

@@ -59,10 +59,16 @@ extension RegisterConcertReqDTO {
               let artistDescription = domain.artistDescription
         else { return nil }
         
+        let seat: [SeatType] = [
+            domain.isStanding ? .standing : nil,
+            domain.isFreestyle ? .freestyle : nil,
+            domain.isAssigned ? .assigned : nil
+        ].compactMap { $0 }
+        
         self.info = info
         self.schedule = schedule
         self.payment = payment
-        self.seat = domain.seatTypes.map { SeatType(from: $0) }
+        self.seat = seat
         self.totalSeatsCount = totalSeatsCount
         self.artistName = artistName
         self.artistDescription = artistDescription
@@ -108,15 +114,5 @@ extension RegisterConcertReqDTO.Payment {
         self.account = domain.isPaid ? domain.account : nil
         self.bank = domain.isPaid ? domain.bank : nil
         self.accountHolder = domain.isPaid ? domain.accountHolder : nil
-    }
-}
-
-extension RegisterConcertReqDTO.SeatType {
-    init(from domain: ConcertInfo.SeatType) {
-        switch domain {
-        case .standing:     self = .standing
-        case .freestyle:    self = .freestyle
-        case .assigned:     self = .assigned
-        }
     }
 }
