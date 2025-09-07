@@ -9,12 +9,17 @@
 struct MyInfoResDTO: Decodable {
     let id: Int
     let name: String
+    let email: String
 }
 
 // MARK: Mapper
 
 extension MyInfoResDTO {
     func toDomain() -> MyInfo {
-        MyInfo(id: String(id), name: name)
+        MyInfo(
+            id: String(id),
+            name: name,
+            email: email
+        )
     }
 }

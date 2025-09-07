@@ -13,7 +13,7 @@ import Alamofire
 protocol RegisterConcertRepo {
     /// 콘서트 등록 요청
     func requestRegisterConcert(
-        info: RegisterConcertInfo,
+        info: ConcertInfo,
         posterData: Data,
         documentData: Data
     ) -> AnyPublisher<Void, Never>
@@ -23,7 +23,7 @@ protocol RegisterConcertRepo {
 
 final class DefaultRegisterConcertRepo: RegisterConcertRepo {
     func requestRegisterConcert(
-        info: RegisterConcertInfo,
+        info: ConcertInfo,
         posterData: Data,
         documentData: Data
     ) -> AnyPublisher<Void, Never> {

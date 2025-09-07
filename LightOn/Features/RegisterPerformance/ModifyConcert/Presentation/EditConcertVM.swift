@@ -31,7 +31,7 @@ final class EditConcertVM {
         let bank: AnyPublisher<String?, Never>
         let accountHolder: AnyPublisher<String?, Never>
         
-        let seatTypes: AnyPublisher<[RegisterConcertInfo.SeatType], Never>
+        let seatTypes: AnyPublisher<[ConcertInfo.SeatType], Never>
         let totalSeatsCount: AnyPublisher<Int?, Never>
         
         let posterInfo: AnyPublisher<ImageInfo, Never>
@@ -44,7 +44,7 @@ final class EditConcertVM {
     }
     struct Output {
         /// 최초 로드 시 바인딩할 콘서트 정보
-        let initialInfo: AnyPublisher<RegisterConcertInfo, Never>
+        let initialInfo: AnyPublisher<ConcertInfo, Never>
         /// 콘서트 수정 완료 이벤트
         let editComplete: AnyPublisher<Void, Never>
         /// 콘서트 삭제 완료 이벤트
@@ -81,7 +81,7 @@ final class EditConcertVM {
     
     func transform(_ input: Input) -> Output {
         /// 콘서트 정보 상태
-        let infoSubject = CurrentValueSubject<RegisterConcertInfo, Never>(.init())
+        let infoSubject = CurrentValueSubject<ConcertInfo, Never>(.init())
         
         /// 초기 할당 콘서트 정보
         let initialInfo = fetchConcertInfoUC.execute(id: performanceID)

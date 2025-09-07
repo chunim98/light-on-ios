@@ -20,7 +20,7 @@ final class EditConcertUC {
     func execute(
         trigger: AnyPublisher<Void, Never>,
         id: Int,
-        info: AnyPublisher<RegisterConcertInfo, Never>
+        info: AnyPublisher<ConcertInfo, Never>
     ) -> AnyPublisher<Void, Never> {
         trigger
             .withLatestFrom(info) { _, info in info }

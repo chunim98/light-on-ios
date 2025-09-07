@@ -49,7 +49,7 @@ final class MyPageLoginHeaderVC: CombineVC {
     // MARK: Components
     
     private let profileImageView = {
-        let iv = UIImageView()
+        let iv = UIImageView(image: .profile)
         iv.contentMode = .scaleAspectFill
         iv.backgroundColor = .white
         
@@ -145,7 +145,7 @@ final class MyPageLoginHeaderVC: CombineVC {
         output.myInfo
             .sink { [weak self] in
                 self?.nameLabel.config.text = $0.name
-                self?.idLabel.config.text = $0.id
+                self?.idLabel.config.text = $0.email
             }
             .store(in: &cancellables)
     }

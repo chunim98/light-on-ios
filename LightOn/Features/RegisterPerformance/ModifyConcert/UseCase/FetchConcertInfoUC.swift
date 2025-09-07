@@ -17,7 +17,7 @@ final class FetchConcertInfoUC {
     
     /// 공연 상세정보 조회
     /// - 결제 정보가 누락된 콘서트 정보와 결제 정보를 취합
-    func execute(id: Int) -> AnyPublisher<RegisterConcertInfo, Never> {
+    func execute(id: Int) -> AnyPublisher<ConcertInfo, Never> {
         Publishers.Zip(
             repo.fetchConcertInfo(id: id),
             repo.fetchPaymentInfo(id: id)

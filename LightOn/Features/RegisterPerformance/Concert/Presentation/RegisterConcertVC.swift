@@ -52,21 +52,21 @@ final class RegisterConcertVC: BaseRegisterConcertVC {
         /// 스탠딩석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let standing = standingCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.standing : nil }
+            .map { $0 ? ConcertInfo.SeatType.standing : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         
         /// 자율좌석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let freestyle = freestyleCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.freestyle : nil }
+            .map { $0 ? ConcertInfo.SeatType.freestyle : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         
         /// 지정좌석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let assigned = assignedCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.assigned : nil }
+            .map { $0 ? ConcertInfo.SeatType.assigned : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         

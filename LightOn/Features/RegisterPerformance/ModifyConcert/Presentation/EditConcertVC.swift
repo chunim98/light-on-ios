@@ -83,21 +83,21 @@ final class EditConcertVC: BaseRegisterConcertVC {
         /// 스탠딩석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let standing = standingCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.standing : nil }
+            .map { $0 ? ConcertInfo.SeatType.standing : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         
         /// 자율좌석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let freestyle = freestyleCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.freestyle : nil }
+            .map { $0 ? ConcertInfo.SeatType.freestyle : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         
         /// 지정좌석 체크 여부
         /// - 초기값 nil, 체크 상태가 아니면 nil
         let assigned = assignedCheckbox.isSelectedPublisher
-            .map { $0 ? RegisterConcertInfo.SeatType.assigned : nil }
+            .map { $0 ? ConcertInfo.SeatType.assigned : nil }
             .prepend(nil) // 초기값 필요
             .eraseToAnyPublisher()
         
@@ -209,7 +209,7 @@ final class EditConcertVC: BaseRegisterConcertVC {
 
 extension EditConcertVC {
     /// RegisterConcertInfo의 데이터를 각 UI 컴포넌트에 바인딩
-    private func updateUI(with info: RegisterConcertInfo) {
+    private func updateUI(with info: ConcertInfo) {
         // 기본 정보
         nameForm.textView.text = info.title
         descriptionForm.textView.text = info.description

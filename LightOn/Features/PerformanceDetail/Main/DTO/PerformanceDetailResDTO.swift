@@ -141,7 +141,7 @@ extension PerformanceDetailResDTO {
         )
     }
     
-    func toConcertInfo() -> RegisterConcertInfo {
+    func toConcertInfo() -> ConcertInfo {
         let posterInfo: ImageInfo? = info.posterUrl.flatMap {
             $0.isEmpty ? nil : ImageInfo(image: .init(), name: "포스터.png")
         }
@@ -150,7 +150,7 @@ extension PerformanceDetailResDTO {
             $0.isEmpty ? nil : ImageInfo(image: .init(), name: "증빙자료.png")
         }
         
-        let seatTypes: [RegisterConcertInfo.SeatType] = {
+        let seatTypes: [ConcertInfo.SeatType] = {
             seats.map { switch $0 {
             case .standing:     .standing
             case .freestyle:    .freestyle
@@ -158,7 +158,7 @@ extension PerformanceDetailResDTO {
             } }
         }()
         
-        return RegisterConcertInfo(
+        return ConcertInfo(
             title: info.title,
             description: info.description,
             regionID: regionCode,

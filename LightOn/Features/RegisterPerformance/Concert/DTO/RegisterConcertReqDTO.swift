@@ -50,7 +50,7 @@ struct RegisterConcertReqDTO: Encodable {
 // MARK: Mapper
 
 extension RegisterConcertReqDTO {
-    init?(from domain: RegisterConcertInfo) {
+    init?(from domain: ConcertInfo) {
         guard let info = Info(from: domain),
               let schedule = Schedule(from: domain),
               let payment = Payment(from: domain),
@@ -70,7 +70,7 @@ extension RegisterConcertReqDTO {
 }
 
 extension RegisterConcertReqDTO.Info {
-    init?(from domain: RegisterConcertInfo) {
+    init?(from domain: ConcertInfo) {
         guard let title = domain.title,
               let description = domain.description,
               let location = domain.regionID,
@@ -87,7 +87,7 @@ extension RegisterConcertReqDTO.Info {
 }
 
 extension RegisterConcertReqDTO.Schedule {
-    init?(from domain: RegisterConcertInfo) {
+    init?(from domain: ConcertInfo) {
         guard let startDate = domain.startDate,
               let endDate = domain.endDate,
               let startTime = domain.startTime,
@@ -102,7 +102,7 @@ extension RegisterConcertReqDTO.Schedule {
 }
 
 extension RegisterConcertReqDTO.Payment {
-    init?(from domain: RegisterConcertInfo) {
+    init?(from domain: ConcertInfo) {
         self.isPaid = domain.isPaid
         self.price = domain.isPaid ? domain.price : nil
         self.account = domain.isPaid ? domain.account : nil
@@ -112,7 +112,7 @@ extension RegisterConcertReqDTO.Payment {
 }
 
 extension RegisterConcertReqDTO.SeatType {
-    init(from domain: RegisterConcertInfo.SeatType) {
+    init(from domain: ConcertInfo.SeatType) {
         switch domain {
         case .standing:     self = .standing
         case .freestyle:    self = .freestyle

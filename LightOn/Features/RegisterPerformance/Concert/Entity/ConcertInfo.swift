@@ -1,5 +1,5 @@
 //
-//  RegisterConcertInfo.swift
+//  ConcertInfo.swift
 //  LightOn
 //
 //  Created by 신정욱 on 7/15/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct RegisterConcertInfo {
+struct ConcertInfo {
     var title: String?              // 공연명
     var description: String?        // 공연 소개
     var regionID: Int?              // 지역 코드
@@ -43,7 +43,7 @@ struct RegisterConcertInfo {
     }
 }
 
-extension RegisterConcertInfo {
+extension ConcertInfo {
     /// 모든 필수 옵셔널 값이 nil이 아닌지 여부
     var allValuesValid: Bool {
         title != nil &&
@@ -65,6 +65,7 @@ extension RegisterConcertInfo {
             accountHolder != nil
             : true
         }() &&
+        !seatTypes.isEmpty &&
         totalSeatsCount != nil &&
         artistName != nil &&
         artistDescription != nil &&

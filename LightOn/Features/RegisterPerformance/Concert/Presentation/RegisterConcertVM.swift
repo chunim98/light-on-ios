@@ -31,7 +31,7 @@ final class RegisterConcertVM {
         let bank: AnyPublisher<String?, Never>
         let accountHolder: AnyPublisher<String?, Never>
         
-        let seatTypes: AnyPublisher<[RegisterConcertInfo.SeatType], Never>
+        let seatTypes: AnyPublisher<[ConcertInfo.SeatType], Never>
         let totalSeatsCount: AnyPublisher<Int?, Never>
         
         let posterInfo: AnyPublisher<ImageInfo, Never>
@@ -69,7 +69,7 @@ final class RegisterConcertVM {
     // MARK: Event Handling
     
     func transform(_ input: Input) -> Output {
-        let infoSubject = CurrentValueSubject<RegisterConcertInfo, Never>(.init())
+        let infoSubject = CurrentValueSubject<ConcertInfo, Never>(.init())
         
         /// 아티스트 정보 필드 초기값
         let initialArtistInfo = fetchArtistInfoUC.execute()

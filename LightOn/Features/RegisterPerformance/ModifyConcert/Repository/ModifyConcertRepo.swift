@@ -13,7 +13,7 @@ import Alamofire
 protocol ModifyConcertRepo {
     /// 공연 상세정보 조회
     /// - 단 결제 정보는 누락되어 있음(fetchPaymentInfo에서 조회)
-    func fetchConcertInfo(id: Int) -> AnyPublisher<RegisterConcertInfo, Never>
+    func fetchConcertInfo(id: Int) -> AnyPublisher<ConcertInfo, Never>
     
     /// 결제 정보 조회
     /// - 가격은 fetchConcertInfo의 것을 사용
@@ -22,7 +22,7 @@ protocol ModifyConcertRepo {
     /// 콘서트 수정 요청
     func requestEditConcert(
         id: Int,
-        info: RegisterConcertInfo,
+        info: ConcertInfo,
         posterData: Data?,
         documentData: Data?
     ) -> AnyPublisher<Void, Never>
@@ -34,7 +34,7 @@ protocol ModifyConcertRepo {
 // MARK: - Default
 
 final class DefaultModifyConcertRepo: ModifyConcertRepo {
-    func fetchConcertInfo(id: Int) -> AnyPublisher<RegisterConcertInfo, Never> {
+    func fetchConcertInfo(id: Int) -> AnyPublisher<ConcertInfo, Never> {
         Future { promise in
             
             APIClient.plain.request(
@@ -69,7 +69,7 @@ final class DefaultModifyConcertRepo: ModifyConcertRepo {
     
     func requestEditConcert(
         id: Int,
-        info: RegisterConcertInfo,
+        info: ConcertInfo,
         posterData: Data?,
         documentData: Data?
     ) -> AnyPublisher<Void, Never> {

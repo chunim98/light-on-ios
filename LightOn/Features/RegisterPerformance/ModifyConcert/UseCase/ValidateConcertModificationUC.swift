@@ -13,8 +13,8 @@ import Combine
 /// - 공연 수정: 3일 전까지는 가능
 final class ValidateConcertModificationUC {
     func validateEditable(
-        initialInfo: AnyPublisher<RegisterConcertInfo, Never>,
-        currentInfo: AnyPublisher<RegisterConcertInfo, Never>
+        initialInfo: AnyPublisher<ConcertInfo, Never>,
+        currentInfo: AnyPublisher<ConcertInfo, Never>
     ) -> AnyPublisher<Bool, Never> {
         /// 공연 수정이 가능한지 판별
         /// - 3일 전까지는 수정 가능
@@ -56,7 +56,7 @@ final class ValidateConcertModificationUC {
     /// 공연 취소가 가능한지 판별
     /// - 1시간 전까지는 취소 가능
     func validateCancellable(
-        initialInfo: AnyPublisher<RegisterConcertInfo, Never>
+        initialInfo: AnyPublisher<ConcertInfo, Never>
     ) -> AnyPublisher<Bool, Never> {
         initialInfo.map { info -> Bool in
             let formatter = DateFormatter()

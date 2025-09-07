@@ -19,7 +19,7 @@ final class RegisterConcertUC {
     /// 콘서트 등록 요청
     func execute(
         trigger: AnyPublisher<Void, Never>,
-        info: AnyPublisher<RegisterConcertInfo, Never>
+        info: AnyPublisher<ConcertInfo, Never>
     ) -> AnyPublisher<Void, Never> {
         trigger
             .withLatestFrom(info) { _, info in info }
